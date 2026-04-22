@@ -15,6 +15,12 @@ export const CONTENT_ARTICLES_ROUTE = `${CONTENT_ROUTE_PREFIX}/articles`;
 /** Route pattern for a single content article in the portfolio API. */
 export const CONTENT_ARTICLE_ROUTE_PATTERN = `${CONTENT_ARTICLES_ROUTE}/:slug`;
 
+/** Shared cache revalidation window for content article/page delivery. */
+export const CONTENT_REVALIDATE_SECONDS = 60;
+
+/** Shared cache-control header value for content article/page delivery. */
+export const CONTENT_CACHE_CONTROL_VALUE = `public, s-maxage=${CONTENT_REVALIDATE_SECONDS}, stale-while-revalidate=300`;
+
 /** Builds the canonical portfolio API route for a content article slug. */
 export function getContentArticleRoute(slug: string): string {
   return `${CONTENT_ARTICLES_ROUTE}/${encodeURIComponent(slug)}`;

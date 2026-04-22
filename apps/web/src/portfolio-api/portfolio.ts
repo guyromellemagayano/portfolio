@@ -4,15 +4,18 @@
  * @description Portfolio API client for brochure snapshot retrieval in the web app.
  */
 
+import { cache } from "react";
+
 import {
-  PORTFOLIO_ROUTE,
   type ContentPortfolioSnapshotResponseData,
+  PORTFOLIO_REVALIDATE_SECONDS,
+  PORTFOLIO_ROUTE,
 } from "@portfolio/api-contracts/content";
-import { contentSnapshot } from "@portfolio/content-data";
 import {
   type ApiErrorEnvelope,
   type ApiSuccessEnvelope,
 } from "@portfolio/api-contracts/http";
+import { contentSnapshot } from "@portfolio/content-data";
 
 import { resolvePortfolioApiBaseUrl } from "./content/articles";
 
@@ -22,7 +25,7 @@ type PortfolioSnapshotEnvelope =
 
 /** Returns a cloned local portfolio snapshot for static-first fallback behavior. */
 function getLocalPortfolioSnapshot(): ContentPortfolioSnapshotResponseData {
-  return structuredClone(contentSnapshot.portfolio);
+  return globalThis.structuredClone(contentSnapshot.portfolio);
 }
 
 /** Validates the expected success envelope shape for portfolio snapshot responses. */
@@ -46,41 +49,44 @@ function isPortfolioSnapshotSuccessEnvelope(
 }
 
 /** Fetches the canonical portfolio snapshot from the portfolio API. */
-export async function getPortfolioSnapshot(): Promise<ContentPortfolioSnapshotResponseData> {
-  const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
+export const getPortfolioSnapshot = cache(
+  async function getPortfolioSnapshot(): Promise<ContentPortfolioSnapshotResponseData> {
+    const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
 
-  if (!portfolioApiBaseUrl) {
-    return getLocalPortfolioSnapshot();
-  }
-
-  const endpointUrl = `${portfolioApiBaseUrl}${PORTFOLIO_ROUTE}`;
-  try {
-    const response = await fetch(endpointUrl, {
-      method: "GET",
-      cache: "force-cache",
-      next: {
-        tags: ["portfolio"],
-      },
-    });
-
-    if (!response.ok) {
+    if (!portfolioApiBaseUrl) {
       return getLocalPortfolioSnapshot();
     }
 
-    let envelope: PortfolioSnapshotEnvelope;
-
+    const endpointUrl = `${portfolioApiBaseUrl}${PORTFOLIO_ROUTE}`;
     try {
-      envelope = (await response.json()) as PortfolioSnapshotEnvelope;
+      const response = await globalThis.fetch(endpointUrl, {
+        method: "GET",
+        cache: "force-cache",
+        next: {
+          revalidate: PORTFOLIO_REVALIDATE_SECONDS,
+          tags: ["portfolio"],
+        },
+      });
+
+      if (!response.ok) {
+        return getLocalPortfolioSnapshot();
+      }
+
+      let envelope: PortfolioSnapshotEnvelope;
+
+      try {
+        envelope = (await response.json()) as PortfolioSnapshotEnvelope;
+      } catch {
+        return getLocalPortfolioSnapshot();
+      }
+
+      if (!isPortfolioSnapshotSuccessEnvelope(envelope)) {
+        return getLocalPortfolioSnapshot();
+      }
+
+      return envelope.data;
     } catch {
       return getLocalPortfolioSnapshot();
     }
-
-    if (!isPortfolioSnapshotSuccessEnvelope(envelope)) {
-      return getLocalPortfolioSnapshot();
-    }
-
-    return envelope.data;
-  } catch {
-    return getLocalPortfolioSnapshot();
   }
-}
+);

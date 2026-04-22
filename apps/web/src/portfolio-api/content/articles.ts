@@ -4,8 +4,11 @@
  * @description Portfolio API client for content article retrieval in the web app.
  */
 
+import { cache } from "react";
+
 import {
   CONTENT_ARTICLES_ROUTE,
+  CONTENT_REVALIDATE_SECONDS,
   type ContentArticleDetailResponseData,
   type ContentArticlesResponseData,
   getContentArticleRoute,
@@ -18,7 +21,6 @@ import {
 import { isLocalOnlyHostname } from "@web/utils/site-url";
 
 const DEFAULT_PORTFOLIO_API_PORT = "5001";
-const DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS = 60;
 
 type ContentArticlesEnvelope =
   | ApiSuccessEnvelope<ContentArticlesResponseData>
@@ -71,31 +73,33 @@ function createPortfolioApiRequestErrorMessage(
 }
 
 /** Resolves the portfolio API base URL for server-side fetches in `apps/web`. */
-export function resolvePortfolioApiBaseUrl(): string | null {
-  const explicitPortfolioApiUrl =
-    getEnvVar("PORTFOLIO_API_URL") ||
-    getEnvVar("API_GATEWAY_URL") ||
-    getEnvVar("NEXT_PUBLIC_API_URL");
+export const resolvePortfolioApiBaseUrl = cache(
+  function resolvePortfolioApiBaseUrl(): string | null {
+    const explicitPortfolioApiUrl =
+      getEnvVar("PORTFOLIO_API_URL") ||
+      getEnvVar("API_GATEWAY_URL") ||
+      getEnvVar("NEXT_PUBLIC_API_URL");
 
-  if (explicitPortfolioApiUrl) {
-    if (isLocalOnlyPortfolioApiUrlInProduction(explicitPortfolioApiUrl)) {
+    if (explicitPortfolioApiUrl) {
+      if (isLocalOnlyPortfolioApiUrlInProduction(explicitPortfolioApiUrl)) {
+        return null;
+      }
+
+      return trimTrailingSlash(explicitPortfolioApiUrl);
+    }
+
+    const nodeEnv = getEnvVar("NODE_ENV");
+
+    if (nodeEnv === "production") {
       return null;
     }
 
-    return trimTrailingSlash(explicitPortfolioApiUrl);
+    const port =
+      getEnvVar("API_PORT") || getEnvVar("PORT") || DEFAULT_PORTFOLIO_API_PORT;
+
+    return `http://localhost:${port}`;
   }
-
-  const nodeEnv = getEnvVar("NODE_ENV");
-
-  if (nodeEnv === "production") {
-    return null;
-  }
-
-  const port =
-    getEnvVar("API_PORT") || getEnvVar("PORT") || DEFAULT_PORTFOLIO_API_PORT;
-
-  return `http://localhost:${port}`;
-}
+);
 
 /** Validates the expected success envelope shape for article list responses. */
 function isContentArticlesSuccessEnvelope(
@@ -129,97 +133,105 @@ function isContentArticleDetailSuccessEnvelope(
 }
 
 /** Fetches article summaries from the portfolio API and validates the response envelope. */
-export async function getAllPortfolioArticles(): Promise<ContentArticlesResponseData> {
-  const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
+export const getAllPortfolioArticles = cache(
+  async function getAllPortfolioArticles(): Promise<ContentArticlesResponseData> {
+    const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
 
-  if (!portfolioApiBaseUrl) {
-    throw new Error(
-      "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
-    );
+    if (!portfolioApiBaseUrl) {
+      throw new Error(
+        "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
+      );
+    }
+
+    const endpointUrl = `${portfolioApiBaseUrl}${CONTENT_ARTICLES_ROUTE}`;
+
+    const response = await globalThis.fetch(endpointUrl, {
+      method: "GET",
+      cache: "force-cache",
+      next: {
+        revalidate: CONTENT_REVALIDATE_SECONDS,
+        tags: ["articles"],
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        createPortfolioApiRequestErrorMessage(endpointUrl, response.status)
+      );
+    }
+
+    let envelope: ContentArticlesEnvelope;
+
+    try {
+      envelope = (await response.json()) as ContentArticlesEnvelope;
+    } catch {
+      throw new Error("Portfolio API returned an invalid JSON response.");
+    }
+
+    if (!isContentArticlesSuccessEnvelope(envelope)) {
+      throw new Error(
+        "Portfolio API returned an unexpected response envelope."
+      );
+    }
+
+    return envelope.data;
   }
-
-  const endpointUrl = `${portfolioApiBaseUrl}${CONTENT_ARTICLES_ROUTE}`;
-
-  const response = await fetch(endpointUrl, {
-    method: "GET",
-    cache: "force-cache",
-    next: {
-      revalidate: DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS,
-      tags: ["articles"],
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      createPortfolioApiRequestErrorMessage(endpointUrl, response.status)
-    );
-  }
-
-  let envelope: ContentArticlesEnvelope;
-
-  try {
-    envelope = (await response.json()) as ContentArticlesEnvelope;
-  } catch {
-    throw new Error("Portfolio API returned an invalid JSON response.");
-  }
-
-  if (!isContentArticlesSuccessEnvelope(envelope)) {
-    throw new Error("Portfolio API returned an unexpected response envelope.");
-  }
-
-  return envelope.data;
-}
+);
 
 /** Fetches a single article detail payload from the portfolio API by slug. */
-export async function getPortfolioArticleBySlug(
-  slug: string
-): Promise<ContentArticleDetailResponseData | null> {
-  const normalizedSlug = slug.trim();
+export const getPortfolioArticleBySlug = cache(
+  async function getPortfolioArticleBySlug(
+    slug: string
+  ): Promise<ContentArticleDetailResponseData | null> {
+    const normalizedSlug = slug.trim();
 
-  if (!normalizedSlug) {
-    return null;
+    if (!normalizedSlug) {
+      return null;
+    }
+
+    const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
+
+    if (!portfolioApiBaseUrl) {
+      throw new Error(
+        "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
+      );
+    }
+
+    const endpointUrl = `${portfolioApiBaseUrl}${getContentArticleRoute(normalizedSlug)}`;
+
+    const response = await globalThis.fetch(endpointUrl, {
+      method: "GET",
+      cache: "force-cache",
+      next: {
+        revalidate: CONTENT_REVALIDATE_SECONDS,
+        tags: ["articles", `article:${normalizedSlug}`],
+      },
+    });
+
+    if (response.status === 404) {
+      return null;
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        createPortfolioApiRequestErrorMessage(endpointUrl, response.status)
+      );
+    }
+
+    let envelope: ContentArticleDetailEnvelope;
+
+    try {
+      envelope = (await response.json()) as ContentArticleDetailEnvelope;
+    } catch {
+      throw new Error("Portfolio API returned an invalid JSON response.");
+    }
+
+    if (!isContentArticleDetailSuccessEnvelope(envelope)) {
+      throw new Error(
+        "Portfolio API returned an unexpected response envelope."
+      );
+    }
+
+    return envelope.data;
   }
-
-  const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
-
-  if (!portfolioApiBaseUrl) {
-    throw new Error(
-      "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
-    );
-  }
-
-  const endpointUrl = `${portfolioApiBaseUrl}${getContentArticleRoute(normalizedSlug)}`;
-
-  const response = await fetch(endpointUrl, {
-    method: "GET",
-    cache: "force-cache",
-    next: {
-      revalidate: DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS,
-      tags: ["articles", `article:${normalizedSlug}`],
-    },
-  });
-
-  if (response.status === 404) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error(
-      createPortfolioApiRequestErrorMessage(endpointUrl, response.status)
-    );
-  }
-
-  let envelope: ContentArticleDetailEnvelope;
-
-  try {
-    envelope = (await response.json()) as ContentArticleDetailEnvelope;
-  } catch {
-    throw new Error("Portfolio API returned an invalid JSON response.");
-  }
-
-  if (!isContentArticleDetailSuccessEnvelope(envelope)) {
-    throw new Error("Portfolio API returned an unexpected response envelope.");
-  }
-
-  return envelope.data;
-}
+);

@@ -6,7 +6,10 @@
 
 import { Elysia, t } from "elysia";
 
-import { PORTFOLIO_ROUTE } from "@portfolio/api-contracts/content";
+import {
+  PORTFOLIO_REVALIDATE_SECONDS,
+  PORTFOLIO_ROUTE,
+} from "@portfolio/api-contracts/content";
 import {
   API_ERROR_CODES,
   API_ERROR_MESSAGES,
@@ -45,9 +48,7 @@ const errorEnvelopeSchema = t.Object({
 });
 
 const PORTFOLIO_CACHE_CONTROL_HEADER = "cache-control";
-const PORTFOLIO_CACHE_CONTROL_VALUE =
-  "public, s-maxage=300, stale-while-revalidate=3600";
-
+const PORTFOLIO_CACHE_CONTROL_VALUE = `public, s-maxage=${PORTFOLIO_REVALIDATE_SECONDS}, stale-while-revalidate=3600`;
 /** Creates routes for portfolio snapshot retrieval via the configured provider. */
 export function createPortfolioRouter(contentService: ContentService) {
   return new Elysia({

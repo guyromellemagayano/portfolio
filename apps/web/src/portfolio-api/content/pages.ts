@@ -4,8 +4,11 @@
  * @description Portfolio API client for standalone content page retrieval in the web app.
  */
 
+import { cache } from "react";
+
 import {
   CONTENT_PAGES_ROUTE,
+  CONTENT_REVALIDATE_SECONDS,
   type ContentPageDetailResponseData,
   type ContentPagesResponseData,
   getContentPageRoute,
@@ -16,8 +19,6 @@ import {
 } from "@portfolio/api-contracts/http";
 
 import { resolvePortfolioApiBaseUrl } from "./articles";
-
-const DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS = 60;
 
 type ContentPagesEnvelope =
   | ApiSuccessEnvelope<ContentPagesResponseData>
@@ -58,97 +59,105 @@ function isContentPageDetailSuccessEnvelope(
 }
 
 /** Fetches standalone page summaries from the portfolio API and validates the response envelope. */
-export async function getAllPortfolioPages(): Promise<ContentPagesResponseData> {
-  const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
+export const getAllPortfolioPages = cache(
+  async function getAllPortfolioPages(): Promise<ContentPagesResponseData> {
+    const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
 
-  if (!portfolioApiBaseUrl) {
-    throw new Error(
-      "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
-    );
+    if (!portfolioApiBaseUrl) {
+      throw new Error(
+        "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
+      );
+    }
+
+    const endpointUrl = `${portfolioApiBaseUrl}${CONTENT_PAGES_ROUTE}`;
+
+    const response = await globalThis.fetch(endpointUrl, {
+      method: "GET",
+      cache: "force-cache",
+      next: {
+        revalidate: CONTENT_REVALIDATE_SECONDS,
+        tags: ["pages"],
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Portfolio API content request failed with status ${response.status}.`
+      );
+    }
+
+    let envelope: ContentPagesEnvelope;
+
+    try {
+      envelope = (await response.json()) as ContentPagesEnvelope;
+    } catch {
+      throw new Error("Portfolio API returned an invalid JSON response.");
+    }
+
+    if (!isContentPagesSuccessEnvelope(envelope)) {
+      throw new Error(
+        "Portfolio API returned an unexpected response envelope."
+      );
+    }
+
+    return envelope.data;
   }
-
-  const endpointUrl = `${portfolioApiBaseUrl}${CONTENT_PAGES_ROUTE}`;
-
-  const response = await fetch(endpointUrl, {
-    method: "GET",
-    cache: "force-cache",
-    next: {
-      revalidate: DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS,
-      tags: ["pages"],
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Portfolio API content request failed with status ${response.status}.`
-    );
-  }
-
-  let envelope: ContentPagesEnvelope;
-
-  try {
-    envelope = (await response.json()) as ContentPagesEnvelope;
-  } catch {
-    throw new Error("Portfolio API returned an invalid JSON response.");
-  }
-
-  if (!isContentPagesSuccessEnvelope(envelope)) {
-    throw new Error("Portfolio API returned an unexpected response envelope.");
-  }
-
-  return envelope.data;
-}
+);
 
 /** Fetches a single standalone page detail payload from the portfolio API by slug. */
-export async function getPortfolioPageBySlug(
-  slug: string
-): Promise<ContentPageDetailResponseData | null> {
-  const normalizedSlug = slug.trim();
+export const getPortfolioPageBySlug = cache(
+  async function getPortfolioPageBySlug(
+    slug: string
+  ): Promise<ContentPageDetailResponseData | null> {
+    const normalizedSlug = slug.trim();
 
-  if (!normalizedSlug) {
-    return null;
+    if (!normalizedSlug) {
+      return null;
+    }
+
+    const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
+
+    if (!portfolioApiBaseUrl) {
+      throw new Error(
+        "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
+      );
+    }
+
+    const endpointUrl = `${portfolioApiBaseUrl}${getContentPageRoute(normalizedSlug)}`;
+
+    const response = await globalThis.fetch(endpointUrl, {
+      method: "GET",
+      cache: "force-cache",
+      next: {
+        revalidate: CONTENT_REVALIDATE_SECONDS,
+        tags: ["pages", `page:${normalizedSlug}`],
+      },
+    });
+
+    if (response.status === 404) {
+      return null;
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        `Portfolio API content request failed with status ${response.status}.`
+      );
+    }
+
+    let envelope: ContentPageDetailEnvelope;
+
+    try {
+      envelope = (await response.json()) as ContentPageDetailEnvelope;
+    } catch {
+      throw new Error("Portfolio API returned an invalid JSON response.");
+    }
+
+    if (!isContentPageDetailSuccessEnvelope(envelope)) {
+      throw new Error(
+        "Portfolio API returned an unexpected response envelope."
+      );
+    }
+
+    return envelope.data;
   }
-
-  const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
-
-  if (!portfolioApiBaseUrl) {
-    throw new Error(
-      "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
-    );
-  }
-
-  const endpointUrl = `${portfolioApiBaseUrl}${getContentPageRoute(normalizedSlug)}`;
-
-  const response = await fetch(endpointUrl, {
-    method: "GET",
-    cache: "force-cache",
-    next: {
-      revalidate: DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS,
-      tags: ["pages", `page:${normalizedSlug}`],
-    },
-  });
-
-  if (response.status === 404) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error(
-      `Portfolio API content request failed with status ${response.status}.`
-    );
-  }
-
-  let envelope: ContentPageDetailEnvelope;
-
-  try {
-    envelope = (await response.json()) as ContentPageDetailEnvelope;
-  } catch {
-    throw new Error("Portfolio API returned an invalid JSON response.");
-  }
-
-  if (!isContentPageDetailSuccessEnvelope(envelope)) {
-    throw new Error("Portfolio API returned an unexpected response envelope.");
-  }
-
-  return envelope.data;
-}
+);

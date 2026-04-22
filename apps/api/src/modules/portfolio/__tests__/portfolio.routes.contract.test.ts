@@ -68,6 +68,8 @@ describe("GET /v1/portfolio contract", () => {
         },
       })
     );
+    const correlationIdHeader = response.headers.get(CORRELATION_ID_HEADER);
+    const cacheControlHeader = response.headers.get("cache-control");
     const body = await parseJsonResponse<{
       success: boolean;
       data: {
@@ -86,10 +88,8 @@ describe("GET /v1/portfolio contract", () => {
     }>(response);
 
     expect(response.status).toBe(200);
-    expect(response.headers.get(CORRELATION_ID_HEADER)).toBe(
-      "corr-test-portfolio-success"
-    );
-    expect(response.headers.get("cache-control")).toBe(
+    expect(correlationIdHeader).toBe("corr-test-portfolio-success");
+    expect(cacheControlHeader).toBe(
       "public, s-maxage=300, stale-while-revalidate=3600"
     );
     expect(body).toMatchObject({

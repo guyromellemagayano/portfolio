@@ -6,7 +6,10 @@
 
 import { Elysia, t } from "elysia";
 
-import { CONTENT_ROUTE_PREFIX } from "@portfolio/api-contracts/content";
+import {
+  CONTENT_REVALIDATE_SECONDS,
+  CONTENT_ROUTE_PREFIX,
+} from "@portfolio/api-contracts/content";
 import {
   API_ERROR_CODES,
   API_ERROR_MESSAGES,
@@ -44,8 +47,7 @@ const errorEnvelopeSchema = t.Object({
   meta: responseMetaSchema,
 });
 const CONTENT_CACHE_CONTROL_HEADER = "cache-control";
-const CONTENT_CACHE_CONTROL_VALUE =
-  "public, s-maxage=60, stale-while-revalidate=300";
+const CONTENT_CACHE_CONTROL_VALUE = `public, s-maxage=${CONTENT_REVALIDATE_SECONDS}, stale-while-revalidate=300`;
 
 /** Creates routes for content retrieval via the configured provider. */
 export function createContentRouter(contentService: ContentService) {

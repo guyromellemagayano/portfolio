@@ -306,6 +306,12 @@ export type ContentPortfolioPage = {
 /** Canonical route path for the portfolio snapshot endpoint in the portfolio API. */
 export const PORTFOLIO_ROUTE = `${API_VERSION_PREFIX}/portfolio`;
 
+/** Shared cache revalidation window for the portfolio snapshot delivery path. */
+export const PORTFOLIO_REVALIDATE_SECONDS = 300;
+
+/** Shared cache-control header value for the portfolio snapshot delivery path. */
+export const PORTFOLIO_CACHE_CONTROL_VALUE = `public, s-maxage=${PORTFOLIO_REVALIDATE_SECONDS}, stale-while-revalidate=3600`;
+
 /** Canonical site-level Portfolio snapshot for local/dev CMS parity. */
 export type ContentPortfolioSnapshot = {
   schemaVersion: "1.0";

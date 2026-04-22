@@ -76,6 +76,8 @@ describe("GET /v1/content/articles contract", () => {
         },
       })
     );
+    const correlationIdHeader = response.headers.get(CORRELATION_ID_HEADER);
+    const cacheControlHeader = response.headers.get("cache-control");
     const body = await parseJsonResponse<{
       success: boolean;
       data: unknown[];
@@ -90,10 +92,8 @@ describe("GET /v1/content/articles contract", () => {
     }>(response);
 
     expect(response.status).toBe(200);
-    expect(response.headers.get(CORRELATION_ID_HEADER)).toBe(
-      "corr-test-articles-success"
-    );
-    expect(response.headers.get("cache-control")).toBe(
+    expect(correlationIdHeader).toBe("corr-test-articles-success");
+    expect(cacheControlHeader).toBe(
       "public, s-maxage=60, stale-while-revalidate=300"
     );
     expect(body).toMatchObject({
@@ -220,6 +220,7 @@ describe("GET /v1/content/articles/:slug contract", () => {
         }
       )
     );
+    const cacheControlHeader = response.headers.get("cache-control");
     const body = await parseJsonResponse<{
       success: boolean;
       data: {
@@ -236,7 +237,7 @@ describe("GET /v1/content/articles/:slug contract", () => {
     }>(response);
 
     expect(response.status).toBe(200);
-    expect(response.headers.get("cache-control")).toBe(
+    expect(cacheControlHeader).toBe(
       "public, s-maxage=60, stale-while-revalidate=300"
     );
     expect(body).toMatchObject({
@@ -391,6 +392,7 @@ describe("GET /v1/content/pages contract", () => {
         },
       })
     );
+    const cacheControlHeader = response.headers.get("cache-control");
     const body = await parseJsonResponse<{
       success: boolean;
       data: Array<{
@@ -409,7 +411,7 @@ describe("GET /v1/content/pages contract", () => {
     }>(response);
 
     expect(response.status).toBe(200);
-    expect(response.headers.get("cache-control")).toBe(
+    expect(cacheControlHeader).toBe(
       "public, s-maxage=60, stale-while-revalidate=300"
     );
     expect(body).toMatchObject({
@@ -488,6 +490,7 @@ describe("GET /v1/content/pages/:slug contract", () => {
         },
       })
     );
+    const cacheControlHeader = response.headers.get("cache-control");
     const body = await parseJsonResponse<{
       success: boolean;
       data: {
@@ -510,7 +513,7 @@ describe("GET /v1/content/pages/:slug contract", () => {
     }>(response);
 
     expect(response.status).toBe(200);
-    expect(response.headers.get("cache-control")).toBe(
+    expect(cacheControlHeader).toBe(
       "public, s-maxage=60, stale-while-revalidate=300"
     );
     expect(body).toMatchObject({

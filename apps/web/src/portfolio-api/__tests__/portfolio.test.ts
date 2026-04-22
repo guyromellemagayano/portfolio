@@ -7,6 +7,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { contentSnapshot } from "@portfolio/content-data";
+
 import { getPortfolioSnapshot } from "@web/portfolio-api/portfolio";
 
 describe("portfolio snapshot API client", () => {
@@ -78,6 +79,7 @@ describe("portfolio snapshot API client", () => {
         method: "GET",
         cache: "force-cache",
         next: {
+          revalidate: 300,
           tags: ["portfolio"],
         },
       }
