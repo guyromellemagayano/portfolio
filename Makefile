@@ -4,6 +4,10 @@ SHELL := /bin/sh
 
 ENV_FILE ?= .env
 PNPM ?= pnpm
+LOCAL_SMOKE_WEB_URL ?= http://localhost:3000
+LOCAL_SMOKE_API_URL ?= http://localhost:5001
+LOCAL_SMOKE_ARTICLE_PATH ?=
+LOCAL_SMOKE_PAGE_PATH ?=
 PROD_SMOKE_WEB_URL ?= https://www.guyromellemagayano.com
 PROD_SMOKE_API_URL ?= https://api.guyromellemagayano.com
 PROD_SMOKE_ARTICLE_PATH ?=
@@ -24,6 +28,7 @@ VERCEL_ARGS ?= whoami
 	docs-catalog-update \
 	docs-catalog-check \
 	dev \
+	local-smoke \
 	prod-smoke \
 	format \
 	format-check \
@@ -92,6 +97,9 @@ docs-catalog-update: ## Regenerate `docs/catalog/README.md`.
 
 docs-catalog-check: ## Validate `docs/catalog/README.md` matches the repo README list.
 	@sh docs/scripts/check-readme-catalog.sh "$(CURDIR)"
+
+local-smoke: ## Smoke-check local `web`, `api`, and `sitemap.xml` endpoints.
+	@sh docs/scripts/prod-vercel-smoke.sh "$(LOCAL_SMOKE_WEB_URL)" "$(LOCAL_SMOKE_API_URL)" "$(LOCAL_SMOKE_ARTICLE_PATH)" "$(LOCAL_SMOKE_PAGE_PATH)"
 
 prod-smoke: ## Smoke-check deployed `web`, `api`, and `sitemap.xml` endpoints.
 	@sh docs/scripts/prod-vercel-smoke.sh "$(PROD_SMOKE_WEB_URL)" "$(PROD_SMOKE_API_URL)" "$(PROD_SMOKE_ARTICLE_PATH)" "$(PROD_SMOKE_PAGE_PATH)"
