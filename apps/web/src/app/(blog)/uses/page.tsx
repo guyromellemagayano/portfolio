@@ -3,17 +3,16 @@
 /**
  * @file apps/web/src/app/(blog)/uses/page.tsx
  * @author Guy Romelle Magayano
- * @description Static uses page rendered from the canonical portfolio snapshot API.
+ * @description Uses page rendered from direct local portfolio content.
  */
 
 import type { Metadata } from "next";
-
-import { SimpleLayout } from "@web/components/layout";
 
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
 } from "@web/app/_lib/portfolio-brochure";
+import { SimpleLayout } from "@web/components/layout";
 
 export const dynamic = "force-static";
 
@@ -31,61 +30,73 @@ export default async function UsesPage() {
 
   return (
     <SimpleLayout
-      className="mt-16 sm:mt-32"
+      className="pb-16"
       subheading={page.subheading}
-      title={page.title}
+      title="The setup behind the work."
       intro={page.intro}
     >
-      <div className="mt-12 space-y-10">
-        {categories.map((category) => (
-          <section
-            key={category.id}
-            aria-labelledby={`uses-category-${category.slug}`}
-            className="rounded-3xl border border-zinc-200/70 p-6 dark:border-zinc-800"
-            role="region"
-          >
-            <h2
-              id={`uses-category-${category.slug}`}
-              className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
+      <section
+        aria-labelledby="uses-categories-heading"
+        className="py-12"
+        role="region"
+      >
+        <h2
+          id="uses-categories-heading"
+          className="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+        >
+          Hardware, software, and workflow tools.
+        </h2>
+        <div className="mt-10 grid gap-4 lg:grid-cols-2">
+          {categories.map((category) => (
+            <section
+              key={category.id}
+              aria-labelledby={`uses-category-${category.slug}`}
+              className="rounded-lg border border-zinc-950/10 bg-white p-6"
+              role="region"
             >
-              {category.title}
-            </h2>
-            {category.intro ? (
-              <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                {category.intro}
-              </p>
-            ) : null}
-            <div className="mt-6 space-y-4">
-              {category.items
-                .slice()
-                .sort((left, right) => left.order - right.order)
-                .map((item) => (
-                  <article
-                    key={item.id}
-                    className="rounded-2xl border border-zinc-200/70 p-4 dark:border-zinc-800"
-                  >
-                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                      {item.name}
-                    </h3>
-                    <p className="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                      {item.summary}
-                    </p>
-                    {item.link ? (
-                      <a
-                        className="mt-3 inline-flex text-sm font-medium text-zinc-900 underline underline-offset-4 dark:text-zinc-50"
-                        href={item.link.href}
-                        rel={item.link.rel}
-                        target={item.link.target}
-                      >
-                        {item.link.label}
-                      </a>
-                    ) : null}
-                  </article>
-                ))}
-            </div>
-          </section>
-        ))}
-      </div>
+              <h3
+                id={`uses-category-${category.slug}`}
+                className="text-xl font-medium tracking-tight text-zinc-950"
+              >
+                {category.title}
+              </h3>
+              {category.intro ? (
+                <p className="mt-3 text-sm leading-7 text-zinc-600">
+                  {category.intro}
+                </p>
+              ) : null}
+              <div className="mt-6 space-y-4">
+                {category.items
+                  .slice()
+                  .sort((left, right) => left.order - right.order)
+                  .map((item) => (
+                    <article
+                      key={item.id}
+                      className="border-t border-zinc-950/10 pt-4 first:border-t-0 first:pt-0"
+                    >
+                      <h4 className="text-sm font-semibold text-zinc-950">
+                        {item.name}
+                      </h4>
+                      <p className="mt-2 text-sm leading-6 text-zinc-600">
+                        {item.summary}
+                      </p>
+                      {item.link ? (
+                        <a
+                          href={item.link.href}
+                          rel={item.link.rel}
+                          target={item.link.target}
+                          className="mt-3 inline-flex text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
+                        >
+                          {item.link.label}
+                        </a>
+                      ) : null}
+                    </article>
+                  ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
     </SimpleLayout>
   );
 }

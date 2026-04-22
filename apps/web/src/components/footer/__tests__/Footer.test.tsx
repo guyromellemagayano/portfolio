@@ -123,12 +123,15 @@ describe("Footer", () => {
     it("renders footer navigation links", () => {
       render(<Footer />);
 
+      expect(screen.getByRole("link", { name: "About" })).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: "Services" })
       ).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: "Blog" })).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: "Projects" })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: "Articles" })
       ).toBeInTheDocument();
       expect(screen.getByRole("link", { name: "Hire" })).toBeInTheDocument();
     });
@@ -162,11 +165,14 @@ describe("Footer", () => {
     it("renders navigation links correctly", () => {
       render(<Footer />);
 
+      const aboutLink = screen.getByRole("link", { name: "About" });
+      expect(aboutLink).toHaveAttribute("href", "/about");
+
       const servicesLink = screen.getByRole("link", { name: "Services" });
       expect(servicesLink).toHaveAttribute("href", "/services");
 
-      const blogLink = screen.getByRole("link", { name: "Blog" });
-      expect(blogLink).toHaveAttribute("href", "/articles");
+      const articleLink = screen.getByRole("link", { name: "Articles" });
+      expect(articleLink).toHaveAttribute("href", "/articles");
     });
 
     it("renders navigation with list items structure", () => {
@@ -174,7 +180,7 @@ describe("Footer", () => {
 
       const nav = screen.getByRole("navigation");
       const listItems = nav.querySelectorAll("li");
-      expect(listItems).toHaveLength(4);
+      expect(listItems).toHaveLength(5);
 
       // Verify each link is wrapped in a list item
       const servicesLink = screen.getByRole("link", { name: "Services" });

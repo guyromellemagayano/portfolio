@@ -331,9 +331,9 @@ describe("Header Integration", () => {
         servicesLinks.some((el) => el.getAttribute("href") === "/services")
       ).toBe(true);
 
-      const blogLinks = screen.getAllByRole("link", { name: /blog/i });
+      const articleLinks = screen.getAllByRole("link", { name: /articles/i });
       expect(
-        blogLinks.some((el) => el.getAttribute("href") === "/articles")
+        articleLinks.some((el) => el.getAttribute("href") === "/articles")
       ).toBe(true);
     });
   });

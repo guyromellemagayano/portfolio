@@ -546,10 +546,11 @@ describe("ArticleLayout", () => {
           <p>Body</p>
         </ArticleLayout>
       );
-      const backButton = screen.getByRole("button", {
+      const backLink = screen.getByRole("link", {
         name: "Back to articles",
       });
-      expect(backButton).toBeInTheDocument();
+      expect(backLink).toBeInTheDocument();
+      expect(backLink).toHaveAttribute("href", "/articles");
     });
 
     it("renders back button even without previousPathname context", () => {
@@ -559,7 +560,7 @@ describe("ArticleLayout", () => {
         </ArticleLayout>
       );
       expect(
-        screen.getByRole("button", { name: /back to articles/i })
+        screen.getByRole("link", { name: /back to articles/i })
       ).toBeInTheDocument();
     });
   });
@@ -616,10 +617,8 @@ describe("ArticleLayout", () => {
           <p>Body</p>
         </ArticleLayout>
       );
-      const header = container.querySelector("header");
       const title = container.querySelector("h1");
       const time = container.querySelector("time");
-      expect(header).toBeInTheDocument();
       expect(title).toBeInTheDocument();
       expect(title?.textContent).toBe("Article title");
       expect(time).toBeInTheDocument();

@@ -134,12 +134,15 @@ describe("Footer Integration Tests", () => {
       ).toBeInTheDocument();
 
       // Check navigation links
+      expect(screen.getByRole("link", { name: "About" })).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: "Services" })
       ).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: "Blog" })).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: "Projects" })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: "Articles" })
       ).toBeInTheDocument();
       expect(screen.getByRole("link", { name: "Hire" })).toBeInTheDocument();
     });
@@ -171,16 +174,18 @@ describe("Footer Integration Tests", () => {
       expect(navigation).toBeInTheDocument();
 
       const links = navigation.querySelectorAll("a");
-      expect(links).toHaveLength(4);
+      expect(links).toHaveLength(5);
 
-      expect(links[0]).toHaveTextContent("Services");
-      expect(links[0]).toHaveAttribute("href", "/services");
-      expect(links[1]).toHaveTextContent("Blog");
-      expect(links[1]).toHaveAttribute("href", "/articles");
+      expect(links[0]).toHaveTextContent("About");
+      expect(links[0]).toHaveAttribute("href", "/about");
+      expect(links[1]).toHaveTextContent("Services");
+      expect(links[1]).toHaveAttribute("href", "/services");
       expect(links[2]).toHaveTextContent("Projects");
       expect(links[2]).toHaveAttribute("href", "/projects");
-      expect(links[3]).toHaveTextContent("Hire");
-      expect(links[3]).toHaveAttribute("href", "/hire");
+      expect(links[3]).toHaveTextContent("Articles");
+      expect(links[3]).toHaveAttribute("href", "/articles");
+      expect(links[4]).toHaveTextContent("Hire");
+      expect(links[4]).toHaveAttribute("href", "/hire");
     });
   });
 

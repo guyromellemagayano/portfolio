@@ -3,7 +3,7 @@
 /**
  * @file apps/web/src/app/(blog)/[slug]/page.tsx
  * @author Guy Romelle Magayano
- * @description Portfolio-API-backed standalone page route rendered through the portfolio API.
+ * @description Standalone page route rendered from local structured content.
  */
 
 import { cache } from "react";
@@ -138,7 +138,7 @@ async function resolvePageFromParams(
   return getCachedPageBySlug(normalizedSlug);
 }
 
-/** Generates metadata for standalone CMS pages from portfolio-API-backed content. */
+/** Generates metadata for standalone pages from local structured content. */
 export async function generateMetadata(
   props: CmsPageRouteProps
 ): Promise<Metadata> {
@@ -210,7 +210,7 @@ export async function generateMetadata(
   }
 }
 
-/** Renders a standalone CMS page route using the portfolio API page detail endpoint. */
+/** Renders a standalone local-content page route by slug. */
 export default async function CmsPageRoute(props: CmsPageRouteProps) {
   const page = await resolvePageFromParams(props.params).catch((error) => {
     logger.error("CMS page route failed to load page", normalizeError(error), {

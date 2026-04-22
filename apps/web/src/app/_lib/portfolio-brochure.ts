@@ -4,8 +4,9 @@
  * @description Shared helpers for brochure-page snapshot lookup and metadata generation.
  */
 
-import type { Metadata } from "next";
 import { cache } from "react";
+
+import type { Metadata } from "next";
 
 import type {
   ContentPortfolioPage,
@@ -13,10 +14,12 @@ import type {
   ContentSocialPlatform,
 } from "@portfolio/api-contracts/content";
 
-import { getPortfolioSnapshot } from "@web/portfolio-api/portfolio";
+import { getLocalPortfolioSnapshot } from "@web/data/portfolio-content";
 import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
-const getCachedPortfolioSnapshot = cache(getPortfolioSnapshot);
+const getCachedPortfolioSnapshot = cache(async () =>
+  getLocalPortfolioSnapshot()
+);
 
 /** Resolves the canonical portfolio snapshot once per render tree. */
 export async function getBrochureSnapshot(): Promise<ContentPortfolioSnapshot> {

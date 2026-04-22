@@ -34,17 +34,17 @@ export const portfolioProfile: ContentProfile = {
 /** Navigation entries shown in the header and footer shell. */
 export const portfolioNavigation: ReadonlyArray<ContentNavigationItem> = [
   {
-    id: "nav-services",
-    label: "Services",
-    href: "/services",
+    id: "nav-about",
+    label: "About",
+    href: "/about",
     order: 1,
     showInHeader: true,
     showInFooter: true,
   },
   {
-    id: "nav-blog",
-    label: "Blog",
-    href: "/articles",
+    id: "nav-services",
+    label: "Services",
+    href: "/services",
     order: 2,
     showInHeader: true,
     showInFooter: true,
@@ -58,10 +58,18 @@ export const portfolioNavigation: ReadonlyArray<ContentNavigationItem> = [
     showInFooter: true,
   },
   {
+    id: "nav-articles",
+    label: "Articles",
+    href: "/articles",
+    order: 4,
+    showInHeader: true,
+    showInFooter: true,
+  },
+  {
     id: "nav-hire",
     label: "Hire",
     href: "/hire",
-    order: 4,
+    order: 5,
     showInHeader: true,
     showInFooter: true,
   },

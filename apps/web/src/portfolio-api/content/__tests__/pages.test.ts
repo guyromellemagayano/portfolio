@@ -1,163 +1,39 @@
 /**
  * @file apps/web/src/portfolio-api/content/__tests__/pages.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for portfolio API content page client behavior.
+ * @description Unit tests for the local standalone page accessors.
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import {
   getAllPortfolioPages,
   getPortfolioPageBySlug,
 } from "@web/portfolio-api/content/pages";
 
-describe("portfolio API content pages client", () => {
-  beforeEach(() => {
-    vi.unstubAllEnvs();
-    vi.restoreAllMocks();
-  });
-
-  afterEach(() => {
-    vi.unstubAllEnvs();
-    vi.restoreAllMocks();
-  });
-
-  it("fetches and returns portfolio API page data", async () => {
-    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
-
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      json: vi.fn().mockResolvedValue({
-        success: true,
-        data: [
-          {
-            id: "page-1",
-            slug: "now",
-            title: "Now",
-            subheading: "Now",
-            intro: "Current focus and priorities",
-            updatedAt: "2026-02-25T00:00:00.000Z",
-          },
-        ],
-        meta: {
-          correlationId: "corr-1",
-          requestId: "req-1",
-          timestamp: "2026-02-25T00:00:00.000Z",
-        },
-      }),
-    });
-
-    vi.stubGlobal("fetch", fetchMock);
-
+describe("local standalone page accessors", () => {
+  it("returns local standalone page summaries", async () => {
     const pages = await getAllPortfolioPages();
 
-    expect(pages).toEqual([
+    expect(pages).toMatchObject([
       {
-        id: "page-1",
         slug: "now",
         title: "Now",
-        subheading: "Now",
-        intro: "Current focus and priorities",
-        updatedAt: "2026-02-25T00:00:00.000Z",
+        subheading: "What I am focused on",
       },
     ]);
-    expect(fetchMock).toHaveBeenCalledWith(
-      "https://api.example.com/v1/content/pages",
-      {
-        method: "GET",
-        cache: "force-cache",
-        next: {
-          revalidate: 60,
-          tags: ["pages"],
-        },
-        signal: expect.any(Object),
-      }
-    );
   });
 
-  it("fetches and returns a single page detail payload", async () => {
-    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
-
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: vi.fn().mockResolvedValue({
-        success: true,
-        data: {
-          id: "page-1",
-          slug: "now",
-          title: "Now",
-          subheading: "Now",
-          intro: "Current focus and priorities",
-          updatedAt: "2026-02-25T00:00:00.000Z",
-          seoDescription: "What I am doing right now.",
-          body: [
-            {
-              _type: "block",
-              children: [
-                {
-                  _type: "span",
-                  text: "Hello from the CMS page",
-                },
-              ],
-            },
-          ],
-        },
-        meta: {
-          correlationId: "corr-1",
-          requestId: "req-1",
-          timestamp: "2026-02-25T00:00:00.000Z",
-        },
-      }),
-    });
-
-    vi.stubGlobal("fetch", fetchMock);
-
+  it("returns a local standalone page detail payload", async () => {
     const page = await getPortfolioPageBySlug("now");
 
     expect(page).toMatchObject({
       slug: "now",
       body: expect.any(Array),
     });
-    expect(fetchMock).toHaveBeenCalledWith(
-      "https://api.example.com/v1/content/pages/now",
-      {
-        method: "GET",
-        cache: "force-cache",
-        next: {
-          revalidate: 60,
-          tags: ["pages", "page:now"],
-        },
-        signal: expect.any(Object),
-      }
-    );
   });
 
-  it("throws an actionable timeout error when the configured local API host stalls", async () => {
-    vi.stubEnv("PORTFOLIO_API_URL", "http://localhost:5001");
-
-    const timeoutError = new Error("The operation was aborted.");
-    timeoutError.name = "AbortError";
-
-    const fetchMock = vi.fn().mockRejectedValue(timeoutError);
-
-    vi.stubGlobal("fetch", fetchMock);
-
-    await expect(getAllPortfolioPages()).rejects.toThrow(
-      /Point `PORTFOLIO_API_URL` to `http:\/\/localhost:5001`/
-    );
-  });
-
-  it("returns null when the page detail endpoint responds with 404", async () => {
-    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
-
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 404,
-    });
-
-    vi.stubGlobal("fetch", fetchMock);
-
+  it("returns null when the local standalone page detail is missing", async () => {
     await expect(getPortfolioPageBySlug("missing-page")).resolves.toBeNull();
   });
 });

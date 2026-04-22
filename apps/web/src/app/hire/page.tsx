@@ -3,23 +3,22 @@
 /**
  * @file apps/web/src/app/hire/page.tsx
  * @author Guy Romelle Magayano
- * @description Static hire page rendered from the canonical portfolio snapshot API.
+ * @description Public hire page rendered from direct local portfolio content.
  */
 
 import type { Metadata } from "next";
 
-import { SimpleLayout } from "@web/components/layout";
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
   getPortfolioInquiryFormActionUrl,
   getPortfolioSocialLinkByPlatform,
 } from "@web/app/_lib/portfolio-brochure";
+import { SimpleLayout } from "@web/components/layout";
 
 const INPUT_CLASS_NAME =
-  "w-full rounded-[calc(var(--radius-md)-1px)] border border-zinc-200 bg-white px-3 py-2.5 text-sm shadow-sm shadow-zinc-800/5 outline-none outline-1 outline-zinc-900/10 placeholder:text-zinc-400 focus:ring-4 focus:ring-zinc-500/10 focus:outline-zinc-500 dark:border-zinc-700 dark:bg-zinc-700/20 dark:text-zinc-100 dark:outline-zinc-700 dark:placeholder:text-zinc-500 dark:focus:ring-zinc-400/10 dark:focus:outline-zinc-400";
-const TEXTAREA_CLASS_NAME =
-  "w-full rounded-[calc(var(--radius-md)-1px)] border border-zinc-200 bg-white px-3 py-2.5 text-sm shadow-sm shadow-zinc-800/5 outline-none outline-1 outline-zinc-900/10 placeholder:text-zinc-400 focus:ring-4 focus:ring-zinc-500/10 focus:outline-zinc-500 dark:border-zinc-700 dark:bg-zinc-700/20 dark:text-zinc-100 dark:outline-zinc-700 dark:placeholder:text-zinc-500 dark:focus:ring-zinc-400/10 dark:focus:outline-zinc-400 min-h-[130px] resize-y";
+  "mt-2 w-full rounded-lg border border-zinc-950/10 bg-white px-3 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-950/30";
+const TEXTAREA_CLASS_NAME = `${INPUT_CLASS_NAME} min-h-[160px] resize-y`;
 
 export const dynamic = "force-static";
 
@@ -29,7 +28,6 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildPortfolioPageMetadata(page);
 }
 
-/** Render the public inquiry page as a static brochure surface with external form delivery. */
 export default async function HirePage() {
   const { snapshot, page } = await getPortfolioBrochurePage("hire");
   const inquiryFormAction = getPortfolioInquiryFormActionUrl();
@@ -42,43 +40,45 @@ export default async function HirePage() {
 
   return (
     <SimpleLayout
-      className="mt-16 sm:mt-32"
+      className="pb-16"
       subheading={page.subheading}
-      title={page.title}
+      title="Share the current constraint and the outcome you need."
       intro={page.intro}
     >
-      <section className="mt-10 max-w-3xl">
+      <section
+        aria-labelledby="hire-form-heading"
+        className="grid gap-6 py-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
+        role="region"
+      >
         {inquiryFormAction ? (
           <form
             action={inquiryFormAction}
-            aria-labelledby="hire-form-heading"
-            className="rounded-3xl border border-zinc-200/70 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950"
+            aria-describedby="hire-form-hint"
+            className="rounded-lg border border-zinc-950/10 bg-white p-6 sm:p-8"
             method="post"
             noValidate
             role="form"
           >
             <h2
               id="hire-form-heading"
-              className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
+              className="text-2xl font-medium tracking-tight text-zinc-950"
             >
-              Tell me about your situation
+              Project inquiry
             </h2>
-            <p className="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-              This form posts to the configured external intake endpoint, so the
-              brochure stays static while inquiry handling stays off Vercel
-              runtime.
+            <p className="mt-3 text-sm leading-7 text-zinc-600">
+              Keep it direct. The current bottleneck, the risk, the timeline,
+              and the result that matters.
             </p>
 
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <div>
                 <label
                   htmlFor="name"
-                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                  className="text-sm font-medium text-zinc-950"
                 >
                   Full name
                 </label>
                 <input
-                  aria-describedby="hire-form-hint"
                   aria-required="true"
                   autoComplete="name"
                   className={INPUT_CLASS_NAME}
@@ -92,12 +92,11 @@ export default async function HirePage() {
               <div>
                 <label
                   htmlFor="email"
-                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                  className="text-sm font-medium text-zinc-950"
                 >
                   Email
                 </label>
                 <input
-                  aria-describedby="hire-form-hint"
                   aria-required="true"
                   autoComplete="email"
                   className={INPUT_CLASS_NAME}
@@ -113,7 +112,7 @@ export default async function HirePage() {
             <div className="mt-5">
               <label
                 htmlFor="company"
-                className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                className="text-sm font-medium text-zinc-950"
               >
                 Company or brand
               </label>
@@ -130,7 +129,7 @@ export default async function HirePage() {
             <div className="mt-5">
               <label
                 htmlFor="service"
-                className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                className="text-sm font-medium text-zinc-950"
               >
                 Service type
               </label>
@@ -156,7 +155,7 @@ export default async function HirePage() {
               <div>
                 <label
                   htmlFor="budget"
-                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                  className="text-sm font-medium text-zinc-950"
                 >
                   Budget range
                 </label>
@@ -164,14 +163,14 @@ export default async function HirePage() {
                   className={INPUT_CLASS_NAME}
                   id="budget"
                   name="budget"
-                  placeholder="e.g. $5k–$10k"
+                  placeholder="e.g. $5k-$10k"
                   type="text"
                 />
               </div>
               <div>
                 <label
                   htmlFor="timeline"
-                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                  className="text-sm font-medium text-zinc-950"
                 >
                   Target timeline
                 </label>
@@ -188,12 +187,11 @@ export default async function HirePage() {
             <div className="mt-5">
               <label
                 htmlFor="message"
-                className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                className="text-sm font-medium text-zinc-950"
               >
                 Problem details
               </label>
               <textarea
-                aria-describedby="hire-form-hint"
                 aria-required="true"
                 className={TEXTAREA_CLASS_NAME}
                 id="message"
@@ -206,6 +204,7 @@ export default async function HirePage() {
             <p id="hire-form-hint" className="sr-only">
               Required fields include full name, email, and project details.
             </p>
+
             <input
               name="source"
               readOnly
@@ -213,46 +212,44 @@ export default async function HirePage() {
               value="hire-page-form"
             />
 
-            <div className="mt-6">
-              <button
-                className="inline-flex items-center justify-center rounded-full border border-zinc-900/10 bg-zinc-900 px-6 py-2.5 text-sm font-semibold text-zinc-50 shadow-sm shadow-zinc-900/20 transition hover:bg-zinc-700 focus-visible:outline-zinc-600 dark:border-zinc-50/20 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-                type="submit"
-              >
-                Send request
-              </button>
-            </div>
+            <button
+              className="mt-6 inline-flex items-center justify-center rounded-full bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
+              type="submit"
+            >
+              Send request
+            </button>
           </form>
         ) : (
           <section
             aria-labelledby="hire-fallback-heading"
-            className="rounded-3xl border border-zinc-200/70 p-6 dark:border-zinc-800"
+            className="rounded-lg border border-zinc-950/10 bg-white p-6 sm:p-8"
             role="region"
           >
             <h2
               id="hire-fallback-heading"
-              className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
+              className="text-2xl font-medium tracking-tight text-zinc-950"
             >
               Inquiry intake is not configured yet
             </h2>
-            <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+            <p className="mt-3 text-sm leading-7 text-zinc-600">
               Set `PORTFOLIO_INQUIRY_FORM_ACTION` to enable the external form
-              endpoint. Until then, use a direct contact path below.
+              endpoint. Until then, use one of the direct contact paths.
             </p>
-            <div className="mt-6 flex flex-wrap gap-4">
+            <div className="mt-6 flex flex-wrap gap-3">
               {emailLink ? (
                 <a
-                  className="rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-zinc-50 transition hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
                   href={emailLink.href}
+                  className="inline-flex items-center justify-center rounded-full bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
                 >
                   Email me directly
                 </a>
               ) : null}
               {linkedinLink ? (
                 <a
-                  className="rounded-full border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-900 transition hover:border-zinc-900 dark:border-zinc-800 dark:text-zinc-50 dark:hover:border-zinc-200"
                   href={linkedinLink.href}
                   rel="noopener noreferrer"
                   target="_blank"
+                  className="inline-flex items-center justify-center rounded-full border border-zinc-950/10 bg-white px-5 py-3 text-sm font-medium text-zinc-950 transition hover:border-zinc-950/30"
                 >
                   Open LinkedIn
                 </a>
@@ -260,37 +257,62 @@ export default async function HirePage() {
             </div>
           </section>
         )}
-      </section>
 
-      <section
-        aria-labelledby="hire-services-heading"
-        className="mt-20"
-        role="region"
-      >
-        <h2
-          id="hire-services-heading"
-          className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
-        >
-          Typical engagement shapes
-        </h2>
-        <div className="mt-8 grid gap-6 lg:grid-cols-3">
-          {snapshot.serviceOfferings
-            .filter((service) => service.status === "published")
-            .sort((left, right) => left.order - right.order)
-            .map((service) => (
-              <article
-                key={service.id}
-                className="rounded-3xl border border-zinc-200/70 p-6 dark:border-zinc-800"
-              >
-                <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
-                  {service.name}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                  {service.bestFor}
-                </p>
-              </article>
-            ))}
-        </div>
+        <aside className="space-y-4">
+          <section
+            aria-labelledby="hire-guidance-heading"
+            className="rounded-lg border border-zinc-950/10 bg-white p-6"
+            role="region"
+          >
+            <h2
+              id="hire-guidance-heading"
+              className="text-lg font-medium tracking-tight text-zinc-950"
+            >
+              Helpful context to include
+            </h2>
+            <ul className="mt-4 space-y-3 text-sm leading-7 text-zinc-600">
+              <li>The surface or workflow that is getting harder to extend.</li>
+              <li>
+                The delivery risk or architectural debt behind the slowdown.
+              </li>
+              <li>The timeframe that makes the work useful right now.</li>
+              <li>
+                The kind of help you expect: review, advisory, or execution.
+              </li>
+            </ul>
+          </section>
+
+          <section
+            aria-labelledby="hire-services-heading"
+            className="rounded-lg border border-zinc-950/10 bg-white p-6"
+            role="region"
+          >
+            <h2
+              id="hire-services-heading"
+              className="text-lg font-medium tracking-tight text-zinc-950"
+            >
+              Typical engagement shapes
+            </h2>
+            <div className="mt-4 space-y-4">
+              {snapshot.serviceOfferings
+                .filter((service) => service.status === "published")
+                .sort((left, right) => left.order - right.order)
+                .map((service) => (
+                  <article
+                    key={service.id}
+                    className="border-t border-zinc-950/10 pt-4 first:border-t-0 first:pt-0"
+                  >
+                    <h3 className="text-sm font-semibold text-zinc-950">
+                      {service.name}
+                    </h3>
+                    <p className="mt-2 text-sm leading-6 text-zinc-600">
+                      {service.bestFor}
+                    </p>
+                  </article>
+                ))}
+            </div>
+          </section>
+        </aside>
       </section>
     </SimpleLayout>
   );

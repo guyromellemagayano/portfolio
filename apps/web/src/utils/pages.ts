@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/utils/pages.ts
  * @author Guy Romelle Magayano
- * @description Utilities for portfolio-API-backed standalone page normalization in the web app.
+ * @description Utilities for local standalone page normalization in the web app.
  */
 
 import type {
@@ -13,9 +13,9 @@ import type {
 } from "@portfolio/api-contracts/content";
 
 import {
-  getAllPortfolioPages,
-  getPortfolioPageBySlug,
-} from "@web/portfolio-api/content";
+  getLocalPageBySlug,
+  getLocalPageSummaries,
+} from "@web/data/portfolio-content";
 
 export type CmsPage = {
   slug: string;
@@ -52,10 +52,10 @@ function getOptionalPositiveImageDimension(value: unknown): number | undefined {
   return Math.round(value);
 }
 
-/** Maps a portfolio API page summary payload into the web CMS page shape. */
-function mapApiPageToCmsPage(gatewayPage: ContentPage): CmsPage | null {
-  const title = gatewayPage.title?.trim();
-  const slug = gatewayPage.slug?.trim();
+/** Maps a local page summary payload into the web CMS page shape. */
+function mapContentPageToCmsPage(pageRecord: ContentPage): CmsPage | null {
+  const title = pageRecord.title?.trim();
+  const slug = pageRecord.slug?.trim();
 
   if (!title || !slug) {
     return null;
@@ -64,25 +64,25 @@ function mapApiPageToCmsPage(gatewayPage: ContentPage): CmsPage | null {
   return {
     slug,
     title,
-    subheading: gatewayPage.subheading?.trim() || undefined,
-    intro: gatewayPage.intro?.trim() || undefined,
-    updatedAt: gatewayPage.updatedAt?.trim() || undefined,
+    subheading: pageRecord.subheading?.trim() || undefined,
+    intro: pageRecord.intro?.trim() || undefined,
+    updatedAt: pageRecord.updatedAt?.trim() || undefined,
     hideFromSitemap:
-      typeof gatewayPage.hideFromSitemap === "boolean"
-        ? gatewayPage.hideFromSitemap
+      typeof pageRecord.hideFromSitemap === "boolean"
+        ? pageRecord.hideFromSitemap
         : undefined,
     seoNoIndex:
-      typeof gatewayPage.seoNoIndex === "boolean"
-        ? gatewayPage.seoNoIndex
+      typeof pageRecord.seoNoIndex === "boolean"
+        ? pageRecord.seoNoIndex
         : undefined,
   };
 }
 
-/** Maps a portfolio API page detail payload into the web CMS page detail shape. */
-function mapApiPageDetailToCmsPageDetail(
-  gatewayPage: ContentPageDetailResponseData
+/** Maps a local page detail payload into the web CMS page detail shape. */
+function mapContentPageDetailToCmsPageDetail(
+  pageRecord: ContentPageDetailResponseData
 ): CmsPageDetail | null {
-  const page = mapApiPageToCmsPage(gatewayPage);
+  const page = mapContentPageToCmsPage(pageRecord);
 
   if (!page) {
     return null;
@@ -90,48 +90,48 @@ function mapApiPageDetailToCmsPageDetail(
 
   return {
     ...page,
-    seoTitle: gatewayPage.seoTitle?.trim() || undefined,
-    seoDescription: gatewayPage.seoDescription?.trim() || undefined,
-    seoCanonicalPath: gatewayPage.seoCanonicalPath?.trim() || undefined,
+    seoTitle: pageRecord.seoTitle?.trim() || undefined,
+    seoDescription: pageRecord.seoDescription?.trim() || undefined,
+    seoCanonicalPath: pageRecord.seoCanonicalPath?.trim() || undefined,
     seoNoIndex:
-      typeof gatewayPage.seoNoIndex === "boolean"
-        ? gatewayPage.seoNoIndex
+      typeof pageRecord.seoNoIndex === "boolean"
+        ? pageRecord.seoNoIndex
         : undefined,
     seoNoFollow:
-      typeof gatewayPage.seoNoFollow === "boolean"
-        ? gatewayPage.seoNoFollow
+      typeof pageRecord.seoNoFollow === "boolean"
+        ? pageRecord.seoNoFollow
         : undefined,
-    seoOgTitle: gatewayPage.seoOgTitle?.trim() || undefined,
-    seoOgDescription: gatewayPage.seoOgDescription?.trim() || undefined,
-    seoOgImage: gatewayPage.seoOgImageUrl?.trim() || undefined,
+    seoOgTitle: pageRecord.seoOgTitle?.trim() || undefined,
+    seoOgDescription: pageRecord.seoOgDescription?.trim() || undefined,
+    seoOgImage: pageRecord.seoOgImageUrl?.trim() || undefined,
     seoOgImageWidth: getOptionalPositiveImageDimension(
-      gatewayPage.seoOgImageWidth
+      pageRecord.seoOgImageWidth
     ),
     seoOgImageHeight: getOptionalPositiveImageDimension(
-      gatewayPage.seoOgImageHeight
+      pageRecord.seoOgImageHeight
     ),
-    seoOgImageAlt: gatewayPage.seoOgImageAlt?.trim() || undefined,
-    seoTwitterCard: gatewayPage.seoTwitterCard,
-    body: Array.isArray(gatewayPage.body) ? gatewayPage.body : [],
+    seoOgImageAlt: pageRecord.seoOgImageAlt?.trim() || undefined,
+    seoTwitterCard: pageRecord.seoTwitterCard,
+    body: Array.isArray(pageRecord.body) ? pageRecord.body : [],
   };
 }
 
-/** Gets all standalone pages from the portfolio API and normalizes them for web routes. */
+/** Gets all standalone local pages and normalizes them for web routes. */
 export async function getAllPages(): Promise<CmsPage[]> {
-  return (await getAllPortfolioPages())
-    .map(mapApiPageToCmsPage)
+  return getLocalPageSummaries()
+    .map(mapContentPageToCmsPage)
     .filter((page): page is CmsPage => page !== null);
 }
 
-/** Gets a single standalone page detail payload from the portfolio API by slug. */
+/** Gets a single standalone local page detail payload by slug. */
 export async function getPageBySlug(
   slug: string
 ): Promise<CmsPageDetail | null> {
-  const gatewayPage = await getPortfolioPageBySlug(slug);
+  const page = getLocalPageBySlug(slug);
 
-  if (!gatewayPage) {
+  if (!page) {
     return null;
   }
 
-  return mapApiPageDetailToCmsPageDetail(gatewayPage);
+  return mapContentPageDetailToCmsPageDetail(page);
 }

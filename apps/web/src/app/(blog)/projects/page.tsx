@@ -3,17 +3,16 @@
 /**
  * @file apps/web/src/app/(blog)/projects/page.tsx
  * @author Guy Romelle Magayano
- * @description Static projects page rendered from the canonical portfolio snapshot API.
+ * @description Projects page rendered from direct local portfolio content.
  */
 
 import type { Metadata } from "next";
-
-import { SimpleLayout } from "@web/components/layout";
 
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
 } from "@web/app/_lib/portfolio-brochure";
+import { SimpleLayout } from "@web/components/layout";
 
 export const dynamic = "force-static";
 
@@ -34,43 +33,80 @@ export default async function ProjectsPage() {
 
   return (
     <SimpleLayout
-      className="mt-16 sm:mt-32"
+      className="pb-16"
       subheading={page.subheading}
-      title={page.title}
+      title="One platform story, several product surfaces."
       intro={page.intro}
     >
       <section
-        aria-labelledby="projects-cards-heading"
-        className="mt-12"
+        aria-labelledby="projects-showcase-heading"
+        className="py-12"
         role="region"
       >
         <h2
-          id="projects-cards-heading"
-          className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
+          id="projects-showcase-heading"
+          className="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
         >
-          Project work
+          Monorepo product surfaces
         </h2>
-        <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        <div className="mt-10 grid gap-4 lg:grid-cols-3">
+          {showcaseApps.map((app) => (
+            <article
+              key={app.id}
+              id={app.anchor}
+              className="rounded-lg border border-zinc-950/10 bg-white p-6"
+            >
+              <p className="text-xs font-semibold tracking-[0.24em] text-zinc-500 uppercase">
+                {app.path}
+              </p>
+              <h3 className="mt-3 text-xl font-medium tracking-tight text-zinc-950">
+                {app.name}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-zinc-600">
+                {app.summary}
+              </p>
+              <ul
+                aria-label={`${app.name} proof points`}
+                className="mt-5 space-y-2 text-sm leading-6 text-zinc-600"
+                role="list"
+              >
+                {app.proofPoints.map((proofPoint) => (
+                  <li key={proofPoint}>{proofPoint}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="projects-catalog-heading"
+        className="border-t border-zinc-950/10 py-16"
+        role="region"
+      >
+        <h2
+          id="projects-catalog-heading"
+          className="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+        >
+          Broader project catalog
+        </h2>
+        <div className="mt-10 grid gap-4 lg:grid-cols-2">
           {featuredProjects.map((project) => (
             <article
               key={project.id}
-              className="rounded-3xl border border-zinc-200/70 p-6 dark:border-zinc-800"
+              className="rounded-lg border border-zinc-950/10 bg-white p-6"
             >
-              <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
+              <h3 className="text-xl font-medium tracking-tight text-zinc-950">
                 {project.name}
               </h3>
-              <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+              <p className="mt-3 text-sm leading-7 text-zinc-600">
                 {project.description || project.summary}
               </p>
-              <div
-                aria-label={`${project.name} tags`}
-                className="mt-4 flex flex-wrap gap-2"
-                role="list"
-              >
+              <div className="mt-5 flex flex-wrap gap-2" role="list">
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-zinc-200 px-3 py-1 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400"
+                    className="rounded-full border border-zinc-950/10 px-3 py-2 text-xs text-zinc-600"
                     role="listitem"
                   >
                     {tag}
@@ -80,57 +116,25 @@ export default async function ProjectsPage() {
               <div className="mt-5 flex flex-wrap gap-4 text-sm">
                 {project.website ? (
                   <a
-                    className="font-medium text-zinc-900 underline underline-offset-4 dark:text-zinc-50"
                     href={project.website.href}
                     rel={project.website.rel}
                     target={project.website.target}
+                    className="font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
                   >
                     {project.website.label}
                   </a>
                 ) : null}
                 {project.repository ? (
                   <a
-                    className="font-medium text-zinc-900 underline underline-offset-4 dark:text-zinc-50"
                     href={project.repository.href}
                     rel={project.repository.rel}
                     target={project.repository.target}
+                    className="font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
                   >
                     {project.repository.label}
                   </a>
                 ) : null}
               </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section
-        aria-labelledby="projects-systems-heading"
-        className="mt-20"
-        role="region"
-      >
-        <h2
-          id="projects-systems-heading"
-          className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
-        >
-          Monorepo product surfaces
-        </h2>
-        <div className="mt-8 grid gap-6 xl:grid-cols-3">
-          {showcaseApps.map((app) => (
-            <article
-              key={app.id}
-              className="rounded-3xl border border-zinc-200/70 p-6 dark:border-zinc-800"
-              id={app.anchor}
-            >
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                {app.path}
-              </p>
-              <h3 className="mt-2 text-base font-semibold text-zinc-900 dark:text-zinc-50">
-                {app.name}
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                {app.summary}
-              </p>
             </article>
           ))}
         </div>

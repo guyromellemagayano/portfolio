@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/utils/articles.ts
  * @author Guy Romelle Magayano
- * @description Utilities for portfolio-API-backed article normalization in the web app.
+ * @description Utilities for local article normalization in the web app.
  */
 
 import type {
@@ -13,9 +13,9 @@ import type {
 } from "@portfolio/api-contracts/content";
 
 import {
-  getAllPortfolioArticles,
-  getPortfolioArticleBySlug,
-} from "@web/portfolio-api/content";
+  getLocalArticleBySlug,
+  getLocalArticleSummaries,
+} from "@web/data/portfolio-content";
 
 export type Article = {
   title: string;
@@ -65,27 +65,27 @@ function getOptionalPositiveImageDimension(value: unknown): number | undefined {
   return Math.round(value);
 }
 
-/** Maps a portfolio API article summary payload into the web article list shape. */
-function mapApiArticleToArticleWithSlug(
-  gatewayArticle: ContentArticle
+/** Maps a local article summary payload into the web article list shape. */
+function mapContentArticleToArticleWithSlug(
+  articleRecord: ContentArticle
 ): ArticleWithSlug | null {
-  const title = gatewayArticle.title?.trim();
-  const slug = gatewayArticle.slug?.trim();
-  const date = gatewayArticle.publishedAt?.trim();
+  const title = articleRecord.title?.trim();
+  const slug = articleRecord.slug?.trim();
+  const date = articleRecord.publishedAt?.trim();
 
   if (!title || !slug || !date) {
     return null;
   }
 
-  const description = gatewayArticle.excerpt?.trim() ?? "";
-  const image = gatewayArticle.imageUrl?.trim() || undefined;
+  const description = articleRecord.excerpt?.trim() ?? "";
+  const image = articleRecord.imageUrl?.trim() || undefined;
   const imageWidth = getOptionalPositiveImageDimension(
-    gatewayArticle.imageWidth
+    articleRecord.imageWidth
   );
   const imageHeight = getOptionalPositiveImageDimension(
-    gatewayArticle.imageHeight
+    articleRecord.imageHeight
   );
-  const tags = gatewayArticle.tags
+  const tags = articleRecord.tags
     .map((tag) => tag.trim())
     .filter((tag) => tag.length > 0);
 
@@ -95,12 +95,12 @@ function mapApiArticleToArticleWithSlug(
     date,
     description,
     hideFromSitemap:
-      typeof gatewayArticle.hideFromSitemap === "boolean"
-        ? gatewayArticle.hideFromSitemap
+      typeof articleRecord.hideFromSitemap === "boolean"
+        ? articleRecord.hideFromSitemap
         : undefined,
     seoNoIndex:
-      typeof gatewayArticle.seoNoIndex === "boolean"
-        ? gatewayArticle.seoNoIndex
+      typeof articleRecord.seoNoIndex === "boolean"
+        ? articleRecord.seoNoIndex
         : undefined,
     image,
     imageWidth,
@@ -109,11 +109,11 @@ function mapApiArticleToArticleWithSlug(
   };
 }
 
-/** Maps a portfolio API article detail payload into the web article detail shape. */
-function mapApiArticleDetailToArticleDetail(
-  gatewayArticle: ContentArticleDetailResponseData
+/** Maps a local article detail payload into the web article detail shape. */
+function mapContentArticleDetailToArticleDetail(
+  articleRecord: ContentArticleDetailResponseData
 ): ArticleDetail | null {
-  const article = mapApiArticleToArticleWithSlug(gatewayArticle);
+  const article = mapContentArticleToArticleWithSlug(articleRecord);
 
   if (!article) {
     return null;
@@ -121,51 +121,51 @@ function mapApiArticleDetailToArticleDetail(
 
   return {
     ...article,
-    seoTitle: gatewayArticle.seoTitle?.trim() || undefined,
-    seoDescription: gatewayArticle.seoDescription?.trim() || undefined,
-    seoCanonicalPath: gatewayArticle.seoCanonicalPath?.trim() || undefined,
+    seoTitle: articleRecord.seoTitle?.trim() || undefined,
+    seoDescription: articleRecord.seoDescription?.trim() || undefined,
+    seoCanonicalPath: articleRecord.seoCanonicalPath?.trim() || undefined,
     seoNoIndex:
-      typeof gatewayArticle.seoNoIndex === "boolean"
-        ? gatewayArticle.seoNoIndex
+      typeof articleRecord.seoNoIndex === "boolean"
+        ? articleRecord.seoNoIndex
         : undefined,
     seoNoFollow:
-      typeof gatewayArticle.seoNoFollow === "boolean"
-        ? gatewayArticle.seoNoFollow
+      typeof articleRecord.seoNoFollow === "boolean"
+        ? articleRecord.seoNoFollow
         : undefined,
-    seoOgTitle: gatewayArticle.seoOgTitle?.trim() || undefined,
-    seoOgDescription: gatewayArticle.seoOgDescription?.trim() || undefined,
-    seoOgImage: gatewayArticle.seoOgImageUrl?.trim() || undefined,
+    seoOgTitle: articleRecord.seoOgTitle?.trim() || undefined,
+    seoOgDescription: articleRecord.seoOgDescription?.trim() || undefined,
+    seoOgImage: articleRecord.seoOgImageUrl?.trim() || undefined,
     seoOgImageWidth: getOptionalPositiveImageDimension(
-      gatewayArticle.seoOgImageWidth
+      articleRecord.seoOgImageWidth
     ),
     seoOgImageHeight: getOptionalPositiveImageDimension(
-      gatewayArticle.seoOgImageHeight
+      articleRecord.seoOgImageHeight
     ),
-    seoOgImageAlt: gatewayArticle.seoOgImageAlt?.trim() || undefined,
-    seoTwitterCard: gatewayArticle.seoTwitterCard,
-    imageAlt: gatewayArticle.imageAlt?.trim() || undefined,
-    body: Array.isArray(gatewayArticle.body) ? gatewayArticle.body : [],
+    seoOgImageAlt: articleRecord.seoOgImageAlt?.trim() || undefined,
+    seoTwitterCard: articleRecord.seoTwitterCard,
+    imageAlt: articleRecord.imageAlt?.trim() || undefined,
+    body: Array.isArray(articleRecord.body) ? articleRecord.body : [],
   };
 }
 
-/** Gets all articles from the portfolio API and normalizes them for web components. */
+/** Gets all local articles and normalizes them for web components. */
 export async function getAllArticles(): Promise<ArticleWithSlug[]> {
-  const gatewayArticles = (await getAllPortfolioArticles())
-    .map(mapApiArticleToArticleWithSlug)
+  const localArticles = getLocalArticleSummaries()
+    .map(mapContentArticleToArticleWithSlug)
     .filter((article): article is ArticleWithSlug => article !== null);
 
-  return sortArticlesByDateDesc(gatewayArticles);
+  return sortArticlesByDateDesc(localArticles);
 }
 
-/** Gets a single article detail payload from the portfolio API by slug. */
+/** Gets a single local article detail payload by slug. */
 export async function getArticleBySlug(
   slug: string
 ): Promise<ArticleDetail | null> {
-  const gatewayArticle = await getPortfolioArticleBySlug(slug);
+  const article = getLocalArticleBySlug(slug);
 
-  if (!gatewayArticle) {
+  if (!article) {
     return null;
   }
 
-  return mapApiArticleDetailToArticleDetail(gatewayArticle);
+  return mapContentArticleDetailToArticleDetail(article);
 }

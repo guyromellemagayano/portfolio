@@ -349,10 +349,11 @@ describe("Layout Integration Tests", () => {
         "Article prose content"
       );
 
-      const backButton = screen.getByRole("button", {
+      const backLink = screen.getByRole("link", {
         name: "Back to articles",
       });
-      expect(backButton).toBeInTheDocument();
+      expect(backLink).toBeInTheDocument();
+      expect(backLink).toHaveAttribute("href", "/articles");
     });
 
     it("renders ArticleLayout with back button even without previousPathname context", () => {
@@ -364,7 +365,7 @@ describe("Layout Integration Tests", () => {
 
       expect(screen.getByRole("article")).toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: "Back to articles" })
+        screen.getByRole("link", { name: "Back to articles" })
       ).toBeInTheDocument();
     });
 

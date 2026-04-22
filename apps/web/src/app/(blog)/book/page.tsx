@@ -3,16 +3,16 @@
 /**
  * @file apps/web/src/app/(blog)/book/page.tsx
  * @author Guy Romelle Magayano
- * @description Static booking-intent page rendered from the canonical portfolio snapshot API.
+ * @description Booking-intent page rendered from direct local portfolio content.
  */
 
 import type { Metadata } from "next";
 
-import { SimpleLayout } from "@web/components/layout";
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
 } from "@web/app/_lib/portfolio-brochure";
+import { SimpleLayout } from "@web/components/layout";
 
 export const dynamic = "force-static";
 
@@ -33,41 +33,41 @@ export default async function BookPage() {
 
   return (
     <SimpleLayout
-      className="mt-16 sm:mt-32"
+      className="pb-16"
       subheading={page.subheading}
-      title={page.title}
+      title="Choose the starting path that matches the work."
       intro={page.intro}
     >
       <section
-        aria-labelledby="book-starting-points-heading"
-        className="mt-16"
+        aria-labelledby="book-paths-heading"
+        className="py-12"
         role="region"
       >
         <h2
-          id="book-starting-points-heading"
-          className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
+          id="book-paths-heading"
+          className="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
         >
-          Starting points
+          First conversation options
         </h2>
-        <div className="mt-10 grid gap-8 lg:grid-cols-3">
+        <div className="mt-10 grid gap-4 lg:grid-cols-3">
           {bookingPaths.map((path) => (
             <article
               key={path.id}
-              className="rounded-3xl border border-zinc-200/70 p-6 dark:border-zinc-800"
+              className="rounded-lg border border-zinc-950/10 bg-white p-6"
             >
-              <h3 className="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
+              <h3 className="text-xl font-medium tracking-tight text-zinc-950">
                 {path.title}
               </h3>
-              <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+              <p className="mt-3 text-sm leading-7 text-zinc-600">
                 {path.description}
               </p>
               <a
-                className="mt-5 inline-flex text-sm font-medium text-zinc-900 underline underline-offset-4 dark:text-zinc-50"
                 href={path.href}
                 rel={
                   path.target === "_blank" ? "noopener noreferrer" : undefined
                 }
                 target={path.target}
+                className="mt-5 inline-flex text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
               >
                 {path.cta}
               </a>
@@ -75,35 +75,40 @@ export default async function BookPage() {
           ))}
         </div>
       </section>
+
       <section
-        aria-labelledby="book-which-service-heading"
-        className="mt-20"
+        aria-labelledby="book-services-heading"
+        className="border-t border-zinc-950/10 py-16"
         role="region"
       >
         <h2
-          id="book-which-service-heading"
-          className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
+          id="book-services-heading"
+          className="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
         >
-          If you already know the shape of the work
+          If you already know the shape of the engagement
         </h2>
-        <div className="mt-10 space-y-8">
+        <div className="mt-10 space-y-4">
           {serviceOfferings.map((service) => (
             <article
               key={service.id}
-              className="rounded-3xl border border-zinc-200/70 p-6 dark:border-zinc-800"
+              className="rounded-lg border border-zinc-950/10 bg-white p-6"
             >
-              <h3 className="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
-                {service.name}
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                {service.bestFor}
-              </p>
-              <a
-                className="mt-5 inline-flex text-sm font-medium text-zinc-900 underline underline-offset-4 dark:text-zinc-50"
-                href={service.href}
-              >
-                {service.ctaLabel}
-              </a>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h3 className="text-xl font-medium tracking-tight text-zinc-950">
+                    {service.name}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-zinc-600">
+                    {service.bestFor}
+                  </p>
+                </div>
+                <a
+                  href={service.href}
+                  className="inline-flex text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
+                >
+                  {service.ctaLabel}
+                </a>
+              </div>
             </article>
           ))}
         </div>
