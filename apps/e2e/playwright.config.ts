@@ -5,10 +5,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRootDirectory = path.resolve(currentDirectory, "../..");
-const workspaceRootEnvLocalFile = path.join(
-  workspaceRootDirectory,
-  ".env.local"
-);
+const workspaceRootEnvLocalFile = path.join(workspaceRootDirectory, ".env");
 
 if (existsSync(workspaceRootEnvLocalFile)) {
   globalThis.process.loadEnvFile(workspaceRootEnvLocalFile);

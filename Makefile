@@ -2,7 +2,7 @@ SHELL := /bin/sh
 
 .DEFAULT_GOAL := help
 
-ENV_FILE ?= .env.local
+ENV_FILE ?= .env
 COMPOSE_FILE ?= docker/compose/local.yml
 PROD_COMPOSE_FILE ?= docker/compose/prod.yml
 EDGE_COMPOSE_FILE ?= docker/compose/edge.local.yml
@@ -31,7 +31,7 @@ PROD_SMOKE_PAGE_PATH ?=
 SKIP_DNS_SETUP ?= 0
 VERCEL_ENV_TARGET ?= development
 VERCEL_GIT_BRANCH ?=
-VERCEL_PULL_ENV_FILE ?= .env.local
+VERCEL_PULL_ENV_FILE ?= .env
 VERCEL_ARGS ?= whoami
 
 COMPOSE := docker compose
@@ -94,7 +94,7 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '\n🐳 Local Docker Workflow (Quick Help)\n'
 	@printf '\n🚦 Golden Path\n'
 	@printf '%-42s %s\n' "make doctor" "Validate Docker + Compose."
-	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env.local before first Docker run."
+	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env before first Docker run."
 	@printf '%-42s %s\n' "make bootstrap" "First run: DNS setup + edge stack in background."
 	@printf '%-42s %s\n' "make edge-smoke" "Verify Traefik routes (web/api)."
 	@printf '\n🎯 Daily Use\n'
@@ -106,7 +106,7 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make dnsmasq-local" "Manual local DNS helper for current LOCAL_DEV_DOMAIN."
 	@printf '%-42s %s\n' "make dnsmasq-health" "Functional dnsmasq checks."
 	@printf '%-42s %s\n' "make edge-dns-doctor" "Diagnose browser DNS_PROBE_* / DoH issues."
-	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env.local for Docker and remove app-level .env.local."
+	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env for Docker and remove app-level .env."
 	@printf '%-42s %s\n' "make use-orbstack-domain" "Switch to OrbStack native guyromellemagayano.local mode."
 	@printf '%-42s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local TLS config."
 	@printf '\n🛠  Tooling\n'
@@ -123,7 +123,7 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make info" "Print effective compose settings."
 	@printf '%-42s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api endpoints."
 	@printf '%-42s %s\n' "make vercel-env-pull" "Pull app envs from linked Vercel projects."
-	@printf '%-42s %s\n' "make vercel-env-sync-local" "Pull app envs and regenerate root .env.local."
+	@printf '%-42s %s\n' "make vercel-env-sync-local" "Pull app envs and regenerate root .env."
 	@printf '\n'
 
 help-all: ## Show the full target catalog, variables, and examples.
@@ -152,7 +152,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-32s %s (current: %s)\n' "SKIP_DNS_SETUP" 'Skip dnsmasq/hosts step in `make bootstrap`' "$(SKIP_DNS_SETUP)"
 	@printf '\n🚦 First Run (Recommended)\n'
 	@printf '%-44s %s\n' "make doctor" "Validate Docker/Compose setup."
-	@printf '%-44s %s\n' "make env-local-normalize" "Normalize root .env.local before first Docker run."
+	@printf '%-44s %s\n' "make env-local-normalize" "Normalize root .env before first Docker run."
 	@printf '%-44s %s\n' "make bootstrap" "Golden path: DNS setup + edge stack in background."
 	@printf '%-44s %s\n' "make bootstrap SKIP_DNS_SETUP=1" "Skip DNS bootstrap if already configured."
 	@printf '\n🎯 Run Modes (Recommended)\n'
@@ -168,7 +168,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-44s %s\n' "make edge-dns-doctor" "Browser DNS_PROBE_* diagnosis + OrbStack guidance."
 	@printf '%-44s %s\n' "make use-orbstack-domain" "Switch LOCAL_DEV_DOMAIN to guyromellemagayano.local."
 	@printf '%-44s %s\n' "make vercel-env-pull" "Pull app-level envs from linked Vercel projects."
-	@printf '%-44s %s\n' "make vercel-env-sync-local" "Pull app envs and regenerate root .env.local."
+	@printf '%-44s %s\n' "make vercel-env-sync-local" "Pull app envs and regenerate root .env."
 	@printf '%-44s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local-tls.yml."
 	@printf '%-44s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api + sitemap."
 	@printf '\n🛠  Tooling\n'
@@ -327,7 +327,7 @@ use-orbstack-domain: ## Write `LOCAL_DEV_DOMAIN=guyromellemagayano.local` to ENV
 	@sh docker/scripts/set-env-file-var.sh "$(ENV_FILE)" LOCAL_DEV_DOMAIN guyromellemagayano.local
 	@printf 'Next: make down-edge && make up-edge\n'
 
-env-local-normalize: ## Normalize root `.env.local` for local Docker and remove app-level `.env.local` files from Vercel link.
+env-local-normalize: ## Normalize root `.env` for local Docker and remove app-level `.env` files from Vercel link.
 	@sh docker/scripts/normalize-local-env.sh "$(ENV_FILE)"
 
 ##@ 🌐 Edge Runtime (Traefik + App Services)
@@ -391,7 +391,7 @@ vercel-env-pull: ## Pull Vercel env vars for all linked app projects (`web`, `ap
 	@$(MAKE) vercel-env-pull-web
 	@$(MAKE) vercel-env-pull-api
 
-vercel-env-sync-local: ## Pull app env vars from Vercel and regenerate root `.env.local` from app-level files.
+vercel-env-sync-local: ## Pull app env vars from Vercel and regenerate root `.env` from app-level files.
 	@$(MAKE) vercel-env-pull
 	@PREFER_APP_ENV_FILES=1 KEEP_APP_ENV_FILES=1 $(MAKE) env-local-normalize
 
@@ -403,7 +403,7 @@ check-types: ## Run `check-types` in the tooling container (Turbo concurrency tu
 lint: ## Run `lint` in the tooling container (Turbo concurrency tuned for Docker bind mounts).
 	@$(COMPOSE_BASE) --profile tooling run --rm tooling pnpm exec turbo run lint lint:styles --concurrency=$(TURBO_DOCKER_CONCURRENCY)
 
-test: ## Run `test:run` in the tooling container with a sanitized env (avoids `.env.local` leaking into unit tests).
+test: ## Run `test:run` in the tooling container with a sanitized env (avoids `.env` leaking into unit tests).
 	@$(COMPOSE_BASE) --profile tooling run --rm tooling sh -lc 'unset API_GATEWAY_URL NEXT_PUBLIC_API_URL API_GATEWAY_CONTENT_PROVIDER CONTENT_REVALIDATE_SECRET E2E_CONTENT_ARTICLE_SLUG E2E_CONTENT_PAGE_SLUG; pnpm exec turbo run test:run --concurrency=$(TURBO_DOCKER_CONCURRENCY)'
 
 tooling: ## Run an arbitrary tooling command via `TOOLING_CMD`.

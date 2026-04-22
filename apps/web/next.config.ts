@@ -13,12 +13,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRootDirectory = path.resolve(currentDirectory, "../..");
 
-const workspaceRootEnvLocalFile = path.join(
-  workspaceRootDirectory,
-  ".env.local"
-);
+const workspaceRootEnvLocalFile = path.join(workspaceRootDirectory, ".env");
 
-// Load workspace-level env so apps/web can consume root .env.local in the monorepo.
+// Load workspace-level env so apps/web can consume root .env in the monorepo.
 if (existsSync(workspaceRootEnvLocalFile)) {
   globalThis.process.loadEnvFile(workspaceRootEnvLocalFile);
 }

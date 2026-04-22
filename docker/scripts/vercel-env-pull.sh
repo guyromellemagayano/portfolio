@@ -3,7 +3,7 @@
 set -eu
 
 APP_DIR="${1:-}"
-OUTPUT_FILE="${2:-.env.local}"
+OUTPUT_FILE="${2:-.env}"
 ENV_TARGET="${3:-development}"
 GIT_BRANCH="${4:-}"
 

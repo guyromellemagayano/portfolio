@@ -179,7 +179,7 @@ pnpm pcu:security:fix
 `.env.example` is the baseline template.
 
 ```bash
-cp .env.example .env.local
+cp .env.example .env
 ```
 
 `turbo.json` also declares `globalEnv` keys for task hashing.

@@ -2,9 +2,9 @@
 
 set -eu
 
-ROOT_ENV_FILE="${1:-.env.local}"
-WEB_ENV_FILE="${2:-apps/web/.env.local}"
-API_ENV_FILE="${3:-apps/api/.env.local}"
+ROOT_ENV_FILE="${1:-.env}"
+WEB_ENV_FILE="${2:-apps/web/.env}"
+API_ENV_FILE="${3:-apps/api/.env}"
 
 pick_env_value() {
   key="$1"
@@ -117,7 +117,7 @@ mv "$tmp_env_file" "$ROOT_ENV_FILE"
 
 if [ "${KEEP_APP_ENV_FILES:-0}" != "1" ]; then
   rm -f "$WEB_ENV_FILE" "$API_ENV_FILE"
-  printf 'Removed app-level .env.local files to keep root env as the single local source of truth.\n'
+  printf 'Removed app-level .env files to keep root env as the single local source of truth.\n'
 fi
 
 printf 'Normalized local env file: %s\n' "$ROOT_ENV_FILE"

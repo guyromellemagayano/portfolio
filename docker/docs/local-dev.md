@@ -75,7 +75,7 @@ This detached first-run command validates the edge Compose stack, applies local 
 - `docker/compose/local.yml`
 - `docker/compose/edge.local.yml`
 
-`make env-local-normalize` keeps root `.env.local` as the single local Docker source of truth and removes app-level `.env.local` files created by `vercel link`.
+`make env-local-normalize` keeps root `.env` as the single local Docker source of truth and removes app-level `.env` files created by `vercel link`.
 
 If you want to refresh linked Vercel project env vars before normalization:
 
@@ -83,8 +83,8 @@ If you want to refresh linked Vercel project env vars before normalization:
 make vercel-env-sync-local VERCEL_ENV_TARGET=development
 ```
 
-This pulls env vars for `apps/web` and `apps/api`, then regenerates root `.env.local`.
-The command keeps app-level `.env.local` files after sync.
+This pulls env vars for `apps/web` and `apps/api`, then regenerates root `.env`.
+The command keeps app-level `.env` files after sync.
 
 Host-side Vercel CLI commands:
 
@@ -170,8 +170,8 @@ OrbStack custom-domain routing (`make up-edge` with `LOCAL_DEV_DOMAIN=guyromelle
 
 ## Content Pipeline Local Dev
 
-- The edge overlay defaults `PORTFOLIO_API_CORS_ORIGINS` to the web origin; override `PORTFOLIO_API_CORS_ORIGINS` in `.env.local` if you need a stricter local policy.
-- Set `CONTENT_REVALIDATE_SECRET` in `.env.local` when testing `POST /api/revalidate/content`.
+- The edge overlay defaults `PORTFOLIO_API_CORS_ORIGINS` to the web origin; override `PORTFOLIO_API_CORS_ORIGINS` in `.env` if you need a stricter local policy.
+- Set `CONTENT_REVALIDATE_SECRET` in `.env` when testing `POST /api/revalidate/content`.
 - Restart after env/domain changes:
 
 ```bash
@@ -243,7 +243,7 @@ make test
 
 - `make check-types`, `make lint`, and `make test` use a lower Turbo concurrency by default (`TURBO_DOCKER_CONCURRENCY=2`) for Docker Desktop stability.
 - Override if needed (for example on a higher-memory machine): `make lint TURBO_DOCKER_CONCURRENCY=4`
-- `make test` sanitizes content-related env vars before running tests so unit tests don't inherit `.env.local` behavior.
+- `make test` sanitizes content-related env vars before running tests so unit tests don't inherit `.env` behavior.
 - `make logs` and `make logs-edge` tail the last `100` lines by default before following; override with `LOG_TAIL` (for example `make logs-edge LOG_TAIL=250`).
 - Detached starts plus `make logs*` are the standard workflow for local Docker development.
 
@@ -360,7 +360,7 @@ TRAEFIK_DOCKER_API_VERSION="1.53"
 
 ## Domain Helper
 
-Set the standard local edge domain mode without manually editing `.env.local`:
+Set the standard local edge domain mode without manually editing `.env`:
 
 ```bash
 make use-orbstack-domain

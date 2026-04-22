@@ -118,7 +118,7 @@ pnpm --filter e2e test:e2e:ui
 
 Content pipeline smoke checks are defined in `tests/content-pipeline.smoke.e2e.ts`.
 
-- Loads env vars from workspace root `.env.local` when present
+- Loads env vars from workspace root `.env` when present
 - Requires `CONTENT_REVALIDATE_SECRET` for webhook revalidation checks (tests skip when missing)
 - Supports seeded slugs with `E2E_CONTENT_ARTICLE_SLUG` and `E2E_CONTENT_PAGE_SLUG`
 

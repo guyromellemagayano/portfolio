@@ -14,10 +14,7 @@ import { createServer } from "./server.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRootDirectory = path.resolve(currentDirectory, "../../..");
-const workspaceRootEnvLocalFile = path.join(
-  workspaceRootDirectory,
-  ".env.local"
-);
+const workspaceRootEnvLocalFile = path.join(workspaceRootDirectory, ".env");
 
 if (existsSync(workspaceRootEnvLocalFile)) {
   const loadEnvFile = globalThis.process?.loadEnvFile;
