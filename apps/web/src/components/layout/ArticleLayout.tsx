@@ -52,21 +52,23 @@ export function ArticleLayout<P extends Record<string, unknown> = {}>(
   if (!article || !children) return null;
 
   const articleData = {
-    title: article.title.trim(),
-    date: article.date.trim(),
-    slug: article.slug.trim(),
+    title: article.title?.trim() ?? "",
+    date: article.date?.trim() ?? "",
+    slug: article.slug?.trim() ?? "",
   };
+  const articleDomKey = articleData.slug || articleData.title;
 
   if (
-    articleData.slug.length === 0 ||
+    articleDomKey.length === 0 ||
     (articleData.title.length === 0 && articleData.date.length === 0)
   ) {
     return null;
   }
 
-  const formattedDate = setCustomDateFormat(articleData.date);
-  const articleTitleId = getArticleDomId(articleData.slug, "title");
-  const articleDateId = getArticleDomId(articleData.slug, "date");
+  const formattedDate =
+    articleData.date.length > 0 ? setCustomDateFormat(articleData.date) : "";
+  const articleTitleId = getArticleDomId(articleDomKey, "title");
+  const articleDateId = getArticleDomId(articleDomKey, "date");
 
   return (
     <Component
@@ -84,17 +86,21 @@ export function ArticleLayout<P extends Record<string, unknown> = {}>(
         <article
           role="article"
           aria-labelledby={articleTitleId}
-          aria-describedby={articleDateId}
+          aria-describedby={
+            articleData.date.length > 0 ? articleDateId : undefined
+          }
           className="mt-8 max-w-3xl"
         >
-          <time
-            id={articleDateId}
-            className="text-sm text-zinc-500"
-            dateTime={articleData.date}
-            aria-label={`Published on ${formattedDate}`}
-          >
-            {formattedDate}
-          </time>
+          {articleData.date.length > 0 ? (
+            <time
+              id={articleDateId}
+              className="text-sm text-zinc-500"
+              dateTime={articleData.date}
+              aria-label={`Published on ${formattedDate}`}
+            >
+              {formattedDate}
+            </time>
+          ) : null}
           <h1
             id={articleTitleId}
             className="mt-4 text-4xl font-medium tracking-tight text-zinc-950 sm:text-6xl"
