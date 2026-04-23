@@ -89,6 +89,7 @@ Thumbs.db
 # Old files/folders
 *-old/
 *.old
+old/
 
 # Turborepo
 .turbo
