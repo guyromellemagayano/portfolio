@@ -13,6 +13,11 @@ import { notFound } from "next/navigation";
 
 import logger from "@portfolio/logger";
 
+import {
+  resolveMetadataTitle,
+  resolveMetadataTitleText,
+  SITE_NAME,
+} from "@web/app/_lib/metadata";
 import { SimpleLayout } from "@web/components/layout";
 import { PortableTextContent } from "@web/components/portable-text-content";
 import { Prose } from "@web/components/prose";
@@ -30,7 +35,6 @@ type CmsPageRouteProps = {
 
 const getCachedPageBySlug = cache(async (slug: string) => getPageBySlug(slug));
 
-const SITE_NAME = "Guy Romelle Magayano";
 const MAX_METADATA_DESCRIPTION_LENGTH = 160;
 
 /** Normalizes optional text values into trimmed non-empty strings. */
@@ -72,16 +76,6 @@ function getPageSocialDescription(page: CmsPageDetail): string {
       page.intro?.trim() ||
       page.title
   );
-}
-
-/** Resolves the best title string for `<title>` metadata. */
-function getPageSeoTitle(page: CmsPageDetail): string {
-  return page.seoTitle?.trim() || page.title;
-}
-
-/** Resolves the best social preview title string. */
-function getPageSocialTitle(page: CmsPageDetail): string {
-  return page.seoOgTitle?.trim() || page.seoTitle?.trim() || page.title;
 }
 
 /** Normalizes optional positive dimensions for safe image metadata rendering. */
@@ -147,14 +141,17 @@ export async function generateMetadata(
 
     if (!page) {
       return {
-        title: "Page Not Found - Guy Romelle Magayano",
+        title: "Page Not Found",
         description: "The requested page could not be found.",
       };
     }
 
-    const pageTitle = getPageSeoTitle(page);
+    const pageTitle = resolveMetadataTitle(page.seoTitle, page.title);
     const description = getPageDescription(page);
-    const socialTitle = getPageSocialTitle(page);
+    const socialTitle = resolveMetadataTitleText(
+      page.seoOgTitle ?? page.seoTitle,
+      page.title
+    );
     const socialDescription = getPageSocialDescription(page);
     const socialImage = getPageSocialImage(page);
     const canonicalUrl = getPageCanonicalUrl(page);
@@ -163,7 +160,7 @@ export async function generateMetadata(
       page.seoTwitterCard ?? (socialImage ? "summary_large_image" : "summary");
 
     return {
-      title: `${pageTitle} - ${SITE_NAME}`,
+      title: pageTitle,
       description,
       alternates: canonicalUrl
         ? {
@@ -179,6 +176,7 @@ export async function generateMetadata(
         title: socialTitle,
         description: socialDescription,
         url: pageUrl,
+        siteName: SITE_NAME,
         images: socialImage
           ? [
               {
@@ -204,7 +202,7 @@ export async function generateMetadata(
     });
 
     return {
-      title: `Page - ${SITE_NAME}`,
+      title: "Page",
       description: "Standalone page.",
     };
   }

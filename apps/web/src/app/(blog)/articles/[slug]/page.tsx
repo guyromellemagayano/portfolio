@@ -14,6 +14,11 @@ import { notFound } from "next/navigation";
 
 import logger from "@portfolio/logger";
 
+import {
+  resolveMetadataTitle,
+  resolveMetadataTitleText,
+  SITE_NAME,
+} from "@web/app/_lib/metadata";
 import { ArticleLayout } from "@web/components/layout";
 import { PortableTextContent } from "@web/components/portable-text-content";
 import { type ArticleDetail, getArticleBySlug } from "@web/utils/articles";
@@ -31,7 +36,6 @@ type ArticleDetailPageProps = {
 const getCachedArticleBySlug = cache(async (slug: string) =>
   getArticleBySlug(slug)
 );
-const SITE_NAME = "Guy Romelle Magayano";
 const MAX_METADATA_DESCRIPTION_LENGTH = 160;
 const DEFAULT_ARTICLE_IMAGE_WIDTH = 1600;
 const DEFAULT_ARTICLE_IMAGE_HEIGHT = 900;
@@ -77,18 +81,6 @@ function getArticleSocialDescription(article: ArticleDetail): string {
       article.seoDescription?.trim() ||
       article.description?.trim() ||
       article.title
-  );
-}
-
-/** Resolves the best title string for `<title>` metadata. */
-function getArticleSeoTitle(article: ArticleDetail): string {
-  return article.seoTitle?.trim() || article.title;
-}
-
-/** Resolves the best social preview title string. */
-function getArticleSocialTitle(article: ArticleDetail): string {
-  return (
-    article.seoOgTitle?.trim() || article.seoTitle?.trim() || article.title
   );
 }
 
@@ -205,14 +197,17 @@ export async function generateMetadata(
 
     if (!article) {
       return {
-        title: "Article Not Found - Guy Romelle Magayano",
+        title: "Article Not Found",
         description: "The requested article could not be found.",
       };
     }
 
-    const pageTitle = getArticleSeoTitle(article);
+    const pageTitle = resolveMetadataTitle(article.seoTitle, article.title);
     const description = getArticleDescription(article);
-    const socialTitle = getArticleSocialTitle(article);
+    const socialTitle = resolveMetadataTitleText(
+      article.seoOgTitle ?? article.seoTitle,
+      article.title
+    );
     const socialDescription = getArticleSocialDescription(article);
     const socialImage = getArticleSocialImage(article);
     const canonicalUrl = getArticleCanonicalUrl(article);
@@ -223,7 +218,7 @@ export async function generateMetadata(
       (socialImage ? "summary_large_image" : "summary");
 
     return {
-      title: `${pageTitle} - ${SITE_NAME}`,
+      title: pageTitle,
       description,
       alternates: canonicalUrl
         ? {
@@ -239,6 +234,7 @@ export async function generateMetadata(
         title: socialTitle,
         description: socialDescription,
         url: articleUrl,
+        siteName: SITE_NAME,
         publishedTime: article.date,
         images: socialImage
           ? [
@@ -269,7 +265,7 @@ export async function generateMetadata(
     );
 
     return {
-      title: `Article - ${SITE_NAME}`,
+      title: "Article",
       description: "Article detail page.",
     };
   }

@@ -14,6 +14,11 @@ import type {
   ContentSocialPlatform,
 } from "@portfolio/api-contracts/content";
 
+import {
+  resolveMetadataTitle,
+  resolveMetadataTitleText,
+  SITE_NAME,
+} from "@web/app/_lib/metadata";
 import { getLocalPortfolioSnapshot } from "@web/data/portfolio-content";
 import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
@@ -51,18 +56,38 @@ export async function getPortfolioBrochurePage(slug: string): Promise<{
 export function buildPortfolioPageMetadata(
   page: ContentPortfolioPage
 ): Metadata {
+  const description = page.seoDescription || page.intro || page.title;
+  const socialTitle = resolveMetadataTitleText(page.seoTitle, page.title);
   const canonicalUrl = page.seoCanonicalPath
     ? toAbsoluteSiteUrl(page.seoCanonicalPath)
     : undefined;
+  const pagePath = page.seoCanonicalPath || (page.slug ? `/${page.slug}` : "/");
+  const pageUrl = canonicalUrl ?? toAbsoluteSiteUrl(pagePath);
 
   return {
-    title: page.seoTitle || page.title,
-    description: page.seoDescription || page.intro,
+    title: resolveMetadataTitle(page.seoTitle, page.title),
+    description,
     alternates: canonicalUrl
       ? {
           canonical: canonicalUrl,
         }
       : undefined,
+    robots: {
+      index: page.seoNoIndex === true ? false : true,
+      follow: true,
+    },
+    openGraph: {
+      type: "website",
+      title: socialTitle,
+      description,
+      url: pageUrl,
+      siteName: SITE_NAME,
+    },
+    twitter: {
+      card: "summary",
+      title: socialTitle,
+      description,
+    },
   };
 }
 
