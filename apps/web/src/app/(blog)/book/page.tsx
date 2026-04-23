@@ -35,7 +35,7 @@ export default async function BookPage() {
     <SimpleLayout
       className="pb-16"
       subheading={page.subheading}
-      title="Choose the starting path that matches the work."
+      title={page.title}
       intro={page.intro}
     >
       <section

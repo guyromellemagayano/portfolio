@@ -36,7 +36,7 @@ export default async function ServicesPage() {
     <SimpleLayout
       className="pb-16"
       subheading={page.subheading}
-      title="Architecture review, advisory, and direct implementation work."
+      title={page.title}
       intro={page.intro}
     >
       <section

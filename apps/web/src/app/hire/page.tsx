@@ -42,7 +42,7 @@ export default async function HirePage() {
     <SimpleLayout
       className="pb-16"
       subheading={page.subheading}
-      title="Share the current constraint and the outcome you need."
+      title={page.title}
       intro={page.intro}
     >
       <section

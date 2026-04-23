@@ -42,7 +42,7 @@ export default async function AboutPage() {
     <SimpleLayout
       className="pb-16"
       subheading={page.subheading}
-      title="A product engineer who prefers systems that stay calm under growth."
+      title={page.title}
       intro={snapshot.profile.heroIntro}
     >
       <section

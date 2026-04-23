@@ -32,7 +32,7 @@ export default async function UsesPage() {
     <SimpleLayout
       className="pb-16"
       subheading={page.subheading}
-      title="The setup behind the work."
+      title={page.title}
       intro={page.intro}
     >
       <section

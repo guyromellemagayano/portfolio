@@ -34,7 +34,7 @@ export default async function ArticlesPage() {
     <SimpleLayout
       className="pb-16"
       subheading={page.subheading}
-      title="Articles on architecture, systems, and reusable product foundations."
+      title={page.title}
       intro={page.intro}
     >
       <section

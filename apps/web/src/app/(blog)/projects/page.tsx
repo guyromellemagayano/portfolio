@@ -35,7 +35,7 @@ export default async function ProjectsPage() {
     <SimpleLayout
       className="pb-16"
       subheading={page.subheading}
-      title="One platform story, several product surfaces."
+      title={page.title}
       intro={page.intro}
     >
       <section

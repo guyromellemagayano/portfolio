@@ -73,7 +73,8 @@ export const portfolioPages: ReadonlyArray<ContentPortfolioPage> = [
     id: "page-about",
     slug: "about",
     subheading: "About",
-    title: "About",
+    title:
+      "A product engineer who prefers systems that stay calm under growth.",
     intro:
       "How I think about product engineering, reusable systems, and maintainable delivery.",
     template: "about",
@@ -102,7 +103,8 @@ export const portfolioPages: ReadonlyArray<ContentPortfolioPage> = [
     id: "page-articles",
     slug: "articles",
     subheading: "Articles",
-    title: "Articles",
+    title:
+      "Articles on architecture, systems, and reusable product foundations.",
     intro:
       "Writing on architecture, delivery, reusable UI systems, and the mechanics behind good product engineering.",
     template: "articles",
@@ -125,7 +127,7 @@ export const portfolioPages: ReadonlyArray<ContentPortfolioPage> = [
     id: "page-services",
     slug: "services",
     subheading: "Services",
-    title: "Architecture, advisory, and delivery for product systems.",
+    title: "Architecture review, advisory, and direct implementation work.",
     intro:
       "I help teams make better frontend and platform decisions, then turn those decisions into maintainable implementation work.",
     template: "services",
@@ -148,7 +150,7 @@ export const portfolioPages: ReadonlyArray<ContentPortfolioPage> = [
     id: "page-projects",
     slug: "projects",
     subheading: "Projects",
-    title: "Projects",
+    title: "One platform story, several product surfaces.",
     intro:
       "A lineup of domain-specific apps built on one shared platform foundation.",
     template: "projects",
@@ -199,7 +201,7 @@ export const portfolioPages: ReadonlyArray<ContentPortfolioPage> = [
     id: "page-uses",
     slug: "uses",
     subheading: "Uses",
-    title: "Uses",
+    title: "The setup behind the work.",
     intro:
       "Software, hardware, and workflow tools I use to ship maintainable product systems.",
     template: "uses",
@@ -225,7 +227,7 @@ export const portfolioPages: ReadonlyArray<ContentPortfolioPage> = [
     id: "page-hire",
     slug: "hire",
     subheading: "Hire",
-    title: "Let’s build a clean next step together.",
+    title: "Share the current constraint and the outcome you need.",
     intro:
       "Share your context and constraints, and I’ll help you move faster with the right product engineering move.",
     template: "hire",
@@ -257,7 +259,7 @@ export const portfolioPages: ReadonlyArray<ContentPortfolioPage> = [
     id: "page-book",
     slug: "book",
     subheading: "Book",
-    title: "Choose the best way to start the conversation.",
+    title: "Choose the starting path that matches the work.",
     intro:
       "If you're not sure whether you need a review, advisory, or hands-on implementation, this page gives you a clean starting point.",
     template: "book",
