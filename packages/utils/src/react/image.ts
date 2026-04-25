@@ -16,7 +16,7 @@ export const isValidImageSrc = (
     return trimmedSrc.length > 0;
   }
 
-  // Handle `StaticImageData` with default property (Next.js style)
+  // Handle static image data objects returned by bundlers/framework adapters.
   if (
     typeof src === "object" &&
     "default" in src &&

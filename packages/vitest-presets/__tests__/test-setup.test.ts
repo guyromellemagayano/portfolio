@@ -70,34 +70,12 @@ describe("Test Setup Integration", () => {
     });
   });
 
-  describe("Next.js Mocks", () => {
-    it("should have next/navigation mocked (mocks are set up in test-setup.ts)", () => {
-      // The mocks are set up via vi.mock in test-setup.ts
-      // We verify the mock router back function is available
-      expect((globalThis as any).__MOCK_ROUTER_BACK__).toBeDefined();
-      expect(typeof (globalThis as any).__MOCK_ROUTER_BACK__).toBe("function");
-    });
-
-    it("should have next/image mock available (tested via component rendering)", () => {
-      // Since next/image is mocked in test-setup.ts, we can test it indirectly
-      // by checking that React rendering works (which uses the mock)
+  describe("React Test Setup", () => {
+    it("should render React components without framework-specific mocks", () => {
       const TestComponent = () => React.createElement("div", null, "Test");
       const { container } = render(React.createElement(TestComponent));
-      expect(container.textContent).toBe("Test");
-    });
 
-    it("should have next/link mock available (tested via component rendering)", () => {
-      // Since next/link is mocked in test-setup.ts, we can test it indirectly
-      // by checking that React rendering works (which uses the mock)
-      const TestComponent = () => React.createElement("div", null, "Test");
-      const { container } = render(React.createElement(TestComponent));
       expect(container.textContent).toBe("Test");
-    });
-
-    it("should have next-themes mock available (mocks are set up in test-setup.ts)", () => {
-      // The mocks are set up via vi.mock in test-setup.ts
-      // We verify that the mock setup doesn't throw errors
-      expect(vi.isMockFunction).toBeDefined();
     });
   });
 

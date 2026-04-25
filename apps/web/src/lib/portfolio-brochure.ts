@@ -1,17 +1,17 @@
 /**
- * @file apps/web/src/_lib/portfolio-brochure.ts
+ * @file apps/web/src/lib/portfolio-brochure.ts
  * @author Guy Romelle Magayano
  * @description Shared helpers for brochure-page lookup and metadata generation.
  */
 
 import { getPage, type PageData, socialLinks } from "@web/data/site";
-import type { WebPageMetadata } from "@web/lib/metadata.types";
 import {
   resolveMetadataTitle,
   resolveMetadataTitleText,
   SITE_NAME,
-} from "@web/lib-pages/metadata";
-import { buildWebPageStructuredData } from "@web/lib-pages/structured-data";
+} from "@web/lib/metadata";
+import type { WebPageMetadata } from "@web/lib/metadata.types";
+import { buildWebPageStructuredData } from "@web/lib/structured-data";
 import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 /** Resolves a brochure page by slug and throws when the slug is missing. */

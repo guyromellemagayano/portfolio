@@ -6,11 +6,11 @@ import { projects } from "@web/data/projects";
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
-} from "@web/lib-pages/portfolio-brochure";
+} from "@web/lib/portfolio-brochure";
 import {
   appendStructuredData,
   buildCollectionPageStructuredData,
-} from "@web/lib-pages/structured-data";
+} from "@web/lib/structured-data";
 
 const { page } = await getPortfolioBrochurePage("projects");
 const metadata = appendStructuredData(

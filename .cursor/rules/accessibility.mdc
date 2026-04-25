@@ -1,6 +1,6 @@
 ---
 description: Accessibility Standards
-globs: ["apps/**/*.tsx", "packages/**/*.tsx"]
+globs: ["apps/**/*.{astro,tsx}", "packages/**/*.tsx"]
 alwaysApply: false
 ---
 

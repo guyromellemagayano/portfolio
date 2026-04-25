@@ -2,7 +2,7 @@
 /// <reference types="@testing-library/jest-dom" />
 
 // CRITICAL: Override `IntersectionObserver` IMMEDIATELY before any imports
-// This must be the very first thing to prevent Next.js from using the real `IntersectionObserver`
+// This must be the very first thing so React component tests never touch the real `IntersectionObserver`
 const createIntersectionObserverMock = () => {
   return function MockIntersectionObserver(callback: any, options?: any) {
     const mockObserver = {
@@ -44,7 +44,7 @@ const createIntersectionObserverMock = () => {
       setTimeout(() => {
         try {
           callback([mockEntry], mockObserver);
-        } catch (error) {
+        } catch {
           // Ignore errors in test environment
         }
       }, 0);
@@ -79,7 +79,7 @@ Object.defineProperty(globalThis.global, "IntersectionObserver", {
 });
 
 // CRITICAL: Also override the `IntersectionObserver` constructor directly
-// This prevents Next.js from accessing the real constructor
+// This prevents Astro from accessing the real constructor
 (globalThis as any).IntersectionObserver = mockIntersectionObserver;
 (globalThis.window as any).IntersectionObserver = mockIntersectionObserver;
 (globalThis.global as any).IntersectionObserver = mockIntersectionObserver;
@@ -263,180 +263,6 @@ afterEach(() => {
   vi.clearAllMocks(); // Clear mock call history
   vi.resetAllMocks(); // Reset mocks to original implementations
 });
-
-// Global mock for `next/navigation`
-const mockBack = vi.fn();
-vi.mock("next/navigation", () => ({
-  usePathname: () => (globalThis as any).__TEST_PATHNAME__ ?? "/about",
-  useRouter: () => ({
-    back: mockBack,
-    push: vi.fn(),
-    replace: vi.fn(),
-    forward: vi.fn(),
-    refresh: vi.fn(),
-    prefetch: vi.fn(),
-  }),
-}));
-
-// Export for tests to use
-(globalThis as any).__MOCK_ROUTER_BACK__ = mockBack;
-
-// Global mock for `next/image`
-vi.mock("next/image", () => ({
-  default: (props: any) =>
-    React.createElement("div", {
-      "data-testid": "mock-image",
-      width: 64,
-      height: 64,
-      ...props,
-    }),
-}));
-
-// Global mock for `next/link`
-vi.mock("next/link", () => {
-  const MockLink = React.forwardRef<HTMLAnchorElement, any>((props, ref) => {
-    const { href, children, ...rest } = props;
-    return React.createElement(
-      "a",
-      {
-        ref,
-        href,
-        "data-testid": "mock-link",
-        ...rest,
-      },
-      children
-    );
-  });
-  MockLink.displayName = "MockNextLink";
-  return { default: MockLink };
-});
-
-// Global mock for `next-themes`
-vi.mock("next-themes", () => ({
-  useTheme: () => ({
-    resolvedTheme: "dark",
-    setTheme: vi.fn(),
-  }),
-}));
-
-// Global mock for Next.js use-intersection hook - more aggressive approach
-vi.mock("next/src/client/use-intersection", () => {
-  const mockRef = vi.fn();
-  const mockUseIntersection = vi.fn(() => ({
-    ref: mockRef,
-    inView: true,
-    entry: {
-      isIntersecting: true,
-      intersectionRatio: 1,
-      boundingClientRect: {
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        width: 0,
-        height: 0,
-      },
-      rootBounds: null,
-      intersectionRect: {
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        width: 0,
-        height: 0,
-      },
-      time: 0,
-    },
-  }));
-
-  // Override the default export
-  (mockUseIntersection as any).default = mockUseIntersection;
-  return { default: mockUseIntersection };
-});
-
-// Global mock for `next/use-intersection` (alternative path)
-vi.mock("next/use-intersection", () => {
-  const mockRef = vi.fn();
-  const mockUseIntersection = vi.fn(() => ({
-    ref: mockRef,
-    inView: true,
-    entry: {
-      isIntersecting: true,
-      intersectionRatio: 1,
-      boundingClientRect: {
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        width: 0,
-        height: 0,
-      },
-      rootBounds: null,
-      intersectionRect: {
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        width: 0,
-        height: 0,
-      },
-      time: 0,
-    },
-  }));
-
-  // Override the default export
-  (mockUseIntersection as any).default = mockUseIntersection;
-  return { default: mockUseIntersection };
-});
-
-// CRITICAL: Mock the specific Next.js use-intersection implementation
-// This prevents the real implementation from running
-vi.mock("next/src/client/use-intersection.tsx", () => {
-  const mockRef = vi.fn();
-  const mockUseIntersection = vi.fn(() => ({
-    ref: mockRef,
-    inView: true,
-    entry: {
-      isIntersecting: true,
-      intersectionRatio: 1,
-      boundingClientRect: {
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        width: 0,
-        height: 0,
-      },
-      rootBounds: null,
-      intersectionRect: {
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        width: 0,
-        height: 0,
-      },
-      time: 0,
-    },
-  }));
-
-  return { default: mockUseIntersection };
-});
-
-// Global mock for `react-intersection-observer`
-vi.mock("react-intersection-observer", () => ({
-  useInView: vi.fn(() => ({
-    ref: vi.fn(),
-    inView: true,
-    entry: null,
-  })),
-  InView: ({ children }: { children: React.ReactNode }) => children,
-}));
-
-// Global mock for `react-intersection-observer/test-utils`
-vi.mock("react-intersection-observer/test-utils", () => ({
-  mockAllIsIntersecting: vi.fn(),
-}));
 
 // Global fallback mock for `@portfolio/components`
 vi.mock("@portfolio/components", () => {

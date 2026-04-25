@@ -17,7 +17,7 @@ export const useComponentId = vi.fn((options = {}) => ({
   id: options.debugId || "test-id", // For backward compatibility
 }));
 
-/** Mock `useRouter` hook for Next.js navigation */
+/** Mock `useRouter` hook for routing tests. */
 export const useRouter: () => {
   push: ReturnType<typeof vi.fn>;
   back: ReturnType<typeof vi.fn>;
@@ -34,10 +34,10 @@ export const useRouter: () => {
   prefetch: vi.fn(),
 }));
 
-/** Mock `usePathname` hook for Next.js navigation `/` */
+/** Mock `usePathname` hook for routing tests. */
 export const usePathname = vi.fn(() => "/");
 
-/** Mock `useSearchParams` hook for Next.js navigation */
+/** Mock `useSearchParams` hook for routing tests. */
 export const useSearchParams = vi.fn(() => new URLSearchParams());
 
 /** Mock `useIntersection` hook for intersection observer */

@@ -81,7 +81,7 @@ describe("isValidImageSrc", () => {
         expect(isValidImageSrc(staticImageData)).toBe(true);
       });
 
-      it("returns true for object with default.src property (Next.js style)", () => {
+      it("returns true for object with default.src property", () => {
         const staticImageData = {
           default: {
             src: "/images/photo.jpg",

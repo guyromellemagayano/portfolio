@@ -91,7 +91,7 @@ import {
 } from "@portfolio/components";
 
 const analytics = createBatchedOnAnalytics({
-  transport: createFetchTransport("/api/analytics"),
+  transport: createFetchTransport("/analytics"),
   bufferSize: 20,
   flushIntervalMs: 2000,
 });

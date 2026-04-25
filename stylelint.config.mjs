@@ -1,7 +1,7 @@
 /** @type {import("stylelint").Config} */
 export default {
   extends: ["stylelint-config-standard"],
-  ignoreFiles: ["**/dist/**", "**/.next/**", "**/coverage/**"],
+  ignoreFiles: ["**/dist/**", "**/coverage/**"],
   rules: {
     "custom-property-pattern": null,
     "import-notation": "string",

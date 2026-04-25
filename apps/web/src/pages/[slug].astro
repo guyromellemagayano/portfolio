@@ -7,12 +7,12 @@ import {
   resolveMetadataTitle,
   resolveMetadataTitleText,
   SITE_NAME,
-} from "@web/lib-pages/metadata";
-import { buildStandalonePageStructuredData } from "@web/lib-pages/structured-data";
+} from "@web/lib/metadata";
+import { buildStandalonePageStructuredData } from "@web/lib/structured-data";
 import {
   getAllPages,
   getPageBySlug,
-  type CmsPageDetail,
+  type StandalonePageDetail,
 } from "@web/utils/pages";
 import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
@@ -53,7 +53,7 @@ const clampDescription = (value: string) => {
 };
 
 function buildStandalonePageMetadata(
-  pageRecord: CmsPageDetail
+  pageRecord: StandalonePageDetail
 ): WebPageMetadata {
   const description = clampDescription(
     pageRecord.seoDescription || pageRecord.intro || pageRecord.title

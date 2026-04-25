@@ -211,7 +211,7 @@ it("renders with form attributes", () => {
     <Button
       data-testid="button-element"
       form="my-form"
-      formAction="/api/submit"
+      formAction="/submit"
       formEncType="application/x-www-form-urlencoded"
       formMethod="get"
       formNoValidate
@@ -223,7 +223,7 @@ it("renders with form attributes", () => {
 
   const button = screen.getByTestId("button-element");
   expect(button).toHaveAttribute("form", "my-form");
-  expect(button).toHaveAttribute("formaction", "/api/submit");
+  expect(button).toHaveAttribute("formaction", "/submit");
   expect(button).toHaveAttribute(
     "formenctype",
     "application/x-www-form-urlencoded"
@@ -933,7 +933,7 @@ it("integrates with form submission methods", () => {
         data-testid="button-element"
         type="submit"
         formMethod="post"
-        formAction="/api/submit"
+        formAction="/submit"
         formEncType="multipart/form-data"
       >
         Submit with Method
@@ -943,7 +943,7 @@ it("integrates with form submission methods", () => {
 
   const button = screen.getByTestId("button-element");
   expect(button).toHaveAttribute("formmethod", "post");
-  expect(button).toHaveAttribute("formaction", "/api/submit");
+  expect(button).toHaveAttribute("formaction", "/submit");
   expect(button).toHaveAttribute("formenctype", "multipart/form-data");
 });
 

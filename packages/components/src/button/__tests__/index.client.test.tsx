@@ -390,7 +390,7 @@ it("renders with form attributes", () => {
     <ButtonClient
       data-testid="button-element"
       form="my-form"
-      formAction="/api/submit"
+      formAction="/submit"
       formEncType="application/x-www-form-urlencoded"
       formMethod="get"
       formNoValidate
@@ -402,7 +402,7 @@ it("renders with form attributes", () => {
 
   const button = screen.getByTestId("button-element");
   expect(button).toHaveAttribute("form", "my-form");
-  expect(button).toHaveAttribute("formaction", "/api/submit");
+  expect(button).toHaveAttribute("formaction", "/submit");
   expect(button).toHaveAttribute(
     "formenctype",
     "application/x-www-form-urlencoded"
@@ -418,7 +418,7 @@ it("renders memoized with form attributes", () => {
     <MemoizedButtonClient
       data-testid="button-element"
       form="memoized-form"
-      formAction="/api/memoized-submit"
+      formAction="/memoized-submit"
       formEncType="multipart/form-data"
       formMethod="post"
       formNoValidate
@@ -430,7 +430,7 @@ it("renders memoized with form attributes", () => {
 
   const button = screen.getByTestId("button-element");
   expect(button).toHaveAttribute("form", "memoized-form");
-  expect(button).toHaveAttribute("formaction", "/api/memoized-submit");
+  expect(button).toHaveAttribute("formaction", "/memoized-submit");
   expect(button).toHaveAttribute("formenctype", "multipart/form-data");
   expect(button).toHaveAttribute("formmethod", "post");
   expect(button).toHaveAttribute("formnovalidate");

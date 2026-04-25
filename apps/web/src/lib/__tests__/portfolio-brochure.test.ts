@@ -7,7 +7,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { PageData } from "@web/data/site";
-import { buildPortfolioPageMetadata } from "@web/lib-pages/portfolio-brochure";
+import { buildPortfolioPageMetadata } from "@web/lib/portfolio-brochure";
 
 const basePage: PageData = {
   slug: "services",
@@ -19,7 +19,7 @@ const basePage: PageData = {
 };
 
 describe("buildPortfolioPageMetadata", () => {
-  it("normalizes CMS titles so the root layout template does not duplicate the site name", () => {
+  it("normalizes page titles so the root layout template does not duplicate the site name", () => {
     const metadata = buildPortfolioPageMetadata({
       ...basePage,
       seoTitle: "Services - Guy Romelle Magayano",

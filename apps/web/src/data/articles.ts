@@ -120,7 +120,7 @@ export const articles: Article[] = [
     body: [
       paragraph(
         "content-modeling-1",
-        "Teams often treat content modeling as a CMS setup task. In practice it shapes route structure, metadata, preview flows, validation rules, and how reliably a site evolves."
+        "Teams often treat content modeling as a tooling setup task. In practice it shapes route structure, metadata, preview flows, validation rules, and how reliably a site evolves."
       ),
       paragraph(
         "content-modeling-2",

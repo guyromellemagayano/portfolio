@@ -41,7 +41,6 @@ export default defineConfig(browserPreset);
 - Centralized mocks for `@web/components` and `@portfolio/*` packages
 - Logger integration with test setup logging
 - Browser API mocks (IntersectionObserver, ResizeObserver, etc.)
-- Next.js component mocks (`next/image`, `next/link`, `next/navigation`)
 
 ### Node Preset
 
@@ -93,7 +92,6 @@ export default defineConfig(reactPreset);
 - Logger integration with test setup logging
 - React Testing Library support
 - Browser API mocks (IntersectionObserver, ResizeObserver, etc.)
-- Next.js component mocks (`next/image`, `next/link`, `next/navigation`)
 
 ## Centralized Mocking System
 
@@ -279,7 +277,7 @@ All presets include:
 - Logger integration with test setup logging
 - V8 coverage provider with environment-specific thresholds
 - Browser API mocks (IntersectionObserver, ResizeObserver, etc.)
-- Next.js component mocks
+-
 
 ### 2. Test Setup File (Optional)
 

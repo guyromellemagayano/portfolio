@@ -39,12 +39,12 @@ Object.defineProperty(window, "location", {
     assign: vi.fn(),
     replace: vi.fn(),
     reload: vi.fn(),
-    href: "http://localhost:3000",
-    origin: "http://localhost:3000",
+    href: "http://localhost:4321",
+    origin: "http://localhost:4321",
     protocol: "http:",
-    host: "localhost:3000",
+    host: "localhost:4321",
     hostname: "localhost",
-    port: "3000",
+    port: "4321",
     pathname: "/",
     search: "",
     hash: "",
@@ -138,7 +138,7 @@ const originalCreateElement = document.createElement;
 const originalAppendChild = HTMLElement.prototype.appendChild;
 
 // Enhanced mock context creation with better tracking
-let mockGetContext = vi.fn((contextType: string, options?: any) => {
+let mockGetContext = vi.fn((contextType: string, _options?: any) => {
   switch (contextType) {
     case "2d":
       return createMockCanvasContext2D();
@@ -350,7 +350,7 @@ global.MutationObserver = class MockMutationObserver {
     this.callback = callback;
   }
 
-  observe = vi.fn((target: Node, options?: MutationObserverInit) => {
+  observe = vi.fn((_target: Node, _options?: MutationObserverInit) => {
     // Mock observe behavior
   });
 
@@ -377,11 +377,11 @@ Object.defineProperty(window, "gtag", {
 
 // Enhanced ResizeObserver mock
 global.ResizeObserver = class MockResizeObserver {
-  observe = vi.fn((target: Element, options?: ResizeObserverOptions) => {
+  observe = vi.fn((_target: Element, _options?: ResizeObserverOptions) => {
     // Mock observe behavior
   });
 
-  unobserve = vi.fn((target: Element) => {
+  unobserve = vi.fn((_target: Element) => {
     // Mock unobserve behavior
   });
 
@@ -416,17 +416,17 @@ global.IntersectionObserver = class MockIntersectionObserver {
   thresholds = [];
 
   constructor(
-    callback: IntersectionObserverCallback,
-    options?: IntersectionObserverInit
+    _callback: IntersectionObserverCallback,
+    _options?: IntersectionObserverInit
   ) {
     // Store options if needed
   }
 
-  observe = vi.fn((target: Element) => {
+  observe = vi.fn((_target: Element) => {
     // Mock observe behavior
   });
 
-  unobserve = vi.fn((target: Element) => {
+  unobserve = vi.fn((_target: Element) => {
     // Mock unobserve behavior
   });
 
@@ -442,7 +442,7 @@ global.requestAnimationFrame = vi.fn((cb) => {
   setTimeout(cb, 16);
   return 1;
 });
-global.cancelAnimationFrame = vi.fn((id) => clearTimeout(id as any));
+global.cancelAnimationFrame = vi.fn((_id) => clearTimeout(_id as any));
 
 // Enhanced cleanup function to run after each test to prevent memory leaks
 afterEach(() => {
@@ -462,7 +462,8 @@ afterEach(() => {
   // Reset location to prevent navigation state pollution
   if (window.location) {
     Object.assign(window.location, {
-      href: "http://localhost:3000",
+      href: "http://localhost:4321",
+      origin: "http://localhost:4321",
       pathname: "/",
       search: "",
       hash: "",

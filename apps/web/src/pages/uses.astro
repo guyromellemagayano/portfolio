@@ -5,7 +5,7 @@ import { useCategories } from "@web/data/uses";
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
-} from "@web/lib-pages/portfolio-brochure";
+} from "@web/lib/portfolio-brochure";
 
 const { page } = await getPortfolioBrochurePage("uses");
 const metadata = buildPortfolioPageMetadata(page);
