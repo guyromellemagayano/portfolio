@@ -10,4 +10,4 @@ insert_final_newline = false
 trim_trailing_whitespace = false
 
 [package.json]
-insert_final_newline = true
+insert_final_newline = false
