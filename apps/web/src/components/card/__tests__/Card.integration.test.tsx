@@ -11,15 +11,6 @@ import { Card } from "../Card";
 
 import "@testing-library/jest-dom";
 
-// Mock Next.js Link component
-vi.mock("next/link", () => ({
-  default: vi.fn(({ children, href, ...props }) => (
-    <a href={href} {...props}>
-      {children}
-    </a>
-  )),
-}));
-
 // Mock dependencies
 vi.mock("@portfolio/utils", () => ({
   isValidLink: vi.fn((href) => {

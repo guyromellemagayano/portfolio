@@ -14,8 +14,8 @@ import { ListItem } from "../ListItem";
 
 import "@testing-library/jest-dom";
 
-// Mock next-intl
-vi.mock("next-intl", () => ({
+// Mock i18n
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: vi.fn((_namespace: string) => {
     const translations: Record<string, string> = {
       articleDate: "Published on",
@@ -24,15 +24,6 @@ vi.mock("next-intl", () => ({
 
     return (key: string) => translations[key] ?? key;
   }),
-}));
-
-// Mock next/link
-vi.mock("next/link", () => ({
-  default: ({ children, href, ...props }: any) => (
-    <a href={href} {...props}>
-      {children}
-    </a>
-  ),
 }));
 
 // Mock utils
@@ -57,18 +48,39 @@ vi.mock("@web/utils/datetime", () => ({
 
 // Mock Card component
 const mockCardComponent = vi.hoisted(() => {
-  const Card = function (props: any = {}) {
+  function containsMockChildrenContent(children: React.ReactNode): boolean {
+    if (children == null || children === false) {
+      return false;
+    }
+
+    if (Array.isArray(children)) {
+      return children.some(containsMockChildrenContent);
+    }
+
+    if (typeof children === "string" || typeof children === "number") {
+      return String(children).trim().length > 0;
+    }
+
+    return true;
+  }
+
+  const card = function cardMock(props: any = {}) {
     const { as: Component = "div", children, ...rest } = props || {};
     return (
       <Component data-testid={rest["data-testid"] || "card-root"} {...rest}>
         {children}
       </Component>
     );
-  };
+  } as any;
 
-  Card.displayName = "CardMock";
+  card.displayName = "CardMock";
 
-  const CardTitle = function ({ as: As = "h3", children, href, ...rest }: any) {
+  const cardTitle = function cardTitleMock({
+    as: As = "h3",
+    children,
+    href,
+    ...rest
+  }: any) {
     if (href) {
       return (
         <As {...rest}>
@@ -78,10 +90,10 @@ const mockCardComponent = vi.hoisted(() => {
     }
     return <As {...rest}>{children}</As>;
   };
-  CardTitle.displayName = "CardTitleMock";
-  Card.Title = CardTitle;
+  cardTitle.displayName = "CardTitleMock";
+  card.Title = cardTitle;
 
-  const CardEyebrow = function ({
+  const cardEyebrow = function cardEyebrowMock({
     as: As = "time",
     children,
     dateTime,
@@ -93,25 +105,26 @@ const mockCardComponent = vi.hoisted(() => {
       </As>
     );
   };
-  CardEyebrow.displayName = "CardEyebrowMock";
-  Card.Eyebrow = CardEyebrow;
+  cardEyebrow.displayName = "CardEyebrowMock";
+  card.Eyebrow = cardEyebrow;
 
-  const CardDescription = function ({ as: As = "p", children, ...rest }: any) {
+  const cardDescription = function cardDescriptionMock({
+    as: As = "p",
+    children,
+    ...rest
+  }: any) {
     return <As {...rest}>{children}</As>;
   };
-  CardDescription.displayName = "CardDescriptionMock";
-  Card.Description = CardDescription;
+  cardDescription.displayName = "CardDescriptionMock";
+  card.Description = cardDescription;
 
-  const CardCta = function (props: any) {
+  const cardCta = function cardCtaMock(props: any) {
     const { as: As = "div", children, href, title, ...rest } = props;
     if (href) {
       // Mock CardLinkCustom behavior: sets title attribute and aria-label when title exists and children aren't descriptive
       // Since our children are descriptive ("Read article"), aria-label is not set, but title attribute is set
-      const hasDescriptiveText =
-        typeof children === "string"
-          ? children.trim().length > 0
-          : React.Children.count(children) > 0;
-      const ariaLabel = title && !hasDescriptiveText ? title : undefined;
+      const containsVisibleLinkText = containsMockChildrenContent(children);
+      const ariaLabel = title && !containsVisibleLinkText ? title : undefined;
 
       const linkProps: Record<string, any> = { href };
       // CardLinkCustom sets title={title ?? undefined}, so we set it if title is truthy
@@ -130,10 +143,10 @@ const mockCardComponent = vi.hoisted(() => {
     }
     return <As {...rest}>{children}</As>;
   };
-  CardCta.displayName = "CardCtaMock";
-  Card.Cta = CardCta;
+  cardCta.displayName = "CardCtaMock";
+  card.Cta = cardCta;
 
-  return Card;
+  return card;
 });
 
 vi.mock("../../../card", () => ({

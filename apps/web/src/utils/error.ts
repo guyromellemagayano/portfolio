@@ -4,9 +4,9 @@
  * @description Error normalization and safe translation fallback utilities.
  */
 
-import { getTranslations } from "next-intl/server";
-
 import logger from "@portfolio/logger";
+
+import { getTranslations } from "@web/lib/i18n";
 
 type NormalizedError = Error & {
   digest?: string;

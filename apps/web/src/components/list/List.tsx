@@ -11,8 +11,7 @@ import {
   type ComponentPropsWithRef,
 } from "react";
 
-import { useTranslations } from "next-intl";
-
+import { useTranslations } from "@web/lib/i18n";
 import { cn } from "@web/utils/helpers";
 
 // ============================================================================

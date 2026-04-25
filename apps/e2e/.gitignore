@@ -1,7 +1,17 @@
 node_modules/
-playwright/.auth/
-playwright-report/
-test-results/
-
+.pnp
+.pnp.js
 
 .turbo/
+.cache/
+
+playwright/.auth/
+playwright/.cache/
+playwright-report/
+test-results/
+blob-report/
+
+coverage/
+*.log
+*.tsbuildinfo
+.DS_Store

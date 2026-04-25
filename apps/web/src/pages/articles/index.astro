@@ -1,0 +1,44 @@
+---
+import ArticleCard from "@web/components/ArticleCard.astro";
+import PageIntro from "@web/components/PageIntro.astro";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import {
+  buildPortfolioPageMetadata,
+  getPortfolioBrochurePage,
+} from "@web/lib-pages/portfolio-brochure";
+import {
+  appendStructuredData,
+  buildCollectionPageStructuredData,
+} from "@web/lib-pages/structured-data";
+import { getAllArticles } from "@web/utils/articles";
+
+const { page } = await getPortfolioBrochurePage("articles");
+const articles = await getAllArticles();
+const metadata = appendStructuredData(
+  buildPortfolioPageMetadata(page),
+  buildCollectionPageStructuredData(
+    page,
+    articles,
+    (article) => `/articles/${article.slug}`
+  )
+);
+---
+
+<BaseLayout metadata={metadata}>
+  <PageIntro
+    subheading={page.subheading}
+    title={page.title}
+    intro={page.intro}
+  />
+
+  <section
+    aria-labelledby="articles-list-heading"
+    class="mx-auto max-w-6xl px-6 py-12 sm:px-8"
+    role="region"
+  >
+    <h2 id="articles-list-heading" class="sr-only">Article list</h2>
+    <div class="grid gap-4 lg:grid-cols-2">
+      {articles.map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+</BaseLayout>

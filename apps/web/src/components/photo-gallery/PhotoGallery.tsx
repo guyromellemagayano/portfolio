@@ -9,10 +9,9 @@ import {
   type ComponentPropsWithRef,
 } from "react";
 
-import Image, { type StaticImageData } from "next/image";
-import { useTranslations } from "next-intl";
-
 import { PHOTO_GALLERY_PHOTOS } from "@web/config/photo-gallery";
+import { useTranslations } from "@web/lib/i18n";
+import { getImageSource, type ImageSource } from "@web/lib/media";
 import { cn } from "@web/utils/helpers";
 
 // ============================================================================
@@ -26,7 +25,7 @@ export type PhotoGalleryProps<P extends Record<string, unknown> = {}> = Omit<
 > &
   P & {
     as?: PhotoGalleryElementType;
-    photos?: ReadonlyArray<StaticImageData>;
+    photos?: ReadonlyArray<ImageSource>;
     "aria-label"?: string;
   };
 
@@ -81,21 +80,24 @@ export function PhotoGallery<P extends Record<string, unknown> = {}>(
       >
         {photos.map((image, index) => (
           <div
-            key={image.src}
+            key={getImageSource(image)}
             role="listitem"
             className={cn(
               "relative aspect-9/10 w-44 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-72 sm:rounded-2xl dark:bg-zinc-800",
               rotations[index % rotations.length]
             )}
           >
-            <Image
-              src={image}
+            <img
+              data-fill="true"
+              data-priority="true"
+              data-sizes="(min-width: 640px) 18rem, 11rem"
+              src={getImageSource(image)}
               alt=""
               sizes="(min-width: 640px) 18rem, 11rem"
               className="absolute inset-0 h-full w-full object-cover"
               aria-hidden="true"
-              fill
-              priority
+              decoding="async"
+              fetchPriority={index === 0 ? "high" : "auto"}
             />
           </div>
         ))}

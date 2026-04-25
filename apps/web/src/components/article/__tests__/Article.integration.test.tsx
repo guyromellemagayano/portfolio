@@ -23,6 +23,22 @@ const mockUseTranslations = vi.hoisted(() =>
   })
 );
 
+function containsMockChildrenContent(children: React.ReactNode): boolean {
+  if (children == null || children === false) {
+    return false;
+  }
+
+  if (Array.isArray(children)) {
+    return children.some(containsMockChildrenContent);
+  }
+
+  if (typeof children === "string" || typeof children === "number") {
+    return String(children).trim().length > 0;
+  }
+
+  return true;
+}
+
 // Mock dependencies
 
 vi.mock("@portfolio/utils", () => ({
@@ -38,7 +54,7 @@ vi.mock("@portfolio/utils", () => ({
   }),
 }));
 
-vi.mock("next-intl", () => ({
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: mockUseTranslations,
 }));
 
@@ -109,11 +125,8 @@ vi.mock("../../card", () => {
         const { children, href, title, ...rest } = props;
         // Mock CardLinkCustom behavior: sets title attribute and aria-label when title exists and children aren't descriptive
         // Since our children are descriptive ("Read article"), aria-label is not set, but title attribute is set
-        const hasDescriptiveText =
-          typeof children === "string"
-            ? children.trim().length > 0
-            : React.Children.count(children) > 0;
-        const ariaLabel = title && !hasDescriptiveText ? title : undefined;
+        const containsVisibleLinkText = containsMockChildrenContent(children);
+        const ariaLabel = title && !containsVisibleLinkText ? title : undefined;
 
         const linkProps: Record<string, any> = { href };
         if (title) {

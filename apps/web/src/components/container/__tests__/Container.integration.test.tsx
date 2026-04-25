@@ -14,6 +14,10 @@ vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
+function ContainerChildComponent() {
+  return <span>Child Component</span>;
+}
+
 describe("Container Integration Tests", () => {
   afterEach(() => {
     cleanup();
@@ -144,12 +148,9 @@ describe("Container Integration Tests", () => {
 
   describe("Container with Multiple Content Types", () => {
     it("handles React elements as children", () => {
-      const ChildComponent = function () {
-        return <span>Child Component</span>;
-      };
       render(
         <Container>
-          <ChildComponent />
+          <ContainerChildComponent />
         </Container>
       );
 
@@ -526,7 +527,7 @@ describe("Container Integration Tests", () => {
         { as: "aside", expectedRole: "complementary" },
       ];
 
-      semanticTests.forEach(({ as, expectedRole }) => {
+      semanticTests.forEach(({ as, expectedRole: _expectedRole }) => {
         const { container, unmount } = render(
           <Container
             as={

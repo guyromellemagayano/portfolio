@@ -3,15 +3,21 @@ node_modules/
 pnpm-lock.yaml
 .pnp/
 .pnp.js
+.yarn/
 
-# NPM cache directories
+# Package manager cache directories
 .npm-cache/
 .pnpm-store/
 
-# Ruff cache
+# Tool caches
 .ruff_cache/
+.turbo/
+.cache/
+.parcel-cache/
+.playwright-mcp/
 
 # Build outputs
+.astro/
 dist/
 dist-ssr/
 build/
@@ -21,12 +27,16 @@ coverage/
 logs/
 storybook-static/
 
-# Turbo/monorepo cache
-.turbo/
-.cache/
+# Test and browser artifacts
+test-results/
+playwright-report/
+playwright/.cache/
+playwright/.auth/
+blob-report/
 
 # OS/system/editor folders
 .idea/
+.vscode/
 
 # OS/system/editor files
 .DS_Store
@@ -37,14 +47,23 @@ storybook-static/
 # TypeScript build info
 *.tsbuildinfo
 .eslintcache
+.stylelintcache
 
 # Vercel
 .vercel/
 
+# Retired and local-only project trees
+apps/api/
+packages/api-contracts/
+packages/content-data/
+docs/
+old/
+
 # Old folders
 *.old
 *-old/
+*.bak
+*.tmp
 
 # Editor Workspaces
 *.code-workspace
-.vscode/

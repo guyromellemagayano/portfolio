@@ -1,2 +1,41 @@
-.vercel
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Astro and build outputs
+.astro/
+dist/
+dist-ssr/
+build/
+coverage/
+
+# Tool caches
+.turbo/
+.cache/
+.parcel-cache/
+
+# Local env files
+.env
+.env.*
 .env*.local
+!.env.example
+
+# Test artifacts
+test-results/
+playwright-report/
+playwright/.cache/
+playwright/.auth/
+blob-report/
+
+# Logs and generated files
+*.log
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+
+# Deployment
+.vercel/
+
+# OS files
+.DS_Store

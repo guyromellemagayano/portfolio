@@ -16,7 +16,7 @@ describe("getAllPages", () => {
         title: "Now",
         subheading: "What I am focused on",
         intro:
-          "A local content snapshot page used to validate the content migration pipeline.",
+          "A simple local page used to validate the direct-data rendering path.",
         updatedAt: "2026-03-13T00:00:00.000Z",
         hideFromSitemap: false,
         seoNoIndex: false,

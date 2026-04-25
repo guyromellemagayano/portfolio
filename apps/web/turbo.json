@@ -7,17 +7,14 @@
       "inputs": [
         "$TURBO_DEFAULT$",
         ".env*",
-        "next-env.d.ts",
-        "next.config.*",
+        "astro.config.*",
         "package.json",
         "postcss.config.*",
         "tailwind.config.*",
         "tsconfig*.json"
       ],
       "outputs": [
-        "!.next/cache/**",
-        "!.next/standalone/**",
-        ".next/**"
+        "dist/**"
       ]
     }
   }

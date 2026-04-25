@@ -1,0 +1,72 @@
+---
+/**
+ * @file apps/web/src/components/CTA.astro
+ * @author Guy Romelle Magayano
+ * @description Static Astro call-to-action section.
+ */
+
+type Props = {
+  eyebrow?: string;
+  title: string;
+  body: string;
+  primaryHref: string;
+  primaryLabel: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+};
+
+const {
+  eyebrow,
+  title,
+  body,
+  primaryHref,
+  primaryLabel,
+  secondaryHref,
+  secondaryLabel,
+} = Astro.props;
+---
+
+<section
+  aria-labelledby="cta-heading"
+  class="border-t border-zinc-950/10 py-16"
+  role="region"
+>
+  <div class="mx-auto max-w-6xl px-6 sm:px-8">
+    <div class="max-w-3xl">
+      {
+        eyebrow ? (
+          <p class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase">
+            {eyebrow}
+          </p>
+        ) : null
+      }
+      <h2
+        id="cta-heading"
+        class="mt-3 text-3xl font-medium tracking-tight text-zinc-950 sm:text-5xl"
+      >
+        {title}
+      </h2>
+      <p class="mt-5 text-lg leading-8 text-zinc-600">
+        {body}
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a
+          href={primaryHref}
+          class="inline-flex items-center justify-center rounded-full bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
+        >
+          {primaryLabel}
+        </a>
+        {
+          secondaryHref && secondaryLabel ? (
+            <a
+              href={secondaryHref}
+              class="inline-flex items-center justify-center rounded-full border border-zinc-950/10 bg-white px-5 py-3 text-sm font-medium text-zinc-950 transition hover:border-zinc-950/30"
+            >
+              {secondaryLabel}
+            </a>
+          ) : null
+        }
+      </div>
+    </div>
+  </div>
+</section>

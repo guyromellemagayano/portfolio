@@ -1,6 +1,6 @@
-import { nextEslintConfig } from "@portfolio/config-eslint/next";
+import { reactEslintConfig } from "@portfolio/config-eslint/react";
 
-const baseNoRestrictedSyntaxRule = nextEslintConfig.find(
+const baseNoRestrictedSyntaxRule = reactEslintConfig.find(
   (config) => config?.rules?.["no-restricted-syntax"]
 )?.rules?.["no-restricted-syntax"];
 
@@ -10,7 +10,7 @@ const noRestrictedSyntaxEntries = Array.isArray(baseNoRestrictedSyntaxRule)
 
 /** @type {import("eslint").Linter.Config} */
 export default [
-  ...nextEslintConfig,
+  ...reactEslintConfig,
   {
     files: ["src/components/**/*.tsx"],
     ignores: ["src/components/**/__tests__/**"],

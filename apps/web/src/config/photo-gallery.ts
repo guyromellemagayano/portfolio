@@ -4,8 +4,6 @@
  * @description Static configuration for photo gallery content and settings.
  */
 
-import { type StaticImageData } from "next/image";
-
 import photoGalleryConfig from "@web/data/photo-gallery.json";
 import image1 from "@web/images/photos/image-1.jpg";
 import image2 from "@web/images/photos/image-2.jpg";
@@ -42,7 +40,7 @@ const PHOTO_GALLERY_IMAGE_KEYS: ReadonlyArray<PhotoGalleryImageKey> = [
   "image5",
 ];
 
-const PHOTO_GALLERY_IMAGE_MAP: Record<PhotoGalleryImageKey, StaticImageData> = {
+const PHOTO_GALLERY_IMAGE_MAP: Record<PhotoGalleryImageKey, ImageSource> = {
   image1,
   image2,
   image3,
@@ -72,7 +70,8 @@ const PHOTO_GALLERY_CONFIG_DATA = createPhotoGalleryConfigData();
 // PHOTO GALLERY EXPORTS
 // ============================================================================
 
-export const PHOTO_GALLERY_PHOTOS: ReadonlyArray<StaticImageData> =
+export const PHOTO_GALLERY_PHOTOS: ReadonlyArray<ImageSource> =
   PHOTO_GALLERY_CONFIG_DATA.photos.map(
     (photo) => PHOTO_GALLERY_IMAGE_MAP[photo.key]
   );
+import { type ImageSource } from "@web/lib/media";

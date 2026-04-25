@@ -4,10 +4,7 @@
  * @description Utilities for helpers.
  */
 
-import { type ComponentPropsWithoutRef } from "react";
-
 import { type ClassValue, clsx } from "clsx";
-import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 
 /** Converts an array of strings to a URL slug. */
@@ -27,7 +24,7 @@ export function cn(...classes: ClassValue[]): string {
 /** Checks if a path is active. */
 export function isActivePath(
   pathname: string | null | undefined,
-  href: ComponentPropsWithoutRef<typeof Link>["href"]
+  href: string
 ): boolean {
   if (!pathname) return false;
   if (href === "/") return pathname === "/";

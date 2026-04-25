@@ -1,5 +1,5 @@
 {
-  "extends": "@portfolio/config-typescript/src/nextjs.json",
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "target": "ES2020",
     "lib": [
@@ -23,21 +23,19 @@
       "@portfolio/*": [
         "../../packages/*/src/index.ts"
       ],
-      "@portfolio/api-contracts/*": [
-        "../../packages/api-contracts/src/*/index.ts"
-      ],
       "@web/*": [
         "./src/*"
       ]
     }
   },
   "include": [
-    "next-env.d.ts",
+    ".astro/types.d.ts",
+    "src/env.d.ts",
     "**/*.css",
+    "**/*.astro",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.d.ts",
-    ".next/types/**/*.ts"
+    "**/*.d.ts"
   ],
   "exclude": [
     "node_modules",

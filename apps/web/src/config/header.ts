@@ -4,17 +4,13 @@
  * @description Static configuration for header content and settings.
  */
 
-import { type Route } from "next";
-
-import { contentSnapshot } from "@portfolio/content-data";
-
-import { getPortfolioNavigationLinks } from "@web/utils/portfolio";
+import { navigationLinks } from "@web/data/site";
 
 // ============================================================================
 // HEADER LINK TYPES
 // ============================================================================
 
-type InternalHref = Route | (string & {});
+type InternalHref = string;
 
 export type HeaderLink =
   | {
@@ -52,14 +48,13 @@ type HeaderConfigData = Readonly<{
 
 const createHeaderConfigData = (): HeaderConfigData => {
   const avatarLinkHref = "/";
-  const navLinks = getPortfolioNavigationLinks(
-    contentSnapshot.portfolio,
-    "header"
-  ).map((link) => ({
-    kind: "internal" as const,
-    label: link.label,
-    href: link.href as InternalHref,
-  }));
+  const navLinks = navigationLinks
+    .filter((link) => link.showInHeader)
+    .map((link) => ({
+      kind: "internal" as const,
+      label: link.label,
+      href: link.href as InternalHref,
+    }));
 
   return {
     avatarLinkHref,

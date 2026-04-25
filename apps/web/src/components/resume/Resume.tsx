@@ -9,16 +9,13 @@ import {
   type ComponentPropsWithRef,
 } from "react";
 
-import Image from "next/image";
-import { useTranslations } from "next-intl";
-
 import { Button, type ButtonProps } from "@web/components/button";
 import { Icon } from "@web/components/icon";
 import {
   List,
-  ListElementType,
+  type ListElementType,
   ListItem,
-  ListItemElementType,
+  type ListItemElementType,
   type ListItemProps,
   type ListProps,
 } from "@web/components/list";
@@ -27,6 +24,8 @@ import {
   RESUME_ROLE_DATA,
   type ResumeRole,
 } from "@web/config/resume";
+import { useTranslations } from "@web/lib/i18n";
+import { getImageSource } from "@web/lib/media";
 import { cn, getRoleItemKey, parseRoleDate } from "@web/utils/helpers";
 
 // ============================================================================
@@ -152,11 +151,11 @@ export function ResumeRoleListItem<P extends Record<string, unknown> = {}>(
       className={cn("flex gap-4", className)}
     >
       <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-        <Image
-          src={roleData.logo}
+        <img
+          data-testid="resume-logo-image"
+          src={getImageSource(roleData.logo)}
           alt={roleData.company}
           className="h-7 w-7"
-          unoptimized
         />
       </div>
       <dl className="flex flex-auto flex-wrap gap-x-2">

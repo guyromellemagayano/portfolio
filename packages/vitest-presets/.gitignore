@@ -12,11 +12,14 @@ coverage/
 test-results/
 playwright-report/
 playwright/.cache/
+playwright/.auth/
+blob-report/
 .pytest_cache/
 .coverage
 htmlcov/
 
-# Next.js and build outputs
+# Framework and build outputs
+.astro/
 .next/
 .next-docker/
 out/
@@ -43,8 +46,10 @@ logs/
 
 # Vercel and Turbo
 .vercel
+.vercel/
 .turbo/
 .cache/
+.parcel-cache/
 
 # TypeScript
 *.tsbuildinfo

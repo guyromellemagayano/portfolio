@@ -70,7 +70,7 @@
 
 - **Subject Format**: Use conventional commits (for example, `feat(scope): ...`, `fix(scope): ...`, `chore(scope): ...`)
 - **Body Format**: For non-trivial commits, add a bullet body using `-` lines with no blank line between bullets
-- **Backticks**: Wrap code identifiers in backticks (`API_GATEWAY_URL`, `apps/web/next.config.ts`, `/api/revalidate/content`, `turbo.json`, `pnpm --filter web check-types`)
+- **Backticks**: Wrap code identifiers in backticks (`PUBLIC_SITE_URL`, `apps/web/astro.config.mjs`, `apps/web/src/pages/sitemap.xml.ts`, `turbo.json`, `pnpm --filter web check-types`)
 - **Writing Method**: Prefer a commit message file (`git commit -F <file>` / `git commit --amend -F <file>`) or a single body block to avoid accidental blank lines from multiple `-m` flags
 
 ### Documentation Template
@@ -2433,7 +2433,6 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 - **README**: Each package in monorepo with usage examples, API documentation
 - **Inline comments**: Complex logic only (not obvious code), explain "why" not "what"
 - **Storybook**: All reusable UI components with interactive examples and accessibility notes
-- **ADRs**: Architectural decisions in `docs/adr/` (follow MADR format)
 - **API Documentation**: OpenAPI/Swagger for REST APIs, GraphQL schema documentation
 - **CHANGELOG**: Keep CHANGELOG.md following Keep a CHANGELOG format
 - **Contributing Guide**: CONTRIBUTING.md with setup, testing, and PR guidelines
@@ -2729,8 +2728,7 @@ export const SubComponent: SubComponentComponent = setDisplayName(
   - Lint all: `pnpm -w -r lint`
   - Build all via turbo: `pnpm -w turbo run build`
   - Dev targets (per app):
-    - web (Next.js): `pnpm --filter ./apps/web dev`
-    - API (Node/Express): `pnpm --filter ./apps/api dev`
+    - web (Astro): `pnpm --filter ./apps/web dev`
   - Scoped operations:
     - components pkg tests: `pnpm --filter ./packages/components test`
     - utils pkg tests: `pnpm --filter ./packages/utils test`
@@ -2741,13 +2739,13 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 ## Project Defaults & Assumptions (tailored to this repo)
 
 - Monorepo layout:
-  - Apps: `./apps/web` (Next.js), `./apps/api` (Node/Express).
+  - Apps: `./apps/web` (Astro).
   - Packages: `./packages/{components,ui,utils,hooks,logger,config-eslint,config-typescript,vitest-presets}`.
 - Testing: Vitest everywhere; use `vitest-presets/{browser,node,react}` when applicable.
 - TypeScript: strict; prefer `satisfies`, exhaustive switches, and `never` checks; keep ambient types in `global.d.ts` minimal.
-- React: function components, hooks, RSC where applicable (Next 13+), suspense-ready, a11y-first.
+- React: function components, hooks, Astro-compatible islands where applicable, suspense-ready, a11y-first.
 - Styling: Tailwind + CSS Modules; use `cn/clsx` helper; no global leaks.
-- API: Express handlers typed; schema validation with Zod; error boundaries and structured logs.
+- API boundaries: handlers typed; schema validation with Zod; error boundaries and structured logs.
 - CI: GitHub Actions with turbo cache keys (lockfile + turbo.JSON + tsconfig); run per-package tests in parallel matrices.
 
 ## When I Say…

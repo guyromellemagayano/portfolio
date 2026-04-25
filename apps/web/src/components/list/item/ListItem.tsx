@@ -11,11 +11,9 @@ import {
   type ComponentPropsWithRef,
 } from "react";
 
-import { type LinkProps } from "next/link";
-import { useTranslations } from "next-intl";
-
 import { getLinkTargetProps, isValidLink } from "@portfolio/utils";
 
+import { useTranslations } from "@web/lib/i18n";
 import { type ArticleWithSlug } from "@web/utils/articles";
 import { setCustomDateFormat } from "@web/utils/datetime";
 import { cn } from "@web/utils/helpers";
@@ -33,7 +31,7 @@ export type ListItemProps<P extends Record<string, unknown> = {}> = Omit<
 > &
   P & {
     as?: ListItemElementType;
-    href?: LinkProps["href"];
+    href?: string;
     target?: string;
     title?: string;
   };

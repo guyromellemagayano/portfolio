@@ -12,9 +12,8 @@ import {
   useId,
 } from "react";
 
-import { useTranslations } from "next-intl";
-
 import { COMMON_FOCUS_CLASSNAMES } from "@web/data/common";
+import { useTranslations } from "@web/lib/i18n";
 import { cn } from "@web/utils/helpers";
 
 import { Button } from "../button";

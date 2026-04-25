@@ -4,26 +4,19 @@
  * @description Static configuration for footer content and settings.
  */
 
-import { type ComponentPropsWithoutRef } from "react";
-
-import { type Route } from "next";
-import Link from "next/link";
-
-import { contentSnapshot } from "@portfolio/content-data";
-
-import { getPortfolioNavigationLinks } from "@web/utils/portfolio";
+import { navigationLinks } from "@web/data/site";
 
 // ============================================================================
 // FOOTER LINK TYPES
 // ============================================================================
 
-type InternalHref = Route | (string & {});
+type InternalHref = string;
 
 export type FooterLink =
   | {
       kind: "internal";
       label: string;
-      href: ComponentPropsWithoutRef<typeof Link>["href"];
+      href: InternalHref;
     }
   | {
       kind: "external";
@@ -56,14 +49,13 @@ type FooterConfigData = Readonly<{
 }>;
 
 const createFooterConfigData = (): FooterConfigData => {
-  const navLinks = getPortfolioNavigationLinks(
-    contentSnapshot.portfolio,
-    "footer"
-  ).map((link) => ({
-    kind: "internal" as const,
-    label: link.label,
-    href: link.href as InternalHref,
-  }));
+  const navLinks = navigationLinks
+    .filter((link) => link.showInFooter)
+    .map((link) => ({
+      kind: "internal" as const,
+      label: link.label,
+      href: link.href as InternalHref,
+    }));
 
   return { navLinks };
 };

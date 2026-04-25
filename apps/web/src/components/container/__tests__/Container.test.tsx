@@ -20,6 +20,10 @@ vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
+function ContainerReactElement() {
+  return <div data-testid="react-element">React Element</div>;
+}
+
 describe("Container", () => {
   afterEach(() => {
     cleanup();
@@ -383,12 +387,9 @@ describe("Container", () => {
     });
 
     it("handles React elements", () => {
-      const ChildComponent = function () {
-        return <div data-testid="react-element">React Element</div>;
-      };
       render(
         <Container>
-          <ChildComponent />
+          <ContainerReactElement />
         </Container>
       );
 

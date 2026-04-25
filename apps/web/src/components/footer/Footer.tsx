@@ -9,9 +9,6 @@ import {
   type ComponentPropsWithRef,
 } from "react";
 
-import Link from "next/link";
-import { useTranslations } from "next-intl";
-
 import {
   filterValidNavigationLinks,
   formatDateSafely,
@@ -20,11 +17,13 @@ import {
 } from "@portfolio/utils";
 
 import { Container } from "@web/components/container";
+import { Link } from "@web/components/link";
 import {
   FOOTER_NAV_LINK_CONFIG,
-  FooterData,
+  type FooterData,
   type FooterLink,
 } from "@web/config/footer";
+import { useTranslations } from "@web/lib/i18n";
 import { cn } from "@web/utils/helpers";
 
 const getCurrentYear = (): string =>

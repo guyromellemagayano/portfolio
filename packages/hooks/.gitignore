@@ -12,6 +12,8 @@ coverage/
 test-results/
 playwright-report/
 playwright/.cache/
+playwright/.auth/
+blob-report/
 .pytest_cache/
 .coverage
 htmlcov/
@@ -24,6 +26,11 @@ dist-ssr/
 # Local caches
 .turbo/
 .cache/
+.parcel-cache/
 
 # TypeScript
 *.tsbuildinfo
+
+# Logs and OS files
+*.log
+.DS_Store

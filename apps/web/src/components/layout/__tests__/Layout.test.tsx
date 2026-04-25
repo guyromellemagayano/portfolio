@@ -17,7 +17,7 @@ import "@testing-library/jest-dom";
 // MOCKS
 // ============================================================================
 
-vi.mock("next-intl", () => ({
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: vi.fn((_namespace: string) => {
     const translations: Record<string, string> = {
       "labels.skipToMainContent": "Skip to main content",
@@ -26,12 +26,6 @@ vi.mock("next-intl", () => ({
     };
     return (key: string) => translations[key] ?? key;
   }),
-}));
-
-vi.mock("next/navigation", () => ({
-  useRouter: vi.fn(() => ({
-    back: vi.fn(),
-  })),
 }));
 
 vi.mock("@portfolio/utils", () => ({

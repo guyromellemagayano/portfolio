@@ -6,26 +6,37 @@
 
 import { type ComponentPropsWithRef } from "react";
 
-import { default as NextLink } from "next/link";
-
-import { getLinkTargetProps, isValidLink } from "@portfolio/utils";
-
 import { COMMON_FOCUS_CLASSNAMES } from "@web/data/common";
 import { cn } from "@web/utils/helpers";
 
 import { Icon, type IconProps } from "../icon";
 
+function isValidHref(href: unknown): href is string {
+  return typeof href === "string" && href.trim().length > 0 && href !== "#";
+}
+
+function getAnchorTargetProps(href: string, target?: string) {
+  const isExternalHref = /^https?:\/\//i.test(href);
+  const resolvedTarget = target ?? (isExternalHref ? "_blank" : undefined);
+
+  return {
+    target: resolvedTarget,
+    rel: resolvedTarget === "_blank" ? "noopener noreferrer" : undefined,
+  };
+}
+
 // ============================================================================
 // COMMON LINK COMPONENT TYPES
 // ============================================================================
 
-export type LinkElementType = typeof NextLink;
+export type LinkElementType = "a";
 export type LinkProps<P extends Record<string, unknown> = {}> = Omit<
   ComponentPropsWithRef<LinkElementType>,
   "as" | "href"
 > &
   P & {
     as?: LinkElementType;
+    href?: string;
     icon?: IconProps["name"];
     page?: IconProps["page"];
     hasLabel?: boolean;
@@ -40,7 +51,7 @@ export function SocialLink<P extends Record<string, unknown> = {}>(
   props: LinkProps<P>
 ) {
   const {
-    as: Component = NextLink,
+    as: Component = "a",
     href,
     icon,
     page,
@@ -52,9 +63,9 @@ export function SocialLink<P extends Record<string, unknown> = {}>(
     ...rest
   } = props;
 
-  const linkHref = href && isValidLink(href) ? href : null;
+  const linkHref = isValidHref(href) ? href : null;
   const linkTargetProps = linkHref
-    ? getLinkTargetProps(linkHref, target)
+    ? getAnchorTargetProps(linkHref, target)
     : undefined;
 
   if (!linkHref) return null;
@@ -66,7 +77,7 @@ export function SocialLink<P extends Record<string, unknown> = {}>(
       target={linkTargetProps?.target}
       rel={linkTargetProps?.rel}
       title={title}
-      aria-label={label ?? title}
+      aria-label={label ?? title ?? rest["aria-label"]}
       className={cn(
         "-mx-1 inline-flex rounded-full px-1",
         className,
@@ -100,7 +111,7 @@ export const Link = function Link<P extends Record<string, unknown> = {}>(
   props: LinkProps<P>
 ) {
   const {
-    as: Component = NextLink,
+    as: Component = "a",
     children,
     href,
     target,
@@ -109,8 +120,8 @@ export const Link = function Link<P extends Record<string, unknown> = {}>(
     ...rest
   } = props;
 
-  const linkHref = href && isValidLink(href) ? href : "#";
-  const linkTargetProps = getLinkTargetProps(linkHref, target);
+  const linkHref = isValidHref(href) ? href : "#";
+  const linkTargetProps = getAnchorTargetProps(linkHref, target);
 
   return (
     <Component
@@ -119,7 +130,7 @@ export const Link = function Link<P extends Record<string, unknown> = {}>(
       target={linkTargetProps.target}
       rel={linkTargetProps.rel}
       title={title ?? label}
-      aria-label={label}
+      aria-label={label ?? rest["aria-label"]}
     >
       {children}
     </Component>

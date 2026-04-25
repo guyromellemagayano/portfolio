@@ -6,9 +6,8 @@
 
 import { type ComponentPropsWithoutRef } from "react";
 
-import Link from "next/link";
-
 import { Container } from "@web/components/container";
+import { Link } from "@web/components/link";
 import { Prose } from "@web/components/prose";
 import { type CommonLayoutComponentData } from "@web/data/page";
 import { type ArticleWithSlug } from "@web/utils/articles";

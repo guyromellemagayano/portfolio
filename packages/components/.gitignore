@@ -1,13 +1,22 @@
 # Build output
 /dist
+/dist-ssr
+/build
 /coverage
 
 # Dependencies
 /node_modules
+/.pnp
+/.pnp.js
 
 # Tooling caches
 /.turbo
+/.cache
 /.npm-cache
+/.pnpm-store
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
 
 # OS files
 .DS_Store

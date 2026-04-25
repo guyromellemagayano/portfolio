@@ -1,0 +1,35 @@
+---
+/**
+ * @file apps/web/src/components/PageIntro.astro
+ * @author Guy Romelle Magayano
+ * @description Shared Astro page intro block for brochure routes.
+ */
+
+type Props = {
+  subheading?: string;
+  title: string;
+  intro?: string;
+};
+
+const { subheading, title, intro } = Astro.props;
+---
+
+<header class="mx-auto max-w-6xl px-6 pt-16 sm:px-8 sm:pt-24">
+  {
+    subheading ? (
+      <p class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase">
+        {subheading}
+      </p>
+    ) : null
+  }
+  <h1
+    class="mt-3 max-w-4xl text-4xl font-medium tracking-tight text-zinc-950 sm:text-6xl"
+  >
+    {title}
+  </h1>
+  {
+    intro ? (
+      <p class="mt-6 max-w-3xl text-lg leading-8 text-zinc-600">{intro}</p>
+    ) : null
+  }
+</header>

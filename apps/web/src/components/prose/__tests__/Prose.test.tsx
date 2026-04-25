@@ -16,6 +16,10 @@ vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes: string[]) => classes.filter(Boolean).join(" ")),
 }));
 
+function ProseChildComponent() {
+  return <span>Child component content</span>;
+}
+
 describe("Prose", () => {
   afterEach(() => {
     cleanup();
@@ -169,13 +173,9 @@ describe("Prose", () => {
     });
 
     it("handles React components as children", () => {
-      const ChildComponent = function () {
-        return <span>Child component content</span>;
-      };
-
       const { container } = render(
         <Prose>
-          <ChildComponent />
+          <ProseChildComponent />
         </Prose>
       );
 

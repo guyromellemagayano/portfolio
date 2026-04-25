@@ -1,7 +1,7 @@
-import react from "@vitejs/plugin-react";
 import path from "path";
 import { fileURLToPath } from "url";
-import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+import { getViteConfig } from "astro/config";
 
 import { reactPreset } from "@portfolio/vitest-presets";
 
@@ -9,31 +9,10 @@ import { reactPreset } from "@portfolio/vitest-presets";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default defineConfig({
+export default getViteConfig({
   plugins: [react()],
   resolve: {
     alias: [
-      {
-        find: /^@portfolio\/api-contracts\/content$/,
-        replacement: path.resolve(
-          __dirname,
-          "../../packages/api-contracts/src/content/index.ts"
-        ),
-      },
-      {
-        find: /^@portfolio\/api-contracts\/http$/,
-        replacement: path.resolve(
-          __dirname,
-          "../../packages/api-contracts/src/http/index.ts"
-        ),
-      },
-      {
-        find: /^@portfolio\/content-data$/,
-        replacement: path.resolve(
-          __dirname,
-          "../../packages/content-data/src/index.ts"
-        ),
-      },
       {
         find: /^@portfolio\/logger$/,
         replacement: path.resolve(
@@ -106,7 +85,7 @@ export default defineConfig({
         "dist/",
         "build/",
         "coverage/",
-        ".next/",
+        ".astro/",
         "**/*.d.ts",
         "**/*.config.*",
         "**/test-setup.*",
@@ -123,30 +102,26 @@ export default defineConfig({
         "**/rollup.config.*",
         "**/tailwind.config.*",
         "**/postcss.config.*",
-        "**/next.config.*",
+        "**/astro.config.*",
         "**/remix.config.*",
         "**/README.md",
-        "src/app/layout.tsx",
-        "src/app/page.tsx",
-        "src/app/globals.css",
-        "src/app/styles.css",
+        "src/layouts/**/*.astro",
+        "src/pages/**/*",
       ],
       include: [
         "src/**/*.{js,jsx,ts,tsx}",
         "!src/**/*.{test,spec}.{js,jsx,ts,tsx}",
         "!src/**/test-setup.*",
         "!src/**/*.d.ts",
-        "!src/app/layout.tsx",
-        "!src/app/page.tsx",
-        "!src/app/globals.css",
-        "!src/app/styles.css",
+        "!src/layouts/**/*.astro",
+        "!src/pages/**/*",
       ],
     },
     include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     exclude: [
       "node_modules",
       "dist",
-      ".next",
+      ".astro",
       ".idea",
       ".git",
       ".cache",

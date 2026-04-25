@@ -4,8 +4,6 @@
  * @description Unit tests for the ArticleSearch component.
  */
 
-import React from "react";
-
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -26,7 +24,7 @@ const mockUseTranslations = vi.hoisted(() =>
       "search.labels.showingAllArticles": ({ count } = {}) =>
         `Showing all ${count} articles.`,
       "search.labels.foundResults": ({ count, query } = {}) =>
-        `Found ${count} articles for \"${query}\".`,
+        `Found ${count} articles for "${query}".`,
       "search.labels.searchLandmark": "Search articles",
       "search.labels.resultsRegion": "Search results",
     };
@@ -39,7 +37,7 @@ const mockUseTranslations = vi.hoisted(() =>
 const mockSetSearchQuery = vi.hoisted(() => vi.fn());
 const mockUseFuzzySearch = vi.hoisted(() => vi.fn());
 
-vi.mock("next-intl", () => ({
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: mockUseTranslations,
 }));
 
@@ -301,11 +299,18 @@ describe("ArticleSearch", () => {
       results: mockArticles,
     });
 
-    const ref = React.createRef<HTMLDivElement>();
+    let rootElement: HTMLDivElement | null = null;
 
-    render(<ArticleSearch articles={mockArticles} ref={ref} />);
+    render(
+      <ArticleSearch
+        articles={mockArticles}
+        ref={(node) => {
+          rootElement = node;
+        }}
+      />
+    );
 
-    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+    expect(rootElement).toBeInstanceOf(HTMLDivElement);
   });
 
   it("passes through debug attributes", () => {

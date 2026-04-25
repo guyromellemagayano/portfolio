@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
-
 /**
  * @file apps/web/src/components/header/Header.tsx
  * @author Guy Romelle Magayano
@@ -16,11 +14,6 @@ import {
   PopoverButton,
   PopoverPanel,
 } from "@headlessui/react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
-import { useTheme } from "next-themes";
 
 import {
   filterValidNavigationLinks,
@@ -32,14 +25,38 @@ import {
 
 import { Container } from "@web/components/container";
 import { Icon } from "@web/components/icon";
+import { Link } from "@web/components/link";
 import {
   AVATAR_LINK_HREF,
   HEADER_NAV_LINK_CONFIG,
-  HeaderComponentNavLinks,
+  type HeaderComponentNavLinks,
 } from "@web/config/header";
 import { COMMON_FOCUS_CLASSNAMES } from "@web/data/common";
 import avatarImage from "@web/images/avatar.jpg";
+import { useTranslations } from "@web/lib/i18n";
+import { getImageSource, type ImageSource } from "@web/lib/media";
 import { clamp, cn, isActivePath } from "@web/utils/helpers";
+
+function usePathname(): string {
+  const [pathname] = useState(() => globalThis.location?.pathname ?? "/");
+
+  return pathname;
+}
+
+function useTheme() {
+  const [resolvedTheme, setResolvedTheme] = useState<"dark" | "light">("light");
+
+  function setTheme(theme: string): void {
+    const nextTheme = theme === "dark" ? "dark" : "light";
+    setResolvedTheme(nextTheme);
+    globalThis.document?.documentElement.classList.toggle(
+      "dark",
+      nextTheme === "dark"
+    );
+  }
+
+  return { resolvedTheme, setTheme };
+}
 
 // ============================================================================
 // HEADER AVATAR COMPONENT
@@ -53,8 +70,8 @@ export type HeaderAvatarProps<P extends Record<string, unknown> = {}> = Omit<
   P & {
     as?: HeaderAvatarElementType;
     href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
-    alt?: React.ComponentPropsWithoutRef<typeof Image>["alt"];
-    src?: React.ComponentPropsWithoutRef<typeof Image>["src"];
+    alt?: React.ImgHTMLAttributes<HTMLImageElement>["alt"];
+    src?: ImageSource;
     large?: boolean;
   };
 
@@ -82,10 +99,16 @@ function HeaderAvatar<P extends Record<string, unknown> = {}>(
     brandName: headerI18n("brandName"),
   };
 
-  const linkHref = href && isValidLink(href) ? href : AVATAR_LINK_HREF;
-  const linkTitle = title && title.length > 0 ? title : HEADER_AVATAR_I18N.home;
-  const linkTargetProps = getLinkTargetProps(linkHref, target);
-  const imageSrc = src && isValidImageSrc(src) ? src : avatarImage;
+  const linkHref =
+    typeof href === "string" && isValidLink(href) ? href : AVATAR_LINK_HREF;
+  const linkTitle =
+    typeof title === "string" && title.length > 0
+      ? title
+      : HEADER_AVATAR_I18N.home;
+  const linkTarget = typeof target === "string" ? target : undefined;
+  const linkTargetProps = getLinkTargetProps(linkHref, linkTarget);
+  const imageSrc =
+    src && isValidImageSrc(getImageSource(src)) ? src : avatarImage;
   const imageAlt = alt && alt.length > 0 ? alt : HEADER_AVATAR_I18N.brandName;
   const imageSize = large ? 64 : 36;
   const imageClassName = cn(
@@ -93,8 +116,7 @@ function HeaderAvatar<P extends Record<string, unknown> = {}>(
     imageSrc ? "bg-transparent" : "bg-zinc-100 dark:bg-zinc-800",
     large ? "h-16 w-16" : "h-9 w-9"
   );
-  const isRemoteImageSrc =
-    typeof imageSrc === "string" && /^https?:\/\//i.test(imageSrc);
+  const isRemoteImageSrc = /^https?:\/\//i.test(getImageSource(imageSrc));
 
   return (
     <Component
@@ -107,12 +129,12 @@ function HeaderAvatar<P extends Record<string, unknown> = {}>(
       className={cn(
         "pointer-events-auto cursor-pointer rounded-full shadow-lg",
         COMMON_FOCUS_CLASSNAMES,
-        className
+        className as string | undefined
       )}
     >
       {isRemoteImageSrc ? (
         <img
-          src={imageSrc}
+          src={getImageSource(imageSrc)}
           alt={imageAlt}
           width={imageSize}
           height={imageSize}
@@ -121,14 +143,15 @@ function HeaderAvatar<P extends Record<string, unknown> = {}>(
           fetchPriority="high"
         />
       ) : (
-        <Image
-          src={imageSrc}
+        <img
+          src={getImageSource(imageSrc)}
           alt={imageAlt}
           width={imageSize}
           height={imageSize}
           sizes={large ? "4rem" : "2.25rem"}
           className={imageClassName}
-          priority
+          decoding="async"
+          fetchPriority="high"
         />
       )}
     </Component>
@@ -220,11 +243,12 @@ HeaderDesktopNav.displayName = "HeaderDesktopNav";
 export type HeaderDesktopNavItemElementType = "li";
 export type HeaderDesktopNavItemProps<P extends Record<string, unknown> = {}> =
   Omit<React.ComponentPropsWithRef<HeaderDesktopNavItemElementType>, "as"> &
-    Pick<
-      React.ComponentPropsWithoutRef<typeof Link>,
-      "href" | "target" | "title"
-    > &
-    P & { as?: HeaderDesktopNavItemElementType };
+    P & {
+      as?: HeaderDesktopNavItemElementType;
+      href: string;
+      target?: string;
+      title?: string;
+    };
 
 function HeaderDesktopNavItem<P extends Record<string, unknown> = {}>(
   props: HeaderDesktopNavItemProps<P>
@@ -240,9 +264,11 @@ function HeaderDesktopNavItem<P extends Record<string, unknown> = {}>(
   } = props;
 
   const pathname = usePathname();
+  const linkTarget = typeof target === "string" ? target : undefined;
+  const linkTitle = typeof title === "string" ? title : undefined;
   const isActive = isActivePath(pathname, href);
-  const linkTargetProps = getLinkTargetProps(href?.toString(), target);
-  const linkHref = href && isValidLink(href) ? href : "#";
+  const linkTargetProps = getLinkTargetProps(href, linkTarget);
+  const linkHref = isValidLink(href) ? href : "#";
 
   if (children == null || children === false || children === "") return null;
 
@@ -255,8 +281,8 @@ function HeaderDesktopNavItem<P extends Record<string, unknown> = {}>(
         href={linkHref}
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
-        title={title}
-        aria-label={title}
+        title={linkTitle}
+        aria-label={linkTitle}
         className={cn(
           "relative mx-1 block rounded-full px-2",
           COMMON_FOCUS_CLASSNAMES,
@@ -388,9 +414,11 @@ function HeaderMobileNavItem<P extends Record<string, unknown> = {}>(
   } = props;
 
   const pathname = usePathname();
+  const linkTarget = typeof target === "string" ? target : undefined;
+  const linkTitle = typeof title === "string" ? title : undefined;
   const isActive = isActivePath(pathname, href);
-  const linkTargetProps = getLinkTargetProps(href?.toString(), target);
-  const linkHref = href && isValidLink(href) ? href : "#";
+  const linkTargetProps = getLinkTargetProps(href, linkTarget);
+  const linkHref = isValidLink(href) ? href : "#";
 
   if (children == null || children === false || children === "") return null;
 
@@ -402,8 +430,8 @@ function HeaderMobileNavItem<P extends Record<string, unknown> = {}>(
         href={linkHref}
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
-        title={title}
-        aria-label={title}
+        title={linkTitle}
+        aria-label={linkTitle}
         className={cn(
           "relative block py-2 transition",
           isActive
@@ -435,11 +463,6 @@ function HeaderThemeToggle<P extends Record<string, unknown> = {}>(
 
   const { resolvedTheme, setTheme } = useTheme();
   const otherTheme = resolvedTheme === "dark" ? "light" : "dark";
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Internationalization
   const headerI18n = useTranslations("components.header");
@@ -451,9 +474,7 @@ function HeaderThemeToggle<P extends Record<string, unknown> = {}>(
     lightMode: headerI18n("labels.lightMode"),
   };
 
-  const ariaLabel = mounted
-    ? `Switch to ${otherTheme === "dark" ? HEADER_THEME_TOGGLE_I18N.darkMode : HEADER_THEME_TOGGLE_I18N.lightMode}`
-    : HEADER_THEME_TOGGLE_I18N.toggleTheme;
+  const ariaLabel = `Switch to ${otherTheme === "dark" ? HEADER_THEME_TOGGLE_I18N.darkMode : HEADER_THEME_TOGGLE_I18N.lightMode}`;
 
   return (
     <Component
@@ -491,8 +512,8 @@ export type HeaderProps<P extends Record<string, unknown> = {}> = Omit<
     as?: HeaderElementType;
     navLinks?: HeaderComponentNavLinks;
     avatarHref?: React.ComponentPropsWithoutRef<typeof Link>["href"];
-    avatarAlt?: React.ComponentPropsWithoutRef<typeof Image>["alt"];
-    avatarSrc?: React.ComponentPropsWithoutRef<typeof Image>["src"];
+    avatarAlt?: React.ImgHTMLAttributes<HTMLImageElement>["alt"];
+    avatarSrc?: ImageSource;
   };
 
 export function Header<P extends Record<string, unknown> = {}>(
