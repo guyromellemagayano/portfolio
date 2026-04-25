@@ -9,11 +9,11 @@
 import { type ComponentPropsWithRef, useId, useMemo } from "react";
 
 import Fuse from "fuse.js";
-import { useTranslations } from "next-intl";
 
 import { Card } from "@web/components/card";
 import { Form } from "@web/components/form";
 import { Icon } from "@web/components/icon";
+import { useTranslations } from "@web/lib/i18n";
 import { type ArticleWithSlug } from "@web/utils/articles";
 import { setCustomDateFormat } from "@web/utils/datetime";
 import { useFuzzySearch } from "@web/utils/search";

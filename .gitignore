@@ -5,6 +5,7 @@ node_modules/
 .yarn/
 .npm-cache/
 .pnpm-store/
+.pnpm-debug.log*
 
 # Testing
 coverage/
@@ -12,17 +13,22 @@ coverage/
 test-results/
 playwright-report/
 playwright/.cache/
+playwright/.auth/
+blob-report/
+.playwright-mcp/
 .pytest_cache/
 .coverage
 htmlcov/
 
-# Next.js and build outputs
+# Framework build outputs
+.astro/
 .next/
 .next-docker/
 out/
 build/
 dist/
 dist-ssr/
+storybook-static/
 
 # Production and debug logs
 *.log
@@ -36,15 +42,19 @@ logs/
 
 # Local env files
 .env
+.env.*
 .env*.local
 .env.development.local
 .env.test.local
 .env.production.local
+!.env.example
 
 # Vercel and Turbo
 .vercel
+.vercel/
 .turbo/
 .cache/
+.parcel-cache/
 
 # TypeScript
 *.tsbuildinfo
@@ -52,6 +62,7 @@ logs/
 # Linters
 .stylelintcache
 .eslintcache
+.ruff_cache/
 
 # Python
 __pycache__/
@@ -85,14 +96,27 @@ Thumbs.db
 # Database
 *.db
 *.sqlite
+*.sqlite3
+*.db-journal
+
+# Retired and local-only project trees
+apps/api/
+packages/api-contracts/
+packages/content-data/
+docs/
+old/
 
 # Old files/folders
 *-old/
 *.old
-old/
+*.bak
+*.tmp
 
 # Turborepo
 .turbo
 
 # Temporary folders
 ossph.org/
+tmp/
+temp/
+.tmp/

@@ -5,17 +5,15 @@
  */
 
 import {
-  Children,
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
   type ElementType,
   type ReactNode,
 } from "react";
 
-import Link, { LinkProps } from "next/link";
-
 import { getLinkTargetProps, isValidLink } from "@portfolio/utils";
 
+import { Link } from "@web/components/link";
 import { COMMON_FOCUS_CLASSNAMES } from "@web/data/common";
 import { cn } from "@web/utils/helpers";
 
@@ -25,6 +23,22 @@ import { Icon } from "../icon";
 // CARD LINK CUSTOM COMPONENT
 // ============================================================================
 
+function hasDescriptiveLinkContent(children: ReactNode): boolean {
+  if (children == null || children === false) {
+    return false;
+  }
+
+  if (Array.isArray(children)) {
+    return children.some(hasDescriptiveLinkContent);
+  }
+
+  if (typeof children === "string" || typeof children === "number") {
+    return String(children).trim().length > 0;
+  }
+
+  return true;
+}
+
 export type CardLinkCustomElementType = typeof Link;
 export type CardLinkCustomProps<P extends Record<string, unknown> = {}> = Omit<
   ComponentPropsWithRef<CardLinkCustomElementType>,
@@ -32,7 +46,7 @@ export type CardLinkCustomProps<P extends Record<string, unknown> = {}> = Omit<
 > &
   P & {
     as?: CardLinkCustomElementType;
-    href?: LinkProps["href"];
+    href?: string;
     title?: string;
     target?: string;
   };
@@ -57,24 +71,24 @@ function CardLinkCustom<P extends Record<string, unknown> = {}>(
     ? getLinkTargetProps(linkHref, target)
     : undefined;
 
-  const hasDescriptiveText =
-    typeof children === "string"
-      ? children.trim().length > 0
-      : Children.count(children) > 0;
+  const hasDescriptiveText = hasDescriptiveLinkContent(children as ReactNode);
   const ariaLabel = title && !hasDescriptiveText ? title : undefined;
 
+  const LinkComponent = Component as typeof Link;
+  const linkChildren = children as ReactNode;
+
   return (
-    <Component
+    <LinkComponent
       {...rest}
       href={linkHref}
       target={linkTargetProps?.target}
       rel={linkTargetProps?.rel}
       title={title}
       aria-label={ariaLabel}
-      className={cn(className, COMMON_FOCUS_CLASSNAMES)}
+      className={cn(className as string | undefined, COMMON_FOCUS_CLASSNAMES)}
     >
-      {children}
-    </Component>
+      {linkChildren}
+    </LinkComponent>
   );
 }
 
@@ -313,7 +327,7 @@ export type CardTitleProps<P extends Record<string, unknown> = {}> = Omit<
 > &
   P & {
     as?: CardTitleElementType;
-    href?: LinkProps["href"];
+    href?: string;
     target?: string;
     title?: string;
   };

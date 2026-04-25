@@ -29,7 +29,7 @@ const mockUseTranslations = vi.hoisted(() =>
       "search.labels.showingAllArticles": ({ count } = {}) =>
         `Showing all ${count} articles.`,
       "search.labels.foundResults": ({ count, query } = {}) =>
-        `Found ${count} articles for \"${query}\".`,
+        `Found ${count} articles for "${query}".`,
       "search.labels.searchLandmark": "Search articles",
       "search.labels.resultsRegion": "Search results",
     };
@@ -67,7 +67,7 @@ const mockUseFuzzySearch = vi.hoisted(() =>
   })
 );
 
-vi.mock("next-intl", () => ({
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: mockUseTranslations,
 }));
 

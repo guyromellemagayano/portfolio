@@ -1,0 +1,314 @@
+---
+import ArticleCard from "@web/components/ArticleCard.astro";
+import CTA from "@web/components/CTA.astro";
+import ProjectCard from "@web/components/ProjectCard.astro";
+import ServiceCard from "@web/components/ServiceCard.astro";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import { clients } from "@web/data/clients";
+import { projects } from "@web/data/projects";
+import {
+  buildSteps,
+  clientOutcomes,
+  foundationCapabilities,
+  operatingPrinciples,
+  profile,
+  socialLinks,
+} from "@web/data/site";
+import { services } from "@web/data/services";
+import {
+  buildPortfolioPageMetadata,
+  getPortfolioBrochurePage,
+} from "@web/lib-pages/portfolio-brochure";
+import {
+  appendStructuredData,
+  buildPersonStructuredData,
+  buildProfessionalServiceStructuredData,
+  buildWebsiteStructuredData,
+} from "@web/lib-pages/structured-data";
+import { getAllArticles } from "@web/utils/articles";
+
+const { page } = await getPortfolioBrochurePage("");
+const metadata = appendStructuredData(
+  buildPortfolioPageMetadata(page),
+  buildWebsiteStructuredData(),
+  buildPersonStructuredData(),
+  buildProfessionalServiceStructuredData(page, services)
+);
+const articles = await getAllArticles();
+const featuredServices = services.filter((service) => service.featured);
+const featuredProjects = projects.filter((project) => project.featured);
+const featuredArticles = articles.slice(0, 3);
+---
+
+<BaseLayout metadata={metadata}>
+  <section
+    aria-labelledby="home-hero-heading"
+    class="mx-auto grid max-w-6xl gap-12 border-b border-zinc-950/10 px-6 pt-16 pb-16 sm:px-8 sm:pt-24 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.9fr)] lg:items-end"
+    role="region"
+  >
+    <div>
+      <p
+        class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase"
+      >
+        {page.subheading}
+      </p>
+      <h1
+        id="home-hero-heading"
+        class="mt-4 max-w-5xl text-5xl font-medium tracking-tight text-zinc-950 sm:text-7xl"
+      >
+        {profile.heroTitle}
+      </h1>
+      <p class="mt-6 max-w-3xl text-lg leading-8 text-zinc-600 sm:text-xl">
+        {profile.heroIntro}
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a
+          href="/hire"
+          class="inline-flex items-center justify-center rounded-full bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
+        >
+          Request services
+        </a>
+        <a
+          href="/services"
+          class="inline-flex items-center justify-center rounded-full border border-zinc-950/10 bg-white px-5 py-3 text-sm font-medium text-zinc-950 transition hover:border-zinc-950/30"
+        >
+          View engagement options
+        </a>
+      </div>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+      <section
+        aria-labelledby="home-proof-heading"
+        class="rounded-lg border border-zinc-950/10 bg-white p-6"
+        role="region"
+      >
+        <h2 id="home-proof-heading" class="text-sm font-semibold text-zinc-950">
+          Best fit
+        </h2>
+        <ul class="mt-4 space-y-3 text-sm leading-6 text-zinc-600">
+          {
+            clientOutcomes.map((outcome) => (
+              <li class="border-t border-zinc-950/10 pt-3 first:border-t-0 first:pt-0">
+                <span class="block font-medium text-zinc-950">
+                  {outcome.title}
+                </span>
+                <span>{outcome.detail}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section
+        aria-labelledby="home-social-heading"
+        class="rounded-lg border border-zinc-950/10 bg-white p-6"
+        role="region"
+      >
+        <h2
+          id="home-social-heading"
+          class="text-sm font-semibold text-zinc-950"
+        >
+          Based in {profile.location}
+        </h2>
+        <div class="mt-4 flex flex-wrap gap-2" role="list">
+          {
+            socialLinks.map((link) => (
+              <a
+                href={link.href}
+                rel={
+                  link.href.startsWith("http")
+                    ? "noopener noreferrer"
+                    : undefined
+                }
+                role="listitem"
+                target={link.href.startsWith("http") ? "_blank" : undefined}
+                class="inline-flex items-center rounded-full border border-zinc-950/10 px-3 py-2 text-sm text-zinc-700 transition hover:border-zinc-950/30 hover:text-zinc-950"
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section
+    aria-labelledby="home-companies-heading"
+    class="mx-auto max-w-6xl px-6 py-8 sm:px-8"
+    role="region"
+  >
+    <h2 id="home-companies-heading" class="sr-only">Companies and teams</h2>
+    <div
+      class="flex flex-wrap gap-x-8 gap-y-3 border-y border-zinc-950/10 py-5 text-sm font-medium text-zinc-500 sm:text-base"
+    >
+      {clients.map((client) => <span>{client.name}</span>)}
+    </div>
+  </section>
+
+  <section
+    aria-labelledby="home-services-heading"
+    class="mx-auto max-w-6xl px-6 py-16 sm:px-8"
+    role="region"
+  >
+    <div
+      class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
+    >
+      <div class="max-w-2xl">
+        <p
+          class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase"
+        >
+          What I do
+        </p>
+        <h2
+          id="home-services-heading"
+          class="mt-3 text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+        >
+          Clear engagement paths for teams that need sharper architecture and
+          hands-on delivery.
+        </h2>
+      </div>
+      <a
+        href="/services"
+        class="text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
+      >
+        Compare all services
+      </a>
+    </div>
+    <div class="mt-10 grid gap-4 lg:grid-cols-3">
+      {
+        featuredServices.map((service) => (
+          <ServiceCard service={service} showPrice />
+        ))
+      }
+    </div>
+  </section>
+
+  <section
+    aria-labelledby="home-projects-heading"
+    class="mx-auto max-w-6xl border-t border-zinc-950/10 px-6 py-16 sm:px-8"
+    role="region"
+  >
+    <div
+      class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
+    >
+      <div class="max-w-2xl">
+        <p
+          class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase"
+        >
+          Selected work
+        </p>
+        <h2
+          id="home-projects-heading"
+          class="mt-3 text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+        >
+          Portfolio proof that supports the consulting offer.
+        </h2>
+      </div>
+      <a
+        href="/projects"
+        class="text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
+      >
+        Browse projects
+      </a>
+    </div>
+    <div class="mt-10 grid gap-4 lg:grid-cols-3">
+      {featuredProjects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+
+  <section
+    aria-labelledby="home-articles-heading"
+    class="mx-auto max-w-6xl border-t border-zinc-950/10 px-6 py-16 sm:px-8"
+    role="region"
+  >
+    <div
+      class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
+    >
+      <div class="max-w-2xl">
+        <p
+          class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase"
+        >
+          Writing
+        </p>
+        <h2
+          id="home-articles-heading"
+          class="mt-3 text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+        >
+          Notes on systems that ship well and stay understandable.
+        </h2>
+      </div>
+      <a
+        href="/articles"
+        class="text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
+      >
+        Read all articles
+      </a>
+    </div>
+    <div class="mt-10 grid gap-4 lg:grid-cols-3">
+      {featuredArticles.map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+
+  <section
+    aria-labelledby="home-build-heading"
+    class="mx-auto max-w-6xl border-t border-zinc-950/10 px-6 py-16 sm:px-8"
+    role="region"
+  >
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+      <div>
+        <p
+          class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase"
+        >
+          How I build
+        </p>
+        <h2
+          id="home-build-heading"
+          class="mt-3 text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+        >
+          A practical path from architecture risk to shipped product work.
+        </h2>
+        <ol class="mt-8 space-y-4">
+          {
+            buildSteps.map((step, index) => (
+              <li class="rounded-lg border border-zinc-950/10 bg-white p-5">
+                <p class="text-xs font-semibold tracking-[0.24em] text-zinc-500 uppercase">
+                  Step {index + 1}
+                </p>
+                <h3 class="mt-2 text-lg font-medium text-zinc-950">
+                  {step.title}
+                </h3>
+                <p class="mt-2 text-sm leading-7 text-zinc-600">
+                  {step.detail}
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+      <div class="rounded-lg border border-zinc-950/10 bg-white p-6">
+        <h2 class="text-sm font-semibold text-zinc-950">Working principles</h2>
+        <ul class="mt-4 space-y-3 text-sm leading-7 text-zinc-600">
+          {
+            operatingPrinciples.map((principle) => (
+              <li class="border-t border-zinc-950/10 pt-3 first:border-t-0 first:pt-0">
+                {principle}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    eyebrow={page.subheading}
+    title="Need a cleaner next move for the product?"
+    body="Send the current bottleneck, delivery risk, or product surface you want to simplify. I’ll help choose between a focused review, advisory support, or an implementation sprint."
+    primaryHref="/book"
+    primaryLabel="Choose a starting path"
+    secondaryHref="/hire"
+    secondaryLabel="Open hire page"
+  />
+</BaseLayout>

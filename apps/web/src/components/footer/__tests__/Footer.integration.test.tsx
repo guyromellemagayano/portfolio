@@ -11,8 +11,8 @@ import { Footer } from "../Footer";
 
 import "@testing-library/jest-dom";
 
-// Mock next-intl
-vi.mock("next-intl", () => ({
+// Mock i18n
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: vi.fn((_namespace: string) => {
     const translations: Record<
       string,
@@ -91,14 +91,6 @@ vi.mock("@web/components/container", () => ({
       );
     },
   },
-}));
-
-vi.mock("next/link", () => ({
-  default: vi.fn(({ children, href, ...props }) => (
-    <a href={href} {...props}>
-      {children}
-    </a>
-  )),
 }));
 
 vi.mock("@web/utils/helpers", () => ({

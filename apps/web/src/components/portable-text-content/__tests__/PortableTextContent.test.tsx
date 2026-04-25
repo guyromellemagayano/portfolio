@@ -4,8 +4,6 @@
  * @description Unit tests for the PortableTextContent component.
  */
 
-/* eslint-disable @next/next/no-img-element */
-
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -14,20 +12,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { PortableTextContent } from "../PortableTextContent";
 
 import "@testing-library/jest-dom";
-
-vi.mock("next/image", () => ({
-  default: function Image({
-    src,
-    alt,
-    ...props
-  }: {
-    src: string;
-    alt: string;
-    [key: string]: unknown;
-  }) {
-    return <img src={src} alt={alt} {...props} />;
-  },
-}));
 
 describe("PortableTextContent", () => {
   afterEach(() => {

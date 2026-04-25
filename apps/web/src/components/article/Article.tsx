@@ -6,10 +6,9 @@
 
 import { type ComponentPropsWithRef } from "react";
 
-import { useTranslations } from "next-intl";
-
 import { formatDateSafely } from "@portfolio/utils";
 
+import { useTranslations } from "@web/lib/i18n";
 import { type ArticleWithSlug } from "@web/utils/articles";
 
 import { Card } from "../card";

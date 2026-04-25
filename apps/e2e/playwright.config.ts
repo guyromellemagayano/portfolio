@@ -13,18 +13,18 @@ if (existsSync(workspaceRootEnvLocalFile)) {
 
 const isCI = Boolean(process.env.CI);
 const useExternalServers = process.env.E2E_USE_EXTERNAL_SERVERS?.trim() === "1";
+const configuredBaseUrl = process.env.E2E_BASE_URL?.trim();
+const baseURL =
+  configuredBaseUrl === "http://127.0.0.1:3000" ||
+  configuredBaseUrl === "http://localhost:3000"
+    ? "http://127.0.0.1:4321"
+    : (configuredBaseUrl ?? "http://127.0.0.1:4321");
 const configuredWebServers = useExternalServers
   ? undefined
   : [
       {
-        command: "pnpm --filter api run build && pnpm --filter api start",
-        port: 5001,
-        reuseExistingServer: !isCI,
-        timeout: 120_000,
-      },
-      {
         command: isCI ? "pnpm --filter web start" : "pnpm --filter web dev",
-        port: 3000,
+        port: 4321,
         reuseExistingServer: !isCI,
         timeout: 120_000,
       },
@@ -45,7 +45,7 @@ export default defineConfig({
     ? [["github"], ["html", { open: "never" }], ["list"]]
     : [["list"], ["html", { open: "never" }]],
   use: {
-    baseURL: process.env.E2E_BASE_URL ?? "http://127.0.0.1:3000",
+    baseURL,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",

@@ -10,10 +10,10 @@ import { type ComponentPropsWithoutRef, type ReactNode } from "react";
 
 import * as Headless from "@headlessui/react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useTranslations } from "next-intl";
 
 import { Link } from "@web/components/link";
 import { COMMON_FOCUS_CLASSNAMES } from "@web/data/common";
+import { useTranslations } from "@web/lib/i18n";
 import { cn } from "@web/utils/helpers";
 
 // ============================================================================
@@ -66,7 +66,7 @@ export type ButtonProps<P extends Record<string, unknown> = {}> = Omit<
 > &
   P & {
     as?: ButtonElementType;
-    href?: ComponentPropsWithoutRef<typeof Link>["href"];
+    href?: string;
     variant?: ButtonVariant;
     children?: ReactNode;
     isDisabled?: boolean;
@@ -97,7 +97,7 @@ export function Button<P extends Record<string, unknown> = {}>(
     return (
       <Link
         {...(rest as Omit<ComponentPropsWithoutRef<typeof Link>, "href">)}
-        href={isDisabled ? false : href}
+        href={isDisabled ? undefined : href}
         tabIndex={isDisabled ? -1 : 0}
         className={buttonClassNames}
         disabled={isDisabled}
@@ -133,7 +133,7 @@ export type SkipToMainContentButtonProps<
 > = Omit<ButtonProps<P>, "as" | "href"> &
   P & {
     as?: SkipToMainContentButtonElementType;
-    href?: ComponentPropsWithoutRef<typeof Link>["href"];
+    href?: string;
   };
 
 export function SkipToMainContentButton<P extends Record<string, unknown> = {}>(

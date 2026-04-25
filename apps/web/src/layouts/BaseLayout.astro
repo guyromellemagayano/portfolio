@@ -1,0 +1,32 @@
+---
+/**
+ * @file apps/web/src/layouts/BaseLayout.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-first page layout with shared document, navbar, main region, and footer.
+ */
+
+import Footer from "@web/components/Footer.astro";
+import Navbar from "@web/components/Navbar.astro";
+import BaseDocument from "@web/layouts/BaseDocument.astro";
+import type { WebPageMetadata } from "@web/lib/metadata.types";
+
+type Props = {
+  metadata?: WebPageMetadata;
+};
+
+const { metadata } = Astro.props;
+---
+
+<BaseDocument metadata={metadata}>
+  <a
+    href="#main-content"
+    class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[70] focus:rounded-full focus:bg-zinc-950 focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
+  >
+    Skip to main content
+  </a>
+  <Navbar />
+  <main id="main-content">
+    <slot />
+  </main>
+  <Footer />
+</BaseDocument>

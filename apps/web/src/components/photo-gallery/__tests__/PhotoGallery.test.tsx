@@ -11,8 +11,8 @@ import { PhotoGallery } from "../PhotoGallery";
 
 import "@testing-library/jest-dom";
 
-// Mock next-intl
-vi.mock("next-intl", () => ({
+// Mock i18n
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: vi.fn((_namespace: string) => {
     const translations: Record<string, string> = {
       photoGallery: "Photo gallery",
@@ -21,23 +21,6 @@ vi.mock("next-intl", () => ({
 
     return (key: string) => translations[key] ?? key;
   }),
-}));
-
-// Mock Next.js Image component
-vi.mock("next/image", () => ({
-  default: vi.fn(({ src, alt, className, sizes, fill, priority, ...props }) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={typeof src === "object" && src?.src ? src.src : src}
-      alt={alt}
-      className={className}
-      data-sizes={sizes}
-      data-fill={fill ? "true" : undefined}
-      data-priority={priority ? "true" : undefined}
-      {...props}
-    />
-  )),
-  StaticImageData: {},
 }));
 
 // Mock @web/utils/helpers

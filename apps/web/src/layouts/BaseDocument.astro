@@ -1,0 +1,122 @@
+---
+/**
+ * @file apps/web/src/layouts/BaseDocument.astro
+ * @author Guy Romelle Magayano
+ * @description Shared Astro document shell and metadata renderer.
+ */
+
+import type { WebPageMetadata } from "@web/lib/metadata.types";
+
+import "@web/styles/tailwind.css";
+
+type Props = {
+  metadata?: WebPageMetadata;
+};
+
+const { metadata } = Astro.props;
+const siteName = "Guy Romelle Magayano";
+const titleValue = metadata?.title;
+const title =
+  typeof titleValue === "string"
+    ? `${titleValue} | ${siteName}`
+    : titleValue?.absolute || titleValue?.default || siteName;
+const description =
+  metadata?.description ||
+  "Portfolio of Guy Romelle Magayano, focused on product engineering, platform systems, and reusable web architecture.";
+const canonicalUrl = metadata?.alternates?.canonical;
+const robotsIndex = metadata?.robots?.index === false ? "noindex" : "index";
+const robotsFollow = metadata?.robots?.follow === false ? "nofollow" : "follow";
+const openGraph = metadata?.openGraph;
+const twitter = metadata?.twitter;
+const structuredDataItems = metadata?.structuredData
+  ? Array.isArray(metadata.structuredData)
+    ? metadata.structuredData
+    : [metadata.structuredData]
+  : [];
+---
+
+<!doctype html>
+<html lang="en" class="h-full antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={`${robotsIndex},${robotsFollow}`} />
+    {canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}
+    {
+      openGraph?.type ? (
+        <meta property="og:type" content={openGraph.type} />
+      ) : null
+    }
+    {
+      openGraph?.title ? (
+        <meta property="og:title" content={openGraph.title} />
+      ) : null
+    }
+    {
+      openGraph?.description ? (
+        <meta property="og:description" content={openGraph.description} />
+      ) : null
+    }
+    {openGraph?.url ? <meta property="og:url" content={openGraph.url} /> : null}
+    {
+      openGraph?.siteName ? (
+        <meta property="og:site_name" content={openGraph.siteName} />
+      ) : null
+    }
+    {
+      openGraph?.publishedTime ? (
+        <meta
+          property="article:published_time"
+          content={openGraph.publishedTime}
+        />
+      ) : null
+    }
+    {
+      openGraph?.images?.map((image) => (
+        <>
+          <meta property="og:image" content={image.url} />
+          {image.alt ? (
+            <meta property="og:image:alt" content={image.alt} />
+          ) : null}
+          {image.width ? (
+            <meta property="og:image:width" content={String(image.width)} />
+          ) : null}
+          {image.height ? (
+            <meta property="og:image:height" content={String(image.height)} />
+          ) : null}
+        </>
+      ))
+    }
+    {twitter?.card ? <meta name="twitter:card" content={twitter.card} /> : null}
+    {
+      twitter?.title ? (
+        <meta name="twitter:title" content={twitter.title} />
+      ) : null
+    }
+    {
+      twitter?.description ? (
+        <meta name="twitter:description" content={twitter.description} />
+      ) : null
+    }
+    {
+      twitter?.images?.map((image) => (
+        <meta name="twitter:image" content={image} />
+      ))
+    }
+    {
+      structuredDataItems.map((structuredData) => (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(structuredData)}
+        />
+      ))
+    }
+  </head>
+  <body class="flex h-full flex-col bg-stone-50 text-zinc-950">
+    <slot />
+  </body>
+</html>

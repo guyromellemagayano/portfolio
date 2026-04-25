@@ -1,0 +1,69 @@
+---
+import PageIntro from "@web/components/PageIntro.astro";
+import ProjectCard from "@web/components/ProjectCard.astro";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import { projects } from "@web/data/projects";
+import {
+  buildPortfolioPageMetadata,
+  getPortfolioBrochurePage,
+} from "@web/lib-pages/portfolio-brochure";
+import {
+  appendStructuredData,
+  buildCollectionPageStructuredData,
+} from "@web/lib-pages/structured-data";
+
+const { page } = await getPortfolioBrochurePage("projects");
+const metadata = appendStructuredData(
+  buildPortfolioPageMetadata(page),
+  buildCollectionPageStructuredData(
+    page,
+    projects,
+    (project) => `/projects#${project.slug}`
+  )
+);
+const featuredProjects = projects.filter((project) => project.featured);
+---
+
+<BaseLayout metadata={metadata}>
+  <PageIntro
+    subheading={page.subheading}
+    title={page.title}
+    intro={page.intro}
+  />
+
+  <section
+    aria-labelledby="projects-showcase-heading"
+    class="mx-auto max-w-6xl px-6 py-12 sm:px-8"
+    role="region"
+  >
+    <h2
+      id="projects-showcase-heading"
+      class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+    >
+      Featured product surfaces
+    </h2>
+    <div class="mt-10 grid gap-4 lg:grid-cols-3">
+      {featuredProjects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+
+  <section
+    aria-labelledby="projects-catalog-heading"
+    class="mx-auto max-w-6xl border-t border-zinc-950/10 px-6 py-16 sm:px-8"
+    role="region"
+  >
+    <h2
+      id="projects-catalog-heading"
+      class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+    >
+      Broader project catalog
+    </h2>
+    <div class="mt-10 grid gap-4 lg:grid-cols-2">
+      {
+        projects.map((project) => (
+          <ProjectCard project={project} compact idPrefix="catalog" />
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

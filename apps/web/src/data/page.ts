@@ -4,12 +4,9 @@
  * @description Static data and typed constants for page.
  */
 
-import { type ImageProps } from "next/image";
-
-import { contentSnapshot } from "@portfolio/content-data";
-
 import { type IconProps } from "@web/components/icon";
-import { getPortfolioSocialLinks } from "@web/utils/portfolio";
+import { socialLinks } from "@web/data/site";
+import { type ImageSource } from "@web/lib/media";
 
 // ============================================================================
 // SOCIAL LIST DATA
@@ -57,7 +54,7 @@ export type ProjectsComponentData = ReadonlyArray<{
   name: string;
   description: string;
   link: { href: string; label: string };
-  logo: ImageProps["src"];
+  logo: ImageSource;
 }>;
 
 export type ProjectsPageLayoutData = CommonLayoutComponentData &
@@ -74,17 +71,19 @@ type PageData = Readonly<{
 }>;
 
 const createPageData = (): PageData => {
-  const socialLinks: SocialListComponentLabels = getPortfolioSocialLinks(
-    contentSnapshot.portfolio
-  ).map((link) => ({
-    label: link.label,
-    icon: link.icon as IconProps["name"],
-    href: link.href,
-    target: link.target,
-  }));
+  const socialLinkLabels: SocialListComponentLabels = socialLinks.map(
+    (link) => ({
+      label: link.label,
+      icon: (link.platform === "email"
+        ? "mail"
+        : link.platform) as IconProps["name"],
+      href: link.href,
+      target: link.href.startsWith("http") ? "_blank" : "_self",
+    })
+  );
 
   return {
-    socialLinks,
+    socialLinks: socialLinkLabels,
   };
 };
 

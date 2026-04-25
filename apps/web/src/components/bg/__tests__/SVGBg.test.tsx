@@ -4,8 +4,6 @@
  * @description Unit tests for the SVGBg component.
  */
 
-import React from "react";
-
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -169,11 +167,17 @@ describe("SVGComponent", () => {
 
   describe("Ref Forwarding Tests", () => {
     it("forwards ref to the svg element", () => {
-      const ref = React.createRef<SVGSVGElement>();
-      render(<SVGComponent ref={ref} />);
+      const svgRef: { current: SVGSVGElement | null } = { current: null };
+      render(
+        <SVGComponent
+          ref={(node) => {
+            svgRef.current = node;
+          }}
+        />
+      );
 
-      expect(ref.current).toBeInstanceOf(SVGSVGElement);
-      expect(ref.current?.tagName.toLowerCase()).toBe("svg");
+      expect(svgRef.current).toBeInstanceOf(SVGSVGElement);
+      expect(svgRef.current?.tagName.toLowerCase()).toBe("svg");
     });
   });
 
@@ -327,11 +331,17 @@ describe("SVGBg", () => {
 
   describe("Ref Forwarding Tests", () => {
     it("forwards ref to the root element", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<SVGBg ref={ref} />);
+      const rootRef: { current: HTMLDivElement | null } = { current: null };
+      render(
+        <SVGBg
+          ref={(node) => {
+            rootRef.current = node;
+          }}
+        />
+      );
 
-      expect(ref.current).toBeInstanceOf(HTMLDivElement);
-      expect(ref.current?.tagName).toBe("DIV");
+      expect(rootRef.current).toBeInstanceOf(HTMLDivElement);
+      expect(rootRef.current?.tagName).toBe("DIV");
     });
   });
 

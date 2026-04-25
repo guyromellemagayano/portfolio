@@ -4,14 +4,14 @@
  * @description Shared portfolio showcase content for the public web experience.
  */
 
-import { contentSnapshot } from "@portfolio/content-data";
-
+import { projects } from "@web/data/projects";
+import { capabilityClusters, services } from "@web/data/services";
 import {
-  getPortfolioBuildSequence,
-  getPortfolioCapabilityClusters,
-  getPortfolioServiceOfferings,
-  getPortfolioShowcaseApps,
-} from "@web/utils/portfolio";
+  buildSteps,
+  focusAreas,
+  foundationCapabilities,
+  operatingPrinciples,
+} from "@web/data/site";
 
 export type PortfolioShowcaseApp = Readonly<{
   anchor: string;
@@ -43,46 +43,44 @@ export type PortfolioCapabilityCluster = Readonly<{
 }>;
 
 export const PORTFOLIO_SHOWCASE_APPS: ReadonlyArray<PortfolioShowcaseApp> =
-  getPortfolioShowcaseApps(contentSnapshot.portfolio).map((app) => ({
-    anchor: app.anchor,
-    href: app.href,
-    name: app.name,
+  projects.map((app) => ({
+    anchor: app.slug,
+    href: `/projects#${app.slug}`,
+    name: app.title,
     path: app.path,
-    summary: app.summary,
-    proofPoints: [...app.proofPoints],
+    summary: app.description,
+    proofPoints: [...app.bullets],
   }));
 
 export const PORTFOLIO_FOUNDATION_CAPABILITIES: ReadonlyArray<string> = [
-  ...contentSnapshot.portfolio.foundationCapabilities,
+  ...foundationCapabilities,
 ];
 
-export const PORTFOLIO_FOCUS_AREAS: ReadonlyArray<string> = [
-  ...contentSnapshot.portfolio.focusAreas,
-];
+export const PORTFOLIO_FOCUS_AREAS: ReadonlyArray<string> = [...focusAreas];
 
 export const PORTFOLIO_SERVICE_OFFERINGS: ReadonlyArray<PortfolioServiceOffering> =
-  getPortfolioServiceOfferings(contentSnapshot.portfolio).map((service) => ({
-    anchor: service.anchor,
-    ctaLabel: service.ctaLabel,
+  services.map((service) => ({
+    anchor: service.id,
+    ctaLabel: service.cta,
     href: service.href,
-    name: service.name,
-    summary: service.summary,
-    deliverables: [...service.deliverables],
+    name: service.title,
+    summary: service.description,
+    deliverables: [...service.bullets],
     bestFor: service.bestFor,
   }));
 
 export const PORTFOLIO_CAPABILITY_CLUSTERS: ReadonlyArray<PortfolioCapabilityCluster> =
-  getPortfolioCapabilityClusters(contentSnapshot.portfolio).map((cluster) => ({
-    name: cluster.name,
+  capabilityClusters.map((cluster) => ({
+    name: cluster.title,
     items: [...cluster.items],
   }));
 
 export const PORTFOLIO_BUILD_SEQUENCE: ReadonlyArray<PortfolioShowcaseStep> =
-  getPortfolioBuildSequence(contentSnapshot.portfolio).map((step) => ({
+  buildSteps.map((step) => ({
     title: step.title,
     detail: step.detail,
   }));
 
 export const PORTFOLIO_OPERATING_PRINCIPLES: ReadonlyArray<string> = [
-  ...contentSnapshot.portfolio.operatingPrinciples,
+  ...operatingPrinciples,
 ];

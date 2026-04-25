@@ -38,26 +38,16 @@ vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock Next.js Link component
-vi.mock("next/link", () => ({
-  default: React.forwardRef<HTMLAnchorElement, any>(
-    function MockNextLink(props, ref) {
-      const { href, target, title, rel, children, ...rest } = props;
-      return (
-        <a
-          ref={ref}
-          href={href ?? ""}
-          target={target}
-          title={title}
-          rel={rel}
-          {...rest}
-        >
-          {children}
-        </a>
-      );
-    }
-  ),
-}));
+function CustomCardLink({
+  children,
+  ...props
+}: React.ComponentPropsWithoutRef<"a">) {
+  return (
+    <a data-testid="custom-link" {...props}>
+      {children}
+    </a>
+  );
+}
 
 // ============================================================================
 // CARD CTA COMPONENT TESTS
@@ -1062,17 +1052,8 @@ describe("Card.Link", () => {
 
   describe("Component Overrides", () => {
     it("renders with a custom link component via as prop", () => {
-      const CustomLink = ({
-        children,
-        ...props
-      }: React.ComponentPropsWithoutRef<"a">) => (
-        <a data-testid="custom-link" {...props}>
-          {children}
-        </a>
-      );
-
       render(
-        <Card.Link as={CustomLink as any} href="/test">
+        <Card.Link as={CustomCardLink as any} href="/test">
           Link content
         </Card.Link>
       );
@@ -1177,7 +1158,7 @@ describe("Card.LinkCustom", () => {
       expect(linkElement).not.toHaveAttribute("aria-label");
     });
 
-    it("does not set aria-label when title provided and children are descriptive text", () => {
+    it("does not set aria-label when title provided and children use descriptive text content", () => {
       // When children are descriptive (non-empty string), aria-label should NOT be set
       // SEO: Prefer visible link text over aria-label
       render(

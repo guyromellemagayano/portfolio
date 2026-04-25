@@ -8,9 +8,16 @@ module.exports = {
   plugins: [
     "prettier-plugin-pkg",
     "prettier-plugin-packagejson",
+    "prettier-plugin-astro",
     "prettier-plugin-tailwindcss",
   ],
   overrides: [
+    {
+      files: ["**/*.astro"],
+      options: {
+        parser: "astro",
+      },
+    },
     {
       files: ["**/*.{mjs,cjs,mts,cts,js,ts,jsx,tsx}"],
       options: {
@@ -18,7 +25,13 @@ module.exports = {
       },
     },
     {
-      files: ["**/dist/**", "**/.next/**", "**/build/**", "*.d.ts"],
+      files: [
+        "**/dist/**",
+        "**/.astro/**",
+        "**/.next/**",
+        "**/build/**",
+        "*.d.ts",
+      ],
       options: { requirePragma: true },
     },
     {

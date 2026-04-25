@@ -11,6 +11,7 @@ const LOCAL_ONLY_HOSTNAMES = new Set([
   "0.0.0.0",
   "::1",
 ]);
+const DEFAULT_PUBLIC_SITE_URL = "https://www.guyromellemagayano.com";
 
 /** Reads and trims an env var value from the current server runtime. */
 function getEnvVar(key: string): string {
@@ -71,7 +72,7 @@ function normalizeHostEnvUrlCandidate(value: string): string | undefined {
 /** Resolves the most appropriate absolute site URL base across local and Vercel runtimes. */
 export function resolveSiteUrlBase(): string | undefined {
   const candidates = [
-    getEnvVar("NEXT_PUBLIC_SITE_URL"),
+    getEnvVar("PUBLIC_SITE_URL"),
     getEnvVar("VERCEL_PROJECT_PRODUCTION_URL"),
     getEnvVar("VERCEL_URL"),
   ];
@@ -128,7 +129,5 @@ export function toAbsoluteSiteUrl(pathOrUrl: string): string | undefined {
     return undefined;
   }
 
-  const siteUrlBase = resolveSiteUrlBase();
-
-  return siteUrlBase ? `${siteUrlBase}${normalizedValue}` : undefined;
+  return `${resolveSiteUrlBaseOrDefault(DEFAULT_PUBLIC_SITE_URL)}${normalizedValue}`;
 }

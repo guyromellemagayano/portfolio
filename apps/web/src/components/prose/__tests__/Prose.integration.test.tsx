@@ -294,7 +294,6 @@ describe("Prose (Integration)", () => {
                 <p>Main content paragraph 1</p>
                 <p>Main content paragraph 2</p>
                 <figure>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/image.jpg" alt="Example image" />
                   <figcaption>Image caption</figcaption>
                 </figure>

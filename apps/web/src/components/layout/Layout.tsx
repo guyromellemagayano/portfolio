@@ -10,15 +10,13 @@ import {
   type ReactNode,
 } from "react";
 
-import type { Route } from "next";
-import Link from "next/link";
-
 import { SkipToMainContentButton } from "@web/components/button";
 import { Container } from "@web/components/container";
+import { Link } from "@web/components/link";
 import { type CommonLayoutComponentData } from "@web/data/page";
 import { cn } from "@web/utils/helpers";
 
-type InternalHref = Route | (string & {});
+type InternalHref = string;
 
 export type LayoutNavLink = Readonly<{
   href: InternalHref;

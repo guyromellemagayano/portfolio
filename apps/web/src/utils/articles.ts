@@ -4,18 +4,12 @@
  * @description Utilities for local article normalization in the web app.
  */
 
+import { type Article as LocalArticle, articles } from "@web/data/articles";
 import type {
-  ContentArticle,
-  ContentArticleDetailResponseData,
   ContentPortableTextBlock,
   ContentPortableTextImageBlock,
   ContentTwitterCard,
-} from "@portfolio/api-contracts/content";
-
-import {
-  getLocalArticleBySlug,
-  getLocalArticleSummaries,
-} from "@web/data/portfolio-content";
+} from "@web/data/portable-text";
 
 export type Article = {
   title: string;
@@ -67,18 +61,18 @@ function getOptionalPositiveImageDimension(value: unknown): number | undefined {
 
 /** Maps a local article summary payload into the web article list shape. */
 function mapContentArticleToArticleWithSlug(
-  articleRecord: ContentArticle
+  articleRecord: LocalArticle
 ): ArticleWithSlug | null {
   const title = articleRecord.title?.trim();
   const slug = articleRecord.slug?.trim();
-  const date = articleRecord.publishedAt?.trim();
+  const date = articleRecord.date?.trim();
 
   if (!title || !slug || !date) {
     return null;
   }
 
-  const description = articleRecord.excerpt?.trim() ?? "";
-  const image = articleRecord.imageUrl?.trim() || undefined;
+  const description = articleRecord.description?.trim() ?? "";
+  const image = articleRecord.image?.trim() || undefined;
   const imageWidth = getOptionalPositiveImageDimension(
     articleRecord.imageWidth
   );
@@ -111,7 +105,7 @@ function mapContentArticleToArticleWithSlug(
 
 /** Maps a local article detail payload into the web article detail shape. */
 function mapContentArticleDetailToArticleDetail(
-  articleRecord: ContentArticleDetailResponseData
+  articleRecord: LocalArticle
 ): ArticleDetail | null {
   const article = mapContentArticleToArticleWithSlug(articleRecord);
 
@@ -134,7 +128,7 @@ function mapContentArticleDetailToArticleDetail(
         : undefined,
     seoOgTitle: articleRecord.seoOgTitle?.trim() || undefined,
     seoOgDescription: articleRecord.seoOgDescription?.trim() || undefined,
-    seoOgImage: articleRecord.seoOgImageUrl?.trim() || undefined,
+    seoOgImage: articleRecord.seoOgImage?.trim() || undefined,
     seoOgImageWidth: getOptionalPositiveImageDimension(
       articleRecord.seoOgImageWidth
     ),
@@ -150,7 +144,7 @@ function mapContentArticleDetailToArticleDetail(
 
 /** Gets all local articles and normalizes them for web components. */
 export async function getAllArticles(): Promise<ArticleWithSlug[]> {
-  const localArticles = getLocalArticleSummaries()
+  const localArticles = articles
     .map(mapContentArticleToArticleWithSlug)
     .filter((article): article is ArticleWithSlug => article !== null);
 
@@ -161,7 +155,7 @@ export async function getAllArticles(): Promise<ArticleWithSlug[]> {
 export async function getArticleBySlug(
   slug: string
 ): Promise<ArticleDetail | null> {
-  const article = getLocalArticleBySlug(slug);
+  const article = articles.find((entry) => entry.slug === slug.trim()) ?? null;
 
   if (!article) {
     return null;

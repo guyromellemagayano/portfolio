@@ -11,8 +11,8 @@ import { List } from "../List";
 
 import "@testing-library/jest-dom";
 
-// Mock next-intl
-vi.mock("next-intl", () => ({
+// Mock i18n
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: vi.fn((_namespace: string) => {
     const translations: Record<string, string> = {
       articleList: "Article list",

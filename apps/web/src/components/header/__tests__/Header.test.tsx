@@ -7,7 +7,6 @@
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
-import { usePathname } from "next/navigation";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Header } from "../Header";
@@ -16,7 +15,7 @@ import { Header } from "../Header";
 // MOCKS
 // ============================================================================
 
-vi.mock("next-intl", () => ({
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: vi.fn((namespace: string) => {
     const translations: Record<string, any> = {
       "components.header": {
@@ -63,17 +62,6 @@ Object.defineProperty(globalThis, "IntersectionObserver", {
   configurable: true,
   value: mockIntersectionObserver,
 });
-
-vi.mock("next/navigation", () => ({
-  usePathname: vi.fn(() => "/"),
-}));
-
-vi.mock("next-themes", () => ({
-  useTheme: vi.fn(() => ({
-    resolvedTheme: "light",
-    setTheme: vi.fn(),
-  })),
-}));
 
 vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes: (string | undefined)[]) =>
@@ -125,41 +113,6 @@ vi.mock("@portfolio/utils", () => ({
   }),
 }));
 
-vi.mock("next/link", () => ({
-  __esModule: true,
-  default: function NextLink({
-    children,
-    href,
-    ...props
-  }: {
-    children: React.ReactNode;
-    href: string;
-    [key: string]: unknown;
-  }) {
-    return (
-      <a href={href} {...props}>
-        {children}
-      </a>
-    );
-  },
-}));
-
-vi.mock("next/image", () => ({
-  default: function Image({
-    src,
-    alt,
-    ...props
-  }: {
-    src: unknown;
-    alt: string;
-    [key: string]: unknown;
-  }) {
-    return (
-      <img src={typeof src === "string" ? src : ""} alt={alt} {...props} />
-    );
-  },
-}));
-
 vi.mock("@web/components/container", () => ({
   Container: function Container({
     children,
@@ -179,22 +132,17 @@ vi.mock("@web/components/container", () => ({
 }));
 
 vi.mock("@web/components/button", () => ({
-  Button: React.forwardRef<
-    HTMLButtonElement,
-    React.ComponentProps<"button"> & { [key: string]: unknown }
-  >(function Button(
-    {
-      children,
-      ...props
-    }: { children?: React.ReactNode; [key: string]: unknown },
-    ref
-  ) {
+  Button: function Button({
+    children,
+    ref,
+    ...props
+  }: React.ComponentProps<"button"> & { [key: string]: unknown }) {
     return (
       <button ref={ref} type="button" {...props}>
         {children}
       </button>
     );
-  }),
+  },
 }));
 
 vi.mock("@web/components/icon", () => ({
@@ -227,22 +175,17 @@ vi.mock("@headlessui/react", () => ({
   Popover: function Popover({ children }: { children: React.ReactNode }) {
     return <div data-testid="popover">{children}</div>;
   },
-  PopoverButton: React.forwardRef<
-    HTMLButtonElement,
-    React.ComponentProps<"button"> & { [key: string]: unknown }
-  >(function PopoverButton(
-    {
-      children,
-      ...props
-    }: { children?: React.ReactNode; [key: string]: unknown },
-    ref
-  ) {
+  PopoverButton: function PopoverButton({
+    children,
+    ref,
+    ...props
+  }: React.ComponentProps<"button"> & { [key: string]: unknown }) {
     return (
       <button ref={ref} type="button" {...props}>
         {children}
       </button>
     );
-  }),
+  },
   PopoverBackdrop: function PopoverBackdrop({
     className,
     ...props
@@ -277,7 +220,7 @@ vi.mock("@headlessui/react", () => ({
 
 describe("Header", () => {
   beforeEach(() => {
-    vi.mocked(usePathname).mockReturnValue("/");
+    globalThis.history.pushState(null, "", "/");
   });
 
   afterEach(() => {
@@ -331,7 +274,7 @@ describe("Header", () => {
         screen.getAllByRole("link", { name: /services/i }).length
       ).toBeGreaterThanOrEqual(1);
       expect(
-        screen.getAllByRole("link", { name: /blog/i }).length
+        screen.getAllByRole("link", { name: /articles/i }).length
       ).toBeGreaterThanOrEqual(1);
       expect(
         screen.getAllByRole("link", { name: /projects/i }).length
@@ -420,7 +363,7 @@ describe("Header", () => {
 
   describe("Homepage Behavior", () => {
     it("renders avatar and containers on homepage", () => {
-      vi.mocked(usePathname).mockReturnValue("/");
+      globalThis.history.pushState(null, "", "/");
       render(<Header />);
       expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
       const containers = screen.getAllByTestId("container");
@@ -430,7 +373,7 @@ describe("Header", () => {
 
   describe("Non-Homepage Behavior", () => {
     it("renders avatar in left section on non-homepage", () => {
-      vi.mocked(usePathname).mockReturnValue("/about");
+      globalThis.history.pushState(null, "", "/about");
       render(<Header />);
       expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
       expect(screen.getByRole("banner")).toBeInTheDocument();

@@ -22,14 +22,14 @@ describe("site URL helpers", () => {
     vi.unstubAllEnvs();
   });
 
-  it("prefers NEXT_PUBLIC_SITE_URL when configured", () => {
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://example.com/");
+  it("prefers PUBLIC_SITE_URL when configured", () => {
+    vi.stubEnv("PUBLIC_SITE_URL", "https://example.com/");
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "portfolio.vercel.app");
 
     expect(resolveSiteUrlBase()).toBe("https://example.com");
   });
 
-  it("falls back to VERCEL_PROJECT_PRODUCTION_URL when NEXT_PUBLIC_SITE_URL is unset", () => {
+  it("falls back to VERCEL_PROJECT_PRODUCTION_URL when PUBLIC_SITE_URL is unset", () => {
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "guyromellemagayano.com");
 
     expect(resolveSiteUrlBase()).toBe("https://guyromellemagayano.com");
@@ -45,7 +45,7 @@ describe("site URL helpers", () => {
 
   it("ignores local-only site URLs in production and uses the Vercel production URL fallback", () => {
     vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://guyromellemagayano.local");
+    vi.stubEnv("PUBLIC_SITE_URL", "https://guyromellemagayano.local");
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "guyromellemagayano.com");
 
     expect(resolveSiteUrlBase()).toBe("https://guyromellemagayano.com");
@@ -59,19 +59,21 @@ describe("site URL helpers", () => {
     );
   });
 
-  it("returns undefined for relative paths when no site URL base can be resolved", () => {
-    expect(toAbsoluteSiteUrl("/feed.xml")).toBeUndefined();
+  it("uses the canonical production domain for relative paths when env URLs are unset", () => {
+    expect(toAbsoluteSiteUrl("/feed.xml")).toBe(
+      "https://www.guyromellemagayano.com/feed.xml"
+    );
   });
 
   it("returns the normalized fallback from resolveSiteUrlBaseOrDefault", () => {
-    expect(resolveSiteUrlBaseOrDefault("http://localhost:3000/")).toBe(
-      "http://localhost:3000"
+    expect(resolveSiteUrlBaseOrDefault("http://localhost:4321/")).toBe(
+      "http://localhost:4321"
     );
   });
 
   it("recognizes local-only hostnames", () => {
     expect(isLocalOnlyHostname("localhost")).toBe(true);
-    expect(isLocalOnlyHostname("api.guyromellemagayano.local")).toBe(true);
+    expect(isLocalOnlyHostname("preview.guyromellemagayano.local")).toBe(true);
     expect(isLocalOnlyHostname("guyromellemagayano.internal")).toBe(false);
     expect(isLocalOnlyHostname("guyromellemagayano.com")).toBe(false);
   });

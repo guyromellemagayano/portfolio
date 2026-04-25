@@ -1,4 +1,5 @@
 # Build outputs
+.astro/
 dist/
 dist-ssr/
 build/
@@ -6,15 +7,30 @@ build/
 out/
 coverage/
 logs/
+storybook-static/
 
-# Node modules & lockfiles
+# Node modules
 node_modules/
 .pnp/
 .pnp.js
+.yarn/
+
+# Package manager caches
+.npm-cache/
+.pnpm-store/
 
 # Monorepo cache
 .turbo/
 .cache/
+.parcel-cache/
+
+# Test and browser artifacts
+test-results/
+playwright-report/
+playwright/.cache/
+playwright/.auth/
+blob-report/
+.playwright-mcp/
 
 # Generated files
 *.tsbuildinfo
@@ -31,6 +47,13 @@ node_modules/
 
 # Vercel
 .vercel/
+
+# Retired and local-only project trees
+apps/api/
+packages/api-contracts/
+packages/content-data/
+docs/
+old/
 
 # MDX files
 **/*.mdx

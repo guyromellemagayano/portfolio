@@ -5,17 +5,14 @@
  */
 
 import type {
-  ContentPage,
-  ContentPageDetailResponseData,
   ContentPortableTextBlock,
   ContentPortableTextImageBlock,
   ContentTwitterCard,
-} from "@portfolio/api-contracts/content";
-
+} from "@web/data/portable-text";
 import {
-  getLocalPageBySlug,
-  getLocalPageSummaries,
-} from "@web/data/portfolio-content";
+  type StandalonePage as LocalStandalonePage,
+  standalonePages,
+} from "@web/data/standalone-pages";
 
 export type CmsPage = {
   slug: string;
@@ -53,7 +50,9 @@ function getOptionalPositiveImageDimension(value: unknown): number | undefined {
 }
 
 /** Maps a local page summary payload into the web CMS page shape. */
-function mapContentPageToCmsPage(pageRecord: ContentPage): CmsPage | null {
+function mapLocalPageToCmsPage(
+  pageRecord: LocalStandalonePage
+): CmsPage | null {
   const title = pageRecord.title?.trim();
   const slug = pageRecord.slug?.trim();
 
@@ -79,10 +78,10 @@ function mapContentPageToCmsPage(pageRecord: ContentPage): CmsPage | null {
 }
 
 /** Maps a local page detail payload into the web CMS page detail shape. */
-function mapContentPageDetailToCmsPageDetail(
-  pageRecord: ContentPageDetailResponseData
+function mapLocalPageDetailToCmsPageDetail(
+  pageRecord: LocalStandalonePage
 ): CmsPageDetail | null {
-  const page = mapContentPageToCmsPage(pageRecord);
+  const page = mapLocalPageToCmsPage(pageRecord);
 
   if (!page) {
     return null;
@@ -103,7 +102,7 @@ function mapContentPageDetailToCmsPageDetail(
         : undefined,
     seoOgTitle: pageRecord.seoOgTitle?.trim() || undefined,
     seoOgDescription: pageRecord.seoOgDescription?.trim() || undefined,
-    seoOgImage: pageRecord.seoOgImageUrl?.trim() || undefined,
+    seoOgImage: pageRecord.seoOgImage?.trim() || undefined,
     seoOgImageWidth: getOptionalPositiveImageDimension(
       pageRecord.seoOgImageWidth
     ),
@@ -118,8 +117,8 @@ function mapContentPageDetailToCmsPageDetail(
 
 /** Gets all standalone local pages and normalizes them for web routes. */
 export async function getAllPages(): Promise<CmsPage[]> {
-  return getLocalPageSummaries()
-    .map(mapContentPageToCmsPage)
+  return standalonePages
+    .map(mapLocalPageToCmsPage)
     .filter((page): page is CmsPage => page !== null);
 }
 
@@ -127,11 +126,12 @@ export async function getAllPages(): Promise<CmsPage[]> {
 export async function getPageBySlug(
   slug: string
 ): Promise<CmsPageDetail | null> {
-  const page = getLocalPageBySlug(slug);
+  const page =
+    standalonePages.find((entry) => entry.slug === slug.trim()) ?? null;
 
   if (!page) {
     return null;
   }
 
-  return mapContentPageDetailToCmsPageDetail(page);
+  return mapLocalPageDetailToCmsPageDetail(page);
 }

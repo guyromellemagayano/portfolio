@@ -21,10 +21,6 @@ vi.mock("@portfolio/utils", () => ({
   isValidLink: vi.fn((href) => href != null && href !== "" && href !== "#"),
 }));
 
-vi.mock("next/link", () => ({
-  default: vi.fn(({ children, ...props }) => <a {...props}>{children}</a>),
-}));
-
 vi.mock("@web/components/icon/Icon", () => ({
   Icon: vi.fn(({ name, className, page, ...props }) => (
     <svg
@@ -191,7 +187,7 @@ describe("Link", () => {
   // ============================================================================
 
   describe("Component Structure", () => {
-    it("renders as Next.js Link component", () => {
+    it("renders as an anchor element", () => {
       render(<Link href="/test">Test Link</Link>);
 
       const link = screen.getByText("Test Link").closest("a");

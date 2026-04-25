@@ -4,8 +4,6 @@
  * @description Unit tests for the Form component.
  */
 
-import React from "react";
-
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -41,8 +39,8 @@ vi.mock("@portfolio/utils", () => ({
   }),
 }));
 
-// Mock next-intl
-vi.mock("next-intl", () => ({
+// Mock i18n
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: vi.fn((namespace: string) => {
     const translations: Record<string, any> = {
       "components.form.newsletterForm": {
@@ -237,15 +235,20 @@ describe("Form", () => {
 
   describe("Ref Forwarding Tests", () => {
     it("forwards ref to the form element", () => {
-      const ref = React.createRef<HTMLFormElement>();
+      const formRef: { current: HTMLFormElement | null } = { current: null };
       render(
-        <Form aria-label="Ref form" ref={ref}>
+        <Form
+          aria-label="Ref form"
+          ref={(node) => {
+            formRef.current = node;
+          }}
+        >
           <input type="text" />
         </Form>
       );
 
-      expect(ref.current).toBeInstanceOf(HTMLFormElement);
-      expect(ref.current?.tagName).toBe("FORM");
+      expect(formRef.current).toBeInstanceOf(HTMLFormElement);
+      expect(formRef.current?.tagName).toBe("FORM");
     });
   });
 

@@ -6,12 +6,10 @@
 
 import type { ReactNode } from "react";
 
-import Image from "next/image";
-
 import type {
   ContentPortableTextBlock,
   ContentPortableTextImageBlock,
-} from "@portfolio/api-contracts/content";
+} from "@web/data/portable-text";
 
 const DEFAULT_PORTABLE_TEXT_IMAGE_WIDTH = 1600;
 const DEFAULT_PORTABLE_TEXT_IMAGE_HEIGHT = 900;
@@ -317,7 +315,7 @@ function toEmbeddableIframeUrl(rawUrl: string): string | undefined {
   return undefined;
 }
 
-/** Renders a Portable Text image block using `next/image` with safe dimension fallbacks. */
+/** Renders a Portable Text image block with safe dimension fallbacks. */
 function renderPortableTextImage(
   imageValue: unknown,
   fallbackImageAlt?: string
@@ -338,7 +336,7 @@ function renderPortableTextImage(
 
   return (
     <figure className="not-prose my-8 overflow-hidden rounded-xl border border-zinc-200/60 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
-      <Image
+      <img
         src={imageUrl}
         alt={altText}
         className="h-auto w-full object-cover"

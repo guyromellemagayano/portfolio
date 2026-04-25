@@ -4,8 +4,6 @@
  * @description Static configuration for resume content and settings.
  */
 
-import { type ImageProps } from "next/image";
-
 import resumeConfig from "@web/data/resume.json";
 import logoAirbnb from "@web/images/logos/airbnb.svg";
 import logoFacebook from "@web/images/logos/facebook.svg";
@@ -23,7 +21,7 @@ export type ResumeRoleDate = string | { label: string; dateTime: string };
 export type ResumeRole = Readonly<{
   company: string;
   title: string;
-  logo: ImageProps["src"];
+  logo: ImageSource;
   start: ResumeRoleDate;
   end: ResumeRoleDate;
 }>;
@@ -52,7 +50,7 @@ const RESUME_LOGO_KEYS: ReadonlyArray<ResumeLogoKey> = [
   "starbucks",
 ];
 
-const RESUME_LOGO_MAP: Record<ResumeLogoKey, ImageProps["src"]> = {
+const RESUME_LOGO_MAP: Record<ResumeLogoKey, ImageSource> = {
   planetaria: logoPlanetaria,
   airbnb: logoAirbnb,
   facebook: logoFacebook,
@@ -146,3 +144,4 @@ export const RESUME_ROLE_DATA: ReadonlyArray<ResumeRole> =
     start: role.start,
     end: role.end,
   }));
+import { type ImageSource } from "@web/lib/media";

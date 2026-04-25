@@ -1,0 +1,116 @@
+---
+import PageIntro from "@web/components/PageIntro.astro";
+import RichText from "@web/components/RichText.astro";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import type { WebPageMetadata } from "@web/lib/metadata.types";
+import {
+  resolveMetadataTitle,
+  resolveMetadataTitleText,
+  SITE_NAME,
+} from "@web/lib-pages/metadata";
+import { buildStandalonePageStructuredData } from "@web/lib-pages/structured-data";
+import {
+  getAllPages,
+  getPageBySlug,
+  type CmsPageDetail,
+} from "@web/utils/pages";
+import { toAbsoluteSiteUrl } from "@web/utils/site-url";
+
+export async function getStaticPaths() {
+  const staticRouteSlugs = new Set([
+    "about",
+    "articles",
+    "book",
+    "contact",
+    "hire",
+    "projects",
+    "services",
+    "uses",
+  ]);
+  const pages = await getAllPages();
+
+  return pages
+    .filter((page) => !staticRouteSlugs.has(page.slug))
+    .map((page) => ({
+      params: {
+        slug: page.slug,
+      },
+    }));
+}
+
+const slug = Astro.params.slug ?? "";
+const page = await getPageBySlug(slug);
+
+if (!page) {
+  return Astro.redirect("/404", 404);
+}
+
+const clampDescription = (value: string) => {
+  const normalized = value.trim();
+  return normalized.length <= 160
+    ? normalized
+    : `${normalized.slice(0, 159).trimEnd()}…`;
+};
+
+function buildStandalonePageMetadata(
+  pageRecord: CmsPageDetail
+): WebPageMetadata {
+  const description = clampDescription(
+    pageRecord.seoDescription || pageRecord.intro || pageRecord.title
+  );
+  const socialTitle = resolveMetadataTitleText(
+    pageRecord.seoOgTitle ?? pageRecord.seoTitle,
+    pageRecord.title
+  );
+  const canonicalUrl = toAbsoluteSiteUrl(
+    pageRecord.seoCanonicalPath || `/${pageRecord.slug}`
+  );
+
+  return {
+    title: resolveMetadataTitle(pageRecord.seoTitle, pageRecord.title),
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    robots: {
+      index: pageRecord.seoNoIndex === true ? false : true,
+      follow: pageRecord.seoNoFollow === true ? false : true,
+    },
+    openGraph: {
+      type: "website",
+      title: socialTitle,
+      description,
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+    },
+    twitter: {
+      card: pageRecord.seoTwitterCard ?? "summary",
+      title: socialTitle,
+      description,
+    },
+    structuredData: buildStandalonePageStructuredData(pageRecord),
+  };
+}
+
+const metadata = buildStandalonePageMetadata(page);
+---
+
+<BaseLayout metadata={metadata}>
+  <PageIntro
+    subheading={page.subheading}
+    title={page.title}
+    intro={page.intro}
+  />
+  {
+    page.body.length > 0 ? (
+      <section
+        class="mx-auto max-w-3xl px-6 py-12 sm:px-8"
+        aria-label={`${page.title} content`}
+      >
+        <div class="prose-zinc prose max-w-none">
+          <RichText value={page.body} fallbackImageAlt={page.title} />
+        </div>
+      </section>
+    ) : null
+  }
+</BaseLayout>

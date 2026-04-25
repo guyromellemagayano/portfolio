@@ -15,8 +15,8 @@ import { Resume } from "../Resume";
 // MOCKS
 // ============================================================================
 
-// Mock next-intl
-vi.mock("next-intl", () => ({
+// Mock i18n
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: vi.fn((_namespace: string) => {
     const translations: Record<string, string> = {
       "labels.work": "Work",
@@ -46,10 +46,14 @@ vi.mock("@web/utils/helpers", () => ({
 
 // Mock @web/components
 vi.mock("@web/components/button", () => ({
-  Button: React.forwardRef<
-    HTMLAnchorElement,
-    React.ComponentProps<"a"> & { variant?: string }
-  >(function Button({ children, className, href, variant, ...props }, ref) {
+  Button: function Button({
+    children,
+    className,
+    href,
+    ref,
+    variant,
+    ...props
+  }: React.ComponentProps<"a"> & { variant?: string }) {
     return (
       <a
         ref={ref}
@@ -62,7 +66,7 @@ vi.mock("@web/components/button", () => ({
         {children}
       </a>
     );
-  }),
+  },
 }));
 
 vi.mock("@web/components/icon", () => ({
@@ -124,32 +128,6 @@ vi.mock("@web/components/list", () => ({
       <li data-testid="list-item" className={className} {...props}>
         {children}
       </li>
-    );
-  },
-}));
-
-// Mock Next.js Image component
-vi.mock("next/image", () => ({
-  default: function Image({
-    src,
-    alt,
-    className,
-    ...props
-  }: {
-    src: any;
-    alt: string;
-    className?: string;
-    [key: string]: any;
-  }) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={typeof src === "string" ? src : ""}
-        alt={alt}
-        className={className}
-        data-testid="next-image"
-        {...props}
-      />
     );
   },
 }));
@@ -477,7 +455,7 @@ describe("Resume", () => {
     it("images have descriptive alt text", () => {
       render(<Resume />);
 
-      const images = screen.getAllByTestId("next-image");
+      const images = screen.getAllByTestId("resume-logo-image");
       expect(images.length).toBe(4);
       images.forEach((img) => {
         expect(img).toHaveAttribute("alt");

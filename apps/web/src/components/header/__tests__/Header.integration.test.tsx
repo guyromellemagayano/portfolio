@@ -8,7 +8,6 @@ import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { usePathname } from "next/navigation";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Header } from "../Header";
@@ -17,7 +16,7 @@ import { Header } from "../Header";
 // MOCKS (same as Header.test.tsx for integration context)
 // ============================================================================
 
-vi.mock("next-intl", () => ({
+vi.mock("@web/lib/i18n", () => ({
   useTranslations: vi.fn((namespace: string) => {
     const translations: Record<string, any> = {
       "components.header": {
@@ -64,18 +63,6 @@ Object.defineProperty(globalThis, "IntersectionObserver", {
   configurable: true,
   value: mockIntersectionObserver,
 });
-
-vi.mock("next/navigation", () => ({
-  usePathname: vi.fn(() => "/"),
-}));
-
-const mockSetTheme = vi.fn();
-vi.mock("next-themes", () => ({
-  useTheme: vi.fn(() => ({
-    resolvedTheme: "light",
-    setTheme: mockSetTheme,
-  })),
-}));
 
 vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes: (string | undefined)[]) =>
@@ -127,41 +114,6 @@ vi.mock("@portfolio/utils", () => ({
   }),
 }));
 
-vi.mock("next/link", () => ({
-  __esModule: true,
-  default: function NextLink({
-    children,
-    href,
-    ...props
-  }: {
-    children: React.ReactNode;
-    href: string;
-    [key: string]: unknown;
-  }) {
-    return (
-      <a href={href} {...props}>
-        {children}
-      </a>
-    );
-  },
-}));
-
-vi.mock("next/image", () => ({
-  default: function Image({
-    src,
-    alt,
-    ...props
-  }: {
-    src: unknown;
-    alt: string;
-    [key: string]: unknown;
-  }) {
-    return (
-      <img src={typeof src === "string" ? src : ""} alt={alt} {...props} />
-    );
-  },
-}));
-
 vi.mock("@web/components/container", () => ({
   Container: function Container({
     children,
@@ -181,22 +133,17 @@ vi.mock("@web/components/container", () => ({
 }));
 
 vi.mock("@web/components/button", () => ({
-  Button: React.forwardRef<
-    HTMLButtonElement,
-    React.ComponentProps<"button"> & { [key: string]: unknown }
-  >(function Button(
-    {
-      children,
-      ...props
-    }: { children?: React.ReactNode; [key: string]: unknown },
-    ref
-  ) {
+  Button: function Button({
+    children,
+    ref,
+    ...props
+  }: React.ComponentProps<"button"> & { [key: string]: unknown }) {
     return (
       <button ref={ref} type="button" {...props}>
         {children}
       </button>
     );
-  }),
+  },
 }));
 
 vi.mock("@web/components/icon", () => ({
@@ -228,22 +175,17 @@ vi.mock("@headlessui/react", () => ({
   Popover: function Popover({ children }: { children: React.ReactNode }) {
     return <div data-testid="popover">{children}</div>;
   },
-  PopoverButton: React.forwardRef<
-    HTMLButtonElement,
-    React.ComponentProps<"button"> & { [key: string]: unknown }
-  >(function PopoverButton(
-    {
-      children,
-      ...props
-    }: { children?: React.ReactNode; [key: string]: unknown },
-    ref
-  ) {
+  PopoverButton: function PopoverButton({
+    children,
+    ref,
+    ...props
+  }: React.ComponentProps<"button"> & { [key: string]: unknown }) {
     return (
       <button ref={ref} type="button" {...props}>
         {children}
       </button>
     );
-  }),
+  },
   PopoverBackdrop: function PopoverBackdrop({
     className,
     ...props
@@ -278,8 +220,7 @@ vi.mock("@headlessui/react", () => ({
 
 describe("Header Integration", () => {
   beforeEach(() => {
-    vi.mocked(usePathname).mockReturnValue("/");
-    mockSetTheme.mockClear();
+    globalThis.history.pushState(null, "", "/");
   });
 
   afterEach(() => {
@@ -320,7 +261,7 @@ describe("Header Integration", () => {
       });
       await user.click(toggle);
 
-      expect(mockSetTheme).toHaveBeenCalledWith("dark");
+      expect(document.documentElement.classList.contains("dark")).toBe(true);
     });
 
     it("navigation links have correct hrefs", () => {
@@ -340,7 +281,7 @@ describe("Header Integration", () => {
 
   describe("Homepage vs non-homepage layout", () => {
     it("on homepage renders large avatar and content offset", () => {
-      vi.mocked(usePathname).mockReturnValue("/");
+      globalThis.history.pushState(null, "", "/");
       render(<Header />);
 
       const homeLink = screen.getByRole("link", { name: /home/i });
@@ -350,7 +291,7 @@ describe("Header Integration", () => {
     });
 
     it("on non-homepage still renders banner and navigation", () => {
-      vi.mocked(usePathname).mockReturnValue("/about");
+      globalThis.history.pushState(null, "", "/about");
       render(<Header />);
 
       expect(screen.getByRole("banner")).toBeInTheDocument();

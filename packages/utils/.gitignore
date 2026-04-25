@@ -1,13 +1,24 @@
 # Dependencies
 node_modules/
+.pnp
+.pnp.js
 
 # Local caches
 .npm-cache/
+.pnpm-store/
 .turbo/
+.cache/
 
 # Build outputs
 dist/
+dist-ssr/
+build/
 coverage/
+
+# Generated files
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
 
 # OS files
 .DS_Store

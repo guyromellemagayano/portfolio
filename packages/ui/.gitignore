@@ -9,6 +9,7 @@ node_modules/
 
 # Build outputs
 dist/
+dist-ssr/
 coverage/
 build/
 
@@ -16,7 +17,22 @@ build/
 *.log
 
 # Env
-.env*.*
+.env
+.env.*
+.env*.local
+!.env.example
+
+# Test artifacts
+test-results/
+playwright-report/
+playwright/.cache/
+playwright/.auth/
+blob-report/
+
+# Generated files
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
 
 # OS files
 .DS_Store
