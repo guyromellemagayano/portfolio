@@ -14,7 +14,7 @@ import {
   standalonePages,
 } from "@web/data/standalone-pages";
 
-export type CmsPage = {
+export type StandalonePageSummary = {
   slug: string;
   title: string;
   subheading?: string;
@@ -24,7 +24,7 @@ export type CmsPage = {
   seoNoIndex?: boolean;
 };
 
-export type CmsPageDetail = CmsPage & {
+export type StandalonePageDetail = StandalonePageSummary & {
   seoTitle?: string;
   seoDescription?: string;
   seoCanonicalPath?: string;
@@ -49,10 +49,10 @@ function getOptionalPositiveImageDimension(value: unknown): number | undefined {
   return Math.round(value);
 }
 
-/** Maps a local page summary payload into the web CMS page shape. */
-function mapLocalPageToCmsPage(
+/** Maps a local page summary payload into the web standalone page shape. */
+function mapLocalPageToStandalonePageSummary(
   pageRecord: LocalStandalonePage
-): CmsPage | null {
+): StandalonePageSummary | null {
   const title = pageRecord.title?.trim();
   const slug = pageRecord.slug?.trim();
 
@@ -77,11 +77,11 @@ function mapLocalPageToCmsPage(
   };
 }
 
-/** Maps a local page detail payload into the web CMS page detail shape. */
-function mapLocalPageDetailToCmsPageDetail(
+/** Maps a local page detail payload into the web standalone page detail shape. */
+function mapLocalPageDetailToStandalonePageDetail(
   pageRecord: LocalStandalonePage
-): CmsPageDetail | null {
-  const page = mapLocalPageToCmsPage(pageRecord);
+): StandalonePageDetail | null {
+  const page = mapLocalPageToStandalonePageSummary(pageRecord);
 
   if (!page) {
     return null;
@@ -116,16 +116,16 @@ function mapLocalPageDetailToCmsPageDetail(
 }
 
 /** Gets all standalone local pages and normalizes them for web routes. */
-export async function getAllPages(): Promise<CmsPage[]> {
+export async function getAllPages(): Promise<StandalonePageSummary[]> {
   return standalonePages
-    .map(mapLocalPageToCmsPage)
-    .filter((page): page is CmsPage => page !== null);
+    .map(mapLocalPageToStandalonePageSummary)
+    .filter((page): page is StandalonePageSummary => page !== null);
 }
 
 /** Gets a single standalone local page detail payload by slug. */
 export async function getPageBySlug(
   slug: string
-): Promise<CmsPageDetail | null> {
+): Promise<StandalonePageDetail | null> {
   const page =
     standalonePages.find((entry) => entry.slug === slug.trim()) ?? null;
 
@@ -133,5 +133,5 @@ export async function getPageBySlug(
     return null;
   }
 
-  return mapLocalPageDetailToCmsPageDetail(page);
+  return mapLocalPageDetailToStandalonePageDetail(page);
 }

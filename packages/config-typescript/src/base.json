@@ -21,7 +21,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "composite": false,
     "forceConsistentCasingInFileNames": true,

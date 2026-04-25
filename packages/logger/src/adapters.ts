@@ -85,50 +85,6 @@ export class WinstonAdapter {
   }
 }
 
-/** Next.js App Router adapter */
-export class NextJsAdapter {
-  constructor(private logger: ILogger) {}
-
-  /** Create middleware for Next.js API routes */
-  middleware() {
-    return async (req: any, res: any, next?: () => void) => {
-      const start = Date.now();
-
-      // Add logger to request
-      req.logger = this.logger.child({
-        requestId: req.headers["x-request-id"] || `nextjs_${Date.now()}`,
-        component: "nextjs-api",
-        metadata: {
-          method: req.method,
-          url: req.url,
-          userAgent: req.headers["user-agent"],
-        },
-      });
-
-      // Log request start
-      req.logger.http("Request started", {
-        method: req.method,
-        url: req.url,
-      });
-
-      // Override res.end to log completion
-      const originalEnd = res.end;
-
-      res.end = function (chunk: any, encoding: any) {
-        const duration = Date.now() - start;
-        req.logger.http("Request completed", {
-          statusCode: res.statusCode,
-          duration,
-          responseSize: chunk?.length || 0,
-        });
-        originalEnd.call(this, chunk, encoding);
-      };
-
-      if (next) next();
-    };
-  }
-}
-
 /** React error boundary adapter */
 export class ReactErrorAdapter {
   constructor(private logger: ILogger) {}
@@ -163,7 +119,7 @@ export class ReactErrorAdapter {
 export class BuildAdapter {
   constructor(
     private logger: ILogger,
-    private tool: "vite" | "webpack" | "next"
+    private tool: "vite" | "webpack"
   ) {}
 
   /** Log build events */
@@ -210,11 +166,9 @@ export const createAdapters = (logger: ILogger) => ({
   morgan: new MorganAdapter(logger),
   console: new ConsoleAdapter(logger),
   winston: new WinstonAdapter(logger),
-  nextjs: new NextJsAdapter(logger),
   react: new ReactErrorAdapter(logger),
   vite: new BuildAdapter(logger, "vite"),
   webpack: new BuildAdapter(logger, "webpack"),
-  next: new BuildAdapter(logger, "next"),
 });
 
 /** Utility to patch global console for universal logging */

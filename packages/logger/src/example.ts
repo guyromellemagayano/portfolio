@@ -256,7 +256,7 @@ export function demonstrateIntegrations() {
   // Metrics example
   logger.counter("user.login.attempts", 1, { success: "false" });
   logger.gauge("memory.usage", 85.5, { unit: "percent" });
-  logger.histogram("response.time", 250, { endpoint: "/api/auth" });
+  logger.histogram("response.time", 250, { endpoint: "/auth" });
 
   console.log(
     "\n✅ Demo completed! Check your configured integrations for log data."

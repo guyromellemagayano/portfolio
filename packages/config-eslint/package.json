@@ -13,10 +13,6 @@
     "./react": {
       "types": "./src/presets/react.d.ts",
       "default": "./src/presets/react.js"
-    },
-    "./next": {
-      "types": "./src/presets/next.d.ts",
-      "default": "./src/presets/next.js"
     }
   },
   "scripts": {
@@ -29,7 +25,6 @@
   },
   "dependencies": {
     "@eslint/js": "catalog:",
-    "@next/eslint-plugin-next": "catalog:",
     "@typescript-eslint/eslint-plugin": "catalog:",
     "@typescript-eslint/parser": "catalog:",
     "@typescript-eslint/type-utils": "catalog:",

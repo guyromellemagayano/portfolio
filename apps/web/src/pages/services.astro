@@ -7,11 +7,11 @@ import { capabilityClusters, services } from "@web/data/services";
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
-} from "@web/lib-pages/portfolio-brochure";
+} from "@web/lib/portfolio-brochure";
 import {
   appendStructuredData,
   buildProfessionalServiceStructuredData,
-} from "@web/lib-pages/structured-data";
+} from "@web/lib/structured-data";
 
 const { page } = await getPortfolioBrochurePage("services");
 const metadata = appendStructuredData(

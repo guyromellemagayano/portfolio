@@ -25,13 +25,7 @@ module.exports = {
       },
     },
     {
-      files: [
-        "**/dist/**",
-        "**/.astro/**",
-        "**/.next/**",
-        "**/build/**",
-        "*.d.ts",
-      ],
+      files: ["**/dist/**", "**/.astro/**", "**/build/**", "*.d.ts"],
       options: { requirePragma: true },
     },
     {

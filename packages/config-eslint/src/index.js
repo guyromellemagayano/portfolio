@@ -19,12 +19,14 @@ const dirName = dirname(fileName);
 const repoRoot = resolve(dirName, "..", "..", "..");
 const tsProjects = [
   resolve(repoRoot, "tsconfig.json"),
-  resolve(repoRoot, "apps", "api", "tsconfig.json"),
   resolve(repoRoot, "apps", "e2e", "tsconfig.json"),
   resolve(repoRoot, "apps", "web", "tsconfig.json"),
-  resolve(repoRoot, "packages", "ui", "tsconfig.json"),
-  resolve(repoRoot, "packages", "logger", "tsconfig.json"),
   resolve(repoRoot, "packages", "components", "tsconfig.json"),
+  resolve(repoRoot, "packages", "hooks", "tsconfig.json"),
+  resolve(repoRoot, "packages", "logger", "tsconfig.json"),
+  resolve(repoRoot, "packages", "ui", "tsconfig.json"),
+  resolve(repoRoot, "packages", "utils", "tsconfig.json"),
+  resolve(repoRoot, "packages", "vitest-presets", "tsconfig.json"),
 ];
 
 /**
@@ -60,9 +62,8 @@ export const baseEslintConfig = [
         {
           groups: [
             ["^react$", "^react-dom$", "^react\\b"],
-            ["^node:", "^@(?!portfolio|packages/|api/|web/).+", "^[a-z]"],
+            ["^node:", "^@(?!portfolio|packages/|web/).+", "^[a-z]"],
             ["^@portfolio/", "^~"],
-            ["^@api/"],
             ["^@web/"],
             ["^\\."],
           ],
@@ -221,6 +222,11 @@ export const baseEslintConfig = [
   },
   {
     files: ["**/test-setup.{js,cjs,mjs,ts,cts,mts,tsx,jsx}"],
+    languageOptions: {
+      globals: {
+        global: "readonly",
+      },
+    },
     rules: {
       "no-console": "off",
     },

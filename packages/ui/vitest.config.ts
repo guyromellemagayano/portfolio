@@ -38,7 +38,6 @@ export default defineConfig({
         "**/rollup.config.*",
         "**/tailwind.config.*",
         "**/postcss.config.*",
-        "**/next.config.*",
         "**/remix.config.*",
       ],
       include: [

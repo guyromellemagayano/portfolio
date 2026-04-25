@@ -24,6 +24,17 @@ export default [
           message:
             "Do not use `if (!children)` in components. Use an explicit renderability guard so valid values like `0` are not dropped.",
         },
+        {
+          selector:
+            "CallExpression[callee.type='MemberExpression'][callee.object.name='React'][callee.property.name='forwardRef']",
+          message:
+            "`apps/web` components use React 19 refs through props. Do not add `React.forwardRef` here.",
+        },
+        {
+          selector: "CallExpression[callee.name='forwardRef']",
+          message:
+            "`apps/web` components use React 19 refs through props. Do not add `forwardRef` here.",
+        },
       ],
     },
   },

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/src/lib-pages/structured-data.ts
+ * @file apps/web/src/lib/structured-data.ts
  * @author Guy Romelle Magayano
  * @description JSON-LD builders for the static Astro portfolio pages.
  */
@@ -14,7 +14,7 @@ import {
 } from "@web/data/site";
 import type { StructuredData, WebPageMetadata } from "@web/lib/metadata.types";
 import type { ArticleDetail, ArticleWithSlug } from "@web/utils/articles";
-import type { CmsPageDetail } from "@web/utils/pages";
+import type { StandalonePageDetail } from "@web/utils/pages";
 import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 function getSiteUrl(): string {
@@ -261,7 +261,7 @@ export function buildArticleStructuredData(
 
 /** Builds JSON-LD for locally stored standalone pages. */
 export function buildStandalonePageStructuredData(
-  page: CmsPageDetail
+  page: StandalonePageDetail
 ): StructuredData {
   return {
     "@context": "https://schema.org",

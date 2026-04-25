@@ -25,6 +25,16 @@ export const reactEslintConfig = [
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      "react-x/no-forward-ref": "off",
+    },
+  },
+  {
+    files: [
+      "**/__tests__/**/*.{js,ts,jsx,tsx}",
+      "**/*.{test,spec}.{js,ts,jsx,tsx}",
+    ],
+    rules: {
+      "react-x/no-create-ref": "off",
     },
   },
 ];

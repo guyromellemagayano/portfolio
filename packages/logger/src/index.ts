@@ -52,7 +52,6 @@ export {
   ConsoleAdapter,
   createAdapters,
   MorganAdapter,
-  NextJsAdapter,
   patchGlobalConsole,
   ReactErrorAdapter,
   WinstonAdapter,

@@ -6,7 +6,7 @@ Portfolio monorepo for the public Astro site and retained Playwright setup.
 
 ## Stack
 
-- `apps/web`: Astro, React, MDX, Tailwind
+- `apps/web`: Astro, React, Tailwind
 - `apps/e2e`: Playwright setup, with route specs paused for now
 - `packages/*`: shared UI, hooks, logger, utils, and config packages
 
@@ -43,7 +43,7 @@ pnpm --filter e2e test:e2e
 
 ## Content
 
-Page, article, navigation, and portfolio data are hard-coded in `apps/web/src/data/content/` and rendered by Astro routes in `apps/web/src/pages/`.
+Page, article, navigation, and portfolio data are hard-coded in `apps/web/src/data/` and rendered by Astro routes in `apps/web/src/pages/`.
 
 ## License
 

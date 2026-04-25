@@ -17,7 +17,7 @@ const createMockComponent = (componentName: string) => {
       children,
       className,
       as = "div",
-      debugId,
+      debugId: _debugId,
       debugMode,
       ...rest
     } = props;

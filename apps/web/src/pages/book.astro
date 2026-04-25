@@ -5,11 +5,11 @@ import { bookingPaths, services } from "@web/data/services";
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
-} from "@web/lib-pages/portfolio-brochure";
+} from "@web/lib/portfolio-brochure";
 import {
   appendStructuredData,
   buildBookingStructuredData,
-} from "@web/lib-pages/structured-data";
+} from "@web/lib/structured-data";
 
 const { page } = await getPortfolioBrochurePage("book");
 const metadata = appendStructuredData(

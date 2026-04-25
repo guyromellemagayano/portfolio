@@ -1,6 +1,7 @@
-import { baseEslintConfig } from "@portfolio/config-eslint";
 import vitestPlugin from "@vitest/eslint-plugin";
 import globals from "globals";
+
+import { baseEslintConfig } from "@portfolio/config-eslint";
 
 /** @type {import("eslint").Linter.Config} */
 export default [
@@ -9,6 +10,7 @@ export default [
     files: [
       "**/__tests__/**/*.{js,ts,jsx,tsx}",
       "**/*.{test,spec}.{js,ts,jsx,tsx}",
+      "shared/test-setup.ts",
     ],
     languageOptions: {
       globals: {

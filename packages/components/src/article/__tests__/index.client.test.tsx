@@ -803,8 +803,8 @@ it("renders memoized article with definition lists", () => {
         <dd>A JavaScript library for building user interfaces</dd>
         <dt>TypeScript</dt>
         <dd>A typed superset of JavaScript</dd>
-        <dt>Next.js</dt>
-        <dd>A React framework for production</dd>
+        <dt>Astro</dt>
+        <dd>A web framework for content-driven sites</dd>
       </dl>
     </MemoizedArticleClient>
   );
@@ -817,8 +817,8 @@ it("renders memoized article with definition lists", () => {
   );
   expect(article).toHaveTextContent("TypeScript");
   expect(article).toHaveTextContent("A typed superset of JavaScript");
-  expect(article).toHaveTextContent("Next.js");
-  expect(article).toHaveTextContent("A React framework for production");
+  expect(article).toHaveTextContent("Astro");
+  expect(article).toHaveTextContent("A web framework for content-driven sites");
   expect(article.querySelector("dl")).toBeInTheDocument();
   expect(article.querySelectorAll("dt")).toHaveLength(3);
   expect(article.querySelectorAll("dd")).toHaveLength(3);

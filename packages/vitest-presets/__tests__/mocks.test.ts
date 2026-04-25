@@ -80,7 +80,13 @@ describe("Centralized Mocks", () => {
 
     it("should have working cn utility", async () => {
       const mocks = await import("../__mocks__/@portfolio/utils");
-      const result = mocks.cn("class1", "class2", false && "class3", "class4");
+      const shouldIncludeOptionalClass = Boolean("");
+      const result = mocks.cn(
+        "class1",
+        "class2",
+        shouldIncludeOptionalClass && "class3",
+        "class4"
+      );
       expect(result).toBe("class1 class2 class4");
     });
 

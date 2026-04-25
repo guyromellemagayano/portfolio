@@ -147,13 +147,13 @@ describe("ArticleSearch", () => {
       tags: ["react"],
     },
     {
-      slug: "nextjs-tips",
-      title: "Next.js Tips",
-      description: "Tips for Next.js",
+      slug: "astro-tips",
+      title: "Astro Tips",
+      description: "Tips for Astro",
       date: "2023-02-02",
-      content: "Next.js content",
-      image: "/next.png",
-      tags: ["next"],
+      content: "Astro content",
+      image: "/astro.png",
+      tags: ["astro"],
     },
   ];
 
