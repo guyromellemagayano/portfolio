@@ -1,6 +1,6 @@
 ---
 name: web-design-guidelines
-description: Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against best practices".
+description: Reference-level web interface review checklist. Use when portfolio local rules do not already provide sufficient coverage for the review scope.
 argument-hint: <file-or-pattern>
 metadata:
   author: vercel
@@ -17,6 +17,13 @@ Review files for compliance with Web Interface Guidelines.
 2. Read the specified files (or prompt user for files/pattern)
 3. Check against all rules in the fetched guidelines
 4. Output findings in the terse `file:line` format
+5. Evaluate implementation code as TypeScript-first (`.ts` / `.tsx`), with `.js` findings limited to toolchain/config files that require JavaScript.
+
+## Portfolio Use Rule
+
+- This skill is a **reference** source for UI review guidance.
+- For portfolio, authoritative standards are defined in `AGENTS.md` and `.cursor/rules/*.mdc`.
+- Apply these web-design rules only when they do not conflict with repository-local instructions.
 
 ## Guidelines Source
 

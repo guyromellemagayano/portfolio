@@ -5,6 +5,14 @@
   "description": "Shared TypeScript configuration",
   "license": "MIT",
   "type": "module",
+  "exports": {
+    "./astro.json": "./src/astro.json",
+    "./base.json": "./src/base.json",
+    "./react-app.json": "./src/react-app.json",
+    "./react-library.json": "./src/react-library.json",
+    "./remix.json": "./src/remix.json",
+    "./vite.json": "./src/vite.json"
+  },
   "scripts": {
     "build": "node --eval \"\"",
     "format": "prettier --write \"src/**/*.json\"",
@@ -14,6 +22,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "astro": "catalog:",
     "prettier": "catalog:"
   },
   "peerDependencies": {},

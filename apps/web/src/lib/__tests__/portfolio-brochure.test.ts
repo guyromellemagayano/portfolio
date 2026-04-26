@@ -34,15 +34,31 @@ describe("buildPortfolioPageMetadata", () => {
       type: "website",
       title: "Services",
       siteName: "Guy Romelle Magayano",
+      images: [
+        {
+          alt: "Guy Romelle Magayano - product engineering consultant portfolio",
+          height: 630,
+          url: "https://www.guyromellemagayano.com/og-image.png",
+          width: 1200,
+        },
+      ],
     });
     expect(metadata.twitter).toMatchObject({
-      card: "summary",
+      card: "summary_large_image",
       title: "Services",
+      images: ["https://www.guyromellemagayano.com/og-image.png"],
     });
     expect(metadata.robots).toEqual({
       index: true,
       follow: true,
     });
+    expect(metadata.structuredData).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          "@type": "BreadcrumbList",
+        }),
+      ])
+    );
   });
 
   it("returns an absolute title for the homepage without applying the layout suffix", () => {
@@ -59,6 +75,27 @@ describe("buildPortfolioPageMetadata", () => {
     });
     expect(metadata.openGraph).toMatchObject({
       title: "Guy Romelle Magayano",
+    });
+    expect(metadata.structuredData).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          "@type": "BreadcrumbList",
+        }),
+      ])
+    );
+  });
+
+  it("keeps extended homepage titles absolute to avoid repeating the owner name", () => {
+    const metadata = buildPortfolioPageMetadata({
+      ...basePage,
+      slug: "",
+      title: "Home",
+      seoTitle: "Guy Romelle Magayano - Product Engineering Consultant",
+      seoCanonicalPath: "/",
+    });
+
+    expect(metadata.title).toEqual({
+      absolute: "Guy Romelle Magayano - Product Engineering Consultant",
     });
   });
 });

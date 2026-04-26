@@ -15,6 +15,7 @@
 4. Do not reintroduce Next.js, remote content services, API services, docs-site infrastructure, Makefile workflows, or custom maintenance scripts.
 5. Use local typed data until a real integration earns its weight.
 6. Preserve accessibility, SEO, performance, and security as first-class requirements.
+7. Follow `.cursor/rules/package-governance.mdc` and `.cursor/rules/import-resolution.mdc` for dependency placement, package exports, and import boundaries.
 
 ## Astro Standards
 
@@ -25,6 +26,15 @@
 - Prefer semantic HTML in Astro before adding ARIA.
 - Keep inline scripts small, scoped, and dependency-free.
 - Use `BaseDocument.astro` for metadata, canonical URLs, social tags, and JSON-LD.
+
+## Naming Standards
+
+- App and package folders use kebab-case; package names match folder names.
+- Route files follow Astro routing conventions: `index.astro`, `[slug].astro`, and kebab-case URL segments.
+- Astro component files and React component files use PascalCase.
+- Component folders use kebab-case with an `index.ts` barrel only when the folder exports a public component API.
+- Data, helper, utility, and config files use lower-case kebab-case unless a framework convention requires another name; type companions may use `.types.ts`.
+- Tests live in nearby `__tests__` folders and use `.test.ts` or `.test.tsx`.
 
 ## SEO Standards
 

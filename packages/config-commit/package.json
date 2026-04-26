@@ -1,0 +1,40 @@
+{
+  "name": "@portfolio/config-commit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shared commit, commitlint, and staged-file configuration for the portfolio workspace",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "bin": {
+    "portfolio-commit": "./src/bin/commit.mjs",
+    "portfolio-commit-msg": "./src/bin/commit-msg.mjs",
+    "portfolio-pre-commit": "./src/bin/pre-commit.mjs",
+    "portfolio-pre-push": "./src/bin/pre-push.mjs",
+    "portfolio-validate-commit-message": "./src/bin/validate-commit-message.mjs"
+  },
+  "scripts": {
+    "build": "node --eval \"\"",
+    "format": "prettier --write ./src ./README.md ./package.json ./eslint.config.js",
+    "format:check": "prettier --check ./src ./README.md ./package.json ./eslint.config.js",
+    "lint": "eslint ./src ./eslint.config.js --max-warnings 0",
+    "lint:fix": "eslint ./src ./eslint.config.js --fix --max-warnings 0"
+  },
+  "dependencies": {
+    "@commitlint/cli": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "czg": "catalog:",
+    "lint-staged": "catalog:",
+    "validate-branch-name": "catalog:"
+  },
+  "devDependencies": {
+    "@portfolio/config-eslint": "workspace:*",
+    "eslint": "catalog:",
+    "globals": "catalog:",
+    "prettier": "catalog:"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {}
+}

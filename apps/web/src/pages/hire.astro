@@ -7,9 +7,16 @@ import {
   getPortfolioBrochurePage,
   getPortfolioSocialLinkByPlatform,
 } from "@web/lib/portfolio-brochure";
+import {
+  appendStructuredData,
+  buildContactPageStructuredData,
+} from "@web/lib/structured-data";
 
 const { page } = await getPortfolioBrochurePage("hire");
-const metadata = buildPortfolioPageMetadata(page);
+const metadata = appendStructuredData(
+  buildPortfolioPageMetadata(page),
+  buildContactPageStructuredData(page)
+);
 const emailLink = getPortfolioSocialLinkByPlatform("email");
 const linkedinLink = getPortfolioSocialLinkByPlatform("linkedin");
 ---

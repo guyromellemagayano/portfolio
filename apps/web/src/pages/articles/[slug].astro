@@ -3,11 +3,21 @@ import BaseLayout from "@web/layouts/BaseLayout.astro";
 import RichText from "@web/components/RichText.astro";
 import type { WebPageMetadata } from "@web/lib/metadata.types";
 import {
+  buildOpenGraphImages,
+  buildTwitterImages,
+  DEFAULT_SOCIAL_IMAGE_HEIGHT,
+  DEFAULT_SOCIAL_IMAGE_PATH,
+  DEFAULT_SOCIAL_IMAGE_WIDTH,
+  DEFAULT_TWITTER_CARD,
   resolveMetadataTitle,
   resolveMetadataTitleText,
   SITE_NAME,
 } from "@web/lib/metadata";
-import { buildArticleStructuredData } from "@web/lib/structured-data";
+import { formatDate } from "@web/lib/format-date";
+import {
+  buildArticleStructuredData,
+  buildBreadcrumbListStructuredData,
+} from "@web/lib/structured-data";
 import {
   getAllArticles,
   getArticleBySlug,
@@ -52,6 +62,14 @@ function buildArticleMetadata(articleRecord: ArticleDetail): WebPageMetadata {
   const canonicalUrl = toAbsoluteSiteUrl(
     articleRecord.seoCanonicalPath || `/articles/${articleRecord.slug}`
   );
+  const socialImagePath =
+    articleRecord.seoOgImage ||
+    articleRecord.image ||
+    DEFAULT_SOCIAL_IMAGE_PATH;
+  const socialImageAlt =
+    articleRecord.seoOgImageAlt ||
+    articleRecord.imageAlt ||
+    articleRecord.title;
 
   return {
     title: resolveMetadataTitle(articleRecord.seoTitle, articleRecord.title),
@@ -70,17 +88,42 @@ function buildArticleMetadata(articleRecord: ArticleDetail): WebPageMetadata {
       url: canonicalUrl,
       siteName: SITE_NAME,
       publishedTime: articleRecord.date,
+      images: buildOpenGraphImages({
+        alt: socialImageAlt,
+        height:
+          articleRecord.seoOgImageHeight ||
+          articleRecord.imageHeight ||
+          DEFAULT_SOCIAL_IMAGE_HEIGHT,
+        pathOrUrl: socialImagePath,
+        width:
+          articleRecord.seoOgImageWidth ||
+          articleRecord.imageWidth ||
+          DEFAULT_SOCIAL_IMAGE_WIDTH,
+      }),
     },
     twitter: {
-      card: articleRecord.seoTwitterCard ?? "summary",
+      card: articleRecord.seoTwitterCard ?? DEFAULT_TWITTER_CARD,
       title: socialTitle,
       description,
+      images: buildTwitterImages({ pathOrUrl: socialImagePath }),
     },
-    structuredData: buildArticleStructuredData(articleRecord),
+    structuredData: [
+      buildArticleStructuredData(articleRecord),
+      buildBreadcrumbListStructuredData([
+        { name: "Home", path: "/" },
+        { name: "Articles", path: "/articles" },
+        {
+          name: articleRecord.title,
+          path:
+            articleRecord.seoCanonicalPath || `/articles/${articleRecord.slug}`,
+        },
+      ]),
+    ],
   };
 }
 
 const metadata = buildArticleMetadata(article);
+const formattedDate = formatDate(article.date);
 ---
 
 <BaseLayout metadata={metadata}>
@@ -93,7 +136,7 @@ const metadata = buildArticleMetadata(article);
     </a>
     <header class="mt-8">
       <time class="text-sm text-zinc-500" datetime={article.date}
-        >{article.date}</time
+        >{formattedDate}</time
       >
       <h1
         class="mt-4 text-4xl font-medium tracking-tight text-zinc-950 sm:text-6xl"

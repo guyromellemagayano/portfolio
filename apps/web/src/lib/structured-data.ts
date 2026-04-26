@@ -12,10 +12,16 @@ import {
   profile,
   socialLinks,
 } from "@web/data/site";
+import { DEFAULT_SOCIAL_IMAGE_PATH } from "@web/lib/metadata";
 import type { StructuredData, WebPageMetadata } from "@web/lib/metadata.types";
 import type { ArticleDetail, ArticleWithSlug } from "@web/utils/articles";
 import type { StandalonePageDetail } from "@web/utils/pages";
 import { toAbsoluteSiteUrl } from "@web/utils/site-url";
+
+type BreadcrumbListItem = {
+  name: string;
+  path: string;
+};
 
 function getSiteUrl(): string {
   return (
@@ -68,6 +74,12 @@ function getWebsiteReference(): StructuredData {
   };
 }
 
+function getPlainEmail(): string | undefined {
+  const email = socialLinks.find((link) => link.platform === "email")?.href;
+
+  return email?.replace(/^mailto:/i, "");
+}
+
 /** Appends JSON-LD records to existing page metadata without overwriting route metadata. */
 export function appendStructuredData(
   metadata: WebPageMetadata,
@@ -105,6 +117,22 @@ export function buildWebPageStructuredData(page: PageData): StructuredData {
   };
 }
 
+/** Builds BreadcrumbList JSON-LD for indexable content routes. */
+export function buildBreadcrumbListStructuredData(
+  items: BreadcrumbListItem[]
+): StructuredData {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: getPageUrl(item.path),
+    })),
+  };
+}
+
 /** Builds the site-level WebSite JSON-LD record. */
 export function buildWebsiteStructuredData(): StructuredData {
   return {
@@ -120,7 +148,7 @@ export function buildPersonStructuredData(): StructuredData {
   const sameAs = socialLinks
     .map((link) => link.href)
     .filter((href) => href.startsWith("http"));
-  const email = socialLinks.find((link) => link.platform === "email")?.href;
+  const email = getPlainEmail();
 
   return {
     "@context": "https://schema.org",
@@ -145,6 +173,15 @@ export function buildPersonStructuredData(): StructuredData {
       name: "Product engineering consulting services",
       url: getPageUrl("/services"),
     },
+    contactPoint: email
+      ? {
+          "@type": "ContactPoint",
+          contactType: "Client inquiries",
+          email,
+          areaServed: "Worldwide",
+          availableLanguage: ["English"],
+        }
+      : undefined,
     sameAs,
   };
 }
@@ -154,11 +191,14 @@ export function buildProfessionalServiceStructuredData(
   page: PageData,
   services: Service[]
 ): StructuredData {
+  const servicesUrl = getPageUrl("/services");
+
   return {
     "@context": "https://schema.org",
+    "@id": `${servicesUrl}#professional-service`,
     "@type": "ProfessionalService",
     name: `${profile.name} - Product Engineering Services`,
-    url: getPageUrl(page.seoCanonicalPath || "/services"),
+    url: servicesUrl,
     description: page.seoDescription || page.intro,
     provider: getPersonReference(),
     publisher: getPersonReference(),
@@ -167,9 +207,10 @@ export function buildProfessionalServiceStructuredData(
       name: "Product engineering consulting engagements",
       itemListElement: services.map((service) => ({
         "@type": "Offer",
+        "@id": `${servicesUrl}#offer-${service.id}`,
         name: service.title,
         description: service.description,
-        url: getPageUrl(service.href),
+        url: `${servicesUrl}#${service.id}`,
         price: service.price,
         priceSpecification: service.priceNote
           ? {
@@ -177,6 +218,15 @@ export function buildProfessionalServiceStructuredData(
               description: service.priceNote,
             }
           : undefined,
+        itemOffered: {
+          "@type": "Service",
+          "@id": `${servicesUrl}#service-${service.id}`,
+          name: service.title,
+          description: service.description,
+          serviceType: service.title,
+          provider: getPersonReference(),
+          url: `${servicesUrl}#${service.id}`,
+        },
       })),
     },
     potentialAction: {
@@ -186,6 +236,37 @@ export function buildProfessionalServiceStructuredData(
     },
     serviceType: services.map((service) => service.title),
     areaServed: "Worldwide",
+  };
+}
+
+/** Builds contact intent JSON-LD for the hire page. */
+export function buildContactPageStructuredData(page: PageData): StructuredData {
+  const pageUrl = getPageUrl(page.seoCanonicalPath || "/hire");
+  const email = getPlainEmail();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: page.seoTitle || page.title,
+    url: pageUrl,
+    description: page.seoDescription || page.intro,
+    isPartOf: getWebsiteReference(),
+    mainEntity: getPersonReference(),
+    about: getPersonReference(),
+    potentialAction: {
+      "@type": "ContactAction",
+      name: "Request product engineering services",
+      target: pageUrl,
+    },
+    contactPoint: email
+      ? {
+          "@type": "ContactPoint",
+          contactType: "Client inquiries",
+          email,
+          areaServed: "Worldwide",
+          availableLanguage: ["English"],
+        }
+      : undefined,
   };
 }
 
@@ -254,7 +335,9 @@ export function buildArticleStructuredData(
     publisher: getPersonReference(),
     copyrightHolder: getPersonReference(),
     isPartOf: getWebsiteReference(),
-    image: article.image ? getPageUrl(article.image) : undefined,
+    image: getPageUrl(
+      article.seoOgImage || article.image || DEFAULT_SOCIAL_IMAGE_PATH
+    ),
     keywords: article.tags,
   };
 }

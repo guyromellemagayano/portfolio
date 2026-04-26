@@ -6,12 +6,18 @@
 
 import { getPage, type PageData, socialLinks } from "@web/data/site";
 import {
+  buildOpenGraphImages,
+  buildTwitterImages,
+  DEFAULT_TWITTER_CARD,
   resolveMetadataTitle,
   resolveMetadataTitleText,
   SITE_NAME,
 } from "@web/lib/metadata";
 import type { WebPageMetadata } from "@web/lib/metadata.types";
-import { buildWebPageStructuredData } from "@web/lib/structured-data";
+import {
+  buildBreadcrumbListStructuredData,
+  buildWebPageStructuredData,
+} from "@web/lib/structured-data";
 import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 /** Resolves a brochure page by slug and throws when the slug is missing. */
@@ -32,9 +38,26 @@ export function buildPortfolioPageMetadata(page: PageData): WebPageMetadata {
     : undefined;
   const pagePath = page.seoCanonicalPath || (page.slug ? `/${page.slug}` : "/");
   const pageUrl = canonicalUrl ?? toAbsoluteSiteUrl(pagePath);
+  const structuredData = [
+    buildWebPageStructuredData(page),
+    ...(page.slug
+      ? [
+          buildBreadcrumbListStructuredData([
+            { name: "Home", path: "/" },
+            { name: page.subheading || page.title, path: pagePath },
+          ]),
+        ]
+      : []),
+  ];
+  const title =
+    page.slug === ""
+      ? {
+          absolute: socialTitle,
+        }
+      : resolveMetadataTitle(page.seoTitle, page.title);
 
   return {
-    title: resolveMetadataTitle(page.seoTitle, page.title),
+    title,
     description,
     alternates: canonicalUrl
       ? {
@@ -51,13 +74,15 @@ export function buildPortfolioPageMetadata(page: PageData): WebPageMetadata {
       description,
       url: pageUrl,
       siteName: SITE_NAME,
+      images: buildOpenGraphImages(),
     },
     twitter: {
-      card: "summary",
+      card: DEFAULT_TWITTER_CARD,
       title: socialTitle,
       description,
+      images: buildTwitterImages(),
     },
-    structuredData: buildWebPageStructuredData(page),
+    structuredData,
   };
 }
 

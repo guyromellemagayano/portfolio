@@ -1,0 +1,40 @@
+---
+description: Commit Message Standards for Grouped Changes
+globs: []
+alwaysApply: false
+---
+
+# Commit Message Standards
+
+## Instruction Source
+
+- Follow this file with `AGENTS.md` and the local Git hooks for grouped commit formatting.
+- Use it with grouped history updates, including Cursor rules, skills, agents, config packages, and dependency upgrades.
+
+## Group Commit Standard
+
+When creating grouped commits, use this structure:
+
+- First line: `type(scope): concise summary`
+- One blank line after the subject
+- Dash-prefixed bullets only
+- No blank lines between bullets
+- No body line longer than 250 characters
+- Keep bullets short and 1-2 sentences each
+
+## Required Pattern
+
+```text
+chore(config): port shared workspace governance
+
+- Added exported config artifacts for `@portfolio/config-typescript`.
+- Aligned commit tooling with shared package conventions.
+- Kept Astro-specific settings in the web workspace.
+```
+
+## Scope and Consistency Rules
+
+- Use a meaningful `scope` that matches the touched domain, such as `config`, `cursor`, `web`, `deps`, or `tests`.
+- Use this rule for grouped commits that aggregate related changes into a single cohesive change set.
+- Trivial commits may omit a body, but non-trivial commits should use the bullet body format above.
+- Avoid empty scope and keep the subject under 100 characters.

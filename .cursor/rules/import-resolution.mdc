@@ -1,0 +1,80 @@
+---
+description: Import Resolution Governance
+globs:
+  [
+    "apps/**/*.{astro,ts,tsx,js,mjs,cjs}",
+    "packages/**/*.{ts,tsx,js,mjs,cjs}",
+    "apps/**/tsconfig*.json",
+    "packages/**/tsconfig*.json",
+    "apps/**/astro.config.mjs",
+    "apps/**/vitest.config.ts",
+    "packages/**/vitest.config.ts",
+    "*.config.{js,mjs,cjs,ts}",
+  ]
+alwaysApply: true
+---
+
+<!-- markdownlint-disable -->
+
+# Import Resolution Governance
+
+## Instruction Source
+
+- Follow this file with `.cursor/rules/package-governance.mdc` for import specifiers, module resolution, aliases, and shared package boundaries.
+- If a generated template recommends pseudo-package aliases or unapproved deep imports, `AGENTS.md` and these two rule files win unless the user explicitly approves a different import model.
+
+## Resolution Model
+
+- Runtime resolution must be the source of truth; TypeScript configuration may describe resolution but must not invent imports that Astro, Vite, Vitest, Playwright, Node, or package exports cannot resolve.
+- Shared workspace packages resolve through `workspace:*` dependencies and declared package `exports` only.
+- App-local imports resolve through relative paths or an explicitly configured local alias that exists in every relevant runtime resolver.
+- Do not introduce TypeScript-only aliases, test-only aliases, or editor-only aliases.
+
+## Shared Package Imports
+
+- Import runtime/domain package APIs from package roots only, such as `@portfolio/components`, `@portfolio/hooks`, `@portfolio/logger`, `@portfolio/ui`, `@portfolio/utils`, `@portfolio/vitest-presets`, and `@portfolio/config-commit`.
+- Import config/artifact package assets only through approved explicit exports, such as `@portfolio/config-eslint/prettier` and `@portfolio/config-typescript/base.json`.
+- Do not import runtime/domain package subpaths like `@portfolio/ui/link` or `@portfolio/vitest-presets/react/vitest-preset`.
+- Explicit package exports such as `@portfolio/logger/formatters` and `@portfolio/vitest-presets/shared/test-setup.ts` are allowed when they are documented as stable package artifacts.
+- Public runtime/domain APIs must be exported from the package barrel entry.
+- Inside a package, import sibling/internal files with relative paths instead of self-importing through the package name.
+- Do not create pseudo-packages such as `@portfolio/styles`, `@portfolio/config`, or `@portfolio/data` unless a real workspace package exists and exposes an approved public export shape.
+
+## App-Local Imports
+
+- Prefer relative imports for files that are close together inside the same feature or component boundary.
+- Use an app-local alias only when it materially improves readability across distant folders and has runtime resolver parity.
+- `apps/web` may use `@web/*` because it is configured in TypeScript and Vitest/Astro-facing resolver config.
+- Do not add package-scoped local aliases unless the corresponding runtime resolver is configured and the benefit is explicit.
+- Package code that runs directly through Node should avoid aliases by default because Node does not read `tsconfig.paths`.
+
+## `tsconfig.paths` Rules
+
+- Do not add new `paths` entries that map `@portfolio/*` package names to source files.
+- `apps/web` currently keeps a transitional `@portfolio/*` source-path alias so Astro can consume local package source without requiring package builds first. Keep it contained to `apps/web` unless a larger package build migration is explicitly requested.
+- `paths` must not duplicate package `exports` or workspace dependency resolution.
+- Every `paths` entry must have an equivalent resolver entry in the runtime tool that executes that code.
+- If an alias is needed for Vitest, Storybook, Playwright, or another runner, configure that runner explicitly; do not rely on TypeScript alone.
+- Remove unused aliases immediately instead of keeping them for possible future imports.
+
+## Configuration Package Rules
+
+- `tsconfig.json` `extends` must use exported `@portfolio/config-typescript/*.json` artifacts, not `@portfolio/config-typescript/src/*.json` source paths.
+- Root Prettier config should consume `@portfolio/config-eslint/prettier` because that is a dedicated config artifact, not part of the ESLint API barrel.
+- This exception does not allow application code, package code, tests, Astro config, Vitest config, or runtime scripts to import runtime/domain packages through subpaths.
+
+## Import Style
+
+- Use bare package imports for external dependencies and shared workspace packages.
+- Use root package imports for public runtime/domain workspace APIs.
+- Use approved explicit config artifact imports only for tool config consumption.
+- Use relative imports for implementation-local files and same-package internals.
+- Use `@web/*` only for web app internals that cross folder boundaries; do not use it inside shared packages.
+- Prefer inline type specifiers, for example `import { type Foo } from "module"`, when adding new imports.
+
+## Review Checklist
+
+- Before adding or changing an import alias, verify where the code runs and configure the runtime resolver before using the alias.
+- Before removing or adding a package subpath export, classify the package as root-barrel or config/artifact and search with `rg '@portfolio/.+/'`.
+- Before adding a shared runtime/domain symbol, export it from the package barrel and import it from the package root in consumers.
+- After import resolution changes, run type checks, lint, and affected builds for the changed workspace.

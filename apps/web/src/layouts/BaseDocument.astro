@@ -28,6 +28,10 @@ const robotsIndex = metadata?.robots?.index === false ? "noindex" : "index";
 const robotsFollow = metadata?.robots?.follow === false ? "nofollow" : "follow";
 const openGraph = metadata?.openGraph;
 const twitter = metadata?.twitter;
+const googleSiteVerification =
+  globalThis.process?.env?.GOOGLE_SITE_VERIFICATION?.trim() ?? "";
+const bingSiteVerification =
+  globalThis.process?.env?.BING_SITE_VERIFICATION?.trim() ?? "";
 const structuredDataItems = metadata?.structuredData
   ? Array.isArray(metadata.structuredData)
     ? metadata.structuredData
@@ -40,10 +44,28 @@ const structuredDataItems = metadata?.structuredData
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon.ico" />
+    <meta name="application-name" content={siteName} />
+    <meta name="theme-color" content="#fafaf9" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={`${robotsIndex},${robotsFollow}`} />
+    {
+      googleSiteVerification ? (
+        <meta
+          name="google-site-verification"
+          content={googleSiteVerification}
+        />
+      ) : null
+    }
+    {
+      bingSiteVerification ? (
+        <meta name="msvalidate.01" content={bingSiteVerification} />
+      ) : null
+    }
     {canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}
     {
       openGraph?.type ? (
@@ -61,6 +83,7 @@ const structuredDataItems = metadata?.structuredData
       ) : null
     }
     {openGraph?.url ? <meta property="og:url" content={openGraph.url} /> : null}
+    <meta property="og:locale" content="en_US" />
     {
       openGraph?.siteName ? (
         <meta property="og:site_name" content={openGraph.siteName} />

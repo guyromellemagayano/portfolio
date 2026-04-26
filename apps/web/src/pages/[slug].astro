@@ -4,11 +4,17 @@ import RichText from "@web/components/RichText.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import type { WebPageMetadata } from "@web/lib/metadata.types";
 import {
+  buildOpenGraphImages,
+  buildTwitterImages,
+  DEFAULT_TWITTER_CARD,
   resolveMetadataTitle,
   resolveMetadataTitleText,
   SITE_NAME,
 } from "@web/lib/metadata";
-import { buildStandalonePageStructuredData } from "@web/lib/structured-data";
+import {
+  buildBreadcrumbListStructuredData,
+  buildStandalonePageStructuredData,
+} from "@web/lib/structured-data";
 import {
   getAllPages,
   getPageBySlug,
@@ -82,13 +88,24 @@ function buildStandalonePageMetadata(
       description,
       url: canonicalUrl,
       siteName: SITE_NAME,
+      images: buildOpenGraphImages(),
     },
     twitter: {
-      card: pageRecord.seoTwitterCard ?? "summary",
+      card: pageRecord.seoTwitterCard ?? DEFAULT_TWITTER_CARD,
       title: socialTitle,
       description,
+      images: buildTwitterImages(),
     },
-    structuredData: buildStandalonePageStructuredData(pageRecord),
+    structuredData: [
+      buildStandalonePageStructuredData(pageRecord),
+      buildBreadcrumbListStructuredData([
+        { name: "Home", path: "/" },
+        {
+          name: pageRecord.subheading || pageRecord.title,
+          path: pageRecord.seoCanonicalPath || `/${pageRecord.slug}`,
+        },
+      ]),
+    ],
   };
 }
 

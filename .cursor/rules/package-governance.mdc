@@ -1,0 +1,77 @@
+---
+description: Package Dependency and Export Governance
+globs:
+  [
+    "package.json",
+    "pnpm-workspace.yaml",
+    "apps/**/package.json",
+    "packages/**/package.json",
+    "apps/**/tsconfig*.json",
+    "packages/**/tsconfig*.json",
+    "apps/**/*.{astro,ts,tsx,js,mjs,cjs}",
+    "packages/**/*.{ts,tsx,js,mjs,cjs}",
+    "*.config.{js,mjs,cjs,ts}",
+  ]
+alwaysApply: true
+---
+
+<!-- markdownlint-disable -->
+
+# Package Dependency and Export Governance
+
+## Instruction Source
+
+- Follow this file with `.cursor/rules/import-resolution.mdc` for package manifests, dependency placement, TypeScript aliases, and shared package exports.
+- If a generated template conflicts, `AGENTS.md` and these two rule files win unless the user explicitly approves a different package policy.
+
+## Dependency Version Ownership
+
+- External dependency versions belong in `pnpm-workspace.yaml` under `catalog:`.
+- Workspace manifests must reference external dependencies with `"catalog:"`, not concrete versions or duplicate pins.
+- Internal `@portfolio/*` dependencies must use `"workspace:*"`.
+- Keep `catalogMode: strict`; do not weaken catalog enforcement to make an install pass.
+- When adding or upgrading an external dependency, update the catalog once, reference it from the owning workspace with `"catalog:"`, and refresh `pnpm-lock.yaml` with pnpm.
+
+## Dependency Placement
+
+- Add dependencies to the workspace that imports or executes them, not to the root by default.
+- A package script must declare the CLI or runtime it invokes in that same workspace's `devDependencies` or `dependencies`; do not rely on root hoisting for filtered commands or isolated workspace execution.
+- Root `package.json` is for repository orchestration tools and root config dependencies only, such as Turborepo, Husky, root config packages, and catalog maintenance tooling.
+- Do not place app-specific dependencies or framework types in the root manifest.
+- Remove unused workspace dependencies instead of keeping them as shared convenience dependencies.
+
+## Package Export Classification
+
+- Choose the package export shape from how the package is consumed, not from convenience.
+- Runtime/domain packages should prefer a root barrel export through `"."` and `src/index.ts` or `src/index.js`.
+- Config/artifact packages may expose explicit subpath exports when consumers need named config assets rather than a cohesive TypeScript API.
+- Config/artifact exports must be explicit file-level entries, not wildcards.
+- Do not add wildcard package subpath exports such as `"./*"`, `"./components/*"`, `"./src/*"`, or `"./lib/*"`.
+- Do not expose implementation internals because a consumer wants a shortcut; promote the symbol to the root barrel or keep the import relative within the owning package.
+
+## Approved Export Shapes
+
+- `@portfolio/components`, `@portfolio/hooks`, `@portfolio/ui`, `@portfolio/utils`, and `@portfolio/config-commit` should expose root barrels only unless the user explicitly approves a different public API.
+- `@portfolio/logger` may expose stable logging artifacts such as `"./formatters"`, `"./transports"`, and `"./utils"` when those are documented package APIs.
+- `@portfolio/vitest-presets` may expose `"."` for presets and `"./shared/test-setup.ts"` for the Vitest setup artifact.
+- `@portfolio/config-eslint` may expose `"."` for ESLint config APIs, `"./react"` for the React ESLint preset, and `"./prettier"` for the Prettier config artifact.
+- `@portfolio/config-typescript` may expose explicit JSON config artifacts such as `"./astro.json"`, `"./base.json"`, `"./vite.json"`, `"./react-app.json"`, and `"./react-library.json"`.
+- New config packages may use explicit subpath exports only for stable config artifacts consumed directly by external tools.
+
+## Import and Alias Boundaries
+
+- Import specifier, runtime resolver, and `tsconfig.paths` policy lives in `.cursor/rules/import-resolution.mdc`.
+- Do not add package exports or dependency entries to work around an import-resolution issue; fix the resolver model instead.
+
+## Portfolio Boundaries
+
+- Keep `apps/web` Astro-first.
+- Do not add backend/API/database packages, remote content services, docs-site infrastructure, Makefile workflows, or custom maintenance scripts unless explicitly requested.
+- Keep editable content in `apps/web/src/data`; keep page helpers in `apps/web/src/lib`; keep reusable utilities in `apps/web/src/utils` or real workspace packages.
+
+## Change Workflow
+
+- Before changing dependency placement or exports, search for existing imports and script usage with `rg`.
+- After editing manifests, refresh the lockfile through pnpm instead of editing `pnpm-lock.yaml` manually.
+- Run `pnpm --filter web lint`, `pnpm --filter web check-types`, `pnpm --filter web test:run`, and `pnpm --filter web build` before handoff when changes affect the web app.
+- Run affected package checks when exports, package manifests, or shared config packages change.

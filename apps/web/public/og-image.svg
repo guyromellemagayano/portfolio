@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Guy Romelle Magayano portfolio preview</title>
+  <desc id="description">Social preview image for Guy Romelle Magayano's product engineering portfolio.</desc>
+  <rect width="1200" height="630" fill="#18181b"/>
+  <rect x="64" y="64" width="1072" height="502" fill="#fafaf9"/>
+  <text x="112" y="166" fill="#71717a" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" letter-spacing="6">PORTFOLIO AND SERVICES</text>
+  <text x="112" y="284" fill="#18181b" font-family="Arial, Helvetica, sans-serif" font-size="80" font-weight="700">Guy Romelle</text>
+  <text x="112" y="372" fill="#18181b" font-family="Arial, Helvetica, sans-serif" font-size="80" font-weight="700">Magayano</text>
+  <text x="112" y="456" fill="#3f3f46" font-family="Arial, Helvetica, sans-serif" font-size="34">Product engineering, frontend architecture, and platform systems.</text>
+  <circle cx="1008" cy="192" r="80" fill="#18181b"/>
+  <text x="960" y="214" fill="#fafaf9" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">GM</text>
+</svg>

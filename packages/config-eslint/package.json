@@ -13,6 +13,10 @@
     "./react": {
       "types": "./src/presets/react.d.ts",
       "default": "./src/presets/react.js"
+    },
+    "./prettier": {
+      "types": "./src/prettier.d.cts",
+      "default": "./src/prettier.cjs"
     }
   },
   "scripts": {
@@ -42,14 +46,18 @@
     "eslint-plugin-testing-library": "catalog:",
     "eslint-plugin-turbo": "catalog:",
     "eslint-plugin-unused-imports": "catalog:",
+    "globals": "catalog:",
     "typescript-eslint": "catalog:"
   },
   "devDependencies": {
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "globals": "catalog:",
     "postcss": "catalog:",
     "prettier": "catalog:",
+    "prettier-plugin-astro": "catalog:",
+    "prettier-plugin-packagejson": "catalog:",
+    "prettier-plugin-pkg": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "rimraf": "catalog:",

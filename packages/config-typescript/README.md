@@ -6,24 +6,24 @@ Shared TypeScript presets for the active Astro/React monorepo.
 
 ## Presets
 
-- `src/base.json` - strict package baseline.
-- `src/astro.json` - Astro app baseline using `astro/tsconfigs/strict`.
-- `src/react-app.json` - React application baseline.
-- `src/react-library.json` - reusable React package baseline.
-- `src/remix.json` - Remix app baseline if a Remix app is added again.
-- `src/vite.json` - Vite frontend baseline.
+- `base.json` - strict package baseline.
+- `astro.json` - Astro app baseline using `astro/tsconfigs/strict`.
+- `react-app.json` - React application baseline.
+- `react-library.json` - reusable React package baseline.
+- `remix.json` - Remix app baseline if a Remix app is added again.
+- `vite.json` - Vite frontend baseline.
 
 ## Usage
 
 ```json
 {
-  "extends": "@portfolio/config-typescript/src/base.json"
+  "extends": "@portfolio/config-typescript/base.json"
 }
 ```
 
 ```json
 {
-  "extends": "@portfolio/config-typescript/src/astro.json"
+  "extends": "@portfolio/config-typescript/astro.json"
 }
 ```
 
