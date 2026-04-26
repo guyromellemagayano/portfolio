@@ -6,12 +6,14 @@
  */
 
 import type { ArticleWithSlug } from "@web/utils/articles";
+import { formatDate } from "@web/lib/format-date";
 
 type Props = {
   article: ArticleWithSlug;
 };
 
 const { article } = Astro.props;
+const formattedDate = formatDate(article.date);
 ---
 
 <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
@@ -38,6 +40,6 @@ const { article } = Astro.props;
     {article.description}
   </p>
   <time class="mt-4 block text-sm text-zinc-500" datetime={article.date}>
-    {article.date}
+    {formattedDate}
   </time>
 </article>

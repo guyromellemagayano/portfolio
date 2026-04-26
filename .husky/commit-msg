@@ -1,3 +1,2 @@
 #!/usr/bin/env sh
-# Validate commit message format
-pnpm exec commitlint --edit "$1"
+pnpm exec portfolio-commit-msg "$1"

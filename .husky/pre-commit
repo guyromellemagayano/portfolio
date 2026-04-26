@@ -1,3 +1,2 @@
 #!/usr/bin/env sh
-# Run lint-staged to check and fix staged files
-pnpm exec lint-staged
+pnpm exec portfolio-pre-commit

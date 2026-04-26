@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatDate } from "./formatDate";
+import { formatDate } from "../format-date";
 
 describe("formatDate", () => {
   describe("Basic Date Formatting", () => {
@@ -80,6 +80,11 @@ describe("formatDate", () => {
     it("handles ISO date format", () => {
       const result = formatDate("2024-01-15");
       expect(result).toBe("January 15, 2024");
+    });
+
+    it("handles full ISO timestamps", () => {
+      const result = formatDate("2026-04-18T00:00:00.000Z");
+      expect(result).toBe("April 18, 2026");
     });
 
     it("handles date with leading zeros in month", () => {

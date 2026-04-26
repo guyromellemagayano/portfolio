@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">Guy Romelle Magayano</title>
+  <desc id="description">A square monogram icon for Guy Romelle Magayano.</desc>
+  <rect width="512" height="512" rx="112" fill="#18181b"/>
+  <path d="M96 122h320v268H96z" fill="#fafaf9"/>
+  <path d="M136 162h112v44h-64v122h-48V162zm144 0h96v44h-48v122h-48V162zm48 86h48v80h-48v-80z" fill="#18181b"/>
+</svg>

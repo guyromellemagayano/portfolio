@@ -46,5 +46,7 @@ alwaysApply: false
 ## Folder Naming
 
 - Component folders use kebab-case.
-- Component files use PascalCase for React components and concise descriptive names for Astro components.
-- Tests live in `__tests__` next to the unit under test.
+- React component files and Astro component files use PascalCase.
+- Route files follow Astro routing conventions: `index.astro`, `[slug].astro`, and kebab-case URL segments.
+- Data, helper, utility, and config files use lower-case kebab-case unless a framework convention requires another name; type companions may use `.types.ts`.
+- Tests live in `__tests__` next to the unit under test and use `.test.ts` or `.test.tsx`.

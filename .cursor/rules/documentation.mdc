@@ -30,3 +30,9 @@ alwaysApply: false
 - Keep framework claims current.
 - Mention Astro for `apps/web`, not Next.js.
 - Mention local typed data, not remote content services.
+
+## Naming Documentation
+
+- Document package config artifacts by their exported names, such as `base.json`, not by `src/` implementation paths.
+- Use kebab-case for new documentation files and folders unless a platform requires a fixed name.
+- Keep README examples aligned with package `exports` and root scripts.

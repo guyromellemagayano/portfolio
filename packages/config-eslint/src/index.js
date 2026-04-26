@@ -13,6 +13,7 @@ import simpleImportSort from "eslint-plugin-simple-import-sort";
 import testingLibrary from "eslint-plugin-testing-library";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
+import globals from "globals";
 
 const fileName = fileURLToPath(import.meta.url);
 const dirName = dirname(fileName);
@@ -138,7 +139,15 @@ export const baseEslintConfig = [
         },
       ],
     },
-    ignores: ["dist/**", "**/dist/**", "**/*.mdx"],
+    ignores: [
+      "dist/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/.turbo/**",
+      "**/.pnpm-store/**",
+      "**/.npm-cache/**",
+      "**/*.mdx",
+    ],
   },
   {
     files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
@@ -158,6 +167,9 @@ export const baseEslintConfig = [
   {
     files: ["**/*.js", "**/*.cjs", "**/*.mjs"],
     languageOptions: {
+      globals: {
+        ...globals.node,
+      },
       parserOptions: {
         sourceType: "module",
         ecmaVersion: "latest",
@@ -182,6 +194,31 @@ export const baseEslintConfig = [
   },
   {
     files: [
+      "**/*.config.{js,cjs,mjs,ts,cts,mts}",
+      "**/eslint.config.{js,cjs,mjs}",
+      "**/astro.config.{js,cjs,mjs,ts}",
+      "commitlint.config.{js,cjs,mjs}",
+      "prettier.config.{js,cjs,mjs}",
+    ],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+  {
+    files: ["**/src/bin/**/*.{js,cjs,mjs,ts,cts,mts}"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      "no-console": "off",
+    },
+  },
+  {
+    files: [
       "**/__tests__/**/*.{js,ts,jsx,tsx}",
       "**/*.{test,spec}.{js,ts,jsx,tsx}",
     ],
@@ -195,6 +232,7 @@ export const baseEslintConfig = [
     languageOptions: {
       globals: {
         ...vitestPlugin.environments.env.globals,
+        performance: "readonly",
         process: "readonly",
       },
     },
