@@ -1,0 +1,84 @@
+---
+import PageIntro from "@web/components/PageIntro.astro";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import {
+  buildPortfolioPageMetadata,
+  getPortfolioBrochurePage,
+  getPortfolioSocialLinkByPlatform,
+} from "@web/lib/portfolio-brochure";
+
+const { page } = await getPortfolioBrochurePage("privacy");
+const metadata = buildPortfolioPageMetadata(page);
+const emailLink = getPortfolioSocialLinkByPlatform("email");
+---
+
+<BaseLayout metadata={metadata}>
+  <PageIntro
+    subheading={page.subheading}
+    title={page.title}
+    intro={page.intro}
+  />
+
+  <section
+    aria-labelledby="privacy-content-heading"
+    class="mx-auto max-w-3xl px-6 py-12 sm:px-8"
+    role="region"
+  >
+    <h2 id="privacy-content-heading" class="sr-only">
+      Privacy and consent details
+    </h2>
+    <div class="prose-zinc prose max-w-none">
+      <p>
+        This site is a static portfolio and services site for Guy Romelle
+        Magayano. It does not currently load non-essential analytics,
+        advertising pixels, session replay, or conversion tracking scripts.
+      </p>
+
+      <h2>Information handled today</h2>
+      <p>
+        The site can receive standard hosting logs such as request path, user
+        agent, approximate timestamp, referrer, and IP address. Those logs are
+        used for security, debugging, abuse prevention, and deployment
+        operations. If you email me or open an external profile, the information
+        you provide is handled by your email provider or that external service.
+      </p>
+
+      <h2>Consent before analytics</h2>
+      <p>
+        Before non-essential analytics or conversion tracking are introduced,
+        the site should clearly disclose the provider, the categories of data
+        collected, the purpose of collection, and whether the tracking is
+        optional. Non-essential tracking should not be treated as required for
+        using the public portfolio.
+      </p>
+
+      <h2>Cookies and local storage</h2>
+      <p>
+        The current site does not intentionally set analytics cookies or use
+        local storage for tracking. If a future analytics tool requires cookies
+        or browser storage, this page and the consent experience should be
+        updated before the tool is enabled in production.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this privacy and consent baseline can be sent through
+        the contact path on the hire page
+        {
+          emailLink ? (
+            <>
+              {" "}
+              or by emailing{" "}
+              <a href={emailLink.href}>Guy Romelle Magayano directly</a>
+            </>
+          ) : null
+        }
+        .
+      </p>
+
+      <p>
+        <strong>Last updated:</strong> April 27, 2026.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

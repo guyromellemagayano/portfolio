@@ -315,6 +315,27 @@ export function buildCollectionPageStructuredData(
   };
 }
 
+/** Builds JSON-LD for project case study pages. */
+export function buildProjectStructuredData(project: Project): StructuredData {
+  const projectUrl = getPageUrl(`/projects/${project.slug}`);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "@id": `${projectUrl}#case-study`,
+    name: `${project.title} Case Study`,
+    headline: project.title,
+    url: projectUrl,
+    description: project.description,
+    author: getPersonReference(),
+    publisher: getPersonReference(),
+    creator: getPersonReference(),
+    isPartOf: getWebsiteReference(),
+    about: project.tags,
+    keywords: project.tags,
+  };
+}
+
 /** Builds article JSON-LD for local article detail pages. */
 export function buildArticleStructuredData(
   article: ArticleDetail

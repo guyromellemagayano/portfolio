@@ -25,7 +25,7 @@ const articleId = idPrefix ? `${idPrefix}-${project.slug}` : project.slug;
     {project.path}
   </p>
   <h3 class="mt-3 text-xl font-medium tracking-tight text-zinc-950">
-    {project.title}
+    <a href={`/projects/${project.slug}`}>{project.title}</a>
   </h3>
   <p class="mt-3 text-sm leading-7 text-zinc-600">
     {project.description}
@@ -59,4 +59,10 @@ const articleId = idPrefix ? `${idPrefix}-${project.slug}` : project.slug;
       ))
     }
   </div>
+  <a
+    href={`/projects/${project.slug}`}
+    class="mt-5 inline-flex text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
+  >
+    Read case study
+  </a>
 </article>
