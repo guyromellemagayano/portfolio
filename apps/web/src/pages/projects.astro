@@ -18,7 +18,7 @@ const metadata = appendStructuredData(
   buildCollectionPageStructuredData(
     page,
     projects,
-    (project) => `/projects#${project.slug}`
+    (project) => `/projects/${project.slug}`
   )
 );
 const featuredProjects = projects.filter((project) => project.featured);

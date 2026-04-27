@@ -1,0 +1,195 @@
+---
+import CTA from "@web/components/CTA.astro";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import { projects, type Project } from "@web/data/projects";
+import type { WebPageMetadata } from "@web/lib/metadata.types";
+import {
+  buildOpenGraphImages,
+  buildTwitterImages,
+  DEFAULT_TWITTER_CARD,
+  resolveMetadataTitle,
+  SITE_NAME,
+} from "@web/lib/metadata";
+import {
+  buildBreadcrumbListStructuredData,
+  buildProjectStructuredData,
+} from "@web/lib/structured-data";
+import { toAbsoluteSiteUrl } from "@web/utils/site-url";
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: {
+      slug: project.slug,
+    },
+  }));
+}
+
+const slug = Astro.params.slug ?? "";
+const project = projects.find((entry) => entry.slug === slug);
+
+if (!project) {
+  return Astro.redirect("/404", 404);
+}
+
+function buildProjectMetadata(projectRecord: Project): WebPageMetadata {
+  const canonicalUrl = toAbsoluteSiteUrl(`/projects/${projectRecord.slug}`);
+  const title = `${projectRecord.title} Case Study`;
+  const description = projectRecord.caseStudy.outcome;
+
+  return {
+    title: resolveMetadataTitle(title, projectRecord.title),
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+      images: buildOpenGraphImages({
+        alt: `${projectRecord.title} case study by Guy Romelle Magayano`,
+      }),
+    },
+    twitter: {
+      card: DEFAULT_TWITTER_CARD,
+      title,
+      description,
+      images: buildTwitterImages(),
+    },
+    structuredData: [
+      buildProjectStructuredData(projectRecord),
+      buildBreadcrumbListStructuredData([
+        { name: "Home", path: "/" },
+        { name: "Projects", path: "/projects" },
+        {
+          name: projectRecord.title,
+          path: `/projects/${projectRecord.slug}`,
+        },
+      ]),
+    ],
+  };
+}
+
+const metadata = buildProjectMetadata(project);
+---
+
+<BaseLayout metadata={metadata}>
+  <article class="mx-auto max-w-6xl px-6 pt-16 sm:px-8 sm:pt-24">
+    <a
+      href="/projects"
+      class="text-sm font-medium text-zinc-500 underline decoration-zinc-300 underline-offset-4"
+    >
+      Back to projects
+    </a>
+    <header class="mt-8 max-w-4xl">
+      <p
+        class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase"
+      >
+        {project.path}
+      </p>
+      <h1
+        class="mt-3 text-4xl font-medium tracking-tight text-zinc-950 sm:text-6xl"
+      >
+        {project.title}
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-zinc-600">
+        {project.description}
+      </p>
+    </header>
+
+    <section
+      aria-labelledby="case-study-summary-heading"
+      class="grid gap-4 border-t border-zinc-950/10 py-12 lg:grid-cols-3"
+      role="region"
+    >
+      <h2 id="case-study-summary-heading" class="sr-only">
+        Case study summary
+      </h2>
+      <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
+        <h3 class="text-sm font-semibold text-zinc-950">Problem</h3>
+        <p class="mt-3 text-sm leading-7 text-zinc-600">
+          {project.caseStudy.problem}
+        </p>
+      </article>
+      <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
+        <h3 class="text-sm font-semibold text-zinc-950">Role</h3>
+        <p class="mt-3 text-sm leading-7 text-zinc-600">
+          {project.caseStudy.role}
+        </p>
+      </article>
+      <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
+        <h3 class="text-sm font-semibold text-zinc-950">Outcome</h3>
+        <p class="mt-3 text-sm leading-7 text-zinc-600">
+          {project.caseStudy.outcome}
+        </p>
+      </article>
+    </section>
+
+    <section
+      aria-labelledby="case-study-decisions-heading"
+      class="grid gap-10 border-t border-zinc-950/10 py-16 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
+      role="region"
+    >
+      <div>
+        <p
+          class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase"
+        >
+          Decisions
+        </p>
+        <h2
+          id="case-study-decisions-heading"
+          class="mt-3 text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+        >
+          The implementation choices behind the surface.
+        </h2>
+      </div>
+      <div class="grid gap-4">
+        {
+          project.caseStudy.decisions.map((decision) => (
+            <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
+              <p class="text-sm leading-7 text-zinc-600">{decision}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section
+      aria-labelledby="case-study-proof-heading"
+      class="border-t border-zinc-950/10 py-16"
+      role="region"
+    >
+      <h2
+        id="case-study-proof-heading"
+        class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+      >
+        Proof points
+      </h2>
+      <div class="mt-8 grid gap-4 lg:grid-cols-3">
+        {
+          project.caseStudy.proof.map((proofPoint) => (
+            <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
+              <p class="text-sm leading-7 text-zinc-600">{proofPoint}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </article>
+
+  <CTA
+    eyebrow="Similar constraint?"
+    title="Bring the product surface and the delivery risk."
+    body="A useful first conversation starts with the workflow that is getting harder to extend, the constraints around it, and the outcome that needs to be true after the work."
+    primaryHref="/hire"
+    primaryLabel="Request services"
+    secondaryHref="/services"
+    secondaryLabel="View services"
+  />
+</BaseLayout>

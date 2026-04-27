@@ -9,6 +9,8 @@ export interface Service {
   title: string;
   description: string;
   bullets: string[];
+  outcomes: string[];
+  process: string[];
   icon: string;
   price: string;
   priceNote?: string;
@@ -44,6 +46,16 @@ export const services: Service[] = [
       "A prioritized remediation plan",
       "A working session to align next steps",
     ],
+    outcomes: [
+      "A written map of the current architecture, including ownership boundaries and high-risk coupling.",
+      "A sequenced remediation plan that separates quick wins from deeper platform work.",
+      "Decision notes your team can use to align engineering, product, and design stakeholders.",
+    ],
+    process: [
+      "Inspect route structure, shared packages, data flow, accessibility, SEO, and performance risks.",
+      "Review the most important product workflows with the team that owns the surface.",
+      "Turn findings into an implementation-ready plan with tradeoffs and first changes.",
+    ],
     icon: "Review",
     price: "$3,000",
     priceNote: "starting point",
@@ -63,6 +75,16 @@ export const services: Service[] = [
       "Async guidance on implementation direction",
       "Ongoing input on standards and system boundaries",
     ],
+    outcomes: [
+      "Clear technical direction before the team commits to costly product or platform decisions.",
+      "A recurring decision loop for architecture, standards, accessibility, SEO, and delivery risk.",
+      "Practical written guidance that helps senior engineers move without adding process weight.",
+    ],
+    process: [
+      "Set the decision cadence and the product surfaces that need advisory coverage.",
+      "Review proposed approaches, pull request direction, and architecture risks asynchronously.",
+      "Keep a running recommendation log so decisions remain visible after the engagement.",
+    ],
     icon: "Advisory",
     price: "$2,500",
     priceNote: "per month",
@@ -81,6 +103,16 @@ export const services: Service[] = [
       "Scoped implementation plan",
       "Hands-on code and architecture changes",
       "Verification and handoff notes",
+    ],
+    outcomes: [
+      "A shipped slice of implementation work tied to a clear business or delivery constraint.",
+      "Code changes that improve the system boundary instead of only patching one screen.",
+      "Verification notes, follow-up recommendations, and handoff context for the owning team.",
+    ],
+    process: [
+      "Define the narrowest high-leverage scope and the acceptance checks for the sprint.",
+      "Implement the changes directly in the repo with tests and reviewable checkpoints.",
+      "Document what changed, what remains risky, and what should happen next.",
     ],
     icon: "Sprint",
     price: "From $15,000",

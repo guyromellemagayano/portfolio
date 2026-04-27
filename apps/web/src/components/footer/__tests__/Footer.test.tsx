@@ -126,6 +126,7 @@ describe("Footer", () => {
         screen.getByRole("link", { name: "Articles" })
       ).toBeInTheDocument();
       expect(screen.getByRole("link", { name: "Hire" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Privacy" })).toBeInTheDocument();
     });
 
     it("renders footer legal text", () => {
@@ -172,7 +173,7 @@ describe("Footer", () => {
 
       const nav = screen.getByRole("navigation");
       const listItems = nav.querySelectorAll("li");
-      expect(listItems).toHaveLength(5);
+      expect(listItems).toHaveLength(6);
 
       // Verify each link is wrapped in a list item
       const servicesLink = screen.getByRole("link", { name: "Services" });

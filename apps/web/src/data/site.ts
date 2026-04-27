@@ -81,6 +81,12 @@ export const navigationLinks: NavigationLink[] = [
   },
   { label: "Uses", href: "/uses", showInHeader: false, showInFooter: false },
   { label: "Hire", href: "/hire", showInHeader: true, showInFooter: true },
+  {
+    label: "Privacy",
+    href: "/privacy",
+    showInHeader: false,
+    showInFooter: true,
+  },
 ];
 
 export const socialLinks: SocialLink[] = [
@@ -261,6 +267,17 @@ export const pages: PageData[] = [
     seoDescription:
       "Start a consulting or product engineering conversation about architecture, advisory, or implementation work.",
     seoCanonicalPath: "/hire",
+  },
+  {
+    slug: "privacy",
+    subheading: "Privacy and consent",
+    title: "A clear baseline before adding analytics.",
+    intro:
+      "How this portfolio handles personal data today, what may change when analytics are added, and how consent should work before non-essential tracking is introduced.",
+    seoTitle: "Privacy and Consent - Guy Romelle Magayano",
+    seoDescription:
+      "Privacy and consent baseline for the Guy Romelle Magayano portfolio and services site before non-essential analytics are introduced.",
+    seoCanonicalPath: "/privacy",
   },
   {
     slug: "book",

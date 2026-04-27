@@ -77,7 +77,7 @@ export default defineConfig({
       filter: (page) => {
         const pathname = new URL(page).pathname.replace(/\/+$/, "") || "/";
 
-        return pathname !== "/contact";
+        return pathname !== "/contact" && !pathname.endsWith(".xml");
       },
       namespaces: {
         image: false,

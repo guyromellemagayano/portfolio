@@ -137,6 +137,7 @@ describe("Footer Integration Tests", () => {
         screen.getByRole("link", { name: "Articles" })
       ).toBeInTheDocument();
       expect(screen.getByRole("link", { name: "Hire" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Privacy" })).toBeInTheDocument();
     });
 
     it("renders footer with proper DOM structure", () => {
@@ -166,7 +167,7 @@ describe("Footer Integration Tests", () => {
       expect(navigation).toBeInTheDocument();
 
       const links = navigation.querySelectorAll("a");
-      expect(links).toHaveLength(5);
+      expect(links).toHaveLength(6);
 
       expect(links[0]).toHaveTextContent("About");
       expect(links[0]).toHaveAttribute("href", "/about");
@@ -178,6 +179,8 @@ describe("Footer Integration Tests", () => {
       expect(links[3]).toHaveAttribute("href", "/articles");
       expect(links[4]).toHaveTextContent("Hire");
       expect(links[4]).toHaveAttribute("href", "/hire");
+      expect(links[5]).toHaveTextContent("Privacy");
+      expect(links[5]).toHaveAttribute("href", "/privacy");
     });
   });
 
