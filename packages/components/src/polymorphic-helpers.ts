@@ -1,6 +1,4 @@
-import type { ElementType } from "react";
-
-import { logger as sharedLogger } from "@portfolio/logger";
+import { type ElementType } from "react";
 
 import {
   type AnalyticsEvent,
@@ -11,6 +9,13 @@ import {
 } from "./types";
 
 type AnyProps = Record<string, unknown>;
+
+const emitDevelopmentWarning = (
+  message: string,
+  context?: Record<string, unknown>
+): void => {
+  globalThis.console?.warn(message, context);
+};
 
 function getAsTagName(
   asProp: ElementType | undefined,
@@ -31,14 +36,6 @@ export function preparePolymorphicProps<TProps extends AnyProps>(
 
   let props = inputProps;
 
-  const log = sharedLogger.child({
-    component: componentName,
-    operation: "preparePolymorphicProps",
-  });
-  if (process.env.NODE_ENV === "development") {
-    log.debug("prepare:start", { asTag, defaultElement, props });
-  }
-
   if (elementConfig) {
     // Dev-only warnings
     validatePolymorphicProps(componentName, asTag, props, elementConfig);
@@ -52,11 +49,10 @@ export function preparePolymorphicProps<TProps extends AnyProps>(
             (props as AnyProps)[prop] !== null
         );
         if (invalidProps.length > 0) {
-          log.warn("element-specific props used on different 'as' element", {
-            asTag,
-            defaultElement,
-            invalidProps,
-          });
+          emitDevelopmentWarning(
+            `${componentName}: element-specific props used on a different element.`,
+            { asTag, defaultElement, invalidProps }
+          );
         }
       }
       props = filterElementSpecificProps(
@@ -64,9 +60,6 @@ export function preparePolymorphicProps<TProps extends AnyProps>(
         asTag,
         elementConfig
       ) as TProps;
-      if (process.env.NODE_ENV === "development") {
-        log.debug("prepare:filtered", { asTag, defaultElement });
-      }
     }
   }
 
@@ -102,7 +95,9 @@ export function preparePolymorphicProps<TProps extends AnyProps>(
     } catch (err) {
       // prevent user-land errors from breaking render
       if (process.env.NODE_ENV === "development") {
-        log.error("analytics:callback_error", { error: String(err) });
+        emitDevelopmentWarning("analytics:callback_error", {
+          error: String(err),
+        });
       }
     }
   };
@@ -150,7 +145,6 @@ export function preparePolymorphicProps<TProps extends AnyProps>(
       "data-as": asTag,
       ...(analyticsId ? { "data-analytics-id": analyticsId } : {}),
     } as TProps;
-    log.debug("prepare:final", { asTag, defaultElement, props });
   }
 
   const Component = (asProp || defaultElement) as ElementType;

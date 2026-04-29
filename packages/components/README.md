@@ -13,7 +13,7 @@ Framework-agnostic React components for the portfolio workspace. The package is 
 - The package does not expose public subpath imports.
 - The package does not require framework-specific hydration flags.
 
-This package is currently being migrated away from an earlier server/client split. During that migration, some implementation details may still reference old client-branch props or internal workspace utilities. Those details are implementation debt and should not be treated as the target public API.
+The component implementation follows this contract directly. Future slices should focus on higher-value primitives while keeping the root-only public import surface.
 
 ## Installation
 
@@ -81,16 +81,6 @@ Current API groups:
 
 Analytics helpers are optional consumer utilities. They should not be understood as automatic behavior for every component unless a component explicitly documents that behavior.
 
-## Migration Notes
-
-The current implementation still contains some legacy RSC-oriented pieces that will be removed in a follow-up slice:
-
-- `isClient` and `isMemoized` component props.
-- `.client` component wrappers and lazy client branches.
-- `@portfolio/hooks` and `@portfolio/logger` as public dependency pressure.
-
-The target peer dependency contract is `react` and `react-dom` only. Until the implementation is cleaned up, the manifest may still list temporary internal workspace dependencies needed by existing source files.
-
 ## Development
 
 Run from `packages/components`:
@@ -117,7 +107,6 @@ pnpm --filter @portfolio/components build
 
 ## Dependencies
 
-- Target peer dependencies: `react`, `react-dom`.
-- Temporary implementation dependencies: `@portfolio/hooks`, `@portfolio/logger`.
+- Peer dependencies: `react`, `react-dom`.
 - Dev tooling: shared workspace configs, Vitest, Testing Library, TypeScript, and Bunchee.
 - Package visibility: currently `"private": true`.

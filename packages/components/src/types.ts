@@ -1,16 +1,13 @@
-import React, { type ComponentPropsWithoutRef, type ElementType } from "react";
-
-import type { UseComponentIdOptions } from "@portfolio/hooks";
-import { logWarn } from "@portfolio/logger";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentRef,
+  type ElementType,
+} from "react";
 
 /** Common props shared by all components in the library */
-export interface CommonComponentProps extends UseComponentIdOptions {
+export interface CommonComponentProps {
   /** Render component as a different element or custom component */
   as?: ElementType;
-  /** Enable client-side rendering */
-  isClient?: boolean;
-  /** Use memoized version of client component */
-  isMemoized?: boolean;
 }
 
 /**
@@ -29,7 +26,7 @@ export type PolymorphicComponentProps<
 
 /** Polymorphic component ref type */
 export type PolymorphicRef<TElement extends ElementType> =
-  React.ComponentRef<TElement>;
+  ComponentRef<TElement>;
 
 /** Element-specific prop validation configuration */
 export interface ElementSpecificPropsConfig {
@@ -66,6 +63,10 @@ export type ElementCategory =
   | "formatting"; // br, hr, pre, blockquote, address, figure, figcaption
 
 /** Development warning utility for polymorphic components */
+const emitDevelopmentWarning = (message: string): void => {
+  globalThis.console?.warn(message);
+};
+
 export const validatePolymorphicProps = (
   componentName: string,
   asElement: string,
@@ -83,7 +84,7 @@ export const validatePolymorphicProps = (
     );
 
     if (invalidProps.length > 0) {
-      logWarn(
+      emitDevelopmentWarning(
         `${componentName}: The following props are only valid for <${validElement}> elements: ${invalidProps.join(", ")}.\n` +
           `You're rendering as <${asElement}>. ${description}\n` +
           `Consider using a semantic <${validElement}> element or removing these props.`

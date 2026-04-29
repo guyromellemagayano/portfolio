@@ -1,6 +1,12 @@
-import { logger } from "@portfolio/logger";
+import { type AnalyticsEvent } from "./types";
 
-import type { AnalyticsEvent } from "./types";
+const writeToConsole = (
+  level: "error" | "info",
+  message: string,
+  context?: Record<string, unknown>
+): void => {
+  globalThis.console?.[level](message, context);
+};
 
 export type AnalyticsTransport = (
   events: AnalyticsEvent[]
@@ -38,7 +44,9 @@ export function createBatchedOnAnalytics(
       await options.transport(batch);
     } catch (err) {
       if (process.env.NODE_ENV === "development") {
-        logger.error("analytics:transport_error", { error: String(err) });
+        writeToConsole("error", "analytics:transport_error", {
+          error: String(err),
+        });
       }
     }
   };
@@ -127,6 +135,9 @@ export function createFetchTransport(
 
 export function createConsoleTransport(): AnalyticsTransport {
   return (events: AnalyticsEvent[]) => {
-    logger.info("analytics:events", { count: events.length, events });
+    writeToConsole("info", "analytics:events", {
+      count: events.length,
+      events,
+    });
   };
 }

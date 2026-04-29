@@ -68,9 +68,6 @@ export default defineConfig({
         "**/postcss.config.*",
         "**/remix.config.*",
         "**/README.md",
-        "src/index.tsx",
-        "src/index.client.tsx",
-        "**/index.client.tsx",
       ],
       include: [
         "src/**/*.{js,jsx,ts,tsx}",
@@ -79,8 +76,6 @@ export default defineConfig({
         "!scripts/**/*.{test,spec}.{js,jsx,ts,tsx}",
         "!src/**/test-setup.*",
         "!src/**/*.d.ts",
-        "!src/index.tsx",
-        "!src/index.client.tsx",
       ],
     },
     include: [
