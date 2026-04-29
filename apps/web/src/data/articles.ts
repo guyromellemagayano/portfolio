@@ -4,10 +4,10 @@
  * @description Article data stored as simple page-ready records.
  */
 
-import type {
-  ContentPortableTextBlock,
-  ContentPortableTextImageBlock,
-  ContentTwitterCard,
+import {
+  type ContentPortableTextBlock,
+  type ContentPortableTextImageBlock,
+  type ContentTwitterCard,
 } from "@web/data/portable-text";
 
 export interface Article {

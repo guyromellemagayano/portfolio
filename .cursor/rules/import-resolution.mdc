@@ -70,7 +70,7 @@ alwaysApply: true
 - Use approved explicit config artifact imports only for tool config consumption.
 - Use relative imports for implementation-local files and same-package internals.
 - Use `@web/*` only for web app internals that cross folder boundaries; do not use it inside shared packages.
-- Prefer inline type specifiers, for example `import { type Foo } from "module"`, when adding new imports.
+- Use inline type specifiers, for example `import { type Foo } from "module"`, for all type imports. Do not write top-level `import type { Foo } from "module"`.
 
 ## Review Checklist
 

@@ -368,7 +368,7 @@ describe("verifyImports", () => {
   it("returns true for all tree-shakeable imports", () => {
     const imports = [
       "import { Component } from './module'",
-      "import type { Type } from './types'",
+      "import { type Type } from './types'",
       "export { Component }",
       "export const Component",
       "export function Component",
@@ -381,9 +381,14 @@ describe("verifyImports", () => {
     expect(verifyImports(imports)).toBe(true);
   });
 
-  it("returns true for import type { pattern", () => {
-    const imports = ["import type { Type } from './types'"];
+  it("returns true for inline type import pattern", () => {
+    const imports = ["import { type Type } from './types'"];
     expect(verifyImports(imports)).toBe(true);
+  });
+
+  it("returns false for top-level import type pattern", () => {
+    const imports = ["import type { Type } from './types'"];
+    expect(verifyImports(imports)).toBe(false);
   });
 
   it("returns true for export { pattern", () => {
@@ -422,7 +427,7 @@ describe("verifyImports", () => {
     const imports = [
       "import { A } from './a'",
       "export const B",
-      "import type { C } from './c'",
+      "import { type C } from './c'",
     ];
     expect(verifyImports(imports)).toBe(true);
   });

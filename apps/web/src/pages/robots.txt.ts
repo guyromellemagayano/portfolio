@@ -4,7 +4,7 @@
  * @description Dynamic robots.txt endpoint using the configured Astro site URL.
  */
 
-import type { APIRoute } from "astro";
+import { type APIRoute } from "astro";
 
 const DEFAULT_SITE_URL = "https://www.guyromellemagayano.com";
 

@@ -3,7 +3,7 @@
  * Provides common functionality for all logger integrations
  */
 
-import type { LogEntry, Transport } from "../types";
+import { type LogEntry, type Transport } from "../types";
 
 /** Base configuration for all integrations */
 export interface IntegrationConfig {

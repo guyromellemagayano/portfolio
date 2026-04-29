@@ -8,7 +8,7 @@
 
 import { type ComponentPropsWithRef, useId, useMemo } from "react";
 
-import Fuse from "fuse.js";
+import { type default as Fuse } from "fuse.js";
 
 import { Card } from "@web/components/card";
 import { Form } from "@web/components/form";
@@ -19,6 +19,7 @@ import { setCustomDateFormat } from "@web/utils/datetime";
 import { useFuzzySearch } from "@web/utils/search";
 
 export type ArticleSearchElementType = "div";
+type FuseConfig = typeof Fuse.config;
 export type ArticleSearchProps<P extends Record<string, unknown> = {}> = Omit<
   ComponentPropsWithRef<ArticleSearchElementType>,
   "as"
@@ -54,7 +55,7 @@ export function ArticleSearch<P extends Record<string, unknown> = {}>(
 
   const { searchQuery, setSearchQuery, results } = useFuzzySearch(
     articles,
-    searchOptions as Omit<typeof Fuse.config, "keys">,
+    searchOptions as Omit<FuseConfig, "keys">,
     searchKeys
   );
 

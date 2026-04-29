@@ -4,7 +4,7 @@
  * @description Static RSS feed for local portfolio articles.
  */
 
-import type { APIRoute } from "astro";
+import { type APIRoute } from "astro";
 
 import { SITE_NAME } from "@web/lib/metadata";
 import { getAllArticles } from "@web/utils/articles";

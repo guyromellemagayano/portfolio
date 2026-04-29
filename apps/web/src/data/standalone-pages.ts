@@ -4,10 +4,10 @@
  * @description Standalone page data stored as simple local records.
  */
 
-import type {
-  ContentPortableTextBlock,
-  ContentPortableTextImageBlock,
-  ContentTwitterCard,
+import {
+  type ContentPortableTextBlock,
+  type ContentPortableTextImageBlock,
+  type ContentTwitterCard,
 } from "@web/data/portable-text";
 
 export interface StandalonePage {

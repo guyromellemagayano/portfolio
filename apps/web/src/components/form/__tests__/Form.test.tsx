@@ -33,10 +33,6 @@ vi.mock("@portfolio/utils", () => ({
     return true;
   }),
   hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
 }));
 
 // Mock i18n

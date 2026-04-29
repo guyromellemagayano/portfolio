@@ -4,11 +4,11 @@
  * @description Shared Portable Text renderer map for article body content blocks and marks.
  */
 
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 
-import type {
-  ContentPortableTextBlock,
-  ContentPortableTextImageBlock,
+import {
+  type ContentPortableTextBlock,
+  type ContentPortableTextImageBlock,
 } from "@web/data/portable-text";
 
 const DEFAULT_PORTABLE_TEXT_IMAGE_WIDTH = 1600;

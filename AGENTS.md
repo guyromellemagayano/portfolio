@@ -63,10 +63,11 @@
 
 ## React + TypeScript Standards
 
-- `packages/*` React components use `forwardRef` and `setDisplayName` when that package pattern exists.
-- `apps/web` React components must not use `setDisplayName`; React 19 refs flow through props spread where applicable.
+- `packages/*` React components use `forwardRef` where that package pattern exists and native `Component.displayName = "Name"` assignments for DevTools/debugging names.
+- `apps/web` React components must not use display-name helper wrappers; React 19 refs flow through props spread where applicable.
 - Co-locate component-specific types; create shared type files only when multiple modules consume them.
 - Use strict TypeScript, explicit exported types, and concise JSDoc.
+- Use inline type import specifiers everywhere: `import { type Foo } from "module"`. Do not use top-level `import type { Foo } from "module"`.
 - Use `cva` with `cn()` for stable variants; use plain `cn()` for static layout composition.
 
 ## Testing Standards

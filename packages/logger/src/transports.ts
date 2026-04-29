@@ -4,7 +4,7 @@
  */
 
 import { formatters } from "./formatters";
-import type { Formatter, LogEntry, Transport } from "./types";
+import { type Formatter, type LogEntry, type Transport } from "./types";
 
 /** Base transport class with common functionality */
 abstract class BaseTransport implements Transport {

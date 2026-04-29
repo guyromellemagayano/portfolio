@@ -13,7 +13,7 @@ import {
   resolveMetadataTitleText,
   SITE_NAME,
 } from "@web/lib/metadata";
-import type { WebPageMetadata } from "@web/lib/metadata.types";
+import { type WebPageMetadata } from "@web/lib/metadata.types";
 import {
   buildBreadcrumbListStructuredData,
   buildWebPageStructuredData,

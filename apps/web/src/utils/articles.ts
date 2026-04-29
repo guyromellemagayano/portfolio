@@ -5,10 +5,10 @@
  */
 
 import { type Article as LocalArticle, articles } from "@web/data/articles";
-import type {
-  ContentPortableTextBlock,
-  ContentPortableTextImageBlock,
-  ContentTwitterCard,
+import {
+  type ContentPortableTextBlock,
+  type ContentPortableTextImageBlock,
+  type ContentTwitterCard,
 } from "@web/data/portable-text";
 
 export type Article = {

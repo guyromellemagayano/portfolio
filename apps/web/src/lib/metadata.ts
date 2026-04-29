@@ -4,7 +4,7 @@
  * @description Shared metadata title normalization helpers for brochure and content routes.
  */
 
-import type { WebPageMetadata } from "@web/lib/metadata.types";
+import { type WebPageMetadata } from "@web/lib/metadata.types";
 import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 export const SITE_NAME = "Guy Romelle Magayano";

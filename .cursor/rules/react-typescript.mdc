@@ -1,6 +1,7 @@
 ---
 description: React + TypeScript Standards
-globs: ["apps/**/*.tsx", "packages/**/*.tsx", "apps/**/*.ts", "packages/**/*.ts"]
+globs:
+  ["apps/**/*.tsx", "packages/**/*.tsx", "apps/**/*.ts", "packages/**/*.ts"]
 alwaysApply: false
 ---
 
@@ -42,3 +43,4 @@ alwaysApply: false
 - Prefer direct imports for large packages.
 - Keep `@web/*` imports for app-local modules and `@portfolio/*` imports for workspace packages.
 - Do not import from another component's private `_internal`, `_data`, `_types`, `constants`, or `queries` folders.
+- Use inline type import specifiers everywhere: `import { type Foo } from "module"`. Do not use top-level `import type { Foo } from "module"`.

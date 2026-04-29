@@ -6,7 +6,7 @@
 
 import { describe, expect, it } from "vitest";
 
-import type { PageData } from "@web/data/site";
+import { type PageData } from "@web/data/site";
 import { buildPortfolioPageMetadata } from "@web/lib/portfolio-brochure";
 
 const basePage: PageData = {

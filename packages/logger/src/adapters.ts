@@ -3,7 +3,7 @@
  * Integrates your custom logger with Morgan, Pino, Winston, etc.
  */
 
-import type { ILogger, LogLevel } from "./types";
+import { type ILogger, type LogLevel } from "./types";
 import { parseLogLevel } from "./utils";
 
 /** Morgan stream adapter for your custom logger */

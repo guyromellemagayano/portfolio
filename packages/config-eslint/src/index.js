@@ -6,7 +6,6 @@ import typescriptParser from "@typescript-eslint/parser";
 import vitestPlugin from "@vitest/eslint-plugin";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 import nPlugin from "eslint-plugin-n";
-import onlyWarn from "eslint-plugin-only-warn";
 import prettierPlugin from "eslint-plugin-prettier";
 import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
@@ -39,7 +38,6 @@ export const baseEslintConfig = [
   eslintConfigPrettier,
   {
     plugins: {
-      onlyWarn,
       turbo: turboPlugin,
       prettier: prettierPlugin,
       n: nPlugin,
@@ -152,6 +150,11 @@ export const baseEslintConfig = [
   {
     files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
     languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.serviceworker,
+      },
       parser: typescriptParser,
       parserOptions: {
         project: tsProjects,
@@ -162,6 +165,28 @@ export const baseEslintConfig = [
     },
     rules: {
       "no-unused-vars": "off",
+      "no-undef": "off",
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          prefer: "type-imports",
+          fixStyle: "inline-type-imports",
+        },
+      ],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "ImportDeclaration[importKind='type']",
+          message:
+            'Use inline type import specifiers instead: `import { type Foo } from "module"`.',
+        },
+      ],
+    },
+  },
+  {
+    files: ["packages/logger/src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}"],
+    rules: {
+      "no-console": "off",
     },
   },
   {

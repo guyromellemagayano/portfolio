@@ -254,8 +254,10 @@ describe("helpers", () => {
     });
 
     it("should handle complex Tailwind conflicts", () => {
-      const result = cn("text-red-500 bg-blue-500", "text-blue-500 bg-red-500");
-      expect(result).toBe("text-blue-500 bg-red-500");
+      const result = cn("bg-blue-500 text-red-500", "bg-red-500 text-blue-500");
+      expect(result.split(" ").sort()).toEqual(["bg-red-500", "text-blue-500"]);
+      expect(result).not.toContain("bg-blue-500");
+      expect(result).not.toContain("text-red-500");
     });
 
     it("should handle responsive classes", () => {
@@ -332,12 +334,16 @@ describe("helpers", () => {
     });
 
     it("should handle edge case with only spaces", () => {
-      const result = cn("   ", "  ", " ");
+      const leadingSpaces = "   ";
+      const middleSpaces = "  ";
+      const result = cn(leadingSpaces, middleSpaces, " ");
       expect(result).toBe("");
     });
 
     it("should handle edge case with mixed spaces and classes", () => {
-      const result = cn("   ", "class", "  ", "another");
+      const leadingSpaces = "   ";
+      const middleSpaces = "  ";
+      const result = cn(leadingSpaces, "class", middleSpaces, "another");
       expect(result).toBe("class another");
     });
 

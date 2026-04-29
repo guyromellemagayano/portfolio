@@ -4,10 +4,10 @@
  * @description Utilities for local standalone page normalization in the web app.
  */
 
-import type {
-  ContentPortableTextBlock,
-  ContentPortableTextImageBlock,
-  ContentTwitterCard,
+import {
+  type ContentPortableTextBlock,
+  type ContentPortableTextImageBlock,
+  type ContentTwitterCard,
 } from "@web/data/portable-text";
 import {
   type StandalonePage as LocalStandalonePage,

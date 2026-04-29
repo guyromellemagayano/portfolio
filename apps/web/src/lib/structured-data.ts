@@ -4,8 +4,8 @@
  * @description JSON-LD builders for the static Astro portfolio pages.
  */
 
-import type { Project } from "@web/data/projects";
-import type { Service } from "@web/data/services";
+import { type Project } from "@web/data/projects";
+import { type Service } from "@web/data/services";
 import {
   focusAreas,
   type PageData,
@@ -13,9 +13,12 @@ import {
   socialLinks,
 } from "@web/data/site";
 import { DEFAULT_SOCIAL_IMAGE_PATH } from "@web/lib/metadata";
-import type { StructuredData, WebPageMetadata } from "@web/lib/metadata.types";
-import type { ArticleDetail, ArticleWithSlug } from "@web/utils/articles";
-import type { StandalonePageDetail } from "@web/utils/pages";
+import {
+  type StructuredData,
+  type WebPageMetadata,
+} from "@web/lib/metadata.types";
+import { type ArticleDetail, type ArticleWithSlug } from "@web/utils/articles";
+import { type StandalonePageDetail } from "@web/utils/pages";
 import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 type BreadcrumbListItem = {

@@ -137,7 +137,6 @@ export const verifyTreeShaking = (componentName: string): TreeShakingReport => {
 export const verifyImports = (imports: string[]): boolean => {
   const treeShakeablePatterns = [
     "import {",
-    "import type {",
     "export {",
     "export const",
     "export function",

@@ -6,7 +6,7 @@
 
 import logger from "@portfolio/logger";
 
-import { getTranslations } from "@web/lib/i18n";
+import { type getTranslations } from "@web/lib/i18n";
 
 type NormalizedError = Error & {
   digest?: string;
