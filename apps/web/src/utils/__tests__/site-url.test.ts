@@ -22,20 +22,33 @@ describe("site URL helpers", () => {
     vi.unstubAllEnvs();
   });
 
-  it("prefers PUBLIC_SITE_URL when configured", () => {
-    vi.stubEnv("PUBLIC_SITE_URL", "https://example.com/");
+  it("prefers SITE_URL_PRODUCTION in production", () => {
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("SITE_URL_PRODUCTION", "https://example.com/");
+    vi.stubEnv("SITE_URL_PREVIEW", "https://preview.example.com/");
+    vi.stubEnv("SITE_URL_DEVELOPMENT", "http://portfolio.local:4321/");
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "portfolio.vercel.app");
 
     expect(resolveSiteUrlBase()).toBe("https://example.com");
   });
 
-  it("falls back to VERCEL_PROJECT_PRODUCTION_URL when PUBLIC_SITE_URL is unset", () => {
+  it("falls back to VERCEL_PROJECT_PRODUCTION_URL when SITE_URL_PRODUCTION is unset", () => {
+    vi.stubEnv("VERCEL_ENV", "production");
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "guyromellemagayano.com");
 
     expect(resolveSiteUrlBase()).toBe("https://guyromellemagayano.com");
   });
 
-  it("falls back to VERCEL_URL when no explicit site URL is configured", () => {
+  it("prefers SITE_URL_PREVIEW in preview", () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.stubEnv("SITE_URL_PREVIEW", "https://preview.example.com/");
+    vi.stubEnv("VERCEL_URL", "portfolio-preview-abc.vercel.app");
+
+    expect(resolveSiteUrlBase()).toBe("https://preview.example.com");
+  });
+
+  it("falls back to VERCEL_URL in preview when SITE_URL_PREVIEW is unset", () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
     vi.stubEnv("VERCEL_URL", "portfolio-preview-abc.vercel.app");
 
     expect(resolveSiteUrlBase()).toBe(
@@ -44,14 +57,22 @@ describe("site URL helpers", () => {
   });
 
   it("ignores local-only site URLs in production and uses the Vercel production URL fallback", () => {
-    vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("PUBLIC_SITE_URL", "https://guyromellemagayano.local");
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("SITE_URL_PRODUCTION", "https://guyromellemagayano.local");
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "guyromellemagayano.com");
 
     expect(resolveSiteUrlBase()).toBe("https://guyromellemagayano.com");
   });
 
+  it("uses SITE_URL_DEVELOPMENT in development", () => {
+    vi.stubEnv("VERCEL_ENV", "development");
+    vi.stubEnv("SITE_URL_DEVELOPMENT", "http://portfolio.local:4321/");
+
+    expect(resolveSiteUrlBase()).toBe("http://portfolio.local:4321");
+  });
+
   it("builds absolute URLs for relative paths when a site URL base can be resolved", () => {
+    vi.stubEnv("VERCEL_ENV", "production");
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "guyromellemagayano.com");
 
     expect(toAbsoluteSiteUrl("/feed.xml")).toBe(
@@ -59,9 +80,11 @@ describe("site URL helpers", () => {
     );
   });
 
-  it("uses the canonical production domain for relative paths when env URLs are unset", () => {
+  it("uses the local development domain for relative paths when development env URLs are unset", () => {
+    vi.stubEnv("VERCEL_ENV", "development");
+
     expect(toAbsoluteSiteUrl("/feed.xml")).toBe(
-      "https://www.guyromellemagayano.com/feed.xml"
+      "http://portfolio.local:4321/feed.xml"
     );
   });
 

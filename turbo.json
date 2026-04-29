@@ -48,12 +48,15 @@
     "PAPERTRAIL_HOST",
     "PAPERTRAIL_PORT",
     "PORT",
-    "PUBLIC_SITE_URL",
+    "SITE_URL_DEVELOPMENT",
+    "SITE_URL_PREVIEW",
+    "SITE_URL_PRODUCTION",
     "SENTRY_DSN",
     "SENTRY_AUTH_TOKEN",
     "SENTRY_ORG",
     "SENTRY_PROJECT",
-    "SITEMAP_SITE_URL",
+    "WEB_HOST",
+    "WEB_PORT",
     "SPLUNK_HEC_TOKEN",
     "SPLUNK_HOST",
     "SPLUNK_PORT",
@@ -62,7 +65,8 @@
     "TURBO_TOKEN",
     "VERCEL_ENV",
     "VERCEL_PROJECT_PRODUCTION_URL",
-    "VERCEL_URL"
+    "VERCEL_URL",
+    "VITEST"
   ],
   "globalPassThroughEnv": [
     "COREPACK_HOME"

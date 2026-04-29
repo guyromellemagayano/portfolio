@@ -1,7 +1,29 @@
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 
+const workspaceRootEnvFile = fileURLToPath(
+  new URL("../../.env", import.meta.url)
+);
+const shouldLoadWorkspaceEnv =
+  process.env.NODE_ENV !== "test" && !process.env.VITEST;
+
+if (
+  shouldLoadWorkspaceEnv &&
+  existsSync(workspaceRootEnvFile) &&
+  typeof process.loadEnvFile === "function"
+) {
+  process.loadEnvFile(workspaceRootEnvFile);
+}
+
 const DEFAULT_SITE_URL = "https://www.guyromellemagayano.com";
+const DEFAULT_DEVELOPMENT_SITE_URL = "http://portfolio.local:4321";
+const LOCAL_DEV_ALLOWED_HOSTS = [
+  "portfolio.local",
+  "web.portfolio.orb.local",
+  "portfolio-web.orb.local",
+];
 const LOCAL_ONLY_HOSTNAME_SUFFIXES = [".local"];
 const LOCAL_ONLY_HOSTNAMES = new Set([
   "localhost",
@@ -9,6 +31,24 @@ const LOCAL_ONLY_HOSTNAMES = new Set([
   "0.0.0.0",
   "::1",
 ]);
+
+function isProductionRuntime() {
+  return resolveSiteUrlEnvironment() === "production";
+}
+
+function resolveSiteUrlEnvironment() {
+  const vercelEnvironment = process.env.VERCEL_ENV?.trim();
+
+  if (
+    vercelEnvironment === "production" ||
+    vercelEnvironment === "preview" ||
+    vercelEnvironment === "development"
+  ) {
+    return vercelEnvironment;
+  }
+
+  return process.env.NODE_ENV === "development" ? "development" : "production";
+}
 
 function isLocalOnlyHostname(hostname) {
   const normalizedHostname = hostname.trim().toLowerCase();
@@ -39,7 +79,7 @@ function normalizeSiteUrlCandidate(value) {
       return undefined;
     }
 
-    if (isLocalOnlyHostname(parsed.hostname)) {
+    if (isProductionRuntime() && isLocalOnlyHostname(parsed.hostname)) {
       return undefined;
     }
 
@@ -60,15 +100,30 @@ function removeNonRootTrailingSlash(value) {
 }
 
 const site =
-  [
-    process.env.PUBLIC_SITE_URL,
-    process.env.VERCEL_PROJECT_PRODUCTION_URL,
-    process.env.SITEMAP_SITE_URL,
-    process.env.VERCEL_URL,
-    DEFAULT_SITE_URL,
-  ]
-    .map(normalizeSiteUrlCandidate)
-    .find(Boolean) || DEFAULT_SITE_URL;
+  getSiteUrlCandidates().map(normalizeSiteUrlCandidate).find(Boolean) ||
+  getDefaultSiteUrlForEnvironment();
+
+function getDefaultSiteUrlForEnvironment() {
+  return resolveSiteUrlEnvironment() === "development"
+    ? DEFAULT_DEVELOPMENT_SITE_URL
+    : DEFAULT_SITE_URL;
+}
+
+function getSiteUrlCandidates() {
+  switch (resolveSiteUrlEnvironment()) {
+    case "production":
+      return [
+        process.env.SITE_URL_PRODUCTION,
+        process.env.VERCEL_PROJECT_PRODUCTION_URL,
+        process.env.VERCEL_URL,
+      ];
+    case "preview":
+      return [process.env.SITE_URL_PREVIEW, process.env.VERCEL_URL];
+    case "development":
+    default:
+      return [process.env.SITE_URL_DEVELOPMENT];
+  }
+}
 
 export default defineConfig({
   site,
@@ -97,6 +152,9 @@ export default defineConfig({
       alias: {
         "@web": new URL("./src", import.meta.url).pathname,
       },
+    },
+    server: {
+      allowedHosts: LOCAL_DEV_ALLOWED_HOSTS,
     },
   },
 });

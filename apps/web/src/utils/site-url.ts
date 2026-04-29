@@ -11,7 +11,9 @@ const LOCAL_ONLY_HOSTNAMES = new Set([
   "0.0.0.0",
   "::1",
 ]);
-const DEFAULT_PUBLIC_SITE_URL = "https://www.guyromellemagayano.com";
+const DEFAULT_SITE_URL = "https://www.guyromellemagayano.com";
+const DEFAULT_DEVELOPMENT_SITE_URL = "http://portfolio.local:4321";
+type SiteUrlEnvironment = "development" | "preview" | "production";
 
 /** Reads and trims an env var value from the current server runtime. */
 function getEnvVar(key: string): string {
@@ -20,7 +22,22 @@ function getEnvVar(key: string): string {
 
 /** Indicates whether the current runtime should apply production URL safety checks. */
 function isProductionRuntime(): boolean {
-  return getEnvVar("NODE_ENV") === "production";
+  return resolveSiteUrlEnvironment() === "production";
+}
+
+/** Resolves the current deployment environment for site URL selection. */
+function resolveSiteUrlEnvironment(): SiteUrlEnvironment {
+  const vercelEnvironment = getEnvVar("VERCEL_ENV");
+
+  if (
+    vercelEnvironment === "production" ||
+    vercelEnvironment === "preview" ||
+    vercelEnvironment === "development"
+  ) {
+    return vercelEnvironment;
+  }
+
+  return getEnvVar("NODE_ENV") === "development" ? "development" : "production";
 }
 
 /** Indicates whether a hostname is local-only and should not be used in production metadata URLs. */
@@ -71,11 +88,7 @@ function normalizeHostEnvUrlCandidate(value: string): string | undefined {
 
 /** Resolves the most appropriate absolute site URL base across local and Vercel runtimes. */
 export function resolveSiteUrlBase(): string | undefined {
-  const candidates = [
-    getEnvVar("PUBLIC_SITE_URL"),
-    getEnvVar("VERCEL_PROJECT_PRODUCTION_URL"),
-    getEnvVar("VERCEL_URL"),
-  ];
+  const candidates = getSiteUrlCandidates();
 
   for (const candidate of candidates) {
     const normalizedUrl = normalizeHostEnvUrlCandidate(candidate);
@@ -98,6 +111,30 @@ export function resolveSiteUrlBase(): string | undefined {
   }
 
   return undefined;
+}
+
+/** Returns site URL candidates ordered for the active environment. */
+function getSiteUrlCandidates(): string[] {
+  switch (resolveSiteUrlEnvironment()) {
+    case "production":
+      return [
+        getEnvVar("SITE_URL_PRODUCTION"),
+        getEnvVar("VERCEL_PROJECT_PRODUCTION_URL"),
+        getEnvVar("VERCEL_URL"),
+      ];
+    case "preview":
+      return [getEnvVar("SITE_URL_PREVIEW"), getEnvVar("VERCEL_URL")];
+    case "development":
+    default:
+      return [getEnvVar("SITE_URL_DEVELOPMENT")];
+  }
+}
+
+/** Returns the environment-appropriate default site URL. */
+function getDefaultSiteUrlForEnvironment(): string {
+  return resolveSiteUrlEnvironment() === "development"
+    ? DEFAULT_DEVELOPMENT_SITE_URL
+    : DEFAULT_SITE_URL;
 }
 
 /** Resolves the site URL base or falls back to a provided absolute default URL. */
@@ -129,5 +166,5 @@ export function toAbsoluteSiteUrl(pathOrUrl: string): string | undefined {
     return undefined;
   }
 
-  return `${resolveSiteUrlBaseOrDefault(DEFAULT_PUBLIC_SITE_URL)}${normalizedValue}`;
+  return `${resolveSiteUrlBaseOrDefault(getDefaultSiteUrlForEnvironment())}${normalizedValue}`;
 }

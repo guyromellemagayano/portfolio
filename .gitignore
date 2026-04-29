@@ -48,6 +48,8 @@ logs/
 .env.test.local
 .env.production.local
 !.env.example
+!.env.preview
+!.env.production
 
 # Vercel and Turbo
 .vercel
