@@ -1,5 +1,20 @@
 # React Best Practices
 
+## Portfolio Scope
+
+Use these rules as a **reference baseline** for React performance guidance. For this repository, apply the guidance in the context of an Astro-first static site with React used only for reusable/tested UI primitives or necessary client interactivity. Next.js-specific references are informational unless the user explicitly asks to work on a Next.js layer.
+
+- Language baseline: TypeScript-first (`.ts` / `.tsx`) in application and package implementation code. Use `.js` only when ecosystem tooling requires JavaScript configuration.
+
+## Portfolio Instruction Hierarchy
+
+This file is a **reference layer** for portfolio.
+
+- The authoritative standards are in repo `AGENTS.md` and `.cursor/rules/*.mdc`.
+- Apply the guidance in this document only where it does **not** conflict with repo-level standards.
+- If a conflict appears, follow repo-level instructions and ignore the conflicting recommendation here.
+- Keep this skill aligned with the Astro-first project direction, not the other way around.
+
 **Version 1.0.0**  
 Vercel Engineering  
 January 2026
@@ -1045,7 +1060,7 @@ useEffect(() => {
 }, [user]);
 ```
 
-**Correct: re-runs only when id changes**
+**Correct: re-runs only when ID changes**
 
 ```tsx
 useEffect(() => {
