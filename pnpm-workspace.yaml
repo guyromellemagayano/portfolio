@@ -1,6 +1,7 @@
 packages:
   - "apps/*"
   - "packages/*"
+
 catalog:
   "@astrojs/check": 0.9.9
   "@astrojs/sitemap": 3.7.2
@@ -69,8 +70,8 @@ catalog:
   typescript-eslint: 8.59.1
   validate-branch-name: 1.3.2
   vitest: 4.1.5
-catalogMode: strict
 
+catalogMode: strict
 cleanupUnusedCatalogs: true
 
 ignoredBuiltDependencies:

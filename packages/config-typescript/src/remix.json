@@ -6,7 +6,6 @@
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "allowJs": true,
-    "ignoreDeprecations": "6.0",
-    "baseUrl": "."
+    "ignoreDeprecations": "5.0"
   }
 }

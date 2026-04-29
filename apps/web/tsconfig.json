@@ -17,8 +17,7 @@
     "allowImportingTsExtensions": true,
     "jsx": "preserve",
     "skipDefaultLibCheck": true,
-    "ignoreDeprecations": "6.0",
-    "baseUrl": ".",
+    "ignoreDeprecations": "5.0",
     "paths": {
       "@portfolio/*": [
         "../../packages/*/src/index.ts"
