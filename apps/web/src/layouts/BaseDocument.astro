@@ -38,6 +38,9 @@ const googleTagManagerContainerId =
   globalThis.process?.env?.GOOGLE_TAG_MANAGER_CONTAINER_ID?.trim() ?? "";
 const bingSiteVerification =
   globalThis.process?.env?.BING_SITE_VERIFICATION?.trim() ?? "";
+const shouldRenderVercelObservability = Boolean(
+  globalThis.process?.env?.VERCEL_ENV?.trim()
+);
 const structuredDataItems = metadata?.structuredData
   ? Array.isArray(metadata.structuredData)
     ? metadata.structuredData
@@ -76,8 +79,8 @@ j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
         <script is:inline set:html={googleTagManagerBootstrapScript} />
       ) : null
     }
-    <Analytics />
-    <SpeedInsights />
+    {shouldRenderVercelObservability ? <Analytics /> : null}
+    {shouldRenderVercelObservability ? <SpeedInsights /> : null}
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

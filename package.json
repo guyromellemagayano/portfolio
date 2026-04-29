@@ -31,6 +31,7 @@
     "dev:host": "turbo run dev --output-logs=full",
     "format": "turbo run format",
     "format:check": "turbo run format:check",
+    "lighthouse:ci": "pnpm build:web && lhci autorun",
     "lint": "turbo run lint lint:styles",
     "lint:affected": "turbo run lint lint:styles --affected",
     "lint:apps": "turbo run lint lint:styles --filter='./apps/*'",
@@ -72,6 +73,7 @@
     "pnpm-catalog-updates": "catalog:"
   },
   "devDependencies": {
+    "@lhci/cli": "catalog:",
     "@portfolio/config-commit": "workspace:*",
     "@portfolio/config-eslint": "workspace:*",
     "@portfolio/config-typescript": "workspace:*",
