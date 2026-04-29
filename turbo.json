@@ -74,6 +74,11 @@
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "package.json",
         "tsconfig*.json"
       ],
@@ -85,6 +90,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "vitest.config.*",
         "vitest.workspace.*",
         "src/test-setup.*",
@@ -99,6 +109,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "vitest.config.*",
         "vitest.workspace.*",
         "src/test-setup.*",
@@ -114,6 +129,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "vitest.config.*",
         "vitest.workspace.*",
         "src/test-setup.*",
@@ -128,6 +148,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "vitest.config.*",
         "vitest.workspace.*",
         "src/test-setup.*",
@@ -144,6 +169,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "vitest.config.*",
         "vitest.workspace.*",
         "src/test-setup.*",
@@ -161,6 +191,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "vitest.config.*",
         "vitest.workspace.*",
         "src/test-setup.*",
@@ -177,6 +212,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "playwright.config.*",
         "tests/**/*.e2e.ts",
         "tests/**/*.setup.ts"
@@ -191,6 +231,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "playwright.config.*",
         "tests/**/*.e2e.ts",
         "tests/**/*.setup.ts"
@@ -201,10 +246,31 @@
       ],
       "cache": false
     },
+    "test:e2e:install": {
+      "dependsOn": [],
+      "inputs": [
+        "package.json"
+      ],
+      "outputs": [],
+      "cache": false
+    },
+    "test:e2e:install:ci": {
+      "dependsOn": [],
+      "inputs": [
+        "package.json"
+      ],
+      "outputs": [],
+      "cache": false
+    },
     "test:e2e:ui": {
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "playwright.config.*",
         "tests/**/*.e2e.ts",
         "tests/**/*.setup.ts"
@@ -217,6 +283,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "playwright.config.*",
         "tests/**/*.e2e.ts",
         "tests/**/*.setup.ts"
@@ -242,6 +313,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "prettier.config.*",
         ".prettierrc*",
         ".prettierignore"
@@ -253,6 +329,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "prettier.config.*",
         ".prettierrc*",
         ".prettierignore"
@@ -264,6 +345,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "eslint.config.*",
         ".eslintrc*",
         ".eslintignore"
@@ -275,6 +361,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "eslint.config.*",
         ".eslintrc*",
         ".eslintignore"
@@ -286,6 +377,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "tsconfig.json",
         "tsconfig.*.json"
       ],
@@ -310,6 +406,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "stylelint.config.*",
         ".stylelintrc*",
         "**/*.{css,scss}"
@@ -321,6 +422,11 @@
       "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         "stylelint.config.*",
         ".stylelintrc*",
         "**/*.{css,scss}"

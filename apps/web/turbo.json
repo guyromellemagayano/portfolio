@@ -6,6 +6,11 @@
     "build": {
       "inputs": [
         "$TURBO_DEFAULT$",
+        "!.astro/**",
+        "!coverage/**",
+        "!dist/**",
+        "!playwright-report/**",
+        "!test-results/**",
         ".env*",
         "astro.config.*",
         "package.json",
