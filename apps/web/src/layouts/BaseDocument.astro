@@ -5,6 +5,8 @@
  * @description Shared Astro document shell and metadata renderer.
  */
 
+import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
 import { type WebPageMetadata } from "@web/lib/metadata.types";
 
 import "@web/styles/tailwind.css";
@@ -74,6 +76,8 @@ j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
         <script is:inline set:html={googleTagManagerBootstrapScript} />
       ) : null
     }
+    <Analytics />
+    <SpeedInsights />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

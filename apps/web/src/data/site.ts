@@ -273,7 +273,7 @@ export const pages: PageData[] = [
     subheading: "Privacy and consent",
     title: "How this site handles analytics and contact paths.",
     intro:
-      "How this portfolio handles hosting logs, Google Analytics measurement, direct contact paths, and external profile links.",
+      "How this portfolio handles hosting logs, analytics, performance measurement, direct contact paths, and external profile links.",
     seoTitle: "Privacy and Consent - Guy Romelle Magayano",
     seoDescription:
       "Privacy and analytics disclosure for the Guy Romelle Magayano portfolio and services site.",

@@ -31,6 +31,8 @@
     "@portfolio/logger": "workspace:*",
     "@portfolio/ui": "workspace:*",
     "@portfolio/utils": "workspace:*",
+    "@vercel/analytics": "catalog:",
+    "@vercel/speed-insights": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "fuse.js": "catalog:",

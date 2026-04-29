@@ -22,6 +22,8 @@ catalog:
   "@typescript-eslint/parser": 8.59.1
   "@typescript-eslint/type-utils": 8.59.1
   "@typescript-eslint/utils": 8.59.1
+  "@vercel/analytics": 1.5.0
+  "@vercel/speed-insights": 1.1.0
   "@vitejs/plugin-react": 6.0.1
   "@vitest/coverage-v8": 4.1.5
   "@vitest/eslint-plugin": 1.6.16
