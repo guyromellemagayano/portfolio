@@ -2,76 +2,86 @@
 
 # `@portfolio/ui`
 
-Shared React UI components for the portfolio workspace.
+Styled shadcn-inspired React design system components for the portfolio workspace. `@portfolio/ui` composes the unstyled primitives from `@portfolio/components` and owns visual styling, variants, and Radix-backed interaction behavior.
 
 ## Features
 
 - Single package entrypoint with explicit exports
+- Source-owned shadcn-style components; no `shadcn/ui` runtime dependency
+- Tailwind-compatible class variants with `cva` and `cn()`
+- Radix-backed interactive primitives through the unified `radix-ui` package
 - Components tested with Vitest + Testing Library
 - TypeScript-first source and build pipeline
 - Workspace-integrated linting, formatting, and coverage scripts
 
 ## Package Exports
 
-This package currently exports `CounterButton` and `Link` from the root entrypoint.
+This package exports foundational and interactive components from the root entrypoint only.
 
 ```typescript
-import { CounterButton, Link } from "@portfolio/ui";
+import { Button, Card, Dialog, Field, Input, Link } from "@portfolio/ui";
 ```
 
 Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the public API for this package.
 
 ## Components
 
-### `CounterButton`
+### Foundational Components
 
-A stateful button component that renders and increments a count value.
-
-```typescript
-import { CounterButton } from "@portfolio/ui";
-
-<CounterButton
-  label="Counter"
-  initialValue={0}
-  min={0}
-  max={100}
-  step={1}
-  variant="primary"
-  size="medium"
-  onCountChange={(nextCount) => {
-    console.log(nextCount);
-  }}
-/>;
-```
-
-**Props:**
-
-- `label: string`
-- `initialValue: number`
-- `min: number`
-- `max: number`
-- `step: number`
-- `variant: "primary" | "secondary"`
-- `size: "small" | "medium" | "large"`
-- `onCountChange: (count: number) => void`
-
-### `Link`
-
-A thin wrapper around an anchor element with optional new-tab behavior.
+- `Button`
+- `Link`
+- `Badge`
+- `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`
+- `Input`
+- `Textarea`
+- `Label`
+- `Field`, `FieldLabel`, `FieldDescription`, `FieldError`
+- `Separator`
+- `Skeleton`
+- `Alert`, `AlertTitle`, `AlertDescription`
+- `Avatar`, `AvatarImage`, `AvatarFallback`
+- `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption`
 
 ```typescript
-import { Link } from "@portfolio/ui";
+import { Button, Card, CardContent, CardHeader, CardTitle } from "@portfolio/ui";
 
-<Link href="https://turbo.build/repo" newTab>
-  Turborepo
-</Link>;
+<Card>
+  <CardHeader>
+    <CardTitle>Project</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <Button>View project</Button>
+  </CardContent>
+</Card>;
 ```
 
-**Props:**
+### Interactive Components
 
-- `href: string`
-- `newTab?: boolean`
-- All native anchor props (`AnchorHTMLAttributes<HTMLAnchorElement>`)
+- `Dialog`
+- `AlertDialog`
+- `Tooltip`
+- `DropdownMenu`
+- `Tabs`
+- `Select`
+- `Popover`
+- `Sheet`
+
+Radix `asChild` composition belongs in this package, not in `@portfolio/components`.
+
+```typescript
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@portfolio/ui";
+
+<Dialog>
+  <DialogTrigger>Open</DialogTrigger>
+  <DialogContent>
+    <DialogTitle>Dialog title</DialogTitle>
+  </DialogContent>
+</Dialog>;
+```
+
+### Legacy Demo Component
+
+`CounterButton` remains exported for compatibility with existing package tests, but it is not part of the long-term design-system surface.
 
 ## Installation
 
@@ -109,8 +119,8 @@ pnpm test:coverage
 The package test suite covers:
 
 - Rendering and prop behavior
-- Interaction behavior (`CounterButton`, `Link` clicks and keyboard use)
-- Attribute forwarding and link behavior
+- Interaction behavior for Radix-backed components
+- Attribute forwarding, variant classes, and link behavior
 - Baseline accessibility checks via role-based queries
 
 Coverage thresholds are configured in `vitest.config.ts`:
@@ -122,7 +132,7 @@ Coverage thresholds are configured in `vitest.config.ts`:
 
 ## Dependencies
 
-- Runtime dependency: `@portfolio/logger` (workspace)
+- Runtime dependencies: `@portfolio/components`, `class-variance-authority`, `clsx`, `lucide-react`, `radix-ui`, and `tailwind-merge`
 - Peer dependencies: `react`, `react-dom`
 
 ## Contributing

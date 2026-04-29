@@ -111,14 +111,14 @@ describe("Link", () => {
       expect(link).toHaveAttribute("target", "_blank");
     });
 
-    it("sets rel=noreferrer when newTab is true", () => {
+    it("sets a safe rel when newTab is true", () => {
       render(
         <Link href="https://example.com" newTab={true}>
           Link
         </Link>
       );
       const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("rel", "noreferrer");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
 
     it("sets both target and rel when newTab is true", () => {
@@ -129,7 +129,7 @@ describe("Link", () => {
       );
       const link = screen.getByRole("link");
       expect(link).toHaveAttribute("target", "_blank");
-      expect(link).toHaveAttribute("rel", "noreferrer");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
   });
 
@@ -146,7 +146,7 @@ describe("Link", () => {
       );
       const link = screen.getByRole("link");
       expect(link).toHaveAttribute("id", "custom-id");
-      expect(link).toHaveClass("custom-class", { exact: true });
+      expect(link).toHaveClass("custom-class");
     });
 
     it("passes through aria attributes", () => {
@@ -285,7 +285,7 @@ describe("Link", () => {
       );
       link = screen.getByRole("link");
       expect(link).toHaveAttribute("target", "_blank");
-      expect(link).toHaveAttribute("rel", "noreferrer");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
 
       rerender(
         <Link href="https://example.com" newTab={false}>

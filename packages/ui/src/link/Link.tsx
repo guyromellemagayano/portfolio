@@ -1,22 +1,45 @@
-import { type AnchorHTMLAttributes, type ReactNode } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import React from "react";
 
-type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
-  children: ReactNode;
-  newTab?: boolean;
-  href: string;
-};
+import { cva, type VariantProps } from "class-variance-authority";
 
-export function Link({ children, href, newTab, ...rest }: LinkProps) {
+import { A, type AProps, type ARef } from "@portfolio/components";
+
+import { cn, getDataSlot } from "../utils";
+
+export const linkVariants = cva(
+  "focus-visible:ring-ring font-medium underline-offset-4 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+  {
+    variants: {
+      variant: {
+        default: "text-primary hover:underline",
+        muted: "text-muted-foreground hover:text-foreground",
+        subtle: "text-foreground hover:text-primary",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+);
+
+export type LinkProps = AProps &
+  VariantProps<typeof linkVariants> & {
+    newTab?: boolean;
+  };
+
+export const Link = React.forwardRef<ARef, LinkProps>((props, ref) => {
+  const { className, newTab, target, variant, ...rest } = props;
+
   return (
-    <a
-      href={href}
-      rel={newTab ? "noreferrer" : undefined}
-      target={newTab ? "_blank" : undefined}
+    <A
+      ref={ref}
+      target={newTab ? "_blank" : target}
       {...rest}
-    >
-      {children}
-    </a>
+      className={cn(linkVariants({ variant }), className)}
+      data-slot={getDataSlot(props, "link")}
+    />
   );
-}
+});
 
 Link.displayName = "Link";

@@ -2,6 +2,12 @@ import { vi } from "vitest";
 
 import "@testing-library/jest-dom";
 
+class MockResizeObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
+
 // Browser API mocks
 Object.defineProperty(window, "matchMedia", {
   writable: true,
@@ -28,11 +34,7 @@ Object.defineProperty(window, "IntersectionObserver", {
 
 Object.defineProperty(window, "ResizeObserver", {
   writable: true,
-  value: vi.fn().mockImplementation(() => ({
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-    disconnect: vi.fn(),
-  })),
+  value: MockResizeObserver,
 });
 
 Object.defineProperty(window, "requestAnimationFrame", {
