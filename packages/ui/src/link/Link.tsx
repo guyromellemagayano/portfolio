@@ -1,6 +1,4 @@
-import type { AnchorHTMLAttributes, ReactNode } from "react";
-
-import { setDisplayName } from "@portfolio/utils";
+import { type AnchorHTMLAttributes, type ReactNode } from "react";
 
 type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   children: ReactNode;
@@ -8,12 +6,7 @@ type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
 };
 
-export const Link = setDisplayName(function Link({
-  children,
-  href,
-  newTab,
-  ...rest
-}: LinkProps) {
+export function Link({ children, href, newTab, ...rest }: LinkProps) {
   return (
     <a
       href={href}
@@ -24,4 +17,6 @@ export const Link = setDisplayName(function Link({
       {children}
     </a>
   );
-});
+}
+
+Link.displayName = "Link";

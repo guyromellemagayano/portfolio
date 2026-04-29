@@ -1,5 +1,3 @@
-import React from "react";
-
 import logger from "@portfolio/logger";
 
 /**
@@ -14,47 +12,12 @@ export const trimStringContent = (content: unknown): string => {
   return String(content || "");
 };
 
-/**
- * Sets `displayName` for React components with improved type safety. \
- * It preserves existing `displayName` values and provides fallback naming.
- */
-export const setDisplayName = <T extends React.ComponentType<any>>(
-  component: T,
-  displayName?: string
-): T => {
-  if (!displayName) {
-    // Attempt to resolve the component name through various properties:
-    // 1. `component.displayName` (explicitly set)
-    // 2. `component.name` (standard function name)
-    // 3. `component.type.displayName` or `component.type.name` (React.memo, ForwardRef wrapper)
-    // 4. `component.render.displayName` or `component.render.name` (React.forwardRef)
-    // 5. Fallback to "Component"
-
-    const anyComponent = component as any;
-    displayName =
-      anyComponent.displayName ||
-      anyComponent.name ||
-      anyComponent.type?.displayName ||
-      anyComponent.type?.name ||
-      anyComponent.render?.displayName ||
-      anyComponent.render?.name ||
-      "Component";
-  }
-
-  if (!component.displayName) {
-    component.displayName = displayName;
-  }
-
-  return component;
-};
-
 /** Creates consistent data attributes for components */
 export const createComponentDataAttributes = (
   id?: string,
   suffix?: string,
   debugMode?: boolean
 ): Record<string, string> => {
-  /* eslint-disable no-undef */
   const attributes: Record<string, string> = {};
 
   // Validate and sanitize inputs
@@ -98,7 +61,6 @@ export const createComponentDataAttributes = (
   }
 
   return attributes;
-  /* eslint-enable no-undef */
 };
 
 /** Creates `aria-labelledby` attribute based on title and ID. */

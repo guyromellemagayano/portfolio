@@ -27,7 +27,6 @@ packages/utils/
 ### `react/component.ts`
 
 - Content trimming (`trimStringContent`)
-- Display-name normalization (`setDisplayName`)
 - Data attribute and ARIA helper generation
 
 ### `react/link.ts`

@@ -1,7 +1,7 @@
 /**
- * @file packages/ui/src/counter-button/index.test.tsx
+ * @file packages/ui/src/counter-button/CounterButton.test.tsx
  * @author Guy Romelle Magayano
- * @description Unit tests for index behavior.
+ * @description Unit tests for CounterButton behavior.
  */
 
 import { cleanup, render, screen } from "@testing-library/react";

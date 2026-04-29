@@ -17,14 +17,6 @@ export const useComponentId = vi.fn((options = {}) => ({
   id: options.debugId || "test-id", // For backward compatibility
 }));
 
-/** Mock `setDisplayName` utility */
-export const setDisplayName = vi.fn((component, displayName) => {
-  if (component) {
-    component.displayName = displayName;
-  }
-  return component;
-});
-
 /** Mock `createComponentProps` utility */
 export const createComponentProps = vi.fn(
   (id, componentType, debugMode, additionalProps = {}) => ({

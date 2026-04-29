@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-import { setDisplayName } from "@portfolio/utils";
-
 type CounterButtonProps = {
   label: string;
   initialValue: number;
@@ -15,9 +13,7 @@ type CounterButtonProps = {
   onCountChange: (count: number) => void;
 };
 
-export const CounterButton = setDisplayName(function CounterButton({
-  initialValue,
-}: CounterButtonProps) {
+export function CounterButton({ initialValue }: CounterButtonProps) {
   const [count, setCount] = useState(initialValue);
 
   return (
@@ -62,4 +58,6 @@ export const CounterButton = setDisplayName(function CounterButton({
       </div>
     </div>
   );
-});
+}
+
+CounterButton.displayName = "CounterButton";

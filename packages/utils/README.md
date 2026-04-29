@@ -19,7 +19,6 @@ Shared utility helpers for React-oriented packages in this monorepo, including c
 ### Component Utilities
 
 - `trimStringContent`
-- `setDisplayName`
 - `createComponentDataAttributes`
 - `createAriaLabelledBy`
 - `createComponentProps`
@@ -132,5 +131,5 @@ pnpm test --filter=@portfolio/utils
 ## Notes
 
 - Bundle diagnostic helpers (`logBundleSize`, `logTreeShakingVerification`) are development-oriented and environment-gated.
-- `setDisplayName` is intended for package-level React components where explicit naming improves DX and debugging.
+- React components should use native `Component.displayName = "Name"` assignments when explicit DevTools names are useful.
 - If utility behavior changes, update both this README and `src/README.md` to keep package and source docs aligned.

@@ -1,8 +1,10 @@
 /**
- * @file packages/ui/src/link/index.test.tsx
+ * @file packages/ui/src/link/Link.test.tsx
  * @author Guy Romelle Magayano
- * @description Unit tests for index behavior.
+ * @description Unit tests for Link behavior.
  */
+
+import { type MouseEvent } from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -174,7 +176,9 @@ describe("Link", () => {
 
     it("passes through onClick handler", async () => {
       const user = userEvent.setup();
-      const handleClick = vi.fn();
+      const handleClick = vi.fn((event: MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+      });
       render(
         <Link href="https://example.com" onClick={handleClick}>
           Link
@@ -196,7 +200,9 @@ describe("Link", () => {
 
     it("supports keyboard navigation", async () => {
       const user = userEvent.setup();
-      const handleClick = vi.fn();
+      const handleClick = vi.fn((event: MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+      });
       render(
         <Link href="https://example.com" onClick={handleClick}>
           Link

@@ -63,7 +63,6 @@ describe("Centralized Mocks", () => {
       const mocks = await import("../__mocks__/@portfolio/utils");
 
       expect(mocks.useComponentId).toBeDefined();
-      expect(mocks.setDisplayName).toBeDefined();
       expect(mocks.createComponentProps).toBeDefined();
       expect(mocks.hasAnyRenderableContent).toBeDefined();
       expect(mocks.hasMeaningfulText).toBeDefined();

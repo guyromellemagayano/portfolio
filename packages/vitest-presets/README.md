@@ -110,7 +110,7 @@ The Vitest-presets package includes a comprehensive centralized mocking system t
 
 #### **@portfolio/utils Mocks**
 
-- `useComponentId`, `setDisplayName`, `createComponentProps`
+- `useComponentId`, `createComponentProps`
 - `hasAnyRenderableContent`, `hasMeaningfulText`, `hasValidContent`
 - `formatDateSafely`, `isValidLink`, `getLinkTargetProps`
 - `hasValidNavigationLinks`, `filterValidNavigationLinks`
@@ -127,9 +127,7 @@ The Vitest-presets package includes a comprehensive centralized mocking system t
 
 ### Logger Integration
 
-The shared setup calls `logDebug` and `logInfo` from `@portfolio/logger` to
-mark centralized mock initialization. In tests, these are mocked functions, so
-they are best validated via assertions rather than terminal output.
+The shared setup calls `logDebug` and `logInfo` from `@portfolio/logger` to mark centralized mock initialization. In tests, these are mocked functions, so they are best validated via assertions rather than terminal output.
 
 ```typescript
 import { logDebug, logInfo } from "@portfolio/logger";
@@ -388,8 +386,7 @@ Generate multiple coverage formats for different tools:
 pnpm add -D @vitest/coverage-v8
 ```
 
-**Low coverage on index files**
-Exclude re-export files:
+**Low coverage on index files** Exclude re-export files:
 
 ```javascript
 coverage: {
@@ -397,8 +394,7 @@ coverage: {
 }
 ```
 
-**Thresholds too strict**
-Adjust per your project needs:
+**Thresholds too strict** Adjust per your project needs:
 
 ```javascript
 coverage: {

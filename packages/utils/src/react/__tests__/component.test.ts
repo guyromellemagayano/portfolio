@@ -1,50 +1,59 @@
-import { memo } from "react";
+import { describe, expect, it } from "vitest";
 
-import { describe, expect, it, vi } from "vitest";
+import {
+  createAriaLabelledBy,
+  createComponentDataAttributes,
+  createComponentProps,
+  trimStringContent,
+} from "../component";
 
-import { setDisplayName } from "../component";
-
-// Unlock `react` to get the real implementation for the memo
-vi.unmock("react");
-
-describe("setDisplayName", () => {
-  it("should set displayName for a simple function component", () => {
-    function MyComponent() {
-      return null;
-    }
-    const wrapped = setDisplayName(MyComponent);
-    expect(
-      (wrapped as typeof MyComponent & { displayName: string }).displayName
-    ).toBe("MyComponent");
+describe("trimStringContent", () => {
+  it("trims string content", () => {
+    expect(trimStringContent("  content  ")).toBe("content");
   });
 
-  it("should use custom displayName if provided", () => {
-    function MyComponent() {
-      return null;
-    }
-    const wrapped = setDisplayName(MyComponent, "CustomName");
-    expect(
-      (wrapped as typeof MyComponent & { displayName: string }).displayName
-    ).toBe("CustomName");
+  it("converts non-string content to a string", () => {
+    expect(trimStringContent(42)).toBe("42");
+    expect(trimStringContent(null)).toBe("");
+  });
+});
+
+describe("createComponentDataAttributes", () => {
+  it("creates test id attributes for safe ids and suffixes", () => {
+    expect(createComponentDataAttributes("hero", "title")).toEqual({
+      "data-testid": "hero-title-root",
+    });
   });
 
-  it("should handle React.memo components correctly (The Issue)", () => {
-    function MyMemoComponent() {
-      return null;
-    }
-    const Memoized = memo(MyMemoComponent);
-    const wrapped = setDisplayName(Memoized);
-
-    // We expect it to find the inner name "MyMemoComponent"
-    expect(
-      (wrapped as typeof Memoized & { displayName: string }).displayName
-    ).toBe("MyMemoComponent");
+  it("omits attributes for unsafe ids", () => {
+    expect(createComponentDataAttributes("hero title", "label")).toEqual({});
   });
+});
 
-  it("should handle components with no name", () => {
-    const wrapped = setDisplayName(() => null);
-    expect((wrapped as unknown as { displayName: string }).displayName).toBe(
-      "Component"
+describe("createAriaLabelledBy", () => {
+  it("combines id and trimmed title", () => {
+    expect(createAriaLabelledBy(" Main title ", "section")).toBe(
+      "section-Main title"
     );
+  });
+
+  it("returns undefined when title or id is missing", () => {
+    expect(createAriaLabelledBy("", "section")).toBeUndefined();
+    expect(createAriaLabelledBy("Title", "")).toBeUndefined();
+  });
+});
+
+describe("createComponentProps", () => {
+  it("combines generated data attributes, aria attributes, and additional props", () => {
+    expect(
+      createComponentProps("hero", "title", true, "Heading", {
+        role: "heading",
+      })
+    ).toEqual({
+      "aria-labelledby": "hero-Heading",
+      "data-debug-mode": "true",
+      "data-testid": "hero-title-root",
+      role: "heading",
+    });
   });
 });
