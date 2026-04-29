@@ -18,6 +18,9 @@ const { service, showPrice = false } = Astro.props;
 <article
   id={service.id}
   class="rounded-lg border border-zinc-950/10 bg-white p-6"
+  data-analytics-content-id={service.id}
+  data-analytics-content-name={service.title}
+  data-analytics-impression="service"
 >
   <p class="text-xs font-semibold tracking-[0.24em] text-zinc-500 uppercase">
     {service.icon}
@@ -60,6 +63,10 @@ const { service, showPrice = false } = Astro.props;
   <a
     href={service.href}
     class="mt-5 inline-flex text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
+    data-analytics-content-id={service.id}
+    data-analytics-content-name={service.title}
+    data-analytics-content-type="service"
+    data-analytics-placement="service-card"
   >
     {service.cta}
   </a>

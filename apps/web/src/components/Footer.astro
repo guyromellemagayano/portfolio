@@ -20,7 +20,14 @@ const footerLinks = navigationLinks.filter((link) => link.showInFooter);
       class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between"
     >
       <div>
-        <a href="/" class="text-base font-semibold tracking-tight text-white">
+        <a
+          href="/"
+          class="text-base font-semibold tracking-tight text-white"
+          data-analytics-content-id="/"
+          data-analytics-content-name="Home"
+          data-analytics-content-type="navigation"
+          data-analytics-placement="footer-brand"
+        >
           {profile.name}
         </a>
         <p class="mt-3 max-w-sm text-sm leading-6 text-zinc-400">
@@ -37,6 +44,10 @@ const footerLinks = navigationLinks.filter((link) => link.showInFooter);
             <a
               href={link.href}
               class="text-sm font-medium text-zinc-300 transition hover:text-white"
+              data-analytics-content-id={link.href}
+              data-analytics-content-name={link.label}
+              data-analytics-content-type="navigation"
+              data-analytics-placement="footer-nav"
             >
               {link.label}
             </a>
@@ -65,6 +76,10 @@ const footerLinks = navigationLinks.filter((link) => link.showInFooter);
                 }
                 target={link.href.startsWith("http") ? "_blank" : undefined}
                 class="rounded-full border border-white/10 px-3 py-2 text-sm font-medium text-zinc-300 transition hover:border-white/30 hover:text-white"
+                data-analytics-content-id={link.id}
+                data-analytics-content-name={link.label}
+                data-analytics-content-type="social_link"
+                data-analytics-placement="footer-social"
                 role="listitem"
               >
                 {link.label}

@@ -271,12 +271,12 @@ export const pages: PageData[] = [
   {
     slug: "privacy",
     subheading: "Privacy and consent",
-    title: "A clear baseline before adding analytics.",
+    title: "How this site handles analytics and contact paths.",
     intro:
-      "How this portfolio handles personal data today, what may change when analytics are added, and how consent should work before non-essential tracking is introduced.",
+      "How this portfolio handles hosting logs, Google Analytics measurement, direct contact paths, and external profile links.",
     seoTitle: "Privacy and Consent - Guy Romelle Magayano",
     seoDescription:
-      "Privacy and consent baseline for the Guy Romelle Magayano portfolio and services site before non-essential analytics are introduced.",
+      "Privacy and analytics disclosure for the Guy Romelle Magayano portfolio and services site.",
     seoCanonicalPath: "/privacy",
   },
   {

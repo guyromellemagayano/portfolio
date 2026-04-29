@@ -51,6 +51,10 @@ const metadata = appendStructuredData(
               rel={path.target === "_blank" ? "noopener noreferrer" : undefined}
               target={path.target}
               class="mt-5 inline-flex text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
+              data-analytics-content-id={path.id}
+              data-analytics-content-name={path.title}
+              data-analytics-content-type="booking_path"
+              data-analytics-placement="book-path-card"
             >
               {path.cta}
             </a>
@@ -87,6 +91,10 @@ const metadata = appendStructuredData(
               <a
                 href={service.href}
                 class="inline-flex text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
+                data-analytics-content-id={service.id}
+                data-analytics-content-name={service.title}
+                data-analytics-content-type="service"
+                data-analytics-placement="book-service-row"
               >
                 {service.cta}
               </a>

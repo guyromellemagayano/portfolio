@@ -54,6 +54,13 @@ const linkedinLink = getPortfolioSocialLinkByPlatform("linkedin");
             <a
               href={emailLink.href}
               class="inline-flex items-center justify-center rounded-full bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
+              data-analytics-content-id="direct-email"
+              data-analytics-content-name="Email me directly"
+              data-analytics-content-type="contact"
+              data-analytics-event="generate_lead"
+              data-analytics-lead-type="direct_contact"
+              data-analytics-method="email"
+              data-analytics-placement="hire-primary"
             >
               Email me directly
             </a>
@@ -66,6 +73,13 @@ const linkedinLink = getPortfolioSocialLinkByPlatform("linkedin");
               rel="noopener noreferrer"
               target="_blank"
               class="inline-flex items-center justify-center rounded-full border border-zinc-950/10 bg-white px-5 py-3 text-sm font-medium text-zinc-950 transition hover:border-zinc-950/30"
+              data-analytics-content-id="linkedin-contact"
+              data-analytics-content-name="Open LinkedIn"
+              data-analytics-content-type="contact"
+              data-analytics-event="generate_lead"
+              data-analytics-lead-type="social_contact"
+              data-analytics-method="linkedin"
+              data-analytics-placement="hire-secondary"
             >
               Open LinkedIn
             </a>

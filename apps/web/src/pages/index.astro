@@ -65,12 +65,20 @@ const featuredArticles = articles.slice(0, 3);
         <a
           href="/hire"
           class="inline-flex items-center justify-center rounded-full bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
+          data-analytics-content-id="/hire"
+          data-analytics-content-name="Request services"
+          data-analytics-content-type="call_to_action"
+          data-analytics-placement="home-hero-primary"
         >
           Request services
         </a>
         <a
           href="/services"
           class="inline-flex items-center justify-center rounded-full border border-zinc-950/10 bg-white px-5 py-3 text-sm font-medium text-zinc-950 transition hover:border-zinc-950/30"
+          data-analytics-content-id="/services"
+          data-analytics-content-name="View engagement options"
+          data-analytics-content-type="call_to_action"
+          data-analytics-placement="home-hero-secondary"
         >
           View engagement options
         </a>
@@ -124,6 +132,10 @@ const featuredArticles = articles.slice(0, 3);
                 role="listitem"
                 target={link.href.startsWith("http") ? "_blank" : undefined}
                 class="inline-flex items-center rounded-full border border-zinc-950/10 px-3 py-2 text-sm text-zinc-700 transition hover:border-zinc-950/30 hover:text-zinc-950"
+                data-analytics-content-id={link.id}
+                data-analytics-content-name={link.label}
+                data-analytics-content-type="social_link"
+                data-analytics-placement="home-social"
               >
                 {link.label}
               </a>

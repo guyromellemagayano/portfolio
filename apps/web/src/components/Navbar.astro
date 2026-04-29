@@ -25,6 +25,10 @@ function isActivePath(href: string): boolean {
       href="/"
       class="text-sm font-semibold tracking-tight text-zinc-950"
       aria-label={`${profile.name} home`}
+      data-analytics-content-id="/"
+      data-analytics-content-name="Home"
+      data-analytics-content-type="navigation"
+      data-analytics-placement="header-brand"
     >
       {profile.name}
     </a>
@@ -42,6 +46,10 @@ function isActivePath(href: string): boolean {
                 active ? "text-zinc-950" : "text-zinc-500",
               ]}
               aria-current={active ? "page" : undefined}
+              data-analytics-content-id={link.href}
+              data-analytics-content-name={link.label}
+              data-analytics-content-type="navigation"
+              data-analytics-placement="header-nav"
             >
               {link.label}
             </a>
@@ -71,7 +79,14 @@ function isActivePath(href: string): boolean {
   data-mobile-menu
 >
   <div class="flex items-center justify-between">
-    <a href="/" class="text-sm font-semibold tracking-tight text-zinc-950">
+    <a
+      href="/"
+      class="text-sm font-semibold tracking-tight text-zinc-950"
+      data-analytics-content-id="/"
+      data-analytics-content-name="Home"
+      data-analytics-content-type="navigation"
+      data-analytics-placement="mobile-header-brand"
+    >
       {profile.name}
     </a>
     <button
@@ -96,6 +111,10 @@ function isActivePath(href: string): boolean {
               active ? "text-zinc-950" : "text-zinc-500",
             ]}
             aria-current={active ? "page" : undefined}
+            data-analytics-content-id={link.href}
+            data-analytics-content-name={link.label}
+            data-analytics-content-type="navigation"
+            data-analytics-placement="mobile-nav"
           >
             {link.label}
           </a>

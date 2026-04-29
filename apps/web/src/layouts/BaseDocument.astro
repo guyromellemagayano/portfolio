@@ -30,6 +30,8 @@ const openGraph = metadata?.openGraph;
 const twitter = metadata?.twitter;
 const googleSiteVerification =
   globalThis.process?.env?.GOOGLE_SITE_VERIFICATION?.trim() ?? "";
+const googleAnalyticsMeasurementId =
+  globalThis.process?.env?.GOOGLE_ANALYTICS_MEASUREMENT_ID?.trim() ?? "";
 const bingSiteVerification =
   globalThis.process?.env?.BING_SITE_VERIFICATION?.trim() ?? "";
 const structuredDataItems = metadata?.structuredData
@@ -37,6 +39,16 @@ const structuredDataItems = metadata?.structuredData
     ? metadata.structuredData
     : [metadata.structuredData]
   : [];
+const googleAnalyticsBootstrapScript = googleAnalyticsMeasurementId
+  ? `
+window.dataLayer = window.dataLayer || [];
+window.gtag = window.gtag || function gtag(...gtagArguments) {
+  window.dataLayer.push(gtagArguments);
+};
+window.gtag("js", new Date());
+window.gtag("config", ${JSON.stringify(googleAnalyticsMeasurementId)});
+`
+  : "";
 ---
 
 <!doctype html>
@@ -70,6 +82,24 @@ const structuredDataItems = metadata?.structuredData
     {
       bingSiteVerification ? (
         <meta name="msvalidate.01" content={bingSiteVerification} />
+      ) : null
+    }
+    {
+      googleAnalyticsMeasurementId ? (
+        <>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(
+              googleAnalyticsMeasurementId
+            )}`}
+          />
+          <script is:inline set:html={googleAnalyticsBootstrapScript} />
+          <script
+            data-google-analytics-measurement-id={googleAnalyticsMeasurementId}
+            defer
+            src="/analytics-events.js"
+          />
+        </>
       ) : null
     }
     {canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}

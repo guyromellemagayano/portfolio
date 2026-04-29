@@ -29,6 +29,10 @@ const {
 <section
   aria-labelledby="cta-heading"
   class="border-t border-zinc-950/10 py-16"
+  data-analytics-content-id={primaryHref}
+  data-analytics-content-name={title}
+  data-analytics-impression="call_to_action"
+  data-analytics-placement="cta"
   role="region"
 >
   <div class="mx-auto max-w-6xl px-6 sm:px-8">
@@ -53,6 +57,10 @@ const {
         <a
           href={primaryHref}
           class="inline-flex items-center justify-center rounded-full bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
+          data-analytics-content-id={primaryHref}
+          data-analytics-content-name={primaryLabel}
+          data-analytics-content-type="call_to_action"
+          data-analytics-placement="cta-primary"
         >
           {primaryLabel}
         </a>
@@ -61,6 +69,10 @@ const {
             <a
               href={secondaryHref}
               class="inline-flex items-center justify-center rounded-full border border-zinc-950/10 bg-white px-5 py-3 text-sm font-medium text-zinc-950 transition hover:border-zinc-950/30"
+              data-analytics-content-id={secondaryHref}
+              data-analytics-content-name={secondaryLabel}
+              data-analytics-content-type="call_to_action"
+              data-analytics-placement="cta-secondary"
             >
               {secondaryLabel}
             </a>
