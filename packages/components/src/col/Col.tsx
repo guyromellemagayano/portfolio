@@ -1,17 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type ColRef = PrimitiveRef<"col">;
+export type ColProps<TAs extends PrimitiveElement = "col"> = PrimitiveProps<
+  "col",
+  TAs
+>;
 
-export type ColRef = React.ComponentRef<"col">;
-
-export interface ColProps
-  extends React.ComponentPropsWithoutRef<"col">, CommonComponentProps {}
-
-/** Render the column component. */
-export const Col = React.forwardRef<ColRef, ColProps>((props, ref) => {
-  const { as: Component = "col", ...rest } = props;
-
-  return <Component ref={ref} {...rest} />;
-});
-
-Col.displayName = "Col";
+/** Render the native <col> HTML element. */
+export const Col = createHtmlPrimitive("Col", "col");

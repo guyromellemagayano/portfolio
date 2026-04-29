@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type UlRef = PrimitiveRef<"ul">;
+export type UlProps<TAs extends PrimitiveElement = "ul"> = PrimitiveProps<
+  "ul",
+  TAs
+>;
 
-export type UlRef = React.ComponentRef<"ul">;
-
-export interface UlProps
-  extends React.ComponentPropsWithoutRef<"ul">, CommonComponentProps {}
-
-/** Render the unordered list component. */
-export const Ul = React.forwardRef<UlRef, UlProps>((props, ref) => {
-  const { as: Component = "ul", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Ul.displayName = "Ul";
+/** Render the native <ul> HTML element. */
+export const Ul = createHtmlPrimitive("Ul", "ul");

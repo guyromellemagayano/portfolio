@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type InsRef = PrimitiveRef<"ins">;
+export type InsProps<TAs extends PrimitiveElement = "ins"> = PrimitiveProps<
+  "ins",
+  TAs
+>;
 
-export type InsRef = React.ComponentRef<"ins">;
-
-export interface InsProps
-  extends React.ComponentPropsWithoutRef<"ins">, CommonComponentProps {}
-
-/** Render the inserted text component. */
-export const Ins = React.forwardRef<InsRef, InsProps>((props, ref) => {
-  const { as: Component = "ins", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Ins.displayName = "Ins";
+/** Render the native <ins> HTML element. */
+export const Ins = createHtmlPrimitive("Ins", "ins");

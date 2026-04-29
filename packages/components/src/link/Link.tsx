@@ -1,19 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type LinkRef = PrimitiveRef<"link">;
+export type LinkProps<TAs extends PrimitiveElement = "link"> = PrimitiveProps<
+  "link",
+  TAs
+>;
 
-export type LinkRef = React.ComponentRef<"link">;
-
-export interface LinkProps
-  extends
-    Omit<React.ComponentPropsWithoutRef<"link">, "as">,
-    CommonComponentProps {}
-
-/** Render the external resource link component. */
-export const Link = React.forwardRef<LinkRef, LinkProps>((props, ref) => {
-  const { as: Component = "link", ...rest } = props;
-
-  return <Component ref={ref} {...rest} />;
-});
-
-Link.displayName = "Link";
+/** Render the native <link> HTML element. */
+export const Link = createHtmlPrimitive("Link", "link");

@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type TableRef = PrimitiveRef<"table">;
+export type TableProps<TAs extends PrimitiveElement = "table"> = PrimitiveProps<
+  "table",
+  TAs
+>;
 
-export type TableRef = React.ComponentRef<"table">;
-
-export interface TableProps
-  extends React.ComponentPropsWithoutRef<"table">, CommonComponentProps {}
-
-/** Render the table component. */
-export const Table = React.forwardRef<TableRef, TableProps>((props, ref) => {
-  const { as: Component = "table", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Table.displayName = "Table";
+/** Render the native <table> HTML element. */
+export const Table = createHtmlPrimitive("Table", "table");

@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type StyleRef = PrimitiveRef<"style">;
+export type StyleProps<TAs extends PrimitiveElement = "style"> = PrimitiveProps<
+  "style",
+  TAs
+>;
 
-export type StyleRef = React.ComponentRef<"style">;
-
-export interface StyleProps
-  extends React.ComponentPropsWithoutRef<"style">, CommonComponentProps {}
-
-/** Render the style information component. */
-export const Style = React.forwardRef<StyleRef, StyleProps>((props, ref) => {
-  const { as: Component = "style", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Style.displayName = "Style";
+/** Render the native <style> HTML element. */
+export const Style = createHtmlPrimitive("Style", "style");

@@ -368,13 +368,6 @@ global.console = {
   error: vi.fn(),
 };
 
-// Mock window.gtag for analytics
-Object.defineProperty(window, "gtag", {
-  value: vi.fn(),
-  writable: true,
-  configurable: true,
-});
-
 // Enhanced ResizeObserver mock
 global.ResizeObserver = class MockResizeObserver {
   observe = vi.fn((_target: Element, _options?: ResizeObserverOptions) => {

@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type SectionRef = PrimitiveRef<"section">;
+export type SectionProps<TAs extends PrimitiveElement = "section"> =
+  PrimitiveProps<"section", TAs>;
 
-export type SectionRef = React.ComponentRef<"section">;
-
-export interface SectionProps
-  extends React.ComponentPropsWithoutRef<"section">, CommonComponentProps {}
-
-/** Render the generic section component. */
-export const Section = React.forwardRef<SectionRef, SectionProps>(
-  (props, ref) => {
-    const { as: Component = "section", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Section.displayName = "Section";
+/** Render the native <section> HTML element. */
+export const Section = createHtmlPrimitive("Section", "section");

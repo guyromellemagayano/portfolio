@@ -1,17 +1,17 @@
-import React from "react";
+import { createHtmlPrimitive, createNativeDefaultProps } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type AreaRef = PrimitiveRef<"area">;
+export type AreaProps<TAs extends PrimitiveElement = "area"> = PrimitiveProps<
+  "area",
+  TAs
+>;
 
-export type AreaRef = React.ComponentRef<"area">;
-
-export interface AreaProps
-  extends React.ComponentPropsWithoutRef<"area">, CommonComponentProps {}
-
-/** Render the area component. */
-export const Area = React.forwardRef<AreaRef, AreaProps>((props, ref) => {
-  const { as: Component = "area", alt = "", ...rest } = props;
-
-  return <Component alt={alt} {...rest} ref={ref} />;
+/** Render the native <area> HTML element. */
+export const Area = createHtmlPrimitive("Area", "area", {
+  defaultProps: createNativeDefaultProps("area", { alt: "" }),
 });
-
-Area.displayName = "Area";

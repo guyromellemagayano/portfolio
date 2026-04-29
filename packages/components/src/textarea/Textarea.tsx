@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type TextareaRef = PrimitiveRef<"textarea">;
+export type TextareaProps<TAs extends PrimitiveElement = "textarea"> =
+  PrimitiveProps<"textarea", TAs>;
 
-export type TextareaRef = React.ComponentRef<"textarea">;
-
-export interface TextareaProps
-  extends React.ComponentPropsWithoutRef<"textarea">, CommonComponentProps {}
-
-/** Render the textarea component. */
-export const Textarea = React.forwardRef<TextareaRef, TextareaProps>(
-  (props, ref) => {
-    const { as: Component = "textarea", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Textarea.displayName = "Textarea";
+/** Render the native <textarea> HTML element. */
+export const Textarea = createHtmlPrimitive("Textarea", "textarea");

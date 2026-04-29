@@ -1,21 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type OptionRef = PrimitiveRef<"option">;
+export type OptionProps<TAs extends PrimitiveElement = "option"> =
+  PrimitiveProps<"option", TAs>;
 
-export type OptionRef = React.ComponentRef<"option">;
-
-export interface OptionProps
-  extends React.ComponentPropsWithoutRef<"option">, CommonComponentProps {}
-
-/** Render the HTML option component. */
-export const Option = React.forwardRef<OptionRef, OptionProps>((props, ref) => {
-  const { as: Component = "option", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Option.displayName = "Option";
+/** Render the native <option> HTML element. */
+export const Option = createHtmlPrimitive("Option", "option");

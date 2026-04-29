@@ -1,21 +1,23 @@
-import React from "react";
+import {
+  createHtmlPrimitive,
+  createNativeDefaultProps,
+  withSafeBlankTargetRel,
+} from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type ARef = PrimitiveRef<"a">;
+export type AProps<TAs extends PrimitiveElement = "a"> = PrimitiveProps<
+  "a",
+  TAs
+>;
 
-export type ARef = React.ComponentRef<"a">;
-
-export interface AProps
-  extends React.ComponentPropsWithoutRef<"a">, CommonComponentProps {}
-
-/** Render the default anchor component. */
-export const A = React.forwardRef<ARef, AProps>((props, ref) => {
-  const { as: Component = "a", href = "#", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} href={href} {...rest}>
-      {children}
-    </Component>
-  );
+/** Render the native <a> HTML element. */
+export const A = createHtmlPrimitive("A", "a", {
+  defaultProps: createNativeDefaultProps("a", { href: "#" }),
+  prepareProps: (props, tagName) =>
+    tagName === "a" ? withSafeBlankTargetRel(props) : props,
 });
-
-A.displayName = "A";

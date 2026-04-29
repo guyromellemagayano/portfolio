@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type CodeRef = PrimitiveRef<"code">;
+export type CodeProps<TAs extends PrimitiveElement = "code"> = PrimitiveProps<
+  "code",
+  TAs
+>;
 
-export type CodeRef = React.ComponentRef<"code">;
-
-export interface CodeProps
-  extends React.ComponentPropsWithoutRef<"code">, CommonComponentProps {}
-
-/** Render the code component. */
-export const Code = React.forwardRef<CodeRef, CodeProps>((props, ref) => {
-  const { as: Component = "code", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Code.displayName = "Code";
+/** Render the native <code> HTML element. */
+export const Code = createHtmlPrimitive("Code", "code");

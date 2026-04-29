@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type BlockquoteRef = PrimitiveRef<"blockquote">;
+export type BlockquoteProps<TAs extends PrimitiveElement = "blockquote"> =
+  PrimitiveProps<"blockquote", TAs>;
 
-export type BlockquoteRef = React.ComponentRef<"blockquote">;
-
-export interface BlockquoteProps
-  extends React.ComponentPropsWithoutRef<"blockquote">, CommonComponentProps {}
-
-/** Render the blockquote component. */
-export const Blockquote = React.forwardRef<BlockquoteRef, BlockquoteProps>(
-  (props, ref) => {
-    const { as: Component = "blockquote", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Blockquote.displayName = "Blockquote";
+/** Render the native <blockquote> HTML element. */
+export const Blockquote = createHtmlPrimitive("Blockquote", "blockquote");

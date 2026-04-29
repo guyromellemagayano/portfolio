@@ -1,19 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type MetaRef = PrimitiveRef<"meta">;
+export type MetaProps<TAs extends PrimitiveElement = "meta"> = PrimitiveProps<
+  "meta",
+  TAs
+>;
 
-export type MetaRef = React.ComponentRef<"meta">;
-
-export interface MetaProps
-  extends
-    Omit<React.ComponentPropsWithoutRef<"meta">, "as">,
-    CommonComponentProps {}
-
-/** Render the metadata component. */
-export const Meta = React.forwardRef<MetaRef, MetaProps>((props, ref) => {
-  const { as: Component = "meta", ...rest } = props;
-
-  return <Component ref={ref} {...rest} />;
-});
-
-Meta.displayName = "Meta";
+/** Render the native <meta> HTML element. */
+export const Meta = createHtmlPrimitive("Meta", "meta");

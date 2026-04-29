@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type VideoRef = PrimitiveRef<"video">;
+export type VideoProps<TAs extends PrimitiveElement = "video"> = PrimitiveProps<
+  "video",
+  TAs
+>;
 
-export type VideoRef = React.ComponentRef<"video">;
-
-export interface VideoProps
-  extends React.ComponentPropsWithoutRef<"video">, CommonComponentProps {}
-
-/** Render the video embed component. */
-export const Video = React.forwardRef<VideoRef, VideoProps>((props, ref) => {
-  const { as: Component = "video", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Video.displayName = "Video";
+/** Render the native <video> HTML element. */
+export const Video = createHtmlPrimitive("Video", "video");

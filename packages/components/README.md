@@ -2,16 +2,19 @@
 
 # `@portfolio/components`
 
-Framework-agnostic React components for the portfolio workspace. The package is intended to work in Astro, React + Vite, and other React-compatible runtimes without depending on Next.js conventions or React Server Component boundaries.
+Framework-agnostic React primitives for the portfolio workspace. The package preserves stable MDN HTML element coverage as unstyled React components for Astro, React + Vite, and other React-compatible runtimes.
 
 ## Contract
 
 - Components render normal React elements synchronously.
 - Components forward refs where the underlying element API supports it.
-- Components may support an `as` prop when semantic element overrides are useful.
+- Stable HTML wrappers are generated from a checked-in MDN metadata snapshot.
+- Components support an `as` prop for local polymorphism.
+- Components include `data-component` and `data-slot="root"` by default while preserving explicit consumer values.
 - Consumers import from the root package entrypoint only.
 - The package does not expose public subpath imports.
 - The package does not require framework-specific hydration flags.
+- Deprecated, obsolete, and experimental HTML elements are not exported.
 
 The component implementation follows this contract directly. Future slices should focus on higher-value primitives while keeping the root-only public import surface.
 
@@ -43,9 +46,7 @@ import { Button, Heading, Section } from "@portfolio/components";
 export function Hero() {
   return (
     <Section aria-labelledby="hero-title">
-      <Heading as="h1" id="hero-title">
-        Portfolio
-      </Heading>
+      <Heading id="hero-title">Portfolio</Heading>
       <Button type="button">View projects</Button>
     </Section>
   );
@@ -70,16 +71,23 @@ The intended contract is plain React rendering with standard DOM props. Runtime-
 
 ## Public API Direction
 
-The stable direction is a focused set of useful primitives rather than a package whose main value is wrapping every HTML tag. Existing exports may remain during migration, but new code should prefer components that add meaningful behavior, accessibility, styling, or composition value.
+The stable direction is an unstyled HTML foundation plus deliberate convenience primitives that help `@portfolio/ui` build a custom design system.
 
 Current API groups:
 
-- `Components`: React components exported from the root barrel.
-- `Analytics Utilities`: optional helpers such as `createBatchedOnAnalytics`, `createFetchTransport`, and `createConsoleTransport`.
-- `Polymorphic Utilities`: transitional helpers for `as`-based rendering and prop handling.
-- `Types`: shared React component types.
+- `Stable HTML wrappers`: stable MDN elements such as `A`, `Button`, `Img`, `Table`, `Svg`, and `Math`.
+- `Heading`: the single heading primitive for `h1` through `h6`, using `as` for the target heading level.
+- `Convenience primitives`: `Box`, `Text`, `Heading`, `VisuallyHidden`, `Field`, `FieldLabel`, `FieldDescription`, and `FieldError`.
+- `Types`: shared React primitive types consumed by this package and downstream UI components.
 
-Analytics helpers are optional consumer utilities. They should not be understood as automatic behavior for every component unless a component explicitly documents that behavior.
+Utility modules should only be exported when the package implementation actively uses them or when they are part of a deliberate, tested public primitive. The package does not expose dormant analytics or polymorphic helper utilities.
+
+Element-specific defaults are intentionally narrow:
+
+- `A` defaults to `href="#"` and adds `noopener noreferrer` for `target="_blank"`.
+- `Button` defaults to `type="button"`.
+- `Input` defaults to `type="text"`.
+- `Img` defaults to `decoding="async"`.
 
 ## Development
 

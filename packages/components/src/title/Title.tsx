@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type TitleRef = PrimitiveRef<"title">;
+export type TitleProps<TAs extends PrimitiveElement = "title"> = PrimitiveProps<
+  "title",
+  TAs
+>;
 
-export type TitleRef = React.ComponentRef<"title">;
-
-export interface TitleProps
-  extends React.ComponentPropsWithoutRef<"title">, CommonComponentProps {}
-
-/** Render the document title component. */
-export const Title = React.forwardRef<TitleRef, TitleProps>((props, ref) => {
-  const { as: Component = "title", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Title.displayName = "Title";
+/** Render the native <title> HTML element. */
+export const Title = createHtmlPrimitive("Title", "title");

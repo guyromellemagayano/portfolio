@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type EmbedRef = PrimitiveRef<"embed">;
+export type EmbedProps<TAs extends PrimitiveElement = "embed"> = PrimitiveProps<
+  "embed",
+  TAs
+>;
 
-export type EmbedRef = React.ComponentRef<"embed">;
-
-export interface EmbedProps
-  extends React.ComponentPropsWithoutRef<"embed">, CommonComponentProps {}
-
-/** Render the embed external content component. */
-export const Embed = React.forwardRef<EmbedRef, EmbedProps>((props, ref) => {
-  const { as: Component = "embed", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Embed.displayName = "Embed";
+/** Render the native <embed> HTML element. */
+export const Embed = createHtmlPrimitive("Embed", "embed");

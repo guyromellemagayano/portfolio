@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type OlRef = PrimitiveRef<"ol">;
+export type OlProps<TAs extends PrimitiveElement = "ol"> = PrimitiveProps<
+  "ol",
+  TAs
+>;
 
-export type OlRef = React.ComponentRef<"ol">;
-
-export interface OlProps
-  extends React.ComponentPropsWithoutRef<"ol">, CommonComponentProps {}
-
-/** Render the ordered list component. */
-export const Ol = React.forwardRef<OlRef, OlProps>((props, ref) => {
-  const { as: Component = "ol", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Ol.displayName = "Ol";
+/** Render the native <ol> HTML element. */
+export const Ol = createHtmlPrimitive("Ol", "ol");

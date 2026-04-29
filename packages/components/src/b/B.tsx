@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type BRef = PrimitiveRef<"b">;
+export type BProps<TAs extends PrimitiveElement = "b"> = PrimitiveProps<
+  "b",
+  TAs
+>;
 
-export type BRef = React.ComponentRef<"b">;
-
-export interface BProps
-  extends React.ComponentPropsWithoutRef<"b">, CommonComponentProps {}
-
-/** Render the bring attention component. */
-export const B = React.forwardRef<BRef, BProps>((props, ref) => {
-  const { as: Component = "b", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-B.displayName = "B";
+/** Render the native <b> HTML element. */
+export const B = createHtmlPrimitive("B", "b");

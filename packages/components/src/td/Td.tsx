@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type TdRef = PrimitiveRef<"td">;
+export type TdProps<TAs extends PrimitiveElement = "td"> = PrimitiveProps<
+  "td",
+  TAs
+>;
 
-export type TdRef = React.ComponentRef<"td">;
-
-export interface TdProps
-  extends React.ComponentPropsWithoutRef<"td">, CommonComponentProps {}
-
-/** Render the table data cell component. */
-export const Td = React.forwardRef<TdRef, TdProps>((props, ref) => {
-  const { as: Component = "td", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Td.displayName = "Td";
+/** Render the native <td> HTML element. */
+export const Td = createHtmlPrimitive("Td", "td");

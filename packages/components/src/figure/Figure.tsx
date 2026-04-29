@@ -1,21 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type FigureRef = PrimitiveRef<"figure">;
+export type FigureProps<TAs extends PrimitiveElement = "figure"> =
+  PrimitiveProps<"figure", TAs>;
 
-export type FigureRef = React.ComponentRef<"figure">;
-
-export interface FigureProps
-  extends React.ComponentPropsWithoutRef<"figure">, CommonComponentProps {}
-
-/** Render the figure with optional caption component. */
-export const Figure = React.forwardRef<FigureRef, FigureProps>((props, ref) => {
-  const { as: Component = "figure", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Figure.displayName = "Figure";
+/** Render the native <figure> HTML element. */
+export const Figure = createHtmlPrimitive("Figure", "figure");

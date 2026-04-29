@@ -1,21 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type HgroupRef = PrimitiveRef<"hgroup">;
+export type HgroupProps<TAs extends PrimitiveElement = "hgroup"> =
+  PrimitiveProps<"hgroup", TAs>;
 
-export type HgroupRef = React.ComponentRef<"hgroup">;
-
-export interface HgroupProps
-  extends React.ComponentPropsWithoutRef<"hgroup">, CommonComponentProps {}
-
-/** Render the heading group component. */
-export const Hgroup = React.forwardRef<HgroupRef, HgroupProps>((props, ref) => {
-  const { as: Component = "hgroup", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Hgroup.displayName = "Hgroup";
+/** Render the native <hgroup> HTML element. */
+export const Hgroup = createHtmlPrimitive("Hgroup", "hgroup");

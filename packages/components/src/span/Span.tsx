@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type SpanRef = PrimitiveRef<"span">;
+export type SpanProps<TAs extends PrimitiveElement = "span"> = PrimitiveProps<
+  "span",
+  TAs
+>;
 
-export type SpanRef = React.ComponentRef<"span">;
-
-export interface SpanProps
-  extends React.ComponentPropsWithoutRef<"span">, CommonComponentProps {}
-
-/** Render the content span component. */
-export const Span = React.forwardRef<SpanRef, SpanProps>((props, ref) => {
-  const { as: Component = "span", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Span.displayName = "Span";
+/** Render the native <span> HTML element. */
+export const Span = createHtmlPrimitive("Span", "span");

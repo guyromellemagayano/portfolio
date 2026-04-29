@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type FieldsetRef = PrimitiveRef<"fieldset">;
+export type FieldsetProps<TAs extends PrimitiveElement = "fieldset"> =
+  PrimitiveProps<"fieldset", TAs>;
 
-export type FieldsetRef = React.ComponentRef<"fieldset">;
-
-export interface FieldsetProps
-  extends React.ComponentPropsWithoutRef<"fieldset">, CommonComponentProps {}
-
-/** Render the field set component. */
-export const Fieldset = React.forwardRef<FieldsetRef, FieldsetProps>(
-  (props, ref) => {
-    const { as: Component = "fieldset", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Fieldset.displayName = "Fieldset";
+/** Render the native <fieldset> HTML element. */
+export const Fieldset = createHtmlPrimitive("Fieldset", "fieldset");

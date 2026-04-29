@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type TrRef = PrimitiveRef<"tr">;
+export type TrProps<TAs extends PrimitiveElement = "tr"> = PrimitiveProps<
+  "tr",
+  TAs
+>;
 
-export type TrRef = React.ComponentRef<"tr">;
-
-export interface TrProps
-  extends React.ComponentPropsWithoutRef<"tr">, CommonComponentProps {}
-
-/** Render the table row component. */
-export const Tr = React.forwardRef<TrRef, TrProps>((props, ref) => {
-  const { as: Component = "tr", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Tr.displayName = "Tr";
+/** Render the native <tr> HTML element. */
+export const Tr = createHtmlPrimitive("Tr", "tr");

@@ -1,21 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type HeaderRef = PrimitiveRef<"header">;
+export type HeaderProps<TAs extends PrimitiveElement = "header"> =
+  PrimitiveProps<"header", TAs>;
 
-export type HeaderRef = React.ComponentRef<"header">;
-
-export interface HeaderProps
-  extends React.ComponentPropsWithoutRef<"header">, CommonComponentProps {}
-
-/** Render the header component. */
-export const Header = React.forwardRef<HeaderRef, HeaderProps>((props, ref) => {
-  const { as: Component = "header", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Header.displayName = "Header";
+/** Render the native <header> HTML element. */
+export const Header = createHtmlPrimitive("Header", "header");

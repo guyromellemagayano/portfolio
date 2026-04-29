@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type HrRef = PrimitiveRef<"hr">;
+export type HrProps<TAs extends PrimitiveElement = "hr"> = PrimitiveProps<
+  "hr",
+  TAs
+>;
 
-export type HrRef = React.ComponentRef<"hr">;
-
-export interface HrProps
-  extends React.ComponentPropsWithoutRef<"hr">, CommonComponentProps {}
-
-/** Render the thematic break (horizontal rule) component. */
-export const Hr = React.forwardRef<HrRef, HrProps>((props, ref) => {
-  const { as: Component = "hr", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Hr.displayName = "Hr";
+/** Render the native <hr> HTML element. */
+export const Hr = createHtmlPrimitive("Hr", "hr");

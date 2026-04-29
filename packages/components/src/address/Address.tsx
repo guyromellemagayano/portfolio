@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type AddressRef = PrimitiveRef<"address">;
+export type AddressProps<TAs extends PrimitiveElement = "address"> =
+  PrimitiveProps<"address", TAs>;
 
-export type AddressRef = React.ComponentRef<"address">;
-
-export interface AddressProps
-  extends React.ComponentPropsWithoutRef<"address">, CommonComponentProps {}
-
-/** Render the address component. */
-export const Address = React.forwardRef<AddressRef, AddressProps>(
-  (props, ref) => {
-    const { as: Component = "address", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Address.displayName = "Address";
+/** Render the native <address> HTML element. */
+export const Address = createHtmlPrimitive("Address", "address");

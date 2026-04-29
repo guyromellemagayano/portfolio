@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type SvgRef = PrimitiveRef<"svg">;
+export type SvgProps<TAs extends PrimitiveElement = "svg"> = PrimitiveProps<
+  "svg",
+  TAs
+>;
 
-export type SvgRef = React.ComponentRef<"svg">;
-
-export interface SvgProps
-  extends React.ComponentPropsWithoutRef<"svg">, CommonComponentProps {}
-
-/** Render the scalable vector graphics component. */
-export const Svg = React.forwardRef<SvgRef, SvgProps>((props, ref) => {
-  const { as: Component = "svg", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Svg.displayName = "Svg";
+/** Render the native <svg> HTML element. */
+export const Svg = createHtmlPrimitive("Svg", "svg");

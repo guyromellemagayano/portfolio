@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type SubRef = PrimitiveRef<"sub">;
+export type SubProps<TAs extends PrimitiveElement = "sub"> = PrimitiveProps<
+  "sub",
+  TAs
+>;
 
-export type SubRef = React.ComponentRef<"sub">;
-
-export interface SubProps
-  extends React.ComponentPropsWithoutRef<"sub">, CommonComponentProps {}
-
-/** Render the subscript component. */
-export const Sub = React.forwardRef<SubRef, SubProps>((props, ref) => {
-  const { as: Component = "sub", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Sub.displayName = "Sub";
+/** Render the native <sub> HTML element. */
+export const Sub = createHtmlPrimitive("Sub", "sub");

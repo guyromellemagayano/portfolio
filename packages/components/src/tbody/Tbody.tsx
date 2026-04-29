@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type TbodyRef = PrimitiveRef<"tbody">;
+export type TbodyProps<TAs extends PrimitiveElement = "tbody"> = PrimitiveProps<
+  "tbody",
+  TAs
+>;
 
-export type TbodyRef = React.ComponentRef<"tbody">;
-
-export interface TbodyProps
-  extends React.ComponentPropsWithoutRef<"tbody">, CommonComponentProps {}
-
-/** Render the table body component. */
-export const Tbody = React.forwardRef<TbodyRef, TbodyProps>((props, ref) => {
-  const { as: Component = "tbody", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Tbody.displayName = "Tbody";
+/** Render the native <tbody> HTML element. */
+export const Tbody = createHtmlPrimitive("Tbody", "tbody");

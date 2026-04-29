@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type URef = PrimitiveRef<"u">;
+export type UProps<TAs extends PrimitiveElement = "u"> = PrimitiveProps<
+  "u",
+  TAs
+>;
 
-export type URef = React.ComponentRef<"u">;
-
-export interface UProps
-  extends React.ComponentPropsWithoutRef<"u">, CommonComponentProps {}
-
-/** Render the unarticulated annotation (underline) component. */
-export const U = React.forwardRef<URef, UProps>((props, ref) => {
-  const { as: Component = "u", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-U.displayName = "U";
+/** Render the native <u> HTML element. */
+export const U = createHtmlPrimitive("U", "u");

@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type MarkRef = PrimitiveRef<"mark">;
+export type MarkProps<TAs extends PrimitiveElement = "mark"> = PrimitiveProps<
+  "mark",
+  TAs
+>;
 
-export type MarkRef = React.ComponentRef<"mark">;
-
-export interface MarkProps
-  extends React.ComponentPropsWithoutRef<"mark">, CommonComponentProps {}
-
-/** Render the mark text component. */
-export const Mark = React.forwardRef<MarkRef, MarkProps>((props, ref) => {
-  const { as: Component = "mark", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Mark.displayName = "Mark";
+/** Render the native <mark> HTML element. */
+export const Mark = createHtmlPrimitive("Mark", "mark");

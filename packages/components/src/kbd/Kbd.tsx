@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type KbdRef = PrimitiveRef<"kbd">;
+export type KbdProps<TAs extends PrimitiveElement = "kbd"> = PrimitiveProps<
+  "kbd",
+  TAs
+>;
 
-export type KbdRef = React.ComponentRef<"kbd">;
-
-export interface KbdProps
-  extends React.ComponentPropsWithoutRef<"kbd">, CommonComponentProps {}
-
-/** Render the keyboard input component. */
-export const Kbd = React.forwardRef<KbdRef, KbdProps>((props, ref) => {
-  const { as: Component = "kbd", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Kbd.displayName = "Kbd";
+/** Render the native <kbd> HTML element. */
+export const Kbd = createHtmlPrimitive("Kbd", "kbd");

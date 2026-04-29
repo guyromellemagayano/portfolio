@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type RubyRef = PrimitiveRef<"ruby">;
+export type RubyProps<TAs extends PrimitiveElement = "ruby"> = PrimitiveProps<
+  "ruby",
+  TAs
+>;
 
-export type RubyRef = React.ComponentRef<"ruby">;
-
-export interface RubyProps
-  extends React.ComponentPropsWithoutRef<"ruby">, CommonComponentProps {}
-
-/** Render the ruby annotation component. */
-export const Ruby = React.forwardRef<RubyRef, RubyProps>((props, ref) => {
-  const { as: Component = "ruby", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Ruby.displayName = "Ruby";
+/** Render the native <ruby> HTML element. */
+export const Ruby = createHtmlPrimitive("Ruby", "ruby");

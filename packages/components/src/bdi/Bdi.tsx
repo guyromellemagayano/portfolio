@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type BdiRef = PrimitiveRef<"bdi">;
+export type BdiProps<TAs extends PrimitiveElement = "bdi"> = PrimitiveProps<
+  "bdi",
+  TAs
+>;
 
-export type BdiRef = React.ComponentRef<"bdi">;
-
-export interface BdiProps
-  extends React.ComponentPropsWithoutRef<"bdi">, CommonComponentProps {}
-
-/** Render the bidirectional isolate component. */
-export const Bdi = React.forwardRef<BdiRef, BdiProps>((props, ref) => {
-  const { as: Component = "bdi", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Bdi.displayName = "Bdi";
+/** Render the native <bdi> HTML element. */
+export const Bdi = createHtmlPrimitive("Bdi", "bdi");

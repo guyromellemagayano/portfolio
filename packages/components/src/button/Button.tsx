@@ -1,26 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive, createNativeDefaultProps } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type ButtonRef = PrimitiveRef<"button">;
+export type ButtonProps<TAs extends PrimitiveElement = "button"> =
+  PrimitiveProps<"button", TAs>;
 
-export type ButtonRef = React.ComponentRef<"button">;
-
-export interface ButtonProps
-  extends React.ComponentPropsWithoutRef<"button">, CommonComponentProps {}
-
-/** Render the button component. */
-export const Button = React.forwardRef<ButtonRef, ButtonProps>((props, ref) => {
-  const {
-    as: Component = "button",
-    type = "button",
-    children,
-    ...rest
-  } = props;
-
-  return (
-    <Component ref={ref} type={type} {...rest}>
-      {children}
-    </Component>
-  );
+/** Render the native <button> HTML element. */
+export const Button = createHtmlPrimitive("Button", "button", {
+  defaultProps: createNativeDefaultProps("button", { type: "button" }),
 });
-
-Button.displayName = "Button";

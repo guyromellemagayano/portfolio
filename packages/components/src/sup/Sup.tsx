@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type SupRef = PrimitiveRef<"sup">;
+export type SupProps<TAs extends PrimitiveElement = "sup"> = PrimitiveProps<
+  "sup",
+  TAs
+>;
 
-export type SupRef = React.ComponentRef<"sup">;
-
-export interface SupProps
-  extends React.ComponentPropsWithoutRef<"sup">, CommonComponentProps {}
-
-/** Render the superscript component. */
-export const Sup = React.forwardRef<SupRef, SupProps>((props, ref) => {
-  const { as: Component = "sup", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Sup.displayName = "Sup";
+/** Render the native <sup> HTML element. */
+export const Sup = createHtmlPrimitive("Sup", "sup");

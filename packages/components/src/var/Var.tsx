@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type VarRef = PrimitiveRef<"var">;
+export type VarProps<TAs extends PrimitiveElement = "var"> = PrimitiveProps<
+  "var",
+  TAs
+>;
 
-export type VarRef = React.ComponentRef<"var">;
-
-export interface VarProps
-  extends React.ComponentPropsWithoutRef<"var">, CommonComponentProps {}
-
-/** Render the variable component. */
-export const Var = React.forwardRef<VarRef, VarProps>((props, ref) => {
-  const { as: Component = "var", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Var.displayName = "Var";
+/** Render the native <var> HTML element. */
+export const Var = createHtmlPrimitive("Var", "var");

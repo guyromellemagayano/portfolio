@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type DetailsRef = PrimitiveRef<"details">;
+export type DetailsProps<TAs extends PrimitiveElement = "details"> =
+  PrimitiveProps<"details", TAs>;
 
-export type DetailsRef = React.ComponentRef<"details">;
-
-export interface DetailsProps
-  extends React.ComponentPropsWithoutRef<"details">, CommonComponentProps {}
-
-/** Render the details disclosure component. */
-export const Details = React.forwardRef<DetailsRef, DetailsProps>(
-  (props, ref) => {
-    const { as: Component = "details", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Details.displayName = "Details";
+/** Render the native <details> HTML element. */
+export const Details = createHtmlPrimitive("Details", "details");

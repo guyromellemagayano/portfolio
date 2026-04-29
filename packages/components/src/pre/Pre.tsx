@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type PreRef = PrimitiveRef<"pre">;
+export type PreProps<TAs extends PrimitiveElement = "pre"> = PrimitiveProps<
+  "pre",
+  TAs
+>;
 
-export type PreRef = React.ComponentRef<"pre">;
-
-export interface PreProps
-  extends React.ComponentPropsWithoutRef<"pre">, CommonComponentProps {}
-
-/** Render the preformatted text component. */
-export const Pre = React.forwardRef<PreRef, PreProps>((props, ref) => {
-  const { as: Component = "pre", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Pre.displayName = "Pre";
+/** Render the native <pre> HTML element. */
+export const Pre = createHtmlPrimitive("Pre", "pre");

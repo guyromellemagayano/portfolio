@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type AsideRef = PrimitiveRef<"aside">;
+export type AsideProps<TAs extends PrimitiveElement = "aside"> = PrimitiveProps<
+  "aside",
+  TAs
+>;
 
-export type AsideRef = React.ComponentRef<"aside">;
-
-export interface AsideProps
-  extends React.ComponentPropsWithoutRef<"aside">, CommonComponentProps {}
-
-/** Render the aside component. */
-export const Aside = React.forwardRef<AsideRef, AsideProps>((props, ref) => {
-  const { as: Component = "aside", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Aside.displayName = "Aside";
+/** Render the native <aside> HTML element. */
+export const Aside = createHtmlPrimitive("Aside", "aside");

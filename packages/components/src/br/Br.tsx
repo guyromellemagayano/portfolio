@@ -1,17 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type BrRef = PrimitiveRef<"br">;
+export type BrProps<TAs extends PrimitiveElement = "br"> = PrimitiveProps<
+  "br",
+  TAs
+>;
 
-export type BrRef = React.ComponentRef<"br">;
-
-export interface BrProps
-  extends React.ComponentPropsWithoutRef<"br">, CommonComponentProps {}
-
-/** Render the line break component. */
-export const Br = React.forwardRef<BrRef, BrProps>((props, ref) => {
-  const { as: Component = "br", ...rest } = props;
-
-  return <Component ref={ref} {...rest} />;
-});
-
-Br.displayName = "Br";
+/** Render the native <br> HTML element. */
+export const Br = createHtmlPrimitive("Br", "br");

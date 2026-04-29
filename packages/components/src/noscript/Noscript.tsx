@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type NoscriptRef = PrimitiveRef<"noscript">;
+export type NoscriptProps<TAs extends PrimitiveElement = "noscript"> =
+  PrimitiveProps<"noscript", TAs>;
 
-export type NoscriptRef = React.ComponentRef<"noscript">;
-
-export interface NoscriptProps
-  extends React.ComponentPropsWithoutRef<"noscript">, CommonComponentProps {}
-
-/** Render the noscript component. */
-export const Noscript = React.forwardRef<NoscriptRef, NoscriptProps>(
-  (props, ref) => {
-    const { as: Component = "noscript", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Noscript.displayName = "Noscript";
+/** Render the native <noscript> HTML element. */
+export const Noscript = createHtmlPrimitive("Noscript", "noscript");

@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type SRef = PrimitiveRef<"s">;
+export type SProps<TAs extends PrimitiveElement = "s"> = PrimitiveProps<
+  "s",
+  TAs
+>;
 
-export type SRef = React.ComponentRef<"s">;
-
-export interface SProps
-  extends React.ComponentPropsWithoutRef<"s">, CommonComponentProps {}
-
-/** Render the strikethrough component. */
-export const S = React.forwardRef<SRef, SProps>((props, ref) => {
-  const { as: Component = "s", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-S.displayName = "S";
+/** Render the native <s> HTML element. */
+export const S = createHtmlPrimitive("S", "s");

@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type MeterRef = PrimitiveRef<"meter">;
+export type MeterProps<TAs extends PrimitiveElement = "meter"> = PrimitiveProps<
+  "meter",
+  TAs
+>;
 
-export type MeterRef = React.ComponentRef<"meter">;
-
-export interface MeterProps
-  extends React.ComponentPropsWithoutRef<"meter">, CommonComponentProps {}
-
-/** Render the HTML meter component. */
-export const Meter = React.forwardRef<MeterRef, MeterProps>((props, ref) => {
-  const { as: Component = "meter", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Meter.displayName = "Meter";
+/** Render the native <meter> HTML element. */
+export const Meter = createHtmlPrimitive("Meter", "meter");

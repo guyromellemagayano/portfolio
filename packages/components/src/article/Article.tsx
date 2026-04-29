@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type ArticleRef = PrimitiveRef<"article">;
+export type ArticleProps<TAs extends PrimitiveElement = "article"> =
+  PrimitiveProps<"article", TAs>;
 
-export type ArticleRef = React.ComponentRef<"article">;
-
-export interface ArticleProps
-  extends React.ComponentPropsWithoutRef<"article">, CommonComponentProps {}
-
-/** Render the article component. */
-export const Article = React.forwardRef<ArticleRef, ArticleProps>(
-  (props, ref) => {
-    const { as: Component = "article", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Article.displayName = "Article";
+/** Render the native <article> HTML element. */
+export const Article = createHtmlPrimitive("Article", "article");

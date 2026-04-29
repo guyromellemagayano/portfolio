@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type ProgressRef = PrimitiveRef<"progress">;
+export type ProgressProps<TAs extends PrimitiveElement = "progress"> =
+  PrimitiveProps<"progress", TAs>;
 
-export type ProgressRef = React.ComponentRef<"progress">;
-
-export interface ProgressProps
-  extends React.ComponentPropsWithoutRef<"progress">, CommonComponentProps {}
-
-/** Render the progress indicator component. */
-export const Progress = React.forwardRef<ProgressRef, ProgressProps>(
-  (props, ref) => {
-    const { as: Component = "progress", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Progress.displayName = "Progress";
+/** Render the native <progress> HTML element. */
+export const Progress = createHtmlPrimitive("Progress", "progress");

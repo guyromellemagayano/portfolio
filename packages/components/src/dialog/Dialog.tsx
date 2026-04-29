@@ -1,21 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type DialogRef = PrimitiveRef<"dialog">;
+export type DialogProps<TAs extends PrimitiveElement = "dialog"> =
+  PrimitiveProps<"dialog", TAs>;
 
-export type DialogRef = React.ComponentRef<"dialog">;
-
-export interface DialogProps
-  extends React.ComponentPropsWithoutRef<"dialog">, CommonComponentProps {}
-
-/** Render the dialog component. */
-export const Dialog = React.forwardRef<DialogRef, DialogProps>((props, ref) => {
-  const { as: Component = "dialog", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Dialog.displayName = "Dialog";
+/** Render the native <dialog> HTML element. */
+export const Dialog = createHtmlPrimitive("Dialog", "dialog");

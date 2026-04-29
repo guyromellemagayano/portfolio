@@ -1,27 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
-
-export type HeadingRef = React.ComponentRef<
-  "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+export type HeadingRef = PrimitiveRef<"h1">;
+export type HeadingProps<TAs extends PrimitiveElement = "h1"> = PrimitiveProps<
+  "h1",
+  TAs
 >;
 
-export interface HeadingProps
-  extends
-    React.ComponentPropsWithoutRef<"h1" | "h2" | "h3" | "h4" | "h5" | "h6">,
-    CommonComponentProps {}
-
 /** Render the HTML section heading component. */
-export const Heading = React.forwardRef<HeadingRef, HeadingProps>(
-  (props, ref) => {
-    const { as: Component = "h1" as const, children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Heading.displayName = "Heading";
+export const Heading = createHtmlPrimitive("Heading", "h1");

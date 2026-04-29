@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type LiRef = PrimitiveRef<"li">;
+export type LiProps<TAs extends PrimitiveElement = "li"> = PrimitiveProps<
+  "li",
+  TAs
+>;
 
-export type LiRef = React.ComponentRef<"li">;
-
-export interface LiProps
-  extends React.ComponentPropsWithoutRef<"li">, CommonComponentProps {}
-
-/** Render the list item component. */
-export const Li = React.forwardRef<LiRef, LiProps>((props, ref) => {
-  const { as: Component = "li", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Li.displayName = "Li";
+/** Render the native <li> HTML element. */
+export const Li = createHtmlPrimitive("Li", "li");

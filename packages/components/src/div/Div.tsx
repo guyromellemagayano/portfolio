@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type DivRef = PrimitiveRef<"div">;
+export type DivProps<TAs extends PrimitiveElement = "div"> = PrimitiveProps<
+  "div",
+  TAs
+>;
 
-export type DivRef = React.ComponentRef<"div">;
-
-export interface DivProps
-  extends React.ComponentPropsWithoutRef<"div">, CommonComponentProps {}
-
-/** Render the content division component. */
-export const Div = React.forwardRef<DivRef, DivProps>((props, ref) => {
-  const { as: Component = "div", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Div.displayName = "Div";
+/** Render the native <div> HTML element. */
+export const Div = createHtmlPrimitive("Div", "div");

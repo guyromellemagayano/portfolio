@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type WbrRef = PrimitiveRef<"wbr">;
+export type WbrProps<TAs extends PrimitiveElement = "wbr"> = PrimitiveProps<
+  "wbr",
+  TAs
+>;
 
-export type WbrRef = React.ComponentRef<"wbr">;
-
-export interface WbrProps
-  extends React.ComponentPropsWithoutRef<"wbr">, CommonComponentProps {}
-
-/** Render the word break opportunity component. */
-export const Wbr = React.forwardRef<WbrRef, WbrProps>((props, ref) => {
-  const { as: Component = "wbr", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Wbr.displayName = "Wbr";
+/** Render the native <wbr> HTML element. */
+export const Wbr = createHtmlPrimitive("Wbr", "wbr");

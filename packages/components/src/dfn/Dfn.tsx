@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type DfnRef = PrimitiveRef<"dfn">;
+export type DfnProps<TAs extends PrimitiveElement = "dfn"> = PrimitiveProps<
+  "dfn",
+  TAs
+>;
 
-export type DfnRef = React.ComponentRef<"dfn">;
-
-export interface DfnProps
-  extends React.ComponentPropsWithoutRef<"dfn">, CommonComponentProps {}
-
-/** Render the definition element component. */
-export const Dfn = React.forwardRef<DfnRef, DfnProps>((props, ref) => {
-  const { as: Component = "dfn", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Dfn.displayName = "Dfn";
+/** Render the native <dfn> HTML element. */
+export const Dfn = createHtmlPrimitive("Dfn", "dfn");

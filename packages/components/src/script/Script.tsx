@@ -1,21 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type ScriptRef = PrimitiveRef<"script">;
+export type ScriptProps<TAs extends PrimitiveElement = "script"> =
+  PrimitiveProps<"script", TAs>;
 
-export type ScriptRef = React.ComponentRef<"script">;
-
-export interface ScriptProps
-  extends React.ComponentPropsWithoutRef<"script">, CommonComponentProps {}
-
-/** Render the script component. */
-export const Script = React.forwardRef<ScriptRef, ScriptProps>((props, ref) => {
-  const { as: Component = "script", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Script.displayName = "Script";
+/** Render the native <script> HTML element. */
+export const Script = createHtmlPrimitive("Script", "script");

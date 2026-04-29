@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type FormRef = PrimitiveRef<"form">;
+export type FormProps<TAs extends PrimitiveElement = "form"> = PrimitiveProps<
+  "form",
+  TAs
+>;
 
-export type FormRef = React.ComponentRef<"form">;
-
-export interface FormProps
-  extends React.ComponentPropsWithoutRef<"form">, CommonComponentProps {}
-
-/** Render the form component. */
-export const Form = React.forwardRef<FormRef, FormProps>((props, ref) => {
-  const { as: Component = "form", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Form.displayName = "Form";
+/** Render the native <form> HTML element. */
+export const Form = createHtmlPrimitive("Form", "form");

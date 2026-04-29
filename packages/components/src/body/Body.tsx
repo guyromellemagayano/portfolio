@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type BodyRef = PrimitiveRef<"body">;
+export type BodyProps<TAs extends PrimitiveElement = "body"> = PrimitiveProps<
+  "body",
+  TAs
+>;
 
-export type BodyRef = React.ComponentRef<"body">;
-
-export interface BodyProps
-  extends React.ComponentPropsWithoutRef<"body">, CommonComponentProps {}
-
-/** Render the default body component. */
-export const Body = React.forwardRef<BodyRef, BodyProps>((props, ref) => {
-  const { as: Component = "body", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Body.displayName = "Body";
+/** Render the native <body> HTML element. */
+export const Body = createHtmlPrimitive("Body", "body");

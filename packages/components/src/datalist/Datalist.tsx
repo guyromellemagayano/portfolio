@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type DatalistRef = PrimitiveRef<"datalist">;
+export type DatalistProps<TAs extends PrimitiveElement = "datalist"> =
+  PrimitiveProps<"datalist", TAs>;
 
-export type DatalistRef = React.ComponentRef<"datalist">;
-
-export interface DatalistProps
-  extends React.ComponentPropsWithoutRef<"datalist">, CommonComponentProps {}
-
-/** Render the datalist component. */
-export const Datalist = React.forwardRef<DatalistRef, DatalistProps>(
-  (props, ref) => {
-    const { as: Component = "datalist", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Datalist.displayName = "Datalist";
+/** Render the native <datalist> HTML element. */
+export const Datalist = createHtmlPrimitive("Datalist", "datalist");

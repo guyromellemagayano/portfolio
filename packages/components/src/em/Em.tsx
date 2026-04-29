@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type EmRef = PrimitiveRef<"em">;
+export type EmProps<TAs extends PrimitiveElement = "em"> = PrimitiveProps<
+  "em",
+  TAs
+>;
 
-export type EmRef = React.ComponentRef<"em">;
-
-export interface EmProps
-  extends React.ComponentPropsWithoutRef<"em">, CommonComponentProps {}
-
-/** Render the emphasis component. */
-export const Em = React.forwardRef<EmRef, EmProps>((props, ref) => {
-  const { as: Component = "em", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Em.displayName = "Em";
+/** Render the native <em> HTML element. */
+export const Em = createHtmlPrimitive("Em", "em");

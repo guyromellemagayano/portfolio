@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type TimeRef = PrimitiveRef<"time">;
+export type TimeProps<TAs extends PrimitiveElement = "time"> = PrimitiveProps<
+  "time",
+  TAs
+>;
 
-export type TimeRef = React.ComponentRef<"time">;
-
-export interface TimeProps
-  extends React.ComponentPropsWithoutRef<"time">, CommonComponentProps {}
-
-/** Render the (date) time component. */
-export const Time = React.forwardRef<TimeRef, TimeProps>((props, ref) => {
-  const { as: Component = "time", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Time.displayName = "Time";
+/** Render the native <time> HTML element. */
+export const Time = createHtmlPrimitive("Time", "time");

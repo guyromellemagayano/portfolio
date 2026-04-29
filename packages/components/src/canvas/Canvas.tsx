@@ -1,21 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type CanvasRef = PrimitiveRef<"canvas">;
+export type CanvasProps<TAs extends PrimitiveElement = "canvas"> =
+  PrimitiveProps<"canvas", TAs>;
 
-export type CanvasRef = React.ComponentRef<"canvas">;
-
-export interface CanvasProps
-  extends React.ComponentPropsWithoutRef<"canvas">, CommonComponentProps {}
-
-/** Render the canvas component. */
-export const Canvas = React.forwardRef<CanvasRef, CanvasProps>((props, ref) => {
-  const { as: Component = "canvas", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Canvas.displayName = "Canvas";
+/** Render the native <canvas> HTML element. */
+export const Canvas = createHtmlPrimitive("Canvas", "canvas");

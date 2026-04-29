@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type CaptionRef = PrimitiveRef<"caption">;
+export type CaptionProps<TAs extends PrimitiveElement = "caption"> =
+  PrimitiveProps<"caption", TAs>;
 
-export type CaptionRef = React.ComponentRef<"caption">;
-
-export interface CaptionProps
-  extends React.ComponentPropsWithoutRef<"caption">, CommonComponentProps {}
-
-/** Render the caption component. */
-export const Caption = React.forwardRef<CaptionRef, CaptionProps>(
-  (props, ref) => {
-    const { as: Component = "caption", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Caption.displayName = "Caption";
+/** Render the native <caption> HTML element. */
+export const Caption = createHtmlPrimitive("Caption", "caption");

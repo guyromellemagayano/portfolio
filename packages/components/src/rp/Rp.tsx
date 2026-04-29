@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type RpRef = PrimitiveRef<"rp">;
+export type RpProps<TAs extends PrimitiveElement = "rp"> = PrimitiveProps<
+  "rp",
+  TAs
+>;
 
-export type RpRef = React.ComponentRef<"rp">;
-
-export interface RpProps
-  extends React.ComponentPropsWithoutRef<"rp">, CommonComponentProps {}
-
-/** Render the ruby fallback parenthesis component. */
-export const Rp = React.forwardRef<RpRef, RpProps>((props, ref) => {
-  const { as: Component = "rp", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Rp.displayName = "Rp";
+/** Render the native <rp> HTML element. */
+export const Rp = createHtmlPrimitive("Rp", "rp");

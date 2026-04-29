@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type PRef = PrimitiveRef<"p">;
+export type PProps<TAs extends PrimitiveElement = "p"> = PrimitiveProps<
+  "p",
+  TAs
+>;
 
-export type PRef = React.ComponentRef<"p">;
-
-export interface PProps
-  extends React.ComponentPropsWithoutRef<"p">, CommonComponentProps {}
-
-/** Render the paragraph component. */
-export const P = React.forwardRef<PRef, PProps>((props, ref) => {
-  const { as: Component = "p", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-P.displayName = "P";
+/** Render the native <p> HTML element. */
+export const P = createHtmlPrimitive("P", "p");

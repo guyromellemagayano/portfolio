@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type BaseRef = PrimitiveRef<"base">;
+export type BaseProps<TAs extends PrimitiveElement = "base"> = PrimitiveProps<
+  "base",
+  TAs
+>;
 
-export type BaseRef = React.ComponentRef<"base">;
-
-export interface BaseProps
-  extends React.ComponentPropsWithoutRef<"base">, CommonComponentProps {}
-
-/** Render the base component. */
-export const Base = React.forwardRef<BaseRef, BaseProps>((props, ref) => {
-  const { as: Component = "base", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Base.displayName = "Base";
+/** Render the native <base> HTML element. */
+export const Base = createHtmlPrimitive("Base", "base");

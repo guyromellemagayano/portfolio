@@ -1,17 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type TrackRef = PrimitiveRef<"track">;
+export type TrackProps<TAs extends PrimitiveElement = "track"> = PrimitiveProps<
+  "track",
+  TAs
+>;
 
-export type TrackRef = React.ComponentRef<"track">;
-
-export interface TrackProps
-  extends React.ComponentPropsWithoutRef<"track">, CommonComponentProps {}
-
-/** Render the embed text track component. */
-export const Track = React.forwardRef<TrackRef, TrackProps>((props, ref) => {
-  const { as: Component = "track", ...rest } = props;
-
-  return <Component ref={ref} {...rest} />;
-});
-
-Track.displayName = "Track";
+/** Render the native <track> HTML element. */
+export const Track = createHtmlPrimitive("Track", "track");

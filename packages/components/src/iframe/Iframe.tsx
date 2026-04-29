@@ -1,17 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type IframeRef = PrimitiveRef<"iframe">;
+export type IframeProps<TAs extends PrimitiveElement = "iframe"> =
+  PrimitiveProps<"iframe", TAs>;
 
-export type IframeRef = React.ComponentRef<"iframe">;
-
-export interface IframeProps
-  extends React.ComponentPropsWithoutRef<"iframe">, CommonComponentProps {}
-
-/** Render the inline frame component. */
-export const Iframe = React.forwardRef<IframeRef, IframeProps>((props, ref) => {
-  const { as: Component = "iframe", ...rest } = props;
-
-  return <Component ref={ref} {...rest} />;
-});
-
-Iframe.displayName = "Iframe";
+/** Render the native <iframe> HTML element. */
+export const Iframe = createHtmlPrimitive("Iframe", "iframe");

@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type OptgroupRef = PrimitiveRef<"optgroup">;
+export type OptgroupProps<TAs extends PrimitiveElement = "optgroup"> =
+  PrimitiveProps<"optgroup", TAs>;
 
-export type OptgroupRef = React.ComponentRef<"optgroup">;
-
-export interface OptgroupProps
-  extends React.ComponentPropsWithoutRef<"optgroup">, CommonComponentProps {}
-
-/** Render the option group component. */
-export const Optgroup = React.forwardRef<OptgroupRef, OptgroupProps>(
-  (props, ref) => {
-    const { as: Component = "optgroup", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Optgroup.displayName = "Optgroup";
+/** Render the native <optgroup> HTML element. */
+export const Optgroup = createHtmlPrimitive("Optgroup", "optgroup");

@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type RtRef = PrimitiveRef<"rt">;
+export type RtProps<TAs extends PrimitiveElement = "rt"> = PrimitiveProps<
+  "rt",
+  TAs
+>;
 
-export type RtRef = React.ComponentRef<"rt">;
-
-export interface RtProps
-  extends React.ComponentPropsWithoutRef<"rt">, CommonComponentProps {}
-
-/** Render the ruby text component. */
-export const Rt = React.forwardRef<RtRef, RtProps>((props, ref) => {
-  const { as: Component = "rt", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Rt.displayName = "Rt";
+/** Render the native <rt> HTML element. */
+export const Rt = createHtmlPrimitive("Rt", "rt");

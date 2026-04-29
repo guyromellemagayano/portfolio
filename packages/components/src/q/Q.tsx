@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type QRef = PrimitiveRef<"q">;
+export type QProps<TAs extends PrimitiveElement = "q"> = PrimitiveProps<
+  "q",
+  TAs
+>;
 
-export type QRef = React.ComponentRef<"q">;
-
-export interface QProps
-  extends React.ComponentPropsWithoutRef<"q">, CommonComponentProps {}
-
-/** Render the inline quotation component. */
-export const Q = React.forwardRef<QRef, QProps>((props, ref) => {
-  const { as: Component = "q", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Q.displayName = "Q";
+/** Render the native <q> HTML element. */
+export const Q = createHtmlPrimitive("Q", "q");

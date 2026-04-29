@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type HtmlRef = PrimitiveRef<"html">;
+export type HtmlProps<TAs extends PrimitiveElement = "html"> = PrimitiveProps<
+  "html",
+  TAs
+>;
 
-export type HtmlRef = React.ComponentRef<"html">;
-
-export interface HtmlProps
-  extends React.ComponentPropsWithoutRef<"html">, CommonComponentProps {}
-
-/** Render the HTML document/root component. */
-export const Html = React.forwardRef<HtmlRef, HtmlProps>((props, ref) => {
-  const { as: Component = "html", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Html.displayName = "Html";
+/** Render the native <html> HTML element. */
+export const Html = createHtmlPrimitive("Html", "html");

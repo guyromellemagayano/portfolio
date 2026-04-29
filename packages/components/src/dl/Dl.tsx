@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type DlRef = PrimitiveRef<"dl">;
+export type DlProps<TAs extends PrimitiveElement = "dl"> = PrimitiveProps<
+  "dl",
+  TAs
+>;
 
-export type DlRef = React.ComponentRef<"dl">;
-
-export interface DlProps
-  extends React.ComponentPropsWithoutRef<"dl">, CommonComponentProps {}
-
-/** Render the description list component. */
-export const Dl = React.forwardRef<DlRef, DlProps>((props, ref) => {
-  const { as: Component = "dl", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Dl.displayName = "Dl";
+/** Render the native <dl> HTML element. */
+export const Dl = createHtmlPrimitive("Dl", "dl");

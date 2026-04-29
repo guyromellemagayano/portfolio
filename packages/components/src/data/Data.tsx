@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type DataRef = PrimitiveRef<"data">;
+export type DataProps<TAs extends PrimitiveElement = "data"> = PrimitiveProps<
+  "data",
+  TAs
+>;
 
-export type DataRef = React.ComponentRef<"data">;
-
-export interface DataProps
-  extends React.ComponentPropsWithoutRef<"data">, CommonComponentProps {}
-
-/** Render the data component. */
-export const Data = React.forwardRef<DataRef, DataProps>((props, ref) => {
-  const { as: Component = "data", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Data.displayName = "Data";
+/** Render the native <data> HTML element. */
+export const Data = createHtmlPrimitive("Data", "data");

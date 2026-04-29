@@ -1,21 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type ObjectRef = PrimitiveRef<"object">;
+export type ObjectProps<TAs extends PrimitiveElement = "object"> =
+  PrimitiveProps<"object", TAs>;
 
-export type ObjectRef = React.ComponentRef<"object">;
-
-export interface ObjectProps
-  extends React.ComponentPropsWithoutRef<"object">, CommonComponentProps {}
-
-/** Render the object component. */
-export const Object = React.forwardRef<ObjectRef, ObjectProps>((props, ref) => {
-  const { as: Component = "object", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Object.displayName = "Object";
+/** Render the native <object> HTML element. */
+export const Object = createHtmlPrimitive("Object", "object");

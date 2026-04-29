@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type NavRef = PrimitiveRef<"nav">;
+export type NavProps<TAs extends PrimitiveElement = "nav"> = PrimitiveProps<
+  "nav",
+  TAs
+>;
 
-export type NavRef = React.ComponentRef<"nav">;
-
-export interface NavProps
-  extends React.ComponentPropsWithoutRef<"nav">, CommonComponentProps {}
-
-/** Render the navigation section component. */
-export const Nav = React.forwardRef<NavRef, NavProps>((props, ref) => {
-  const { as: Component = "nav", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Nav.displayName = "Nav";
+/** Render the native <nav> HTML element. */
+export const Nav = createHtmlPrimitive("Nav", "nav");

@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type SampRef = PrimitiveRef<"samp">;
+export type SampProps<TAs extends PrimitiveElement = "samp"> = PrimitiveProps<
+  "samp",
+  TAs
+>;
 
-export type SampRef = React.ComponentRef<"samp">;
-
-export interface SampProps
-  extends React.ComponentPropsWithoutRef<"samp">, CommonComponentProps {}
-
-/** Render the sample output component. */
-export const Samp = React.forwardRef<SampRef, SampProps>((props, ref) => {
-  const { as: Component = "samp", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Samp.displayName = "Samp";
+/** Render the native <samp> HTML element. */
+export const Samp = createHtmlPrimitive("Samp", "samp");

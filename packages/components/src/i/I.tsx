@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type IRef = PrimitiveRef<"i">;
+export type IProps<TAs extends PrimitiveElement = "i"> = PrimitiveProps<
+  "i",
+  TAs
+>;
 
-export type IRef = React.ComponentRef<"i">;
-
-export interface IProps
-  extends React.ComponentPropsWithoutRef<"i">, CommonComponentProps {}
-
-/** Render the idiomatic text component. */
-export const I = React.forwardRef<IRef, IProps>((props, ref) => {
-  const { as: Component = "i", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-I.displayName = "I";
+/** Render the native <i> HTML element. */
+export const I = createHtmlPrimitive("I", "i");

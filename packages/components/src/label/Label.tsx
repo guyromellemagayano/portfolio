@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type LabelRef = PrimitiveRef<"label">;
+export type LabelProps<TAs extends PrimitiveElement = "label"> = PrimitiveProps<
+  "label",
+  TAs
+>;
 
-export type LabelRef = React.ComponentRef<"label">;
-
-export interface LabelProps
-  extends React.ComponentPropsWithoutRef<"label">, CommonComponentProps {}
-
-/** Render the label component. */
-export const Label = React.forwardRef<LabelRef, LabelProps>((props, ref) => {
-  const { as: Component = "label", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Label.displayName = "Label";
+/** Render the native <label> HTML element. */
+export const Label = createHtmlPrimitive("Label", "label");

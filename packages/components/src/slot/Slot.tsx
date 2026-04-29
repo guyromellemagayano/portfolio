@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type SlotRef = PrimitiveRef<"slot">;
+export type SlotProps<TAs extends PrimitiveElement = "slot"> = PrimitiveProps<
+  "slot",
+  TAs
+>;
 
-export type SlotRef = React.ComponentRef<"slot">;
-
-export interface SlotProps
-  extends React.ComponentPropsWithoutRef<"slot">, CommonComponentProps {}
-
-/** Render the web component slot component. */
-export const Slot = React.forwardRef<SlotRef, SlotProps>((props, ref) => {
-  const { as: Component = "slot", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Slot.displayName = "Slot";
+/** Render the native <slot> HTML element. */
+export const Slot = createHtmlPrimitive("Slot", "slot");

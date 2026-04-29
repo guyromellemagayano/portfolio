@@ -1,17 +1,21 @@
-import React from "react";
+import { createHtmlPrimitive, createNativeDefaultProps } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type ImgRef = PrimitiveRef<"img">;
+export type ImgProps<TAs extends PrimitiveElement = "img"> = PrimitiveProps<
+  "img",
+  TAs
+>;
 
-export type ImgRef = React.ComponentRef<"img">;
-
-export interface ImgProps
-  extends React.ComponentPropsWithoutRef<"img">, CommonComponentProps {}
-
-/** Render the image embed component. */
-export const Img = React.forwardRef<ImgRef, ImgProps>((props, ref) => {
-  const { as: Component = "img", src = "#", alt = "", ...rest } = props;
-
-  return <Component ref={ref} src={src} alt={alt} {...rest} />;
+/** Render the native <img> HTML element. */
+export const Img = createHtmlPrimitive("Img", "img", {
+  defaultProps: createNativeDefaultProps("img", {
+    alt: "",
+    decoding: "async",
+    src: "#",
+  }),
 });
-
-Img.displayName = "Img";

@@ -1,21 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type SearchRef = PrimitiveRef<"search">;
+export type SearchProps<TAs extends PrimitiveElement = "search"> =
+  PrimitiveProps<"search", TAs>;
 
-export type SearchRef = React.ComponentRef<"search">;
-
-export interface SearchProps
-  extends React.ComponentPropsWithoutRef<"search">, CommonComponentProps {}
-
-/** Render the generic search component. */
-export const Search = React.forwardRef<SearchRef, SearchProps>((props, ref) => {
-  const { as: Component = "search", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Search.displayName = "Search";
+/** Render the native <search> HTML element. */
+export const Search = createHtmlPrimitive("Search", "search");

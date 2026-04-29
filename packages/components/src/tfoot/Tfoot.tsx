@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type TfootRef = PrimitiveRef<"tfoot">;
+export type TfootProps<TAs extends PrimitiveElement = "tfoot"> = PrimitiveProps<
+  "tfoot",
+  TAs
+>;
 
-export type TfootRef = React.ComponentRef<"tfoot">;
-
-export interface TfootProps
-  extends React.ComponentPropsWithoutRef<"tfoot">, CommonComponentProps {}
-
-/** Render the table foot component. */
-export const Tfoot = React.forwardRef<TfootRef, TfootProps>((props, ref) => {
-  const { as: Component = "tfoot", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Tfoot.displayName = "Tfoot";
+/** Render the native <tfoot> HTML element. */
+export const Tfoot = createHtmlPrimitive("Tfoot", "tfoot");

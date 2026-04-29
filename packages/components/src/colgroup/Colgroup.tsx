@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type ColgroupRef = PrimitiveRef<"colgroup">;
+export type ColgroupProps<TAs extends PrimitiveElement = "colgroup"> =
+  PrimitiveProps<"colgroup", TAs>;
 
-export type ColgroupRef = React.ComponentRef<"colgroup">;
-
-export interface ColgroupProps
-  extends React.ComponentPropsWithoutRef<"colgroup">, CommonComponentProps {}
-
-/** Render the table column group component. */
-export const Colgroup = React.forwardRef<ColgroupRef, ColgroupProps>(
-  (props, ref) => {
-    const { as: Component = "colgroup", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Colgroup.displayName = "Colgroup";
+/** Render the native <colgroup> HTML element. */
+export const Colgroup = createHtmlPrimitive("Colgroup", "colgroup");

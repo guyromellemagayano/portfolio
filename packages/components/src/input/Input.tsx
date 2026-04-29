@@ -1,17 +1,17 @@
-import React from "react";
+import { createHtmlPrimitive, createNativeDefaultProps } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type InputRef = PrimitiveRef<"input">;
+export type InputProps<TAs extends PrimitiveElement = "input"> = PrimitiveProps<
+  "input",
+  TAs
+>;
 
-export type InputRef = React.ComponentRef<"input">;
-
-export interface InputProps
-  extends React.ComponentPropsWithoutRef<"input">, CommonComponentProps {}
-
-/** Render the HTML input component. */
-export const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
-  const { as: Component = "input", type = "text", ...rest } = props;
-
-  return <Component ref={ref} type={type} {...rest} />;
+/** Render the native <input> HTML element. */
+export const Input = createHtmlPrimitive("Input", "input", {
+  defaultProps: createNativeDefaultProps("input", { type: "text" }),
 });
-
-Input.displayName = "Input";

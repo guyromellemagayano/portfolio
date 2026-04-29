@@ -1,23 +1,13 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type TemplateRef = PrimitiveRef<"template">;
+export type TemplateProps<TAs extends PrimitiveElement = "template"> =
+  PrimitiveProps<"template", TAs>;
 
-export type TemplateRef = React.ComponentRef<"template">;
-
-export interface TemplateProps
-  extends React.ComponentPropsWithoutRef<"template">, CommonComponentProps {}
-
-/** Render the content template component. */
-export const Template = React.forwardRef<TemplateRef, TemplateProps>(
-  (props, ref) => {
-    const { as: Component = "template", children, ...rest } = props;
-
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
-
-Template.displayName = "Template";
+/** Render the native <template> HTML element. */
+export const Template = createHtmlPrimitive("Template", "template");

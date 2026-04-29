@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type DtRef = PrimitiveRef<"dt">;
+export type DtProps<TAs extends PrimitiveElement = "dt"> = PrimitiveProps<
+  "dt",
+  TAs
+>;
 
-export type DtRef = React.ComponentRef<"dt">;
-
-export interface DtProps
-  extends React.ComponentPropsWithoutRef<"dt">, CommonComponentProps {}
-
-/** Render the description term component. */
-export const Dt = React.forwardRef<DtRef, DtProps>((props, ref) => {
-  const { as: Component = "dt", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Dt.displayName = "Dt";
+/** Render the native <dt> HTML element. */
+export const Dt = createHtmlPrimitive("Dt", "dt");

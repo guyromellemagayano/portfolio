@@ -1,21 +1,15 @@
-import React from "react";
+import { createHtmlPrimitive } from "../primitive";
+import {
+  type PrimitiveElement,
+  type PrimitiveProps,
+  type PrimitiveRef,
+} from "../types";
 
-import { type CommonComponentProps } from "../types";
+export type AudioRef = PrimitiveRef<"audio">;
+export type AudioProps<TAs extends PrimitiveElement = "audio"> = PrimitiveProps<
+  "audio",
+  TAs
+>;
 
-export type AudioRef = React.ComponentRef<"audio">;
-
-export interface AudioProps
-  extends React.ComponentPropsWithoutRef<"audio">, CommonComponentProps {}
-
-/** Render the audio component. */
-export const Audio = React.forwardRef<AudioRef, AudioProps>((props, ref) => {
-  const { as: Component = "audio", children, ...rest } = props;
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
-
-Audio.displayName = "Audio";
+/** Render the native <audio> HTML element. */
+export const Audio = createHtmlPrimitive("Audio", "audio");
