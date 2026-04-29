@@ -17,7 +17,7 @@
     "allowImportingTsExtensions": true,
     "jsx": "preserve",
     "skipDefaultLibCheck": true,
-    "ignoreDeprecations": "5.0",
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "@portfolio/*": [
