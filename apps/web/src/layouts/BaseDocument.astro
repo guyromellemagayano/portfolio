@@ -32,6 +32,8 @@ const googleSiteVerification =
   globalThis.process?.env?.GOOGLE_SITE_VERIFICATION?.trim() ?? "";
 const googleAnalyticsMeasurementId =
   globalThis.process?.env?.GOOGLE_ANALYTICS_MEASUREMENT_ID?.trim() ?? "";
+const googleTagManagerContainerId =
+  globalThis.process?.env?.GOOGLE_TAG_MANAGER_CONTAINER_ID?.trim() ?? "";
 const bingSiteVerification =
   globalThis.process?.env?.BING_SITE_VERIFICATION?.trim() ?? "";
 const structuredDataItems = metadata?.structuredData
@@ -49,6 +51,15 @@ window.gtag("js", new Date());
 window.gtag("config", ${JSON.stringify(googleAnalyticsMeasurementId)});
 `
   : "";
+const googleTagManagerBootstrapScript = googleTagManagerContainerId
+  ? `
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":
+new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
+"https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,"script","dataLayer",${JSON.stringify(googleTagManagerContainerId)});
+`
+  : "";
 ---
 
 <!doctype html>
@@ -58,6 +69,11 @@ window.gtag("config", ${JSON.stringify(googleAnalyticsMeasurementId)});
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="application-name" content={siteName} />
     <meta name="theme-color" content="#fafaf9" />
+    {
+      googleTagManagerContainerId ? (
+        <script is:inline set:html={googleTagManagerBootstrapScript} />
+      ) : null
+    }
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -176,6 +192,21 @@ window.gtag("config", ${JSON.stringify(googleAnalyticsMeasurementId)});
     }
   </head>
   <body class="flex h-full flex-col bg-stone-50 text-zinc-950">
+    {
+      googleTagManagerContainerId ? (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${encodeURIComponent(
+              googleTagManagerContainerId
+            )}`}
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="Google Tag Manager"
+          />
+        </noscript>
+      ) : null
+    }
     <slot />
   </body>
 </html>
