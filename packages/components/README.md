@@ -2,17 +2,18 @@
 
 # `@portfolio/components`
 
-Shared React HTML-aligned component exports for the monorepo with typed element props, optional client hydration paths, and analytics helpers.
+Framework-agnostic React components for the portfolio workspace. The package is intended to work in Astro, React + Vite, and other React-compatible runtimes without depending on Next.js conventions or React Server Component boundaries.
 
-## Features
+## Contract
 
-- 🚀 **Broad Component Surface**: 108 HTML-aligned component exports from one entrypoint
-- 🧭 **Typed Common Props**: Shared `CommonComponentProps` across components (`as`, `isClient`, `isMemoized`, `debugId`, `debugMode`)
-- 🔁 **Server + Client Branches**: Server-first render with optional lazy client branch and Suspense fallback
-- ⚛️ **Ref-Friendly APIs**: Element-specific refs and props via `React.forwardRef`
-- 📊 **Analytics Utilities**: Batched analytics handler and transport helpers
-- 🧱 **Polymorphic Utilities**: Element config + prop validation/filtering helpers
-- ✅ **Package Test Coverage**: Vitest + Testing Library setup with shared thresholds
+- Components render normal React elements synchronously.
+- Components forward refs where the underlying element API supports it.
+- Components may support an `as` prop when semantic element overrides are useful.
+- Consumers import from the root package entrypoint only.
+- The package does not expose public subpath imports.
+- The package does not require framework-specific hydration flags.
+
+This package is currently being migrated away from an earlier server/client split. During that migration, some implementation details may still reference old client-branch props or internal workspace utilities. Those details are implementation debt and should not be treated as the target public API.
 
 ## Installation
 
@@ -32,77 +33,12 @@ Typical workspace dependency declaration:
 }
 ```
 
-## Export Overview
+## Usage
 
-Public API is the root package entrypoint only.
-
-```typescript
-import {
-  A,
-  Button,
-  Div,
-  Form,
-  Heading,
-  Section,
-  createBatchedOnAnalytics,
-  createConsoleTransport,
-  createFetchTransport,
-  preparePolymorphicProps,
-} from "@portfolio/components";
-```
-
-Subpath imports (for example `@portfolio/components/button`) are not part of the public API.
-
-### Export Groups
-
-- `Components`: HTML-aligned component exports from `src/index.ts`
-- `Analytics`: `createBatchedOnAnalytics`, `createFetchTransport`, `createConsoleTransport`
-- `Polymorphic Helpers`: `preparePolymorphicProps`, `validatePolymorphicProps`, `filterElementSpecificProps`
-- `Types + Config Utilities`: `CommonComponentProps`, `PolymorphicComponentProps`, `getElementConfig`, `getElementsByCategory`, `elementSupportsFeature`
-
-## Setup
-
-### 1. Import From the Root Entrypoint
+Import public APIs from the package root:
 
 ```tsx
 import { Button, Heading, Section } from "@portfolio/components";
-```
-
-### 2. Use Shared Component Props
-
-Use `as` for semantic overrides and `isClient`/`isMemoized` when you need the lazy client branch.
-
-```tsx
-import { Div } from "@portfolio/components";
-
-<Div as="section" isClient isMemoized data-testid="shell">
-  Interactive shell
-</Div>;
-```
-
-### 3. Wire Analytics (Optional)
-
-Use the batched helper and provide your transport:
-
-```ts
-import {
-  createBatchedOnAnalytics,
-  createFetchTransport,
-} from "@portfolio/components";
-
-const analytics = createBatchedOnAnalytics({
-  transport: createFetchTransport("/analytics"),
-  bufferSize: 20,
-  flushIntervalMs: 2000,
-});
-```
-
-## Integration Examples
-
-### Semantic Component Usage
-
-```tsx
-import { Button, Div, Heading, Section } from "@portfolio/components";
 
 export function Hero() {
   return (
@@ -110,23 +46,50 @@ export function Hero() {
       <Heading as="h1" id="hero-title">
         Portfolio
       </Heading>
-      <Div>
-        <Button type="button">View projects</Button>
-      </Div>
+      <Button type="button">View projects</Button>
     </Section>
   );
 }
 ```
 
-### Batched Analytics Event Dispatch
+Subpath imports such as `@portfolio/components/button` are not public API.
 
-```ts
-analytics.onAnalytics({
-  type: "click",
-  name: "hero-cta",
-  properties: { section: "hero" },
-});
-```
+## Framework Notes
+
+### Astro
+
+Use these components from React-enabled Astro islands or React components rendered by Astro. Prefer native `.astro` components for static page structure when React interactivity is not needed.
+
+### React + Vite
+
+Use the package like any React component library. No framework adapter or hydration-specific prop is required.
+
+### Other React Runtimes
+
+The intended contract is plain React rendering with standard DOM props. Runtime-specific routing, image optimization, data loading, and hydration policies belong in the consuming app.
+
+## Public API Direction
+
+The stable direction is a focused set of useful primitives rather than a package whose main value is wrapping every HTML tag. Existing exports may remain during migration, but new code should prefer components that add meaningful behavior, accessibility, styling, or composition value.
+
+Current API groups:
+
+- `Components`: React components exported from the root barrel.
+- `Analytics Utilities`: optional helpers such as `createBatchedOnAnalytics`, `createFetchTransport`, and `createConsoleTransport`.
+- `Polymorphic Utilities`: transitional helpers for `as`-based rendering and prop handling.
+- `Types`: shared React component types.
+
+Analytics helpers are optional consumer utilities. They should not be understood as automatic behavior for every component unless a component explicitly documents that behavior.
+
+## Migration Notes
+
+The current implementation still contains some legacy RSC-oriented pieces that will be removed in a follow-up slice:
+
+- `isClient` and `isMemoized` component props.
+- `.client` component wrappers and lazy client branches.
+- `@portfolio/hooks` and `@portfolio/logger` as public dependency pressure.
+
+The target peer dependency contract is `react` and `react-dom` only. Until the implementation is cleaned up, the manifest may still list temporary internal workspace dependencies needed by existing source files.
 
 ## Development
 
@@ -143,61 +106,18 @@ pnpm test:coverage
 pnpm format:check
 ```
 
-## Testing
-
-- Default config: `vitest.config.ts` (JSDOM + `src/test-setup.ts`)
-- Lightweight config: `vitest.light.config.ts`
-- Script-focused config: `vitest.scripts.config.ts`
-- Coverage thresholds:
-  - Statements: `80`
-  - Branches: `75`
-  - Functions: `80`
-  - Lines: `80`
-
-## Best Practices
-
-### 1. **Use Semantic Defaults First**
-
-- Keep element defaults unless a semantic override is required.
-- Use `as` intentionally and keep ARIA relationships explicit at call sites.
-
-### 2. **Prefer Root Imports**
-
-- Import from `@portfolio/components` to keep usage aligned with the package public API.
-- Avoid relying on internal file paths.
-
-### 3. **Use Client Branches Deliberately**
-
-- Enable `isClient` only when you need client-side behavior.
-- Add `isMemoized` only for proven hot paths.
-
-### 4. **Keep Analytics Transport-Specific**
-
-- Use `createBatchedOnAnalytics` in consumers, not shared component internals.
-- Keep transport concerns (`fetch`, beacon, console) at app/package integration boundaries.
-
-## Troubleshooting
-
-### Common Issues
-
-**Cannot resolve `@portfolio/components` exports**
-
-Ensure the dependency is declared in the consumer package and install workspace dependencies:
+Recommended package checks before handoff:
 
 ```bash
-pnpm install
+pnpm --filter @portfolio/components check-types
+pnpm --filter @portfolio/components lint
+pnpm --filter @portfolio/components test:run
+pnpm --filter @portfolio/components build
 ```
-
-**Client branch not rendering as expected**
-
-Check that `isClient` is set and verify test behavior with `vitest.config.ts` (JSDOM environment).
-
-**Analytics events not dispatched**
-
-Confirm `createBatchedOnAnalytics` is initialized with a valid `transport` and `onAnalytics` is wired in the consuming code.
 
 ## Dependencies
 
-- Peer dependencies: `react`, `react-dom`, `@portfolio/hooks`, `@portfolio/logger`
-- Dev dependencies: shared workspace tooling (`@portfolio/config-eslint`, `@portfolio/config-typescript`, `@portfolio/vitest-presets`, `vitest`, `typescript`, `bunchee`, and related test/lint tooling)
-- Package visibility: currently `"private": true`
+- Target peer dependencies: `react`, `react-dom`.
+- Temporary implementation dependencies: `@portfolio/hooks`, `@portfolio/logger`.
+- Dev tooling: shared workspace configs, Vitest, Testing Library, TypeScript, and Bunchee.
+- Package visibility: currently `"private": true`.

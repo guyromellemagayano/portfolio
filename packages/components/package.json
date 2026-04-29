@@ -2,12 +2,14 @@
   "name": "@portfolio/components",
   "version": "1.0.0",
   "private": true,
-  "description": "Reusable React components library with TypeScript support, analytics, accessibility features, and polymorphic support",
+  "description": "Framework-agnostic React components for Astro, React + Vite, and other React-compatible runtimes",
   "keywords": [
     "react",
     "components",
-    "html",
+    "astro",
+    "vite",
     "polymorphic",
+    "accessibility",
     "typescript"
   ],
   "homepage": "https://github.com/guyromellemagayano/portfolio/tree/main/packages/components",
