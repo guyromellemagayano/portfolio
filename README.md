@@ -19,7 +19,27 @@ pnpm install
 pnpm dev
 ```
 
-The local web app runs at `http://127.0.0.1:4321`.
+Local development runs through Docker Compose on OrbStack. The web app is available at `http://portfolio.local:4321` by default. `SITE_URL_DEVELOPMENT`, `SITE_URL_PREVIEW`, and `SITE_URL_PRODUCTION` control environment-specific site origins, while `WEB_HOST` and `WEB_PORT` control the local server bind.
+
+Useful local commands:
+
+```bash
+pnpm dev
+pnpm dev:docker:detached
+pnpm dev:docker:logs
+pnpm dev:docker:down
+pnpm dev:host
+```
+
+Environment files:
+
+```bash
+.env.local       # ignored local workstation defaults
+.env.preview     # Vercel Preview values to copy into the Preview scope
+.env.production  # Vercel Production values to copy into the Production scope
+```
+
+Keep secrets in ignored local files or Vercel's dashboard. Vercel provides `VERCEL_ENV`, `VERCEL_URL`, and `VERCEL_PROJECT_PRODUCTION_URL`.
 
 ## Monorepo Commands
 
@@ -43,6 +63,13 @@ pnpm lint:web
 pnpm test:web
 pnpm build:packages
 pnpm test:e2e
+```
+
+Deployment stays outside Docker:
+
+```bash
+pnpm deploy:web
+pnpm deploy:web:prod
 ```
 
 ## Content
