@@ -73,5 +73,5 @@ alwaysApply: true
 
 - Before changing dependency placement or exports, search for existing imports and script usage with `rg`.
 - After editing manifests, refresh the lockfile through pnpm instead of editing `pnpm-lock.yaml` manually.
-- Run `pnpm --filter web lint`, `pnpm --filter web check-types`, `pnpm --filter web test:run`, and `pnpm --filter web build` before handoff when changes affect the web app.
+- Run `pnpm lint:web`, `pnpm check-types:web`, `pnpm test:web`, and `pnpm build:web` before handoff when changes affect the web app.
 - Run affected package checks when exports, package manifests, or shared config packages change.

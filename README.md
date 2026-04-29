@@ -16,12 +16,12 @@ Portfolio monorepo for the public Astro site and retained Playwright setup.
 corepack enable
 corepack use pnpm@10.30.0
 pnpm install
-pnpm --filter web dev
+pnpm dev
 ```
 
 The local web app runs at `http://127.0.0.1:4321`.
 
-## Commands
+## Monorepo Commands
 
 ```bash
 pnpm build
@@ -29,16 +29,20 @@ pnpm check-types
 pnpm lint
 pnpm format:check
 pnpm test
-pnpm --filter e2e test:e2e:install
+pnpm test:e2e:install
 ```
 
-App-scoped commands:
+These commands run through Turborepo, so package dependency ordering, local/remote cache, and `--affected` filtering stay available.
+
+Scoped Turbo commands:
 
 ```bash
-pnpm --filter web build
-pnpm --filter web check-types
-pnpm --filter web test:run
-pnpm --filter e2e test:e2e
+pnpm build:web
+pnpm check-types:web
+pnpm lint:web
+pnpm test:web
+pnpm build:packages
+pnpm test:e2e
 ```
 
 ## Content
