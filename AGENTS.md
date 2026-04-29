@@ -75,7 +75,7 @@
 - Use React Testing Library for React component behavior.
 - Keep tests behavior-focused and accessibility-aware.
 - Keep Playwright setup operational, but do not add route specs unless requested.
-- Run app-level checks before handoff: `pnpm --filter web lint`, `pnpm --filter web check-types`, `pnpm --filter web test:run`, and `pnpm --filter web build`.
+- Run app-level checks before handoff through Turborepo: `pnpm lint:web`, `pnpm check-types:web`, `pnpm test:web`, and `pnpm build:web`.
 
 ## Documentation Standards
 

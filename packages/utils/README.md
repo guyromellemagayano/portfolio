@@ -120,13 +120,13 @@ const humanDate = formatDateSafely("2026-03-11", {
 
 ## Build and Validation
 
-Use package scripts from `packages/utils/package.json`:
+Run package checks from the repo root through Turborepo filters:
 
 ```bash
-pnpm --filter @portfolio/utils build
-pnpm --filter @portfolio/utils lint
-pnpm --filter @portfolio/utils check-types
-pnpm --filter @portfolio/utils test:run
+pnpm build --filter=@portfolio/utils
+pnpm lint --filter=@portfolio/utils
+pnpm check-types --filter=@portfolio/utils
+pnpm test --filter=@portfolio/utils
 ```
 
 ## Notes

@@ -14,7 +14,7 @@ The route specs are intentionally paused for now. Keep this workspace so browser
 
 ## Scripts
 
-Run from repo root with `pnpm --filter e2e <script>`.
+Run common suites from the repo root through Turbo-backed root scripts.
 
 - `test:e2e` - Run Playwright. With specs paused, this runs the setup project.
 - `test:e2e:smoke` - Compatibility alias that runs the setup project while smoke specs are paused.
@@ -27,6 +27,14 @@ Run from repo root with `pnpm --filter e2e <script>`.
 - `check-types` - TypeScript checks.
 - `format` / `format:check` - Prettier formatting checks.
 - `clean` - Remove local E2E artifacts and caches.
+
+Examples:
+
+```bash
+pnpm test:e2e:install
+pnpm test:e2e:smoke
+pnpm test:e2e
+```
 
 ## Add Specs Later
 

@@ -63,7 +63,7 @@ packages/utils/
 - Execute from repo root:
 
 ```bash
-pnpm --filter @portfolio/utils test:run
+pnpm test --filter=@portfolio/utils
 ```
 
 ## Documentation Sync Rule
