@@ -3,6 +3,13 @@
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm build:web",
   "outputDirectory": "apps/web/dist",
+  "redirects": [
+    {
+      "source": "/contact",
+      "destination": "/hire",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
