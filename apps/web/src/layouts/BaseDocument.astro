@@ -30,8 +30,6 @@ const robotsIndex = metadata?.robots?.index === false ? "noindex" : "index";
 const robotsFollow = metadata?.robots?.follow === false ? "nofollow" : "follow";
 const openGraph = metadata?.openGraph;
 const twitter = metadata?.twitter;
-const googleSiteVerification =
-  globalThis.process?.env?.GOOGLE_SITE_VERIFICATION?.trim() ?? "";
 const googleAnalyticsMeasurementId =
   globalThis.process?.env?.GOOGLE_ANALYTICS_MEASUREMENT_ID?.trim() ?? "";
 const googleTagManagerContainerId =
@@ -94,14 +92,6 @@ j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={`${robotsIndex},${robotsFollow}`} />
-    {
-      googleSiteVerification ? (
-        <meta
-          name="google-site-verification"
-          content={googleSiteVerification}
-        />
-      ) : null
-    }
     {
       bingSiteVerification ? (
         <meta name="msvalidate.01" content={bingSiteVerification} />
