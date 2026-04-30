@@ -47,8 +47,8 @@ const structuredDataItems = metadata?.structuredData
 const googleAnalyticsBootstrapScript = googleAnalyticsMeasurementId
   ? `
 window.dataLayer = window.dataLayer || [];
-window.gtag = window.gtag || function gtag(...gtagArguments) {
-  window.dataLayer.push(gtagArguments);
+window.gtag = window.gtag || function gtag() {
+  window.dataLayer.push(arguments);
 };
 window.gtag("js", new Date());
 window.gtag("config", ${JSON.stringify(googleAnalyticsMeasurementId)});
