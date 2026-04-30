@@ -1,4 +1,4 @@
-<!-- markdownlint-disable proper-names -->
+<!-- markdownlint-disable -->
 
 # Guy Romelle Magayano | Portfolio
 
@@ -31,16 +31,6 @@ pnpm dev:docker:down
 pnpm dev:host
 ```
 
-Environment files:
-
-```bash
-.env.local       # ignored local workstation defaults
-.env.preview     # Vercel Preview values to copy into the Preview scope
-.env.production  # Vercel Production values to copy into the Production scope
-```
-
-Keep secrets in ignored local files or Vercel's dashboard. Vercel provides `VERCEL_ENV`, `VERCEL_URL`, and `VERCEL_PROJECT_PRODUCTION_URL`.
-
 ## Monorepo Commands
 
 ```bash
@@ -71,29 +61,6 @@ Deployment stays outside Docker:
 pnpm deploy:web
 pnpm deploy:web:prod
 ```
-
-## Search And Performance Monitoring
-
-Google Search Console:
-
-1. Add a Domain property for `guyromellemagayano.com`.
-2. Add the TXT record Google gives you at your DNS provider, then keep that record in place after verification.
-3. If you use URL-prefix verification instead, copy only the `content` value from Google's HTML meta tag into `GOOGLE_SITE_VERIFICATION` in Vercel Production, deploy, and verify `https://www.guyromellemagayano.com/`.
-4. Submit `https://www.guyromellemagayano.com/sitemap-index.xml` in the Search Console Sitemaps report.
-
-Web Vitals:
-
-1. Enable Vercel Web Analytics and Speed Insights for the Vercel project.
-2. Deploy through Vercel so `VERCEL_ENV` is set. Local builds skip Vercel's observability scripts to keep local Lighthouse runs clean.
-3. Use Vercel Speed Insights for field data while Search Console's Core Web Vitals report builds enough Chrome UX data.
-
-Lighthouse CI:
-
-```bash
-pnpm lighthouse:ci
-```
-
-The Lighthouse CI workflow runs on pull requests and manual dispatches. Reports are written to `.lighthouseci/reports` locally and uploaded as the `lighthouse-reports` GitHub Actions artifact in CI.
 
 ## Content
 
