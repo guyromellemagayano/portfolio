@@ -21,45 +21,47 @@ pnpm dev
 
 Local development runs through Docker Compose on OrbStack. The web app is available at `http://portfolio.local:4321` by default. `SITE_URL_DEVELOPMENT`, `SITE_URL_PREVIEW`, and `SITE_URL_PRODUCTION` control environment-specific site origins, while `WEB_HOST` and `WEB_PORT` control the local server bind.
 
-Useful local commands:
+Useful daily Make commands:
 
 ```bash
-pnpm dev
-pnpm dev:docker:detached
-pnpm dev:docker:logs
-pnpm dev:docker:down
-pnpm dev:host
+make help
+make dev
+make dev-detached
+make logs
+make down
+make quick
+make daily
 ```
+
+Use `make quick` for the common pre-commit loop of linting, typechecking, and tests. Use `make daily` when formatting should also be checked.
 
 ## Monorepo Commands
 
 ```bash
-pnpm build
-pnpm check-types
-pnpm lint
-pnpm format:check
-pnpm test
-pnpm test:e2e:install
+make verify
+make packages-verify
+make components-verify
+make ui-verify
+make e2e-install
+make e2e-smoke
 ```
 
-These commands run through Turborepo, so package dependency ordering, local/remote cache, and `--affected` filtering stay available.
+These commands call the existing `pnpm` and Turborepo scripts, so package dependency ordering, local/remote cache, and scoped filtering stay available.
 
-Scoped Turbo commands:
+Scoped web commands:
 
 ```bash
-pnpm build:web
-pnpm check-types:web
-pnpm lint:web
-pnpm test:web
-pnpm build:packages
-pnpm test:e2e
+make lint
+make check-types
+make test
+make build
 ```
 
 Deployment stays outside Docker:
 
 ```bash
-pnpm deploy:web
-pnpm deploy:web:prod
+make deploy
+make deploy-prod
 ```
 
 ## Content
