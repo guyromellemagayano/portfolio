@@ -27,17 +27,24 @@ it("accepts valid native props, polymorphic as props, and refs", () => {
 
 it("rejects props that are outside the selected native element contract", () => {
   const layout = <Div id="layout">Content</Div>;
-  <Img alt="" src="/preview.png" />;
+  <Img alt="Preview" src="/preview.png" />;
+  <Img decorative src="/preview.png" />;
   <Input aria-label="Name" />;
   <Br />;
 
   expectTypeOf(layout).toEqualTypeOf<React.JSX.Element>();
 
+  // @ts-expect-error native img usage requires alt text or decorative intent.
+  <Img src="/preview.png" />;
+
+  // @ts-expect-error decorative images cannot also provide meaningful alt text.
+  <Img alt="Preview" decorative src="/preview.png" />;
+
   // @ts-expect-error href is not valid on the native button element.
   <Button href="/work">Work</Button>;
 
   // @ts-expect-error children are not valid on native void elements.
-  <Img alt="" src="/preview.png">
+  <Img alt="Preview" src="/preview.png">
     Preview
   </Img>;
 

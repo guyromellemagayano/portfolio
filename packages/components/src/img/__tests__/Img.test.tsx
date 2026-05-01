@@ -17,3 +17,10 @@ it("supports attribute toggles", () => {
   const el = screen.getByTestId("el");
   expect(el).toHaveAttribute("alt", "b");
 });
+
+it("requires decorative images to be marked explicitly", () => {
+  render(<Img data-testid="el" decorative src="/texture.png" />);
+  const el = screen.getByTestId("el");
+  expect(el).toHaveAttribute("alt", "");
+  expect(el).not.toHaveAttribute("decorative");
+});

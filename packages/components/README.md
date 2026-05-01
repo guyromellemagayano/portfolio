@@ -89,6 +89,19 @@ Element-specific defaults are intentionally narrow:
 - `Button` defaults to `type="button"`.
 - `Input` defaults to `type="text"`.
 - `Img` defaults to `decoding="async"`.
+- `Img` requires either meaningful `alt` text or `decorative` for intentionally decorative images.
+
+Image accessibility is explicit:
+
+```tsx
+import { Img } from "@portfolio/components";
+
+<Img
+  alt="Guy Romelle Magayano speaking at a product review"
+  src="/headshot.jpg"
+/>;
+<Img decorative src="/texture.png" />;
+```
 
 Field controls are wired through context:
 
