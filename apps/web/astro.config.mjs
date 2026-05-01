@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import sitemap from "@astrojs/sitemap";
+import sentry from "@sentry/astro";
 import { defineConfig } from "astro/config";
 
 const workspaceRootEnvFile = fileURLToPath(
@@ -24,6 +25,7 @@ const LOCAL_DEV_ALLOWED_HOSTS = [
   "web.portfolio.orb.local",
   "portfolio-web.orb.local",
 ];
+const DEFAULT_SENTRY_TRACES_SAMPLE_RATE = 0.1;
 const LOCAL_ONLY_HOSTNAME_SUFFIXES = [".local"];
 const LOCAL_ONLY_HOSTNAMES = new Set([
   "localhost",
@@ -40,12 +42,26 @@ const LEGACY_REDIRECT_PATHS = new Set([
 ]);
 const LEGACY_REDIRECT_PREFIXES = ["/articles/", "/projects/"];
 
+function readEnvValue(key) {
+  return process.env[key]?.trim() ?? "";
+}
+
+function readOptionalEnvValue(key) {
+  return readEnvValue(key) || undefined;
+}
+
+function readSampleRateEnvValue(key, fallback) {
+  const value = Number(readEnvValue(key));
+
+  return Number.isFinite(value) && value >= 0 && value <= 1 ? value : fallback;
+}
+
 function isProductionRuntime() {
   return resolveSiteUrlEnvironment() === "production";
 }
 
 function resolveSiteUrlEnvironment() {
-  const vercelEnvironment = process.env.VERCEL_ENV?.trim();
+  const vercelEnvironment = readEnvValue("VERCEL_ENV");
 
   if (
     vercelEnvironment === "production" ||
@@ -55,7 +71,9 @@ function resolveSiteUrlEnvironment() {
     return vercelEnvironment;
   }
 
-  return process.env.NODE_ENV === "development" ? "development" : "production";
+  return readEnvValue("NODE_ENV") === "development"
+    ? "development"
+    : "production";
 }
 
 function isLocalOnlyHostname(hostname) {
@@ -121,21 +139,66 @@ function getSiteUrlCandidates() {
   switch (resolveSiteUrlEnvironment()) {
     case "production":
       return [
-        process.env.SITE_URL_PRODUCTION,
-        process.env.VERCEL_PROJECT_PRODUCTION_URL,
-        process.env.VERCEL_URL,
+        readEnvValue("SITE_URL_PRODUCTION"),
+        readEnvValue("VERCEL_PROJECT_PRODUCTION_URL"),
+        readEnvValue("VERCEL_URL"),
       ];
     case "preview":
-      return [process.env.SITE_URL_PREVIEW, process.env.VERCEL_URL];
+      return [readEnvValue("SITE_URL_PREVIEW"), readEnvValue("VERCEL_URL")];
     case "development":
     default:
-      return [process.env.SITE_URL_DEVELOPMENT];
+      return [readEnvValue("SITE_URL_DEVELOPMENT")];
   }
+}
+
+function getSentryBuildOptions() {
+  const dsn = readOptionalEnvValue("SENTRY_DSN");
+  const authToken = readOptionalEnvValue("SENTRY_AUTH_TOKEN");
+  const org = readOptionalEnvValue("SENTRY_ORG");
+  const project = readOptionalEnvValue("SENTRY_PROJECT");
+  const hasSourceMapCredentials = Boolean(authToken && org && project);
+
+  return {
+    authToken,
+    enabled: Boolean(dsn),
+    org,
+    project,
+    sourcemaps: {
+      disable: hasSourceMapCredentials ? false : "disable-upload",
+    },
+    telemetry: false,
+  };
+}
+
+function getSentryPublicRuntimeEnv() {
+  return {
+    "import.meta.env.PUBLIC_SENTRY_DSN": JSON.stringify(
+      readOptionalEnvValue("SENTRY_DSN") ?? ""
+    ),
+    "import.meta.env.PUBLIC_SENTRY_ENVIRONMENT": JSON.stringify(
+      readOptionalEnvValue("SENTRY_ENVIRONMENT") ?? resolveSiteUrlEnvironment()
+    ),
+    "import.meta.env.PUBLIC_SENTRY_RELEASE": JSON.stringify(
+      readOptionalEnvValue("SENTRY_RELEASE") ??
+        readOptionalEnvValue("VERCEL_GIT_COMMIT_SHA") ??
+        readOptionalEnvValue("GIT_HASH") ??
+        ""
+    ),
+    "import.meta.env.PUBLIC_SENTRY_TRACES_SAMPLE_RATE": JSON.stringify(
+      String(
+        readSampleRateEnvValue(
+          "SENTRY_TRACES_SAMPLE_RATE",
+          DEFAULT_SENTRY_TRACES_SAMPLE_RATE
+        )
+      )
+    ),
+  };
 }
 
 export default defineConfig({
   site,
   integrations: [
+    sentry(getSentryBuildOptions()),
     sitemap({
       filter: (page) => {
         const pathname = new URL(page).pathname.replace(/\/+$/, "") || "/";
@@ -162,6 +225,7 @@ export default defineConfig({
     }),
   ],
   vite: {
+    define: getSentryPublicRuntimeEnv(),
     resolve: {
       alias: {
         "@web": new URL("./src", import.meta.url).pathname,
