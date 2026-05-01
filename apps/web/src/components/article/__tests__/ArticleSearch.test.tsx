@@ -202,7 +202,7 @@ describe("ArticleSearch", () => {
     expect(screen.getAllByRole("article")).toHaveLength(2);
     expect(
       screen.getByRole("link", { name: "Intro to React" })
-    ).toHaveAttribute("href", "/articles/intro-to-react");
+    ).toHaveAttribute("href", "/notes/intro-to-react");
     expect(screen.getByText("Learn React basics")).toBeInTheDocument();
 
     const formattedDates = screen.getAllByText("Formatted 2023-01-01");

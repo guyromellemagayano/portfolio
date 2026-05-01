@@ -10,11 +10,11 @@ import { type PageData } from "@web/data/site";
 import { buildPortfolioPageMetadata } from "@web/lib/portfolio-brochure";
 
 const basePage: PageData = {
-  slug: "services",
-  subheading: "Services",
+  slug: "capabilities",
+  subheading: "Capabilities",
   title: "Architecture review, advisory, and direct implementation work.",
   intro: "Direct help on product architecture and implementation.",
-  seoCanonicalPath: "/services",
+  seoCanonicalPath: "/capabilities",
   seoNoIndex: false,
 };
 
@@ -22,17 +22,17 @@ describe("buildPortfolioPageMetadata", () => {
   it("normalizes page titles so the root layout template does not duplicate the site name", () => {
     const metadata = buildPortfolioPageMetadata({
       ...basePage,
-      seoTitle: "Services - Guy Romelle Magayano",
+      seoTitle: "Capabilities - Guy Romelle Magayano",
       seoDescription: "Consulting and implementation for product systems.",
     });
 
-    expect(metadata.title).toBe("Services");
+    expect(metadata.title).toBe("Capabilities");
     expect(metadata.description).toBe(
       "Consulting and implementation for product systems."
     );
     expect(metadata.openGraph).toMatchObject({
       type: "website",
-      title: "Services",
+      title: "Capabilities",
       siteName: "Guy Romelle Magayano",
       images: [
         {
@@ -45,7 +45,7 @@ describe("buildPortfolioPageMetadata", () => {
     });
     expect(metadata.twitter).toMatchObject({
       card: "summary_large_image",
-      title: "Services",
+      title: "Capabilities",
       images: ["https://www.guyromellemagayano.com/og-image.png"],
     });
     expect(metadata.robots).toEqual({

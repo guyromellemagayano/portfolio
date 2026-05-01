@@ -21,7 +21,7 @@ vi.mock("@web/lib/i18n", () => ({
   useTranslations: vi.fn((_namespace: string) => {
     const translations: Record<string, string> = {
       "labels.skipToMainContent": "Skip to main content",
-      "labels.goBackToArticles": "Back to articles",
+      "labels.goBackToArticles": "Back to notes",
       "labels.articleDate": "Published on",
     };
     return (key: string) => translations[key] ?? key;
@@ -344,10 +344,10 @@ describe("Layout Integration Tests", () => {
       );
 
       const backLink = screen.getByRole("link", {
-        name: "Back to articles",
+        name: "Back to notes",
       });
       expect(backLink).toBeInTheDocument();
-      expect(backLink).toHaveAttribute("href", "/articles");
+      expect(backLink).toHaveAttribute("href", "/notes");
     });
 
     it("renders ArticleLayout with back button even without previousPathname context", () => {
@@ -359,7 +359,7 @@ describe("Layout Integration Tests", () => {
 
       expect(screen.getByRole("article")).toBeInTheDocument();
       expect(
-        screen.getByRole("link", { name: "Back to articles" })
+        screen.getByRole("link", { name: "Back to notes" })
       ).toBeInTheDocument();
     });
 

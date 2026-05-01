@@ -22,10 +22,10 @@ vi.mock("@web/lib/i18n", () => ({
         brandName: "Guy Romelle Magayano",
         labels: {
           home: "Home",
-          services: "Services",
+          capabilities: "Capabilities",
           blog: "Blog",
-          projects: "Projects",
-          hire: "Hire",
+          work: "Work",
+          contact: "Contact",
           menu: "Menu",
           closeMenu: "Close menu",
           navigation: "Navigation",
@@ -271,16 +271,16 @@ describe("Header", () => {
     it("renders navigation links", () => {
       render(<Header />);
       expect(
-        screen.getAllByRole("link", { name: /services/i }).length
+        screen.getAllByRole("link", { name: /capabilities/i }).length
       ).toBeGreaterThanOrEqual(1);
       expect(
-        screen.getAllByRole("link", { name: /articles/i }).length
+        screen.getAllByRole("link", { name: /notes/i }).length
       ).toBeGreaterThanOrEqual(1);
       expect(
-        screen.getAllByRole("link", { name: /projects/i }).length
+        screen.getAllByRole("link", { name: /work/i }).length
       ).toBeGreaterThanOrEqual(1);
       expect(
-        screen.getAllByRole("link", { name: /hire/i }).length
+        screen.getAllByRole("link", { name: /contact/i }).length
       ).toBeGreaterThanOrEqual(1);
     });
   });

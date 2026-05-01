@@ -18,10 +18,10 @@ vi.mock("@web/lib/i18n", () => ({
       string,
       string | ((params?: Record<string, string>) => string)
     > = {
-      "navigation.services": "Services",
+      "navigation.capabilities": "Capabilities",
       "navigation.blog": "Blog",
-      "navigation.projects": "Projects",
-      "navigation.hire": "Hire",
+      "navigation.work": "Work",
+      "navigation.contact": "Contact",
       "labels.navigation": "Footer navigation",
       "labels.footer": "Site footer",
       brandName: "Guy Romelle Magayano",
@@ -117,15 +117,12 @@ describe("Footer", () => {
 
       expect(screen.getByRole("link", { name: "About" })).toBeInTheDocument();
       expect(
-        screen.getByRole("link", { name: "Services" })
+        screen.getByRole("link", { name: "Capabilities" })
       ).toBeInTheDocument();
-      expect(
-        screen.getByRole("link", { name: "Projects" })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("link", { name: "Articles" })
-      ).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: "Hire" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Work" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Notes" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Contact" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Labs" })).toBeInTheDocument();
       expect(screen.getByRole("link", { name: "Privacy" })).toBeInTheDocument();
     });
 
@@ -161,11 +158,13 @@ describe("Footer", () => {
       const aboutLink = screen.getByRole("link", { name: "About" });
       expect(aboutLink).toHaveAttribute("href", "/about");
 
-      const servicesLink = screen.getByRole("link", { name: "Services" });
-      expect(servicesLink).toHaveAttribute("href", "/services");
+      const capabilitiesLink = screen.getByRole("link", {
+        name: "Capabilities",
+      });
+      expect(capabilitiesLink).toHaveAttribute("href", "/capabilities");
 
-      const articleLink = screen.getByRole("link", { name: "Articles" });
-      expect(articleLink).toHaveAttribute("href", "/articles");
+      const articleLink = screen.getByRole("link", { name: "Notes" });
+      expect(articleLink).toHaveAttribute("href", "/notes");
     });
 
     it("renders navigation with list items structure", () => {
@@ -173,11 +172,13 @@ describe("Footer", () => {
 
       const nav = screen.getByRole("navigation");
       const listItems = nav.querySelectorAll("li");
-      expect(listItems).toHaveLength(6);
+      expect(listItems).toHaveLength(7);
 
       // Verify each link is wrapped in a list item
-      const servicesLink = screen.getByRole("link", { name: "Services" });
-      expect(servicesLink.closest("li")).toBeInTheDocument();
+      const capabilitiesLink = screen.getByRole("link", {
+        name: "Capabilities",
+      });
+      expect(capabilitiesLink.closest("li")).toBeInTheDocument();
     });
 
     it("renders with correct CSS classes", () => {
@@ -193,8 +194,10 @@ describe("Footer", () => {
     it("renders internal links with target _self", () => {
       render(<Footer />);
 
-      const servicesLink = screen.getByRole("link", { name: "Services" });
-      expect(servicesLink).toHaveAttribute("target", "_self");
+      const capabilitiesLink = screen.getByRole("link", {
+        name: "Capabilities",
+      });
+      expect(capabilitiesLink).toHaveAttribute("target", "_self");
     });
   });
 
@@ -377,15 +380,17 @@ describe("Footer", () => {
     it("renders internal links with descriptive text", () => {
       render(<Footer />);
 
-      const servicesLink = screen.getByRole("link", { name: "Services" });
-      expect(servicesLink).toHaveTextContent("Services");
-      expect(servicesLink).toHaveAttribute("href", "/services");
+      const capabilitiesLink = screen.getByRole("link", {
+        name: "Capabilities",
+      });
+      expect(capabilitiesLink).toHaveTextContent("Capabilities");
+      expect(capabilitiesLink).toHaveAttribute("href", "/capabilities");
     });
 
     it("does not use aria-label on links with descriptive text", () => {
       render(<Footer />);
 
-      const aboutLink = screen.getByRole("link", { name: "Services" });
+      const aboutLink = screen.getByRole("link", { name: "Capabilities" });
       // Links with descriptive text should not have aria-label (SEO best practice)
       expect(aboutLink).not.toHaveAttribute("aria-label");
     });

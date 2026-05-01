@@ -176,16 +176,8 @@ export const FooterNavigation = React.forwardRef<HTMLElement, any>(
     const { children, ...rest } = props;
     const defaultLinks = [
       React.createElement("a", { key: "about", href: "/about" }, "About"),
-      React.createElement(
-        "a",
-        { key: "articles", href: "/articles" },
-        "Articles"
-      ),
-      React.createElement(
-        "a",
-        { key: "projects", href: "/projects" },
-        "Projects"
-      ),
+      React.createElement("a", { key: "notes", href: "/notes" }, "Notes"),
+      React.createElement("a", { key: "work", href: "/work" }, "Work"),
       React.createElement(
         "a",
         { key: "speaking", href: "/speaking" },

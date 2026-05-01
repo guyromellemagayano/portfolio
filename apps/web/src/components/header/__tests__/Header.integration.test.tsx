@@ -23,10 +23,10 @@ vi.mock("@web/lib/i18n", () => ({
         brandName: "Guy Romelle Magayano",
         labels: {
           home: "Home",
-          services: "Services",
+          capabilities: "Capabilities",
           blog: "Blog",
-          projects: "Projects",
-          hire: "Hire",
+          work: "Work",
+          contact: "Contact",
           menu: "Menu",
           closeMenu: "Close menu",
           navigation: "Navigation",
@@ -267,14 +267,18 @@ describe("Header Integration", () => {
     it("navigation links have correct hrefs", () => {
       render(<Header />);
 
-      const servicesLinks = screen.getAllByRole("link", { name: /services/i });
+      const capabilitiesLinks = screen.getAllByRole("link", {
+        name: /capabilities/i,
+      });
       expect(
-        servicesLinks.some((el) => el.getAttribute("href") === "/services")
+        capabilitiesLinks.some(
+          (el) => el.getAttribute("href") === "/capabilities"
+        )
       ).toBe(true);
 
-      const articleLinks = screen.getAllByRole("link", { name: /articles/i });
+      const articleLinks = screen.getAllByRole("link", { name: /notes/i });
       expect(
-        articleLinks.some((el) => el.getAttribute("href") === "/articles")
+        articleLinks.some((el) => el.getAttribute("href") === "/notes")
       ).toBe(true);
     });
   });

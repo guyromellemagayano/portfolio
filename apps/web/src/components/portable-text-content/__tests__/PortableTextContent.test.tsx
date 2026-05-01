@@ -134,7 +134,7 @@ describe("PortableTextContent", () => {
 
     const link = screen.getByRole("link", { name: "Related article" });
 
-    expect(link).toHaveAttribute("href", "/articles/deep-dive");
+    expect(link).toHaveAttribute("href", "/notes/deep-dive");
     expect(link).not.toHaveAttribute("target");
     expect(link).not.toHaveAttribute("rel");
   });
@@ -194,10 +194,7 @@ describe("PortableTextContent", () => {
     const referenceLink = screen.getByRole("link", {
       name: "Referenced article",
     });
-    expect(referenceLink).toHaveAttribute(
-      "href",
-      "/articles/referenced-article"
-    );
+    expect(referenceLink).toHaveAttribute("href", "/notes/referenced-article");
   });
 
   it("does not render unsafe javascript links", () => {

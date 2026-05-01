@@ -18,10 +18,10 @@ vi.mock("@web/lib/i18n", () => ({
       string,
       string | ((params?: Record<string, string>) => string)
     > = {
-      "navigation.services": "Services",
+      "navigation.capabilities": "Capabilities",
       "navigation.blog": "Blog",
-      "navigation.projects": "Projects",
-      "navigation.hire": "Hire",
+      "navigation.work": "Work",
+      "navigation.contact": "Contact",
       "labels.navigation": "Footer navigation",
       "labels.footer": "Site footer",
       brandName: "Guy Romelle Magayano",
@@ -128,15 +128,12 @@ describe("Footer Integration Tests", () => {
       // Check navigation links
       expect(screen.getByRole("link", { name: "About" })).toBeInTheDocument();
       expect(
-        screen.getByRole("link", { name: "Services" })
+        screen.getByRole("link", { name: "Capabilities" })
       ).toBeInTheDocument();
-      expect(
-        screen.getByRole("link", { name: "Projects" })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("link", { name: "Articles" })
-      ).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: "Hire" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Work" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Notes" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Contact" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Labs" })).toBeInTheDocument();
       expect(screen.getByRole("link", { name: "Privacy" })).toBeInTheDocument();
     });
 
@@ -167,20 +164,22 @@ describe("Footer Integration Tests", () => {
       expect(navigation).toBeInTheDocument();
 
       const links = navigation.querySelectorAll("a");
-      expect(links).toHaveLength(6);
+      expect(links).toHaveLength(7);
 
-      expect(links[0]).toHaveTextContent("About");
-      expect(links[0]).toHaveAttribute("href", "/about");
-      expect(links[1]).toHaveTextContent("Services");
-      expect(links[1]).toHaveAttribute("href", "/services");
-      expect(links[2]).toHaveTextContent("Projects");
-      expect(links[2]).toHaveAttribute("href", "/projects");
-      expect(links[3]).toHaveTextContent("Articles");
-      expect(links[3]).toHaveAttribute("href", "/articles");
-      expect(links[4]).toHaveTextContent("Hire");
-      expect(links[4]).toHaveAttribute("href", "/hire");
-      expect(links[5]).toHaveTextContent("Privacy");
-      expect(links[5]).toHaveAttribute("href", "/privacy");
+      expect(links[0]).toHaveTextContent("Work");
+      expect(links[0]).toHaveAttribute("href", "/work");
+      expect(links[1]).toHaveTextContent("Capabilities");
+      expect(links[1]).toHaveAttribute("href", "/capabilities");
+      expect(links[2]).toHaveTextContent("About");
+      expect(links[2]).toHaveAttribute("href", "/about");
+      expect(links[3]).toHaveTextContent("Notes");
+      expect(links[3]).toHaveAttribute("href", "/notes");
+      expect(links[4]).toHaveTextContent("Contact");
+      expect(links[4]).toHaveAttribute("href", "/contact");
+      expect(links[5]).toHaveTextContent("Labs");
+      expect(links[5]).toHaveAttribute("href", "/labs");
+      expect(links[6]).toHaveTextContent("Privacy");
+      expect(links[6]).toHaveAttribute("href", "/privacy");
     });
   });
 
@@ -295,8 +294,8 @@ describe("Footer Integration Tests", () => {
     it("uses descriptive link text for SEO", () => {
       render(<Footer />);
 
-      const aboutLink = screen.getByRole("link", { name: "Services" });
-      expect(aboutLink).toHaveTextContent("Services");
+      const aboutLink = screen.getByRole("link", { name: "Capabilities" });
+      expect(aboutLink).toHaveTextContent("Capabilities");
       // Links with descriptive text should not have aria-label (SEO best practice)
       expect(aboutLink).not.toHaveAttribute("aria-label");
     });

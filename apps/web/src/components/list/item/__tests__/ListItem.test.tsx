@@ -287,10 +287,10 @@ describe("ListItem", () => {
       render(<ListItem.Article article={ARTICLE} />);
       const articleElement = screen.getByRole("article");
       const ctaLink = articleElement.querySelector(
-        'a[href="/articles/hello-world"]'
+        'a[href="/notes/hello-world"]'
       );
       expect(ctaLink).toBeInTheDocument();
-      expect(ctaLink).toHaveAttribute("href", "/articles/hello-world");
+      expect(ctaLink).toHaveAttribute("href", "/notes/hello-world");
       // Card.Cta receives title prop and passes it to CardLinkCustom
       // CardLinkCustom may set title attribute depending on link text descriptiveness
       // Link text is descriptive ("Read article"), so aria-label is not set (CardLinkCustom logic)

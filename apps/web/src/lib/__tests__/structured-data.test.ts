@@ -19,7 +19,7 @@ describe("structured data builders", () => {
   it("builds breadcrumb lists with absolute item URLs", () => {
     const structuredData = buildBreadcrumbListStructuredData([
       { name: "Home", path: "/" },
-      { name: "Services", path: "/services" },
+      { name: "Capabilities", path: "/capabilities" },
     ]);
 
     expect(structuredData).toMatchObject({
@@ -35,33 +35,34 @@ describe("structured data builders", () => {
         {
           "@type": "ListItem",
           position: 2,
-          name: "Services",
-          item: "https://www.guyromellemagayano.com/services",
+          name: "Capabilities",
+          item: "https://www.guyromellemagayano.com/capabilities",
         },
       ],
     });
   });
 
-  it("anchors professional service offers to the services page", () => {
+  it("anchors professional service offers to the capabilities page", () => {
     const structuredData = buildProfessionalServiceStructuredData(
-      getPage("services"),
+      getPage("capabilities"),
       services
     );
 
     expect(structuredData).toMatchObject({
       "@type": "ProfessionalService",
-      "@id": "https://www.guyromellemagayano.com/services#professional-service",
-      url: "https://www.guyromellemagayano.com/services",
+      "@id":
+        "https://www.guyromellemagayano.com/capabilities#professional-service",
+      url: "https://www.guyromellemagayano.com/capabilities",
       hasOfferCatalog: expect.objectContaining({
         itemListElement: expect.arrayContaining([
           expect.objectContaining({
             "@id":
-              "https://www.guyromellemagayano.com/services#offer-architecture-review",
-            url: "https://www.guyromellemagayano.com/services#architecture-review",
+              "https://www.guyromellemagayano.com/capabilities#offer-architecture-review",
+            url: "https://www.guyromellemagayano.com/capabilities#architecture-review",
             itemOffered: expect.objectContaining({
               "@type": "Service",
               "@id":
-                "https://www.guyromellemagayano.com/services#service-architecture-review",
+                "https://www.guyromellemagayano.com/capabilities#service-architecture-review",
             }),
           }),
         ]),
@@ -70,11 +71,11 @@ describe("structured data builders", () => {
   });
 
   it("builds contact page metadata without mailto-prefixed schema email", () => {
-    const structuredData = buildContactPageStructuredData(getPage("hire"));
+    const structuredData = buildContactPageStructuredData(getPage("contact"));
 
     expect(structuredData).toMatchObject({
       "@type": "ContactPage",
-      url: "https://www.guyromellemagayano.com/hire",
+      url: "https://www.guyromellemagayano.com/contact",
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "Client inquiries",
@@ -92,7 +93,7 @@ describe("structured data builders", () => {
       email: "aspiredtechie2010@gmail.com",
       makesOffer: {
         "@type": "OfferCatalog",
-        url: "https://www.guyromellemagayano.com/services",
+        url: "https://www.guyromellemagayano.com/capabilities",
       },
     });
   });

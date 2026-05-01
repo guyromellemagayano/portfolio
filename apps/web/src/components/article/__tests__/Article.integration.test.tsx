@@ -238,7 +238,7 @@ describe("Article Integration Tests", () => {
       // Verify slug is trimmed and used in href (title link)
       const titleElement = screen.getByTestId("mock-card-title");
       const titleLink = titleElement.querySelector("a");
-      expect(titleLink).toHaveAttribute("href", "/articles/trimmed-slug");
+      expect(titleLink).toHaveAttribute("href", "/notes/trimmed-slug");
     });
 
     it("handles article with valid date and creates href for title link", () => {
@@ -248,7 +248,7 @@ describe("Article Integration Tests", () => {
       const link = title.querySelector("a");
 
       // Link should exist when slug is valid
-      expect(link).toHaveAttribute("href", "/articles/test-article");
+      expect(link).toHaveAttribute("href", "/notes/test-article");
     });
 
     it("handles article with invalid date and still renders CTA", () => {

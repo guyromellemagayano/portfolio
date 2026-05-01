@@ -211,7 +211,7 @@ describe("Article", () => {
 
       // Title link should be inside the title element
       const titleLink = titleElement.querySelector("a");
-      expect(titleLink).toHaveAttribute("href", "/articles/test-article");
+      expect(titleLink).toHaveAttribute("href", "/notes/test-article");
     });
 
     it("renders article description as Card.Description", () => {
@@ -321,7 +321,7 @@ describe("Article", () => {
       // Title link should have trimmed slug
       const titleElement = screen.getByTestId("mock-card-title");
       const titleLink = titleElement.querySelector("a");
-      expect(titleLink).toHaveAttribute("href", "/articles/trimmed-slug");
+      expect(titleLink).toHaveAttribute("href", "/notes/trimmed-slug");
     });
 
     it("handles null/undefined title", () => {
@@ -385,7 +385,7 @@ describe("Article", () => {
 
       const titleElement = screen.getByTestId("mock-card-title");
       const titleLink = titleElement.querySelector("a");
-      expect(titleLink).toHaveAttribute("href", "/articles/test-article");
+      expect(titleLink).toHaveAttribute("href", "/notes/test-article");
     });
 
     it("handles tags array", () => {
@@ -552,7 +552,7 @@ describe("Article", () => {
 
       const titleElement = screen.getByTestId("mock-card-title");
       const titleLink = titleElement.querySelector("a");
-      expect(titleLink).toHaveAttribute("href", "/articles/test-article");
+      expect(titleLink).toHaveAttribute("href", "/notes/test-article");
     });
 
     it("creates href for title link when slug is valid regardless of date validity", () => {
@@ -566,7 +566,7 @@ describe("Article", () => {
       // Title link should still be created if slug is valid
       const titleElement = screen.getByTestId("mock-card-title");
       const titleLink = titleElement.querySelector("a");
-      expect(titleLink).toHaveAttribute("href", "/articles/test-article");
+      expect(titleLink).toHaveAttribute("href", "/notes/test-article");
 
       // CTA still renders when date is a non-empty string (even if formatting fails)
       expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
@@ -585,7 +585,7 @@ describe("Article", () => {
       const titleLink = titleElement.querySelector("a");
       expect(titleLink).toHaveAttribute(
         "href",
-        "/articles/different-article-slug"
+        "/notes/different-article-slug"
       );
     });
   });
