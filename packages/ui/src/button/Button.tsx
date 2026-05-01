@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React from "react";
+import React, { type AriaAttributes } from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -40,18 +40,66 @@ export const buttonVariants = cva(
   }
 );
 
-export type ButtonProps = ButtonPrimitiveProps &
-  VariantProps<typeof buttonVariants>;
+type ButtonVariantProps = VariantProps<typeof buttonVariants>;
+type ButtonSize = NonNullable<ButtonVariantProps["size"]>;
+type NonIconButtonSize = Exclude<ButtonSize, "icon">;
+
+type ButtonStateProps = {
+  /** Disable the button and expose a pending state to assistive technology. */
+  loading?: boolean;
+  /** Convenience toggle state that maps to `aria-pressed`. */
+  pressed?: AriaAttributes["aria-pressed"];
+  "aria-pressed"?: AriaAttributes["aria-pressed"];
+};
+
+type ButtonBaseProps = ButtonPrimitiveProps &
+  Omit<ButtonVariantProps, "size"> &
+  ButtonStateProps;
+
+type IconButtonLabelProps =
+  | {
+      "aria-label": string;
+      "aria-labelledby"?: string;
+    }
+  | {
+      "aria-label"?: string;
+      "aria-labelledby": string;
+    };
+
+type IconButtonProps = ButtonBaseProps &
+  IconButtonLabelProps & {
+    size: "icon";
+  };
+
+type NonIconButtonProps = ButtonBaseProps & {
+  size?: NonIconButtonSize | null | undefined;
+};
+
+export type ButtonProps = IconButtonProps | NonIconButtonProps;
 
 export const Button = React.forwardRef<ButtonRef, ButtonProps>((props, ref) => {
-  const { className, size, variant, ...rest } = props;
+  const {
+    "aria-busy": ariaBusy,
+    "aria-pressed": ariaPressed,
+    className,
+    disabled,
+    loading,
+    pressed,
+    size,
+    variant,
+    ...rest
+  } = props;
 
   return (
     <ButtonPrimitive
       ref={ref}
       {...rest}
+      aria-busy={loading ? true : ariaBusy}
+      aria-pressed={pressed ?? ariaPressed}
       className={cn(buttonVariants({ size, variant }), className)}
+      data-loading={loading ? "" : undefined}
       data-slot={getDataSlot(props, "button")}
+      disabled={loading || disabled}
     />
   );
 });

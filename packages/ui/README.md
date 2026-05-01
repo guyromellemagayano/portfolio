@@ -11,6 +11,7 @@ Styled shadcn-inspired React design system components for the portfolio workspac
 - Tailwind-compatible class variants with `cva` and `cn()`
 - Radix-backed interactive primitives through the unified `radix-ui` package
 - Field-aware form controls that inherit accessibility ids and state from `Field`
+- Button state helpers for icon labels, pending actions, and toggle controls
 - Components tested with Vitest + Testing Library
 - TypeScript-first source and build pipeline
 - Workspace-integrated linting, formatting, and coverage scripts
@@ -55,6 +56,20 @@ import { Button, Card, CardContent, CardHeader, CardTitle } from "@portfolio/ui"
   </CardContent>
 </Card>;
 ```
+
+Button usage keeps action state explicit:
+
+```typescript
+import { Button } from "@portfolio/ui";
+
+<Button loading>Saving</Button>;
+<Button pressed>Pin</Button>;
+<Button aria-label="Open menu" size="icon">
+  ...
+</Button>;
+```
+
+`loading` disables the button and adds `aria-busy` plus `data-loading`. `pressed` maps to `aria-pressed`. Icon-sized buttons require `aria-label` or `aria-labelledby`.
 
 Field controls reduce form boilerplate by inheriting ids and accessibility state from `Field`:
 

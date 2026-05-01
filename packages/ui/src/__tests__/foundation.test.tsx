@@ -39,6 +39,10 @@ describe("foundational ui components", () => {
     render(
       <div>
         <Button variant="secondary">Save</Button>
+        <Button loading>Saving</Button>
+        <Button pressed variant="outline">
+          Pin
+        </Button>
         <Link href="https://example.com" newTab>
           Docs
         </Link>
@@ -52,6 +56,19 @@ describe("foundational ui components", () => {
     expect(screen.getByRole("button", { name: "Save" })).toHaveAttribute(
       "type",
       "button"
+    );
+    expect(screen.getByRole("button", { name: "Saving" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Saving" })).toHaveAttribute(
+      "aria-busy",
+      "true"
+    );
+    expect(screen.getByRole("button", { name: "Saving" })).toHaveAttribute(
+      "data-loading",
+      ""
+    );
+    expect(screen.getByRole("button", { name: "Pin" })).toHaveAttribute(
+      "aria-pressed",
+      "true"
     );
     expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute(
       "rel",
