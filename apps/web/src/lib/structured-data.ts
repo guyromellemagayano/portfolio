@@ -12,7 +12,7 @@ import {
   profile,
   socialLinks,
 } from "@web/data/site";
-import { DEFAULT_SOCIAL_IMAGE_PATH } from "@web/lib/metadata";
+import { DEFAULT_SOCIAL_IMAGE_PATH, SITE_NAME } from "@web/lib/metadata";
 import {
   type StructuredData,
   type WebPageMetadata,
@@ -58,13 +58,20 @@ function getPersonReference(): StructuredData {
   };
 }
 
+function getWebsiteIdReference(): StructuredData {
+  return {
+    "@id": getWebsiteId(),
+    "@type": "WebSite",
+  };
+}
+
 function getWebsiteReference(): StructuredData {
   return {
     "@id": getWebsiteId(),
     "@type": "WebSite",
-    name: `${profile.name} Portfolio`,
-    alternateName: profile.name,
-    url: getSiteUrl(),
+    name: SITE_NAME,
+    alternateName: [`${SITE_NAME} Portfolio`, "Guy Romelle"],
+    url: getPageUrl("/"),
     description: profile.heroIntro,
     genre: "Portfolio",
     publisher: getPersonReference(),
@@ -111,7 +118,7 @@ export function buildWebPageStructuredData(page: PageData): StructuredData {
     name: page.seoTitle || page.title,
     url: getPageUrl(pagePath),
     description: page.seoDescription || page.intro || page.title,
-    isPartOf: getWebsiteReference(),
+    isPartOf: getWebsiteIdReference(),
     author: getPersonReference(),
     publisher: getPersonReference(),
     copyrightHolder: getPersonReference(),

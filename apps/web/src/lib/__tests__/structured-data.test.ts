@@ -13,6 +13,8 @@ import {
   buildContactPageStructuredData,
   buildPersonStructuredData,
   buildProfessionalServiceStructuredData,
+  buildWebPageStructuredData,
+  buildWebsiteStructuredData,
 } from "@web/lib/structured-data";
 
 describe("structured data builders", () => {
@@ -39,6 +41,33 @@ describe("structured data builders", () => {
           item: "https://www.guyromellemagayano.com/capabilities",
         },
       ],
+    });
+  });
+
+  it("builds home page WebSite schema with a consistent preferred site name", () => {
+    const structuredData = buildWebsiteStructuredData();
+
+    expect(structuredData).toMatchObject({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Guy Romelle Magayano",
+      alternateName: ["Guy Romelle Magayano Portfolio", "Guy Romelle"],
+      url: "https://www.guyromellemagayano.com/",
+    });
+  });
+
+  it("references the site node from page schema without duplicating site-name data", () => {
+    const structuredData = buildWebPageStructuredData(getPage(""));
+
+    expect(structuredData).toMatchObject({
+      "@type": "WebPage",
+      isPartOf: {
+        "@id": "https://www.guyromellemagayano.com/#website",
+        "@type": "WebSite",
+      },
+    });
+    expect(structuredData.isPartOf).not.toMatchObject({
+      name: "Guy Romelle Magayano",
     });
   });
 
