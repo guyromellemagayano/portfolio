@@ -36,6 +36,9 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`
 - `Input`
 - `Textarea`
+- `Checkbox`
+- `Switch`
+- `RadioGroup`, `RadioGroupItem`
 - `Label`
 - `Field`, `FieldLabel`, `FieldDescription`, `FieldError`
 - `Section`
@@ -128,6 +131,46 @@ import { Field, FieldDescription, FieldError, FieldLabel, Input } from "@portfol
 ```
 
 `Input`, `Textarea`, and `SelectTrigger` receive the generated control id, invalid/required state, and described-by relationships automatically.
+
+Choice controls receive the same field state without native-only boilerplate:
+
+```typescript
+import {
+  Checkbox,
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+  RadioGroup,
+  RadioGroupItem,
+  Switch,
+} from "@portfolio/ui";
+
+<Field id="terms" invalid required>
+  <FieldLabel>Accept terms</FieldLabel>
+  <Checkbox />
+  <FieldDescription>Required before continuing.</FieldDescription>
+  <FieldError>Accept the terms to continue.</FieldError>
+</Field>;
+
+<Field id="updates" required>
+  <FieldLabel>Email updates</FieldLabel>
+  <Switch />
+  <FieldDescription>Receive product updates.</FieldDescription>
+</Field>;
+
+<Field id="plan" required>
+  <FieldLabel>Plan</FieldLabel>
+  <RadioGroup defaultValue="pro">
+    <div>
+      <RadioGroupItem id="plan-pro" value="pro" />
+      <label htmlFor="plan-pro">Pro</label>
+    </div>
+  </RadioGroup>
+</Field>;
+```
+
+`Checkbox`, `Switch`, and `RadioGroup` inherit the field label, description, required state, and invalid state through ARIA attributes while keeping item labels local to each option.
 
 ### Interactive Components
 

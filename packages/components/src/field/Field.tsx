@@ -18,6 +18,7 @@ export type FieldProps<TAs extends PrimitiveElement = "div"> = PrimitiveProps<
   descriptionId?: string;
   errorId?: string;
   invalid?: boolean;
+  labelId?: string;
   required?: boolean;
 };
 
@@ -32,6 +33,7 @@ export const Field = React.forwardRef<FieldRef, FieldProps>((props, ref) => {
     errorId,
     id,
     invalid,
+    labelId,
     required,
     ...rest
   } = props;
@@ -40,6 +42,7 @@ export const Field = React.forwardRef<FieldRef, FieldProps>((props, ref) => {
   const resolvedControlId = controlId ?? `${fieldId}-control`;
   const resolvedDescriptionId = descriptionId ?? `${fieldId}-description`;
   const resolvedErrorId = errorId ?? `${fieldId}-error`;
+  const resolvedLabelId = labelId ?? `${fieldId}-label`;
 
   return (
     <FieldContext
@@ -48,6 +51,7 @@ export const Field = React.forwardRef<FieldRef, FieldProps>((props, ref) => {
         descriptionId: resolvedDescriptionId,
         errorId: resolvedErrorId,
         invalid,
+        labelId: resolvedLabelId,
         required,
       }}
     >

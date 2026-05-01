@@ -18,13 +18,14 @@ const FieldLabelRoot = createHtmlPrimitive("FieldLabel", "label");
 export const FieldLabel = React.forwardRef<FieldLabelRef, FieldLabelProps>(
   (props, ref) => {
     const field = useFieldContext();
-    const { htmlFor = field?.controlId, ...rest } = props;
+    const { htmlFor = field?.controlId, id = field?.labelId, ...rest } = props;
 
     return (
       <FieldLabelRoot
         ref={ref}
         data-required={field?.required ? "" : undefined}
         htmlFor={htmlFor}
+        id={id}
         {...rest}
       />
     );

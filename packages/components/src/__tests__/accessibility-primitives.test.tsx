@@ -31,6 +31,7 @@ describe("accessibility primitives", () => {
     expect(field).toHaveAttribute("data-invalid", "");
     expect(field).toHaveAttribute("data-required", "");
     expect(screen.getByText("Email")).toHaveAttribute("for", "email-control");
+    expect(screen.getByText("Email")).toHaveAttribute("id", "email-label");
     expect(screen.getByTestId("control")).toHaveAttribute(
       "id",
       "email-control"
@@ -79,6 +80,7 @@ describe("accessibility primitives", () => {
       "for",
       "custom-profile"
     );
+    expect(screen.getByText("Profile")).toHaveAttribute("id", "profile-label");
     expect(screen.getByTestId("profile-control")).toHaveAttribute(
       "id",
       "custom-profile"

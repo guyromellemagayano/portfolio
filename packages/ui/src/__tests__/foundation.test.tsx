@@ -15,6 +15,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Checkbox,
   cn,
   Field,
   FieldDescription,
@@ -23,9 +24,12 @@ import {
   Input,
   Label,
   Link,
+  RadioGroup,
+  RadioGroupItem,
   Section,
   Separator,
   Skeleton,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -56,6 +60,11 @@ describe("foundational ui components", () => {
         <Badge variant="outline">Stable</Badge>
         <Input aria-label="Name" />
         <Textarea aria-label="Bio" />
+        <Checkbox aria-label="Accept terms" />
+        <Switch aria-label="Email updates" />
+        <RadioGroup aria-label="Plan" defaultValue="pro">
+          <RadioGroupItem value="pro" />
+        </RadioGroup>
         <Label htmlFor="name">Name</Label>
       </div>
     );
@@ -92,6 +101,16 @@ describe("foundational ui components", () => {
     expect(screen.getByText("Stable")).toHaveAttribute("data-slot", "badge");
     expect(screen.getByLabelText("Name")).toHaveAttribute("type", "text");
     expect(screen.getByLabelText("Bio").tagName).toBe("TEXTAREA");
+    expect(
+      screen.getByRole("checkbox", { name: "Accept terms" })
+    ).toHaveAttribute("data-slot", "checkbox");
+    expect(
+      screen.getByRole("switch", { name: "Email updates" })
+    ).toHaveAttribute("data-slot", "switch");
+    expect(screen.getByRole("radiogroup", { name: "Plan" })).toHaveAttribute(
+      "data-slot",
+      "radio-group"
+    );
   });
 
   it("renders structured display primitives with shadcn-style slots", () => {
@@ -183,6 +202,7 @@ describe("foundational ui components", () => {
     );
 
     expect(screen.getByText("Email")).toHaveAttribute("for", "email-control");
+    expect(screen.getByText("Email")).toHaveAttribute("id", "email-label");
     expect(screen.getByLabelText("Email")).toHaveAttribute(
       "id",
       "email-control"

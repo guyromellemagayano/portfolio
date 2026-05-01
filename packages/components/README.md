@@ -123,7 +123,7 @@ import {
 </Field>;
 ```
 
-`Input`, `Textarea`, and native `Select` derive their control id, `required`, `aria-invalid`, `data-invalid`, `data-required`, and `aria-describedby` attributes from the nearest `Field`. Use `controlId`, `descriptionId`, or `errorId` on `Field` when you need stable custom ids.
+`Input`, `Textarea`, and native `Select` derive their control id, `required`, `aria-invalid`, `data-invalid`, `data-required`, and `aria-describedby` attributes from the nearest `Field`. `FieldLabel` also receives a stable id for composite controls that need `aria-labelledby`. Use `controlId`, `labelId`, `descriptionId`, or `errorId` on `Field` when you need stable custom ids.
 
 Instrumentation metadata is attribute-only and does not load an analytics runtime:
 

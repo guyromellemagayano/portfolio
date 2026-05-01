@@ -5,12 +5,14 @@ export interface FieldContextValue {
   descriptionId: string;
   errorId: string;
   invalid?: boolean;
+  labelId: string;
   required?: boolean;
 }
 
 export interface FieldControlProps {
   "aria-describedby"?: string;
   "aria-invalid"?: AriaAttributes["aria-invalid"];
+  "aria-labelledby"?: string;
   "aria-required"?: AriaAttributes["aria-required"];
   "data-invalid"?: string;
   "data-required"?: string;
@@ -21,6 +23,7 @@ export interface FieldControlProps {
 export interface FieldControlOptions {
   includeDescription?: boolean;
   includeError?: boolean;
+  includeLabel?: boolean;
   nativeRequired?: boolean;
 }
 
@@ -57,11 +60,16 @@ export function getFieldControlProps<TProps extends FieldControlProps>(
 
   const includeDescription = options.includeDescription ?? true;
   const includeError = options.includeError ?? true;
+  const includeLabel = options.includeLabel ?? false;
   const nativeRequired = options.nativeRequired ?? true;
   const describedBy = mergeIdRefs(
     props["aria-describedby"],
     includeDescription ? field.descriptionId : undefined,
     includeError && field.invalid ? field.errorId : undefined
+  );
+  const labelledBy = mergeIdRefs(
+    props["aria-labelledby"],
+    includeLabel ? field.labelId : undefined
   );
   const nextProps: FieldControlProps = {
     ...props,
@@ -70,6 +78,10 @@ export function getFieldControlProps<TProps extends FieldControlProps>(
 
   if (describedBy) {
     nextProps["aria-describedby"] = describedBy;
+  }
+
+  if (labelledBy) {
+    nextProps["aria-labelledby"] = labelledBy;
   }
 
   if (field.invalid) {

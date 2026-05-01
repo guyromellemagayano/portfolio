@@ -10,6 +10,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  Checkbox,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -26,6 +27,8 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  RadioGroup,
+  RadioGroupItem,
   Select,
   SelectContent,
   SelectItem,
@@ -36,6 +39,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
+  Switch,
   Tabs,
   TabsContent,
   TabsList,
@@ -205,5 +209,68 @@ describe("interactive ui components", () => {
     expect(
       document.querySelector('[data-slot="select-trigger"]')
     ).toHaveAttribute("aria-required", "true");
+  });
+
+  it("wires field accessibility state into choice controls", () => {
+    render(
+      <div>
+        <Field id="terms" invalid required>
+          <FieldLabel>Accept terms</FieldLabel>
+          <Checkbox />
+          <FieldDescription>Required before continuing.</FieldDescription>
+          <FieldError>Accept the terms to continue.</FieldError>
+        </Field>
+        <Field id="updates" required>
+          <FieldLabel>Email updates</FieldLabel>
+          <Switch />
+          <FieldDescription>Receive product updates.</FieldDescription>
+        </Field>
+        <Field id="plan" invalid required>
+          <FieldLabel>Plan</FieldLabel>
+          <RadioGroup defaultValue="pro">
+            <div>
+              <RadioGroupItem id="plan-pro" value="pro" />
+              <label htmlFor="plan-pro">Pro</label>
+            </div>
+          </RadioGroup>
+          <FieldDescription>Select one plan.</FieldDescription>
+          <FieldError>A plan is required.</FieldError>
+        </Field>
+      </div>
+    );
+
+    const checkbox = screen.getByRole("checkbox", { name: "Accept terms" });
+    const switchControl = screen.getByRole("switch", {
+      name: "Email updates",
+    });
+    const radioGroup = screen.getByRole("radiogroup", { name: "Plan" });
+
+    expect(checkbox).toHaveAttribute("id", "terms-control");
+    expect(checkbox).toHaveAttribute("aria-labelledby", "terms-label");
+    expect(checkbox).toHaveAttribute(
+      "aria-describedby",
+      "terms-description terms-error"
+    );
+    expect(checkbox).toHaveAttribute("aria-invalid", "true");
+    expect(checkbox).toHaveAttribute("aria-required", "true");
+    expect(checkbox).toHaveAttribute("data-invalid", "");
+    expect(checkbox).toHaveAttribute("data-required", "");
+
+    expect(switchControl).toHaveAttribute("id", "updates-control");
+    expect(switchControl).toHaveAttribute("aria-labelledby", "updates-label");
+    expect(switchControl).toHaveAttribute(
+      "aria-describedby",
+      "updates-description"
+    );
+    expect(switchControl).toHaveAttribute("aria-required", "true");
+
+    expect(radioGroup).toHaveAttribute("id", "plan-control");
+    expect(radioGroup).toHaveAttribute("aria-labelledby", "plan-label");
+    expect(radioGroup).toHaveAttribute(
+      "aria-describedby",
+      "plan-description plan-error"
+    );
+    expect(radioGroup).toHaveAttribute("aria-invalid", "true");
+    expect(radioGroup).toHaveAttribute("aria-required", "true");
   });
 });
