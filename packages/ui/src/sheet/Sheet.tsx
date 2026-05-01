@@ -50,16 +50,40 @@ const sheetVariants = cva(
   }
 );
 
-export type SheetContentProps = React.ComponentPropsWithoutRef<
-  typeof SheetPrimitive.Content
+export type SheetContentProps = Omit<
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+  "title"
 > &
-  VariantProps<typeof sheetVariants>;
+  VariantProps<typeof sheetVariants> & {
+    closeLabel?: string;
+    description?: React.ReactNode;
+    descriptionProps?: React.ComponentPropsWithoutRef<
+      typeof SheetPrimitive.Description
+    >;
+    headerProps?: React.HTMLAttributes<HTMLDivElement>;
+    title?: React.ReactNode;
+    titleProps?: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>;
+  };
 
 export const SheetContent = React.forwardRef<
   React.ComponentRef<typeof SheetPrimitive.Content>,
   SheetContentProps
 >((props, ref) => {
-  const { children, className, side, ...rest } = props;
+  const {
+    children,
+    className,
+    closeLabel = "Close",
+    description,
+    descriptionProps,
+    headerProps,
+    side,
+    title,
+    titleProps,
+    ...rest
+  } = props;
+  const hasDescription = description !== undefined && description !== null;
+  const hasTitle = title !== undefined && title !== null;
+  const hasGeneratedHeader = hasTitle || hasDescription;
 
   return (
     <SheetPortal>
@@ -70,10 +94,20 @@ export const SheetContent = React.forwardRef<
         className={cn(sheetVariants({ side }), className)}
         data-slot={getDataSlot(props, "sheet-content")}
       >
+        {hasGeneratedHeader ? (
+          <SheetHeader {...headerProps}>
+            {hasTitle ? <SheetTitle {...titleProps}>{title}</SheetTitle> : null}
+            {hasDescription ? (
+              <SheetDescription {...descriptionProps}>
+                {description}
+              </SheetDescription>
+            ) : null}
+          </SheetHeader>
+        ) : null}
         {children}
         <SheetPrimitive.Close className="focus-visible:ring-ring absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:outline-none">
           <X aria-hidden="true" className="h-4 w-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{closeLabel}</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>
     </SheetPortal>

@@ -143,15 +143,21 @@ import { Field, FieldDescription, FieldError, FieldLabel, Input } from "@portfol
 Radix `asChild` composition belongs in this package, not in `@portfolio/components`.
 
 ```typescript
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@portfolio/ui";
+import { Dialog, DialogContent, DialogTrigger } from "@portfolio/ui";
 
 <Dialog>
   <DialogTrigger>Open</DialogTrigger>
-  <DialogContent>
-    <DialogTitle>Dialog title</DialogTitle>
+  <DialogContent
+    closeLabel="Close profile editor"
+    description="Update the account details shown on your public profile."
+    title="Edit profile"
+  >
+    Profile form fields
   </DialogContent>
 </Dialog>;
 ```
+
+Prefer `title`, `description`, and `closeLabel` on `DialogContent` and `SheetContent` for the common path. They render the Radix title, description, and named close control automatically. Use `headerProps`, `titleProps`, and `descriptionProps` when the generated header needs custom attributes or classes. Manual composition with `DialogHeader`, `DialogTitle`, `DialogDescription`, `SheetHeader`, `SheetTitle`, and `SheetDescription` remains supported for custom layouts.
 
 ### Legacy Demo Component
 

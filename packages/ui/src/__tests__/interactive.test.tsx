@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -47,6 +47,50 @@ import {
 } from "../index";
 
 describe("interactive ui components", () => {
+  it("renders low-boilerplate accessible dialog content", () => {
+    render(
+      <Dialog open>
+        <DialogContent
+          closeLabel="Close profile editor"
+          description="Update the account details shown on your public profile."
+          title="Edit profile"
+        >
+          <p>Profile form fields</p>
+        </DialogContent>
+      </Dialog>
+    );
+
+    expect(
+      screen.getByRole("dialog", { name: "Edit profile" })
+    ).toHaveAccessibleDescription(
+      "Update the account details shown on your public profile."
+    );
+    expect(
+      screen.getByRole("button", { name: "Close profile editor" })
+    ).toBeInTheDocument();
+  });
+
+  it("renders low-boilerplate accessible sheet content", () => {
+    render(
+      <Sheet open>
+        <SheetContent
+          closeLabel="Close filters"
+          description="Refine the visible project list."
+          title="Project filters"
+        >
+          <p>Filter controls</p>
+        </SheetContent>
+      </Sheet>
+    );
+
+    expect(
+      screen.getByRole("dialog", { name: "Project filters" })
+    ).toHaveAccessibleDescription("Refine the visible project list.");
+    expect(
+      screen.getByRole("button", { name: "Close filters" })
+    ).toBeInTheDocument();
+  });
+
   it("renders dialog and alert dialog surfaces", () => {
     render(
       <div>

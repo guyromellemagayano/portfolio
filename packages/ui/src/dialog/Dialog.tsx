@@ -32,11 +32,38 @@ export const DialogOverlay = React.forwardRef<
 
 DialogOverlay.displayName = "DialogOverlay";
 
+export type DialogContentProps = Omit<
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
+  "title"
+> & {
+  closeLabel?: string;
+  description?: React.ReactNode;
+  descriptionProps?: React.ComponentPropsWithoutRef<
+    typeof DialogPrimitive.Description
+  >;
+  headerProps?: React.HTMLAttributes<HTMLDivElement>;
+  title?: React.ReactNode;
+  titleProps?: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>;
+};
+
 export const DialogContent = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+  DialogContentProps
 >((props, ref) => {
-  const { children, className, ...rest } = props;
+  const {
+    children,
+    className,
+    closeLabel = "Close",
+    description,
+    descriptionProps,
+    headerProps,
+    title,
+    titleProps,
+    ...rest
+  } = props;
+  const hasDescription = description !== undefined && description !== null;
+  const hasTitle = title !== undefined && title !== null;
+  const hasGeneratedHeader = hasTitle || hasDescription;
 
   return (
     <DialogPortal>
@@ -50,10 +77,22 @@ export const DialogContent = React.forwardRef<
         )}
         data-slot={getDataSlot(props, "dialog-content")}
       >
+        {hasGeneratedHeader ? (
+          <DialogHeader {...headerProps}>
+            {hasTitle ? (
+              <DialogTitle {...titleProps}>{title}</DialogTitle>
+            ) : null}
+            {hasDescription ? (
+              <DialogDescription {...descriptionProps}>
+                {description}
+              </DialogDescription>
+            ) : null}
+          </DialogHeader>
+        ) : null}
         {children}
         <DialogPrimitive.Close className="focus-visible:ring-ring absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:outline-none">
           <X aria-hidden="true" className="h-4 w-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{closeLabel}</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPortal>
