@@ -19,42 +19,59 @@ export interface WorkExperience {
 }
 
 export const clients: Client[] = [
-  { name: "Frontend architecture" },
-  { name: "Design systems" },
-  { name: "Product platforms" },
-  { name: "Content workflows" },
+  { name: "11+ years software development" },
+  { name: "Commerce, publishing, SaaS, and internal tools" },
+  { name: "React, TypeScript, Python, Django, Node.js, AWS" },
+  { name: "Performance, testing, CI/CD, and release reliability" },
 ];
 
 export const workExperience: WorkExperience[] = [
   {
-    company: "Planetaria",
-    role: "CEO",
-    startDate: "2019-01-01",
+    company: "Stack Market Labs",
+    role: "Founder and Principal Consultant",
+    startDate: "2023-01-01",
     current: true,
-    summary: "Leading product strategy, engineering direction, and operations.",
-  },
-  {
-    company: "Airbnb",
-    role: "Product Engineer",
-    startDate: "2016-01-01",
-    endDate: "2019-01-01",
     summary:
-      "Worked on product systems and reusable frontend patterns for marketplace surfaces.",
+      "Advising and delivering focused platform, frontend, automation, and operations work for teams that need clearer systems and safer delivery.",
   },
   {
-    company: "Facebook",
-    role: "Frontend Engineer",
+    company: "IONA Commerce",
+    role: "Full Stack Developer / Consultant",
+    startDate: "2024-01-01",
+    endDate: "2025-01-01",
+    summary:
+      "Supported localized commerce storefront work across Next.js, Sanity, commercetools, performance, testing, and revenue-critical journeys.",
+  },
+  {
+    company: "X-Team / News Corp Australia",
+    role: "Senior WordPress Engineer",
+    startDate: "2023-01-01",
+    endDate: "2023-12-01",
+    summary:
+      "Modernized high-traffic publishing systems, templates, React modules, quality checks, and release workflows for media brands.",
+  },
+  {
+    company: "Epic Design Labs / MultiplyMii",
+    role: "Team Lead / Senior Full Stack Engineer",
+    startDate: "2020-01-01",
+    endDate: "2023-01-01",
+    summary:
+      "Led and built full-stack SaaS, SEO analytics, crawler, dashboard, infrastructure, observability, and delivery systems.",
+  },
+  {
+    company: "MAKE Interactive / ZUID Creatives",
+    role: "Full Stack Engineer / WordPress Developer",
+    startDate: "2019-01-01",
+    endDate: "2020-01-01",
+    summary:
+      "Built headless commerce, CMS, SEO, localization, and marketing platform work across modern frontend and WordPress systems.",
+  },
+  {
+    company: "Infosoft Studio",
+    role: "WordPress Engineer",
     startDate: "2014-01-01",
-    endDate: "2016-01-01",
+    endDate: "2018-01-01",
     summary:
-      "Built interface systems for high-traffic product experiences and internal tooling.",
-  },
-  {
-    company: "Starbucks",
-    role: "Software Engineer",
-    startDate: "2012-01-01",
-    endDate: "2014-01-01",
-    summary:
-      "Shipped customer-facing and operational web experiences across retail workflows.",
+      "Built and maintained accessible, secure, and maintainable WordPress publishing systems for public-sector and organizational sites.",
   },
 ];

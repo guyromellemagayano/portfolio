@@ -242,8 +242,10 @@ describe("Resume", () => {
       render(<Resume />);
 
       // Should render at least one company name
-      expect(screen.getByText("Planetaria")).toBeInTheDocument();
-      expect(screen.getByText("CEO")).toBeInTheDocument();
+      expect(screen.getByText("Stack Market Labs")).toBeInTheDocument();
+      expect(
+        screen.getByText("Founder and Principal Consultant")
+      ).toBeInTheDocument();
     });
   });
 
@@ -317,7 +319,7 @@ describe("Resume", () => {
       expect(list).toBeInTheDocument();
 
       const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBe(4); // RESUME_DATA has 4 items
+      expect(listItems.length).toBe(6); // RESUME_DATA has 6 items
     });
   });
 
@@ -452,16 +454,17 @@ describe("Resume", () => {
       expect(dls.length).toBeGreaterThan(0);
     });
 
-    it("images have descriptive alt text", () => {
+    it("renders decorative role marks for each role", () => {
       render(<Resume />);
 
-      const images = screen.getAllByTestId("resume-logo-image");
-      expect(images.length).toBe(4);
-      images.forEach((img) => {
-        expect(img).toHaveAttribute("alt");
-        expect((img.getAttribute("alt") ?? "").length).toBeGreaterThan(0);
+      const marks = screen.getAllByTestId("resume-role-mark");
+      const expectedMarks = ["SML", "IC", "NC", "ED", "MI", "IS"];
+
+      expect(marks).toHaveLength(6);
+      marks.forEach((mark, index) => {
+        expect(mark).toHaveAttribute("aria-hidden", "true");
+        expect(mark).toHaveTextContent(expectedMarks[index] ?? "");
       });
-      expect(images[0]).toHaveAttribute("alt", "Planetaria");
     });
 
     it("time elements have dateTime in ISO-friendly format", () => {

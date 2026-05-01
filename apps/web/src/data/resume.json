@@ -2,35 +2,49 @@
   "resumeFileName": "/resume.pdf",
   "roles": [
     {
-      "company": "Planetaria",
-      "title": "CEO",
-      "logoKey": "planetaria",
-      "start": "2019",
+      "company": "Stack Market Labs",
+      "title": "Founder and Principal Consultant",
+      "mark": "SML",
+      "start": "2023",
       "end": {
         "label": "Present",
         "dateTime": "present"
       }
     },
     {
-      "company": "Airbnb",
-      "title": "Product Designer",
-      "logoKey": "airbnb",
+      "company": "IONA Commerce",
+      "title": "Full Stack Developer / Consultant",
+      "mark": "IC",
+      "start": "2024",
+      "end": "2025"
+    },
+    {
+      "company": "X-Team / News Corp Australia",
+      "title": "Senior WordPress Engineer",
+      "mark": "NC",
+      "start": "2023",
+      "end": "2023"
+    },
+    {
+      "company": "Epic Design Labs / MultiplyMii",
+      "title": "Team Lead / Senior Full Stack Engineer",
+      "mark": "ED",
+      "start": "2020",
+      "end": "2023"
+    },
+    {
+      "company": "MAKE Interactive / ZUID Creatives",
+      "title": "Full Stack Engineer / WordPress Developer",
+      "mark": "MI",
+      "start": "2019",
+      "end": "2020"
+    },
+    {
+      "company": "Infosoft Studio",
+      "title": "WordPress Engineer",
+      "mark": "IS",
       "start": "2014",
-      "end": "2019"
-    },
-    {
-      "company": "Facebook",
-      "title": "iOS Software Engineer",
-      "logoKey": "facebook",
-      "start": "2011",
-      "end": "2014"
-    },
-    {
-      "company": "Starbucks",
-      "title": "Shift Supervisor",
-      "logoKey": "starbucks",
-      "start": "2008",
-      "end": "2011"
+      "end": "2018"
     }
   ]
 }

@@ -6,7 +6,6 @@
 
 import { type IconProps } from "@web/components/icon";
 import { socialLinks } from "@web/data/site";
-import { type ImageSource } from "@web/lib/media";
 
 // ============================================================================
 // SOCIAL LIST DATA
@@ -28,39 +27,6 @@ export type CommonLayoutComponentData = Readonly<{
   title?: string;
   intro?: string;
 }>;
-
-// ============================================================================
-// PROJECTS DATA
-// ============================================================================
-
-// const PROJECT_LOGOS = {
-//   planetaria: logoPlanetaria,
-//   animaginary: logoAnimaginary,
-//   heliostream: logoHelioStream,
-//   cosmos: logoCosmos,
-//   openshuttle: logoOpenShuttle,
-// } as const;
-
-// type ProjectLogoKey = keyof typeof PROJECT_LOGOS;
-
-// type ProjectData = Readonly<{
-//   name: string;
-//   description: string;
-//   link: { href: string; label: string };
-//   logoKey: ProjectLogoKey;
-// }>;
-
-export type ProjectsComponentData = ReadonlyArray<{
-  name: string;
-  description: string;
-  link: { href: string; label: string };
-  logo: ImageSource;
-}>;
-
-export type ProjectsPageLayoutData = CommonLayoutComponentData &
-  Readonly<{
-    projects: ProjectsComponentData;
-  }>;
 
 // ============================================================================
 // PAGE DATA SHAPE

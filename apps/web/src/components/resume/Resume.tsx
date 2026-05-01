@@ -25,7 +25,6 @@ import {
   type ResumeRole,
 } from "@web/config/resume";
 import { useTranslations } from "@web/lib/i18n";
-import { getImageSource } from "@web/lib/media";
 import { cn, getRoleItemKey, parseRoleDate } from "@web/utils/helpers";
 
 // ============================================================================
@@ -150,13 +149,12 @@ export function ResumeRoleListItem<P extends Record<string, unknown> = {}>(
       {...(rest as ComponentPropsWithoutRef<ListItemElementType>)}
       className={cn("flex gap-4", className)}
     >
-      <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-        <img
-          data-testid="resume-logo-image"
-          src={getImageSource(roleData.logo)}
-          alt={roleData.company}
-          className="h-7 w-7"
-        />
+      <div
+        aria-hidden="true"
+        className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full bg-zinc-950 text-[0.65rem] font-semibold tracking-[0.08em] text-white shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-100 dark:text-zinc-950 dark:ring-0"
+        data-testid="resume-role-mark"
+      >
+        {roleData.mark}
       </div>
       <dl className="flex flex-auto flex-wrap gap-x-2">
         <dt className="sr-only">{RESUME_ROLE_LIST_ITEM_I18N.company}</dt>

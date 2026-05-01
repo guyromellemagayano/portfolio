@@ -256,35 +256,55 @@ describe("Resume Integration Tests", () => {
       const list = screen.getByTestId("list");
       expect(list).toBeInTheDocument();
 
-      // Should render list items for each role in RESUME_DATA (4 items)
+      // Should render list items for each role in RESUME_DATA (6 items)
       const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBe(4);
+      expect(listItems.length).toBe(6);
     });
 
     it("renders all role data correctly", () => {
       render(<Resume />);
 
       // Should render all companies from RESUME_DATA
-      expect(screen.getByText("Planetaria")).toBeInTheDocument();
-      expect(screen.getByText("Airbnb")).toBeInTheDocument();
-      expect(screen.getByText("Facebook")).toBeInTheDocument();
-      expect(screen.getByText("Starbucks")).toBeInTheDocument();
+      expect(screen.getByText("Stack Market Labs")).toBeInTheDocument();
+      expect(screen.getByText("IONA Commerce")).toBeInTheDocument();
+      expect(
+        screen.getByText("X-Team / News Corp Australia")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("Epic Design Labs / MultiplyMii")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("MAKE Interactive / ZUID Creatives")
+      ).toBeInTheDocument();
+      expect(screen.getByText("Infosoft Studio")).toBeInTheDocument();
 
       // Should render all titles
-      expect(screen.getByText("CEO")).toBeInTheDocument();
-      expect(screen.getByText("Product Designer")).toBeInTheDocument();
-      expect(screen.getByText("iOS Software Engineer")).toBeInTheDocument();
-      expect(screen.getByText("Shift Supervisor")).toBeInTheDocument();
+      expect(
+        screen.getByText("Founder and Principal Consultant")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("Full Stack Developer / Consultant")
+      ).toBeInTheDocument();
+      expect(screen.getByText("Senior WordPress Engineer")).toBeInTheDocument();
+      expect(
+        screen.getByText("Team Lead / Senior Full Stack Engineer")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("Full Stack Engineer / WordPress Developer")
+      ).toBeInTheDocument();
+      expect(screen.getByText("WordPress Engineer")).toBeInTheDocument();
     });
 
     it("renders role dates correctly", () => {
       render(<Resume />);
 
       // Should render date ranges for roles (using getAllByText since dates may appear multiple times)
+      expect(screen.getAllByText("2024").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("2025").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("2023").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("2020").length).toBeGreaterThan(0);
       expect(screen.getAllByText("2019").length).toBeGreaterThan(0);
       expect(screen.getAllByText("2014").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("2011").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("2008").length).toBeGreaterThan(0);
     });
   });
 
@@ -320,7 +340,7 @@ describe("Resume Integration Tests", () => {
       render(<Resume />);
 
       const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBe(4);
+      expect(listItems.length).toBe(6);
 
       // Each list item should contain role information
       listItems.forEach((item) => {
@@ -333,18 +353,23 @@ describe("Resume Integration Tests", () => {
 
       // Should render company names, titles, and dates from RESUME_DATA
       const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBe(4);
+      expect(listItems.length).toBe(6);
 
       // Verify structure: each item should have company, title, and dates
-      expect(screen.getByText("Planetaria")).toBeInTheDocument();
-      expect(screen.getByText("CEO")).toBeInTheDocument();
+      expect(screen.getByText("Stack Market Labs")).toBeInTheDocument();
+      expect(
+        screen.getByText("Founder and Principal Consultant")
+      ).toBeInTheDocument();
     });
 
-    it("renders images for each role", () => {
+    it("renders decorative role marks for each role", () => {
       render(<Resume />);
 
-      const images = screen.getAllByTestId("resume-logo-image");
-      expect(images.length).toBe(4); // One image per role
+      const marks = screen.getAllByTestId("resume-role-mark");
+      expect(marks).toHaveLength(6);
+      marks.forEach((mark) => {
+        expect(mark).toHaveAttribute("aria-hidden", "true");
+      });
     });
   });
 
@@ -366,7 +391,7 @@ describe("Resume Integration Tests", () => {
       const list = screen.getByTestId("list");
       expect(list).toBeInTheDocument();
       const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBe(4);
+      expect(listItems.length).toBe(6);
 
       // ResumeDownloadButton
       const button = screen.getByTestId("button");
@@ -449,7 +474,7 @@ describe("Resume Integration Tests", () => {
       render(<Resume />);
 
       const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBe(4);
+      expect(listItems.length).toBe(6);
 
       listItems.forEach((li) => {
         const dl = li.querySelector("dl");
@@ -461,15 +486,16 @@ describe("Resume Integration Tests", () => {
       });
     });
 
-    it("all images have descriptive alt text", () => {
+    it("all role marks are decorative and use the configured initials", () => {
       render(<Resume />);
 
-      const images = screen.getAllByTestId("resume-logo-image");
-      const expectedAlts = ["Planetaria", "Airbnb", "Facebook", "Starbucks"];
+      const marks = screen.getAllByTestId("resume-role-mark");
+      const expectedMarks = ["SML", "IC", "NC", "ED", "MI", "IS"];
 
-      expect(images.length).toBe(4);
-      images.forEach((img, i) => {
-        expect(img).toHaveAttribute("alt", expectedAlts[i]);
+      expect(marks).toHaveLength(6);
+      marks.forEach((mark, index) => {
+        expect(mark).toHaveAttribute("aria-hidden", "true");
+        expect(mark).toHaveTextContent(expectedMarks[index] ?? "");
       });
     });
 
@@ -492,7 +518,7 @@ describe("Resume Integration Tests", () => {
       const dateDds = document.querySelectorAll(
         'dd[aria-label][class*="ml-auto"]'
       );
-      expect(dateDds.length).toBe(4);
+      expect(dateDds.length).toBe(6);
 
       const timeElements = document.querySelectorAll("time[dateTime]");
       expect(timeElements.length).toBeGreaterThanOrEqual(4);

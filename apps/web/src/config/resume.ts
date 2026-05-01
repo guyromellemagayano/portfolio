@@ -5,23 +5,17 @@
  */
 
 import resumeConfig from "@web/data/resume.json";
-import logoAirbnb from "@web/images/logos/airbnb.svg";
-import logoFacebook from "@web/images/logos/facebook.svg";
-import logoPlanetaria from "@web/images/logos/planetaria.svg";
-import logoStarbucks from "@web/images/logos/starbucks.svg";
 
 // ============================================================================
 // RESUME CONFIG TYPES
 // ============================================================================
-
-export type ResumeLogoKey = "planetaria" | "airbnb" | "facebook" | "starbucks";
 
 export type ResumeRoleDate = string | { label: string; dateTime: string };
 
 export type ResumeRole = Readonly<{
   company: string;
   title: string;
-  logo: ImageSource;
+  mark: string;
   start: ResumeRoleDate;
   end: ResumeRoleDate;
 }>;
@@ -29,7 +23,7 @@ export type ResumeRole = Readonly<{
 type ResumeRoleConfig = Readonly<{
   company: string;
   title: string;
-  logoKey: ResumeLogoKey;
+  mark: string;
   start: ResumeRoleDate;
   end: ResumeRoleDate;
 }>;
@@ -42,23 +36,6 @@ type ResumeConfigData = Readonly<{
 // ============================================================================
 // RESUME CONFIG DATA
 // ============================================================================
-
-const RESUME_LOGO_KEYS: ReadonlyArray<ResumeLogoKey> = [
-  "planetaria",
-  "airbnb",
-  "facebook",
-  "starbucks",
-];
-
-const RESUME_LOGO_MAP: Record<ResumeLogoKey, ImageSource> = {
-  planetaria: logoPlanetaria,
-  airbnb: logoAirbnb,
-  facebook: logoFacebook,
-  starbucks: logoStarbucks,
-};
-
-const isResumeLogoKey = (value: string): value is ResumeLogoKey =>
-  RESUME_LOGO_KEYS.includes(value as ResumeLogoKey);
 
 const isResumeRoleDate = (value: unknown): value is ResumeRoleDate => {
   if (typeof value === "string") return true;
@@ -107,8 +84,8 @@ const createResumeConfigData = (): ResumeConfigData => {
         throw new Error("Invalid resume title value.");
       }
 
-      if (!isResumeLogoKey(role.logoKey)) {
-        throw new Error(`Invalid resume logoKey: ${role.logoKey}`);
+      if (typeof role.mark !== "string" || role.mark.trim().length === 0) {
+        throw new Error(`Invalid resume mark for ${role.company}.`);
       }
 
       if (!isResumeRoleDate(role.start) || !isResumeRoleDate(role.end)) {
@@ -118,7 +95,7 @@ const createResumeConfigData = (): ResumeConfigData => {
       return {
         company: role.company,
         title: role.title,
-        logoKey: role.logoKey,
+        mark: role.mark.trim(),
         start: normalizeRoleDate(role.start),
         end: normalizeRoleDate(role.end),
       };
@@ -140,8 +117,7 @@ export const RESUME_ROLE_DATA: ReadonlyArray<ResumeRole> =
   RESUME_CONFIG_DATA.roles.map((role) => ({
     company: role.company,
     title: role.title,
-    logo: RESUME_LOGO_MAP[role.logoKey],
+    mark: role.mark,
     start: role.start,
     end: role.end,
   }));
-import { type ImageSource } from "@web/lib/media";
