@@ -87,6 +87,18 @@ import { Link } from "@portfolio/ui";
 
 Absolute web URLs receive `data-external` by default, `external` can override that state, and `newTab` maps to `target="_blank"` plus safe `rel` handling and `data-new-tab`.
 
+Styled components inherit primitive analytics metadata:
+
+```typescript
+import { Button } from "@portfolio/ui";
+
+<Button analytics={{ event: "cta_click", placement: "hero" }}>
+  Book a call
+</Button>;
+```
+
+The rendered control receives stable `data-analytics-*` attributes without loading an analytics runtime.
+
 Field controls reduce form boilerplate by inheriting ids and accessibility state from `Field`:
 
 ```typescript

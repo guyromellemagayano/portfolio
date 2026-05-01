@@ -43,6 +43,12 @@ describe("foundational ui components", () => {
         <Button pressed variant="outline">
           Pin
         </Button>
+        <Button
+          analytics={{ event: "save_click", placement: "toolbar" }}
+          variant="ghost"
+        >
+          Track save
+        </Button>
         <Link href="https://example.com" newTab>
           Docs
         </Link>
@@ -69,6 +75,14 @@ describe("foundational ui components", () => {
     expect(screen.getByRole("button", { name: "Pin" })).toHaveAttribute(
       "aria-pressed",
       "true"
+    );
+    expect(screen.getByRole("button", { name: "Track save" })).toHaveAttribute(
+      "data-analytics-event",
+      "save_click"
+    );
+    expect(screen.getByRole("button", { name: "Track save" })).toHaveAttribute(
+      "data-analytics-placement",
+      "toolbar"
     );
     expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute(
       "rel",

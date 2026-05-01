@@ -55,6 +55,13 @@ describe("stable MDN HTML element contract", () => {
           Component,
           {
             as: "div",
+            analytics: {
+              campaignId: 42,
+              enabled: true,
+              event: "contract_render",
+              ignored: null,
+              placement: "test-suite",
+            },
             className: "contract-class",
             "data-component": "CustomComponent",
             "data-slot": "custom-slot",
@@ -70,6 +77,15 @@ describe("stable MDN HTML element contract", () => {
       expect(element).toHaveClass("contract-class");
       expect(element).toHaveAttribute("data-component", "CustomComponent");
       expect(element).toHaveAttribute("data-slot", "custom-slot");
+      expect(element).toHaveAttribute(
+        "data-analytics-event",
+        "contract_render"
+      );
+      expect(element).toHaveAttribute("data-analytics-placement", "test-suite");
+      expect(element).toHaveAttribute("data-analytics-campaign-id", "42");
+      expect(element).toHaveAttribute("data-analytics-enabled", "true");
+      expect(element).not.toHaveAttribute("data-analytics-ignored");
+      expect(element).not.toHaveAttribute("analytics");
       expect(element).toHaveTextContent("Contract content");
       expect(ref.current).toBe(element);
     }

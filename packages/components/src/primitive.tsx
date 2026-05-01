@@ -1,7 +1,11 @@
 import React from "react";
 
 import { VOID_HTML_ELEMENTS } from "./element-metadata";
-import { type HtmlPrimitiveComponent, type PrimitiveElement } from "./types";
+import {
+  type ComponentAnalyticsAttributes,
+  type HtmlPrimitiveComponent,
+  type PrimitiveElement,
+} from "./types";
 
 type PrimitivePropsRecord = Record<string, unknown>;
 
@@ -18,6 +22,49 @@ interface HtmlPrimitiveOptions {
 }
 
 const voidHtmlElements = new Set<string>(VOID_HTML_ELEMENTS);
+
+function toAnalyticsAttributeName(key: string) {
+  const normalized = key
+    .replace(/([a-z0-9])([A-Z])/gu, "$1-$2")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/gu, "-")
+    .replace(/^-+|-+$/gu, "");
+
+  return normalized ? `data-analytics-${normalized}` : undefined;
+}
+
+function isAnalyticsAttributes(
+  value: unknown
+): value is ComponentAnalyticsAttributes {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function withAnalyticsAttributes(props: PrimitivePropsRecord) {
+  const { analytics, ...rest } = props;
+
+  if (!isAnalyticsAttributes(analytics)) {
+    return rest;
+  }
+
+  const nextProps = { ...rest };
+
+  for (const [key, value] of Object.entries(analytics)) {
+    if (value === null || value === undefined) {
+      continue;
+    }
+
+    const attributeName = toAnalyticsAttributeName(key);
+
+    if (!attributeName || nextProps[attributeName] !== undefined) {
+      continue;
+    }
+
+    nextProps[attributeName] = String(value);
+  }
+
+  return nextProps;
+}
 
 function getTagName(component: PrimitiveElement, fallback: string) {
   return typeof component === "string" ? component : fallback;
@@ -116,10 +163,11 @@ export function createHtmlPrimitive<TDefaultElement extends PrimitiveElement>(
       const mergedProps = mergeDefinedProps(defaults, rest);
       const preparedProps =
         options.prepareProps?.(mergedProps, tagName) ?? mergedProps;
-      const dataComponent = preparedProps["data-component"] ?? displayName;
-      const dataSlot = preparedProps["data-slot"] ?? "root";
+      const analyticsProps = withAnalyticsAttributes(preparedProps);
+      const dataComponent = analyticsProps["data-component"] ?? displayName;
+      const dataSlot = analyticsProps["data-slot"] ?? "root";
       const elementProps = {
-        ...preparedProps,
+        ...analyticsProps,
         "data-component": dataComponent,
         "data-slot": dataSlot,
         ref,

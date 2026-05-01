@@ -11,6 +11,7 @@ Framework-agnostic React primitives for the portfolio workspace. The package pre
 - Stable HTML wrappers are generated from a checked-in MDN metadata snapshot.
 - Components support an `as` prop for local polymorphism.
 - Components include `data-component` and `data-slot="root"` by default while preserving explicit consumer values.
+- Components accept optional `analytics` metadata and render it as stable `data-analytics-*` attributes.
 - Field-aware controls automatically inherit ids, required state, invalid state, and `aria-describedby` wiring from the nearest `Field`.
 - Consumers import from the root package entrypoint only.
 - The package does not expose public subpath imports.
@@ -123,6 +124,24 @@ import {
 ```
 
 `Input`, `Textarea`, and native `Select` derive their control id, `required`, `aria-invalid`, `data-invalid`, `data-required`, and `aria-describedby` attributes from the nearest `Field`. Use `controlId`, `descriptionId`, or `errorId` on `Field` when you need stable custom ids.
+
+Instrumentation metadata is attribute-only and does not load an analytics runtime:
+
+```tsx
+import { Button } from "@portfolio/components";
+
+<Button
+  analytics={{
+    event: "cta_click",
+    placement: "hero",
+    target: "book-call",
+  }}
+>
+  Book a call
+</Button>;
+```
+
+The rendered element receives `data-analytics-event`, `data-analytics-placement`, and `data-analytics-target`.
 
 ## Development
 

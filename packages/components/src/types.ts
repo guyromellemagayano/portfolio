@@ -39,8 +39,20 @@ interface ComponentDataAttributes {
   "data-slot"?: string;
 }
 
+export type ComponentAnalyticsValue = boolean | number | string;
+
+export type ComponentAnalyticsAttributes = {
+  event?: string;
+  label?: string;
+  placement?: string;
+  target?: string;
+  value?: ComponentAnalyticsValue;
+} & Record<string, ComponentAnalyticsValue | null | undefined>;
+
 /** Props shared by every component in this package. */
 export interface CommonComponentProps extends ComponentDataAttributes {
+  /** Optional instrumentation metadata rendered as stable data attributes. */
+  analytics?: ComponentAnalyticsAttributes;
   /** Render the component with a different React element or component. */
   as?: PrimitiveElement;
 }

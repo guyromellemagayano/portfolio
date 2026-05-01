@@ -9,6 +9,18 @@ it("accepts valid native props, polymorphic as props, and refs", () => {
   const anchorRef = React.createRef<HTMLAnchorElement>();
 
   const button = <Button ref={buttonRef} form="settings-form" />;
+  const trackedButton = (
+    <Button
+      analytics={{
+        event: "save_click",
+        index: 1,
+        placement: "toolbar",
+        stateful: true,
+      }}
+    >
+      Save
+    </Button>
+  );
   const anchorButton = (
     <Button as="a" href="/work" ref={anchorRef}>
       Work
@@ -18,6 +30,7 @@ it("accepts valid native props, polymorphic as props, and refs", () => {
   const polymorphicImage = <Img as="figure">Preview</Img>;
 
   expectTypeOf(button).toEqualTypeOf<React.JSX.Element>();
+  expectTypeOf(trackedButton).toEqualTypeOf<React.JSX.Element>();
   expectTypeOf(anchorButton).toEqualTypeOf<React.JSX.Element>();
   expectTypeOf(input).toEqualTypeOf<React.JSX.Element>();
   expectTypeOf(polymorphicImage).toEqualTypeOf<React.JSX.Element>();
@@ -36,6 +49,9 @@ it("rejects props that are outside the selected native element contract", () => 
 
   // @ts-expect-error native img usage requires alt text or decorative intent.
   <Img src="/preview.png" />;
+
+  // @ts-expect-error analytics metadata must be primitive scalar values.
+  <Button analytics={{ event: ["save"] }}>Save</Button>;
 
   // @ts-expect-error decorative images cannot also provide meaningful alt text.
   <Img alt="Preview" decorative src="/preview.png" />;
