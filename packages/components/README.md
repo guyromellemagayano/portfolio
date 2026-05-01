@@ -11,6 +11,7 @@ Framework-agnostic React primitives for the portfolio workspace. The package pre
 - Stable HTML wrappers are generated from a checked-in MDN metadata snapshot.
 - Components support an `as` prop for local polymorphism.
 - Components include `data-component` and `data-slot="root"` by default while preserving explicit consumer values.
+- Field-aware controls automatically inherit ids, required state, invalid state, and `aria-describedby` wiring from the nearest `Field`.
 - Consumers import from the root package entrypoint only.
 - The package does not expose public subpath imports.
 - The package does not require framework-specific hydration flags.
@@ -88,6 +89,27 @@ Element-specific defaults are intentionally narrow:
 - `Button` defaults to `type="button"`.
 - `Input` defaults to `type="text"`.
 - `Img` defaults to `decoding="async"`.
+
+Field controls are wired through context:
+
+```tsx
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+  Input,
+} from "@portfolio/components";
+
+<Field id="email" invalid required>
+  <FieldLabel>Email</FieldLabel>
+  <Input />
+  <FieldDescription>Use a work email.</FieldDescription>
+  <FieldError>Enter a valid email.</FieldError>
+</Field>;
+```
+
+`Input`, `Textarea`, and native `Select` derive their control id, `required`, `aria-invalid`, `data-invalid`, `data-required`, and `aria-describedby` attributes from the nearest `Field`. Use `controlId`, `descriptionId`, or `errorId` on `Field` when you need stable custom ids.
 
 ## Development
 

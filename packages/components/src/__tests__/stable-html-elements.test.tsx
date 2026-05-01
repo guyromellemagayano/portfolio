@@ -11,7 +11,7 @@ import {
 } from "../element-metadata";
 import * as Components from "../index";
 
-const componentExports = Components as Record<
+const componentExports = Components as unknown as Record<
   string,
   React.ElementType & { displayName?: string }
 >;
