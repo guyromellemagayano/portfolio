@@ -51,9 +51,9 @@ describe("structured data builders", () => {
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "Guy Romelle Magayano",
-      alternateName: ["Guy Romelle Magayano Portfolio", "Guy Romelle"],
       url: "https://www.guyromellemagayano.com/",
     });
+    expect(structuredData).not.toHaveProperty("alternateName");
   });
 
   it("references the site node from page schema without duplicating site-name data", () => {

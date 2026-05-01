@@ -1,5 +1,6 @@
 ---
 import PageIntro from "@web/components/PageIntro.astro";
+import { profile } from "@web/data/site";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import {
   buildPortfolioPageMetadata,
@@ -29,11 +30,11 @@ const emailLink = getPortfolioSocialLinkByPlatform("email");
     </h2>
     <div class="prose-zinc prose max-w-none">
       <p>
-        This site is a static portfolio and professional site for Guy Romelle
-        Magayano. It can load Google Analytics, Vercel Web Analytics, and Vercel
-        Speed Insights when those services are configured for the deployed site.
-        It can also use Sentry to report application errors and performance
-        traces.
+        This site is a static portfolio and professional site for {
+          profile.name
+        }. It can load Google Analytics, Vercel Web Analytics, and Vercel Speed
+        Insights when those services are configured for the deployed site. It
+        can also use Sentry to report application errors and performance traces.
       </p>
 
       <h2>Information handled today</h2>

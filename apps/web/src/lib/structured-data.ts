@@ -70,7 +70,6 @@ function getWebsiteReference(): StructuredData {
     "@id": getWebsiteId(),
     "@type": "WebSite",
     name: SITE_NAME,
-    alternateName: [`${SITE_NAME} Portfolio`, "Guy Romelle"],
     url: getPageUrl("/"),
     description: profile.heroIntro,
     genre: "Portfolio",

@@ -106,7 +106,7 @@ export function Layout<P extends Record<string, unknown> = {}>(
   const headerNavLinks = headerProps?.navLinks ?? [];
   const footerNavLinks = footerProps?.navLinks ?? [];
   const footerSocialLinks = footerProps?.socialLinks ?? [];
-  const brandName = headerProps?.brandName ?? "Guy Romelle";
+  const brandName = headerProps?.brandName ?? "Guy Romelle Magayano";
   const brandMarkLabel = getBrandMarkLabel(brandName);
 
   return (
