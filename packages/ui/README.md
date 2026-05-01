@@ -71,6 +71,22 @@ import { Button } from "@portfolio/ui";
 
 `loading` disables the button and adds `aria-busy` plus `data-loading`. `pressed` maps to `aria-pressed`. Icon-sized buttons require `aria-label` or `aria-labelledby`.
 
+Link usage exposes navigation semantics for styling and measurement:
+
+```typescript
+import { Link } from "@portfolio/ui";
+
+<Link href="/work">Work</Link>;
+<Link href="https://example.com" newTab>
+  External docs
+</Link>;
+<Link external href="/partners">
+  Partner site
+</Link>;
+```
+
+Absolute web URLs receive `data-external` by default, `external` can override that state, and `newTab` maps to `target="_blank"` plus safe `rel` handling and `data-new-tab`.
+
 Field controls reduce form boilerplate by inheriting ids and accessibility state from `Field`:
 
 ```typescript

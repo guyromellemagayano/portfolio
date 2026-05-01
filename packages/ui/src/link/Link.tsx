@@ -25,18 +25,28 @@ export const linkVariants = cva(
 
 export type LinkProps = AProps &
   VariantProps<typeof linkVariants> & {
+    external?: boolean;
     newTab?: boolean;
   };
 
+function isExternalHref(href: unknown) {
+  return typeof href === "string" && /^(?:https?:)?\/\//u.test(href);
+}
+
 export const Link = React.forwardRef<ARef, LinkProps>((props, ref) => {
-  const { className, newTab, target, variant, ...rest } = props;
+  const { className, external, newTab, target, variant, ...rest } = props;
+  const resolvedExternal = external ?? isExternalHref(rest.href);
+  const resolvedTarget = newTab ? "_blank" : target;
+  const opensNewTab = resolvedTarget === "_blank";
 
   return (
     <A
       ref={ref}
-      target={newTab ? "_blank" : target}
+      target={resolvedTarget}
       {...rest}
       className={cn(linkVariants({ variant }), className)}
+      data-external={resolvedExternal ? "" : undefined}
+      data-new-tab={opensNewTab ? "" : undefined}
       data-slot={getDataSlot(props, "link")}
     />
   );

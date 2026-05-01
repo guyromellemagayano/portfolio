@@ -130,6 +130,51 @@ describe("Link", () => {
       const link = screen.getByRole("link");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      expect(link).toHaveAttribute("data-new-tab", "");
+    });
+
+    it("preserves custom rel tokens while adding safe new-tab tokens", () => {
+      render(
+        <Link href="https://example.com" newTab={true} rel="nofollow">
+          Link
+        </Link>
+      );
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer nofollow");
+    });
+  });
+
+  describe("External Link Semantics", () => {
+    it("marks absolute web URLs as external by default", () => {
+      render(<Link href="https://example.com">Link</Link>);
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("data-external", "");
+    });
+
+    it("does not mark relative URLs as external by default", () => {
+      render(<Link href="/about">About</Link>);
+      const link = screen.getByRole("link");
+      expect(link).not.toHaveAttribute("data-external");
+    });
+
+    it("allows explicit external state for styled or instrumented links", () => {
+      render(
+        <Link external href="/partners">
+          Partner
+        </Link>
+      );
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("data-external", "");
+    });
+
+    it("allows consumers to override automatic external detection", () => {
+      render(
+        <Link external={false} href="https://example.com">
+          Same property
+        </Link>
+      );
+      const link = screen.getByRole("link");
+      expect(link).not.toHaveAttribute("data-external");
     });
   });
 
