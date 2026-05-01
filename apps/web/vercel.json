@@ -4,13 +4,6 @@
   "buildCommand": "pnpm exec turbo run build --filter=web",
   "outputDirectory": "dist",
   "devCommand": "pnpm exec turbo run dev --filter=web",
-  "redirects": [
-    {
-      "source": "/contact",
-      "destination": "/hire",
-      "permanent": true
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
