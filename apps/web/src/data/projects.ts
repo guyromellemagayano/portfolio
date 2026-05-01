@@ -14,6 +14,7 @@ export interface ProjectLink {
 export interface Project {
   id: string;
   slug: string;
+  kind: "work" | "lab";
   title: string;
   path: string;
   description: string;
@@ -33,8 +34,172 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "localized-commerce-platform",
+    slug: "localized-commerce-platform",
+    kind: "work",
+    title: "Localized Commerce Platform",
+    path: "Commerce / IONA Commerce",
+    description:
+      "Localized storefront work across product listing, product detail, cart, checkout, account, CMS, performance, and release quality.",
+    bullets: [
+      "Next.js, Sanity, commercetools, and TypeScript storefront delivery",
+      "Revenue-critical flows across PLP, PDP, cart, checkout, and account",
+      "Performance, test coverage, and editorial workflow improvements",
+    ],
+    caseStudy: {
+      problem:
+        "A localized commerce platform needed storefront work that could support many markets without letting checkout, CMS, performance, and release quality drift apart.",
+      role: "I worked as a full-stack developer and consultant across storefront implementation, content workflow support, test coverage, and performance-minded delivery.",
+      decisions: [
+        "Kept product, cart, checkout, and account flows explicit instead of hiding state and eligibility rules inside isolated UI components.",
+        "Connected CMS workflow decisions to route metadata, page structure, and release confidence so editorial work did not become engineering handoff debt.",
+        "Treated Core Web Vitals, accessibility, and regression coverage as part of commerce quality rather than post-launch polish.",
+      ],
+      outcome:
+        "The work improved the maintainability of localized storefront delivery while supporting performance, content operations, and revenue-critical customer journeys.",
+      proof: [
+        "Supported commerce surfaces across localized markets and key buying journeys.",
+        "Worked across Next.js, Sanity, commercetools, TypeScript, testing, and frontend performance concerns.",
+        "Focused implementation on storefront behavior that directly affects conversion, content workflow, and release risk.",
+      ],
+    },
+    tags: ["commerce", "nextjs", "cms", "performance", "testing"],
+    featured: true,
+  },
+  {
+    id: "high-traffic-publishing-systems",
+    slug: "high-traffic-publishing-systems",
+    kind: "work",
+    title: "High-Traffic Publishing Systems",
+    path: "Media / X-Team and News Corp Australia",
+    description:
+      "Publishing platform modernization across WordPress VIP, React modules, templates, build workflows, tests, and release quality.",
+    bullets: [
+      "WordPress VIP and React work for high-traffic media brands",
+      "Template, module, build, and quality workflow modernization",
+      "Performance, documentation, and delivery improvements for publishing teams",
+    ],
+    caseStudy: {
+      problem:
+        "High-traffic publishing systems need fast editorial delivery without weakening template quality, performance, or release confidence.",
+      role: "I worked as a senior WordPress engineer on publishing templates, React modules, build workflows, quality checks, and handoff documentation.",
+      decisions: [
+        "Separated editorial template behavior from reusable module concerns so publishing pages could evolve without repeated one-off fixes.",
+        "Kept performance and quality checks close to the delivery workflow rather than treating them as occasional audits.",
+        "Documented implementation and onboarding details so the platform could be maintained by the wider engineering team.",
+      ],
+      outcome:
+        "The work strengthened publishing delivery for high-traffic brands by improving maintainability, frontend quality, and release confidence.",
+      proof: [
+        "Worked on WordPress VIP publishing systems and React-powered modules.",
+        "Supported performance and quality workflows for media surfaces with real traffic and editorial pressure.",
+        "Improved handoff clarity through documentation and implementation discipline.",
+      ],
+    },
+    tags: ["publishing", "wordpress-vip", "react", "performance"],
+    featured: true,
+  },
+  {
+    id: "seo-analytics-platform",
+    slug: "seo-analytics-platform",
+    kind: "work",
+    title: "SEO Analytics Platform",
+    path: "SaaS / Epic Design Labs and MultiplyMii",
+    description:
+      "A multi-tenant crawler and monitoring platform spanning dashboards, Django APIs, PostgreSQL, Go workers, AWS, observability, and CI/CD.",
+    bullets: [
+      "Next.js, Django REST Framework, PostgreSQL, Go workers, and AWS",
+      "Crawler, retry, dashboard, alerting, and observability workflows",
+      "Technical leadership across implementation, delivery, and operations",
+    ],
+    caseStudy: {
+      problem:
+        "A multi-tenant SEO analytics product needed reliable crawling, dashboards, async processing, alerts, and deployment workflows without turning operations into manual recovery work.",
+      role: "I led and implemented full-stack product, backend, worker, infrastructure, observability, and release workflow work across the platform.",
+      decisions: [
+        "Modeled crawl jobs, retries, dashboards, and alerts as operational product workflows instead of only backend tasks.",
+        "Used explicit service boundaries across frontend, API, worker, database, infrastructure, and monitoring concerns.",
+        "Invested in CI/CD, observability, and documentation so the system could be operated and extended with lower delivery risk.",
+      ],
+      outcome:
+        "The platform work improved the product's ability to crawl, monitor, report, and recover through clearer architecture and stronger operational feedback loops.",
+      proof: [
+        "Worked across Next.js, Django REST Framework, PostgreSQL, Go workers, AWS, Terraform, Docker, Sentry, CloudWatch, and CI/CD.",
+        "Connected dashboards, async processing, retries, alerts, and monitoring into one operational product model.",
+        "Provided technical leadership and delivery planning across product and platform surfaces.",
+      ],
+    },
+    tags: ["saas", "django", "aws", "observability", "ci-cd"],
+    featured: true,
+  },
+  {
+    id: "headless-commerce-editorial-platform",
+    slug: "headless-commerce-editorial-platform",
+    kind: "work",
+    title: "Headless Commerce and Editorial Platform",
+    path: "Commerce / MAKE Interactive and ZUID Creatives",
+    description:
+      "Headless commerce and editorial platform work across Gatsby, BigCommerce, Optimizely, Netlify, SEO, localization, and marketing workflows.",
+    bullets: [
+      "Headless commerce, CMS workflow, SEO, and localization delivery",
+      "Frontend architecture across Gatsby, BigCommerce, Optimizely, and Netlify",
+      "Performance and marketing velocity improvements for content-heavy buying paths",
+    ],
+    caseStudy: {
+      problem:
+        "Premium commerce and editorial sites need buying journeys, content operations, SEO foundations, and performance to reinforce each other rather than compete.",
+      role: "I delivered full-stack and frontend work across headless commerce, CMS, SEO, localization, and marketing platform concerns.",
+      decisions: [
+        "Connected product content, route structure, metadata, and buying journeys so editorial work supported search and conversion.",
+        "Kept the frontend architecture focused on performance, maintainability, and clear content ownership.",
+        "Modeled localization, store-finding, and campaign surfaces as product workflows rather than isolated pages.",
+      ],
+      outcome:
+        "The work supported a more maintainable commerce/editorial platform with stronger SEO foundations, clearer content workflows, and better customer journeys.",
+      proof: [
+        "Worked across Gatsby, BigCommerce, Optimizely, Netlify, WordPress, SEO, performance, and localization concerns.",
+        "Supported content-heavy commerce experiences where marketing velocity and product quality both mattered.",
+        "Tied technical implementation to customer journeys, content operations, and search visibility.",
+      ],
+    },
+    tags: ["headless-commerce", "cms", "seo", "gatsby", "bigcommerce"],
+  },
+  {
+    id: "public-sector-wordpress-systems",
+    slug: "public-sector-wordpress-systems",
+    kind: "work",
+    title: "Public-Sector WordPress Systems",
+    path: "Public Sector / Infosoft Studio",
+    description:
+      "Accessible, secure, and maintainable WordPress publishing systems for public-sector and organizational websites.",
+    bullets: [
+      "WordPress development for long-lived public information systems",
+      "Accessibility, security, publishing workflow, and maintainability concerns",
+      "Training, support, and operational care around content-heavy sites",
+    ],
+    caseStudy: {
+      problem:
+        "Public-sector publishing systems need clear content workflows, accessible interfaces, secure implementation, and maintainable operations over long lifecycles.",
+      role: "I built and maintained WordPress systems, templates, publishing workflows, automation, SEO, performance, and support paths.",
+      decisions: [
+        "Prioritized semantic content structure, accessibility, and editor usability because public information must remain easy to publish and consume.",
+        "Balanced custom implementation with maintainable WordPress patterns so the systems could be supported over time.",
+        "Kept security, performance, and content operations visible during delivery instead of handling them as separate cleanup work.",
+      ],
+      outcome:
+        "The work strengthened long-lived publishing systems by improving accessibility, maintainability, performance, and operational support.",
+      proof: [
+        "Built and maintained WordPress systems for public-sector and organizational use cases.",
+        "Worked across content workflow, security, accessibility, SEO, performance, and user support.",
+        "Supported systems where reliability and maintainability mattered beyond launch.",
+      ],
+    },
+    tags: ["wordpress", "accessibility", "security", "publishing"],
+  },
+  {
     id: "guy-os",
     slug: "guy-os",
+    kind: "lab",
     title: "Guy OS",
     path: "apps/web",
     description:
@@ -51,13 +216,13 @@ export const projects: Project[] = [
       decisions: [
         "Moved public pages to static Astro templates instead of client-heavy React routes.",
         "Kept data close to the pages so content can be reviewed without a remote content service.",
-        "Added search-friendly schema around the owner, services, contact path, articles, and project proof.",
+        "Added search-friendly schema around the owner, capabilities, contact path, notes, and proof pages.",
       ],
       outcome:
-        "The site now behaves like a services page and a portfolio at the same time: fast static pages, clear calls to action, and a stronger explanation of the platform work.",
+        "The site now behaves like a professional portfolio and services surface at the same time: fast static pages, clear calls to action, and stronger explanation of the platform work.",
       proof: [
         "Static build with production-safe sitemap and robots output.",
-        "Reusable local data records for services, articles, projects, and profile content.",
+        "Reusable local data records for capabilities, notes, work, labs, and profile content.",
         "Structured page metadata that identifies Guy Romelle Magayano as owner, author, publisher, and provider.",
       ],
     },
@@ -73,6 +238,7 @@ export const projects: Project[] = [
   {
     id: "taskflow",
     slug: "taskflow",
+    kind: "lab",
     title: "TaskFlow",
     path: "apps/saas-demo",
     description:
@@ -111,6 +277,7 @@ export const projects: Project[] = [
   {
     id: "cartforge",
     slug: "cartforge",
+    kind: "lab",
     title: "CartForge",
     path: "apps/commerce-demo",
     description:
@@ -149,6 +316,7 @@ export const projects: Project[] = [
   {
     id: "pulseops",
     slug: "pulseops",
+    kind: "lab",
     title: "PulseOps",
     path: "apps/ops-demo",
     description:
@@ -186,6 +354,7 @@ export const projects: Project[] = [
   {
     id: "contentforge",
     slug: "contentforge",
+    kind: "lab",
     title: "ContentForge",
     path: "apps/cms-demo",
     description:
@@ -221,3 +390,13 @@ export const projects: Project[] = [
     },
   },
 ];
+
+export const workProjects = projects.filter(
+  (project) => project.kind === "work"
+);
+
+export const labProjects = projects.filter((project) => project.kind === "lab");
+
+export function getProjectPath(project: Project): string {
+  return `/${project.kind === "lab" ? "labs" : "work"}/${project.slug}`;
+}

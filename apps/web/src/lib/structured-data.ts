@@ -4,7 +4,7 @@
  * @description JSON-LD builders for the static Astro portfolio pages.
  */
 
-import { type Project } from "@web/data/projects";
+import { getProjectPath, type Project } from "@web/data/projects";
 import { type Service } from "@web/data/services";
 import {
   focusAreas,
@@ -71,8 +71,8 @@ function getWebsiteReference(): StructuredData {
     copyrightHolder: getPersonReference(),
     potentialAction: {
       "@type": "ContactAction",
-      name: "Request product engineering services",
-      target: getPageUrl("/hire"),
+      name: "Start a professional conversation",
+      target: getPageUrl("/contact"),
     },
   };
 }
@@ -173,8 +173,8 @@ export function buildPersonStructuredData(): StructuredData {
     },
     makesOffer: {
       "@type": "OfferCatalog",
-      name: "Product engineering consulting services",
-      url: getPageUrl("/services"),
+      name: "Product engineering capabilities",
+      url: getPageUrl("/capabilities"),
     },
     contactPoint: email
       ? {
@@ -189,18 +189,18 @@ export function buildPersonStructuredData(): StructuredData {
   };
 }
 
-/** Builds service-oriented JSON-LD for the services page. */
+/** Builds service-oriented JSON-LD for the capabilities page. */
 export function buildProfessionalServiceStructuredData(
   page: PageData,
   services: Service[]
 ): StructuredData {
-  const servicesUrl = getPageUrl("/services");
+  const servicesUrl = getPageUrl("/capabilities");
 
   return {
     "@context": "https://schema.org",
     "@id": `${servicesUrl}#professional-service`,
     "@type": "ProfessionalService",
-    name: `${profile.name} - Product Engineering Services`,
+    name: `${profile.name} - Product Engineering Capabilities`,
     url: servicesUrl,
     description: page.seoDescription || page.intro,
     provider: getPersonReference(),
@@ -234,17 +234,17 @@ export function buildProfessionalServiceStructuredData(
     },
     potentialAction: {
       "@type": "ContactAction",
-      name: "Request services",
-      target: getPageUrl("/hire"),
+      name: "Start a conversation",
+      target: getPageUrl("/contact"),
     },
     serviceType: services.map((service) => service.title),
     areaServed: "Worldwide",
   };
 }
 
-/** Builds contact intent JSON-LD for the hire page. */
+/** Builds contact intent JSON-LD for the contact page. */
 export function buildContactPageStructuredData(page: PageData): StructuredData {
-  const pageUrl = getPageUrl(page.seoCanonicalPath || "/hire");
+  const pageUrl = getPageUrl(page.seoCanonicalPath || "/contact");
   const email = getPlainEmail();
 
   return {
@@ -258,7 +258,7 @@ export function buildContactPageStructuredData(page: PageData): StructuredData {
     about: getPersonReference(),
     potentialAction: {
       "@type": "ContactAction",
-      name: "Request product engineering services",
+      name: "Start a professional conversation",
       target: pageUrl,
     },
     contactPoint: email
@@ -279,14 +279,14 @@ export function buildBookingStructuredData(page: PageData): StructuredData {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: page.seoTitle || page.title,
-    url: getPageUrl(page.seoCanonicalPath || "/book"),
+    url: getPageUrl(page.seoCanonicalPath || "/contact"),
     description: page.seoDescription || page.intro,
     isPartOf: getWebsiteReference(),
     mainEntity: getPersonReference(),
     potentialAction: {
       "@type": "ReserveAction",
-      name: "Book a consultation",
-      target: getPageUrl("/book"),
+      name: "Start a consultation conversation",
+      target: getPageUrl("/contact"),
     },
   };
 }
@@ -320,11 +320,11 @@ export function buildCollectionPageStructuredData(
 
 /** Builds JSON-LD for project case study pages. */
 export function buildProjectStructuredData(project: Project): StructuredData {
-  const projectUrl = getPageUrl(`/projects/${project.slug}`);
+  const projectUrl = getPageUrl(getProjectPath(project));
 
   return {
     "@context": "https://schema.org",
-    "@type": "CreativeWork",
+    "@type": project.kind === "lab" ? "SoftwareSourceCode" : "CreativeWork",
     "@id": `${projectUrl}#case-study`,
     name: `${project.title} Case Study`,
     headline: project.title,
@@ -344,7 +344,7 @@ export function buildArticleStructuredData(
   article: ArticleDetail
 ): StructuredData {
   const articleUrl = getPageUrl(
-    article.seoCanonicalPath || `/articles/${article.slug}`
+    article.seoCanonicalPath || `/notes/${article.slug}`
   );
 
   return {

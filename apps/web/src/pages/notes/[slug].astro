@@ -1,0 +1,172 @@
+---
+import RichText from "@web/components/RichText.astro";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import { formatDate } from "@web/lib/format-date";
+import {
+  buildOpenGraphImages,
+  buildTwitterImages,
+  DEFAULT_SOCIAL_IMAGE_HEIGHT,
+  DEFAULT_SOCIAL_IMAGE_PATH,
+  DEFAULT_SOCIAL_IMAGE_WIDTH,
+  DEFAULT_TWITTER_CARD,
+  resolveMetadataTitle,
+  resolveMetadataTitleText,
+  SITE_NAME,
+} from "@web/lib/metadata";
+import { type WebPageMetadata } from "@web/lib/metadata.types";
+import {
+  buildArticleStructuredData,
+  buildBreadcrumbListStructuredData,
+} from "@web/lib/structured-data";
+import {
+  getAllArticles,
+  getArticleBySlug,
+  type ArticleDetail,
+} from "@web/utils/articles";
+import { toAbsoluteSiteUrl } from "@web/utils/site-url";
+
+export async function getStaticPaths() {
+  const articles = await getAllArticles();
+
+  return articles.map((article) => ({
+    params: {
+      slug: article.slug,
+    },
+  }));
+}
+
+const slug = Astro.params.slug ?? "";
+const article = await getArticleBySlug(slug);
+
+if (!article) {
+  return Astro.redirect("/404", 404);
+}
+
+const clampDescription = (value: string) => {
+  const normalized = value.trim();
+  return normalized.length <= 160
+    ? normalized
+    : `${normalized.slice(0, 159).trimEnd()}...`;
+};
+
+function getNotePath(articleRecord: ArticleDetail): string {
+  return articleRecord.seoCanonicalPath || `/notes/${articleRecord.slug}`;
+}
+
+function buildArticleMetadata(articleRecord: ArticleDetail): WebPageMetadata {
+  const description = clampDescription(
+    articleRecord.seoDescription ||
+      articleRecord.description ||
+      articleRecord.title
+  );
+  const socialTitle = resolveMetadataTitleText(
+    articleRecord.seoOgTitle ?? articleRecord.seoTitle,
+    articleRecord.title
+  );
+  const notePath = getNotePath(articleRecord);
+  const canonicalUrl = toAbsoluteSiteUrl(notePath);
+  const socialImagePath =
+    articleRecord.seoOgImage ||
+    articleRecord.image ||
+    DEFAULT_SOCIAL_IMAGE_PATH;
+  const socialImageAlt =
+    articleRecord.seoOgImageAlt ||
+    articleRecord.imageAlt ||
+    articleRecord.title;
+
+  return {
+    title: resolveMetadataTitle(articleRecord.seoTitle, articleRecord.title),
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    robots: {
+      index: articleRecord.seoNoIndex === true ? false : true,
+      follow: articleRecord.seoNoFollow === true ? false : true,
+    },
+    openGraph: {
+      type: "article",
+      title: socialTitle,
+      description,
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+      publishedTime: articleRecord.date,
+      images: buildOpenGraphImages({
+        alt: socialImageAlt,
+        height:
+          articleRecord.seoOgImageHeight ||
+          articleRecord.imageHeight ||
+          DEFAULT_SOCIAL_IMAGE_HEIGHT,
+        pathOrUrl: socialImagePath,
+        width:
+          articleRecord.seoOgImageWidth ||
+          articleRecord.imageWidth ||
+          DEFAULT_SOCIAL_IMAGE_WIDTH,
+      }),
+    },
+    twitter: {
+      card: articleRecord.seoTwitterCard ?? DEFAULT_TWITTER_CARD,
+      title: socialTitle,
+      description,
+      images: buildTwitterImages({ pathOrUrl: socialImagePath }),
+    },
+    structuredData: [
+      buildArticleStructuredData(articleRecord),
+      buildBreadcrumbListStructuredData([
+        { name: "Home", path: "/" },
+        { name: "Notes", path: "/notes" },
+        {
+          name: articleRecord.title,
+          path: notePath,
+        },
+      ]),
+    ],
+  };
+}
+
+const metadata = buildArticleMetadata(article);
+const formattedDate = formatDate(article.date);
+---
+
+<BaseLayout metadata={metadata}>
+  <article class="mx-auto max-w-3xl px-6 pt-16 sm:px-8 sm:pt-24">
+    <a
+      href="/notes"
+      class="text-sm font-medium text-zinc-500 underline decoration-zinc-300 underline-offset-4"
+    >
+      Back to notes
+    </a>
+    <header class="mt-8">
+      <time class="text-sm text-zinc-500" datetime={article.date}
+        >{formattedDate}</time
+      >
+      <h1
+        class="mt-4 text-4xl font-medium tracking-tight text-zinc-950 sm:text-6xl"
+      >
+        {article.title}
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-zinc-600">
+        {article.description}
+      </p>
+    </header>
+
+    {
+      article.image ? (
+        <figure class="my-8 overflow-hidden rounded-2xl border border-zinc-200/60 bg-zinc-50">
+          <img
+            src={article.image}
+            alt={article.imageAlt || article.title}
+            class="h-auto w-full object-cover"
+            width={article.imageWidth || 1600}
+            height={article.imageHeight || 900}
+            loading="lazy"
+          />
+        </figure>
+      ) : null
+    }
+
+    <div class="prose-zinc prose mt-10 max-w-none">
+      <RichText value={article.body} fallbackImageAlt={article.title} />
+    </div>
+  </article>
+</BaseLayout>

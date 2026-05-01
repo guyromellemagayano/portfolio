@@ -62,7 +62,7 @@ export const services: Service[] = [
     bestFor:
       "Teams about to scale a product surface, redesign a frontend foundation, or clean up a monorepo that is starting to fight back.",
     cta: "Start a review",
-    href: "/hire",
+    href: "/contact",
     featured: true,
   },
   {
@@ -91,7 +91,7 @@ export const services: Service[] = [
     bestFor:
       "Founders, engineering leads, and teams working through product/platform tradeoffs in real time.",
     cta: "Discuss advisory",
-    href: "/hire",
+    href: "/contact",
     featured: true,
   },
   {
@@ -120,43 +120,43 @@ export const services: Service[] = [
     bestFor:
       "Teams that already know the problem and need a senior engineer to push through the actual implementation.",
     cta: "Scope a sprint",
-    href: "/hire",
+    href: "/contact",
     featured: true,
   },
 ];
 
 export const capabilityClusters: CapabilityCluster[] = [
   {
-    id: "frontend-systems",
-    title: "Frontend Systems",
+    id: "platform-engineering",
+    title: "Platform Engineering",
     items: [
-      "Astro",
-      "React",
-      "TypeScript",
-      "Design systems",
-      "Accessible component architecture",
+      "Full-stack product systems",
+      "API and data-flow boundaries",
+      "Internal tools and admin workflows",
+      "Maintainable architecture decisions",
+      "Documentation and handoff paths",
     ],
   },
   {
-    id: "platform-work",
-    title: "Platform Work",
+    id: "commerce-cms-architecture",
+    title: "Commerce and CMS Architecture",
     items: [
-      "Monorepos",
-      "Typed contracts",
-      "Local content data",
-      "Observability",
-      "Developer tooling",
+      "Storefront journeys",
+      "Checkout and order state",
+      "Content models and editorial workflows",
+      "SEO metadata and structured data",
+      "Localization and publishing operations",
     ],
   },
   {
-    id: "product-domains",
-    title: "Product Domains",
+    id: "performance-release-reliability",
+    title: "Performance and Release Reliability",
     items: [
-      "Admin tools",
-      "Multi-tenant SaaS",
-      "Commerce flows",
-      "Operational consoles",
-      "Content workflows",
+      "Core Web Vitals",
+      "Regression coverage",
+      "CI/CD quality gates",
+      "Observability and runbooks",
+      "Safer release workflows",
     ],
   },
 ];
@@ -168,7 +168,7 @@ export const bookingPaths: BookingPath[] = [
     description:
       "Best when you need a fast read on structure, risk, and the next few changes worth making.",
     cta: "Start with review",
-    href: "/hire",
+    href: "/contact",
   },
   {
     id: "advisory-fit",
@@ -176,7 +176,7 @@ export const bookingPaths: BookingPath[] = [
     description:
       "Best when you want recurring senior engineering judgment around product and platform direction.",
     cta: "Discuss advisory",
-    href: "/hire",
+    href: "/contact",
   },
   {
     id: "sprint-scope",
@@ -184,6 +184,6 @@ export const bookingPaths: BookingPath[] = [
     description:
       "Best when the problem is clear and you need direct implementation on a contained product surface.",
     cta: "Scope a sprint",
-    href: "/hire",
+    href: "/contact",
   },
 ];

@@ -8,7 +8,7 @@
         "articleDate": "Published on",
         "articlePublished": "Publication date",
         "skipToMainContent": "Skip to main content",
-        "goBackToArticles": "Back to articles"
+        "goBackToArticles": "Back to notes"
       }
     },
     "article": {
@@ -28,17 +28,17 @@
     },
     "button": {
       "labels": {
-        "goBackToArticles": "Go back to articles"
+        "goBackToArticles": "Go back to notes"
       }
     },
     "header": {
       "brandName": "Guy Romelle Magayano",
       "labels": {
         "home": "Home",
-        "services": "Services",
+        "services": "Capabilities",
         "blog": "Blog",
-        "hire": "Hire",
-        "projects": "Projects",
+        "hire": "Contact",
+        "projects": "Work",
         "menu": "Menu",
         "closeMenu": "Close menu",
         "navigation": "Navigation",
@@ -53,10 +53,10 @@
     },
     "footer": {
       "navigation": {
-        "services": "Services",
+        "services": "Capabilities",
         "blog": "Blog",
-        "projects": "Projects",
-        "hire": "Hire"
+        "projects": "Work",
+        "hire": "Contact"
       },
       "legal": {
         "copyright": "© {year} {brandName}. All rights reserved."
@@ -156,30 +156,30 @@
     },
     "hire": {
       "labels": {
-        "subheading": "Hire",
-        "title": "Let’s build a clean next step together.",
-        "description": "Share your context and constraints, and I’ll help you move faster with the right product engineering move."
+        "subheading": "Contact",
+        "title": "Start with the current constraint and the outcome you need.",
+        "description": "For roles, consulting, advisory, or platform modernization work, send the context, constraint, and result you need."
       }
     },
     "projects": {
       "labels": {
-        "subheading": "Projects",
-        "title": "A monorepo of products, not a shelf of disconnected demos.",
-        "description": "Each app proves a different slice of product engineering: public storytelling, CRUD maturity, multi-tenant SaaS design, commerce flows, operational visibility, and structured content workflows."
+        "subheading": "Work",
+        "title": "Selected production work across commerce, publishing, SaaS, and operations.",
+        "description": "A curated view of production systems, platform improvements, and delivery work across business-critical web surfaces."
       }
     },
     "services": {
       "labels": {
-        "subheading": "Services",
-        "title": "Architecture, advisory, and delivery for product systems.",
-        "description": "I help teams make better frontend and platform decisions, then turn those decisions into maintainable implementation work."
+        "subheading": "Capabilities",
+        "title": "Full-stack engineering for clearer architecture, better performance, and safer releases.",
+        "description": "Practical support across platform engineering, commerce and CMS architecture, quality systems, and technical leadership."
       }
     },
     "book": {
       "labels": {
-        "subheading": "Book",
-        "title": "Choose the best way to start the conversation.",
-        "description": "If you're not sure whether you need a review, advisory, or hands-on implementation, this page gives you a clean starting point."
+        "subheading": "Contact",
+        "title": "Start with the current constraint and the outcome you need.",
+        "description": "For roles, consulting, advisory, or platform modernization work, send the context, constraint, and result you need."
       }
     },
     "uses": {
@@ -191,7 +191,7 @@
     },
     "articles": {
       "labels": {
-        "subheading": "Articles",
+        "subheading": "Notes",
         "title": "Notes on frontend architecture, product systems, and delivery.",
         "description": "Writing on the mechanics behind good product engineering: architecture, delivery systems, reusable UI, content modeling, and the tradeoffs that show up in real teams."
       }

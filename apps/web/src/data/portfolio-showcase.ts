@@ -4,7 +4,7 @@
  * @description Shared portfolio showcase content for the public web experience.
  */
 
-import { projects } from "@web/data/projects";
+import { getProjectPath, labProjects } from "@web/data/projects";
 import { capabilityClusters, services } from "@web/data/services";
 import {
   buildSteps,
@@ -43,9 +43,9 @@ export type PortfolioCapabilityCluster = Readonly<{
 }>;
 
 export const PORTFOLIO_SHOWCASE_APPS: ReadonlyArray<PortfolioShowcaseApp> =
-  projects.map((app) => ({
+  labProjects.map((app) => ({
     anchor: app.slug,
-    href: `/projects#${app.slug}`,
+    href: getProjectPath(app),
     name: app.title,
     path: app.path,
     summary: app.description,

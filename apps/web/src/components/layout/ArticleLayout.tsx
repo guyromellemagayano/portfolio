@@ -76,10 +76,10 @@ export function ArticleLayout<P extends Record<string, unknown> = {}>(
     >
       <div className="border-b border-zinc-950/10 pb-10 sm:pb-14">
         <Link
-          href="/articles"
+          href="/notes"
           className="inline-flex text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
         >
-          Back to articles
+          Back to notes
         </Link>
 
         <article

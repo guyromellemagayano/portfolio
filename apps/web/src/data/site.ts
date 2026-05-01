@@ -51,36 +51,41 @@ export interface ClientOutcome {
 
 export const profile: Profile = {
   name: "Guy Romelle Magayano",
-  role: "Product engineer and platform builder",
-  location: "Manila, Philippines",
-  heroTitle:
-    "I help teams turn messy product surfaces into systems they can ship with.",
+  role: "Senior full-stack software engineer",
+  location: "Davao City, Philippines",
+  heroTitle: "Refined engineering for reliable web platforms.",
   heroIntro:
-    "Hire me for architecture review, senior product engineering advisory, or focused implementation sprints across frontend systems, platform foundations, and content-heavy product surfaces.",
+    "I build, modernize, and stabilize production web platforms across commerce, publishing, SaaS, internal tools, and content-heavy systems.",
 };
 
 export const navigationLinks: NavigationLink[] = [
+  {
+    label: "Work",
+    href: "/work",
+    showInHeader: true,
+    showInFooter: true,
+  },
+  {
+    label: "Capabilities",
+    href: "/capabilities",
+    showInHeader: true,
+    showInFooter: true,
+  },
   { label: "About", href: "/about", showInHeader: true, showInFooter: true },
   {
-    label: "Services",
-    href: "/services",
+    label: "Notes",
+    href: "/notes",
     showInHeader: true,
     showInFooter: true,
   },
   {
-    label: "Projects",
-    href: "/projects",
+    label: "Contact",
+    href: "/contact",
     showInHeader: true,
     showInFooter: true,
   },
-  {
-    label: "Articles",
-    href: "/articles",
-    showInHeader: true,
-    showInFooter: true,
-  },
+  { label: "Labs", href: "/labs", showInHeader: false, showInFooter: true },
   { label: "Uses", href: "/uses", showInHeader: false, showInFooter: false },
-  { label: "Hire", href: "/hire", showInHeader: true, showInFooter: true },
   {
     label: "Privacy",
     href: "/privacy",
@@ -90,12 +95,6 @@ export const navigationLinks: NavigationLink[] = [
 ];
 
 export const socialLinks: SocialLink[] = [
-  {
-    id: "social-instagram",
-    platform: "instagram",
-    label: "Instagram",
-    href: "https://www.instagram.com/guyromellemagayano",
-  },
   {
     id: "social-github",
     platform: "github",
@@ -117,20 +116,20 @@ export const socialLinks: SocialLink[] = [
 ];
 
 export const focusAreas = [
-  "Frontend Architecture",
-  "Design Systems",
-  "Platform Engineering",
-  "Content Modeling",
-  "Developer Experience",
-  "Product Systems",
+  "Full-stack Platform Engineering",
+  "Commerce and CMS Architecture",
+  "Performance and Release Reliability",
+  "Testing and Quality Systems",
+  "Technical Leadership",
+  "Accessibility and SEO",
 ] as const;
 
 export const foundationCapabilities = [
-  "Shared UI primitives, layout systems, and interaction patterns",
-  "Typed contracts and reusable client integrations",
-  "Authentication, role checks, and permission-aware routing",
-  "Observability helpers for errors, logs, and runtime confidence",
-  "Reusable data tables, forms, notifications, and audit log primitives",
+  "Production storefront and publishing workflows that stay maintainable under change",
+  "Full-stack product surfaces with explicit data flow, release checks, and observability",
+  "Accessibility, SEO, and Core Web Vitals treated as product-quality requirements",
+  "Technical direction that connects architecture decisions to team delivery risk",
+  "Documentation and tests that help teams maintain the work after handoff",
 ] as const;
 
 export const clientOutcomes: ClientOutcome[] = [
@@ -138,113 +137,115 @@ export const clientOutcomes: ClientOutcome[] = [
     id: "architecture-clarity",
     title: "Architecture clarity",
     detail:
-      "Find the boundaries, ownership lines, and delivery risks that are making the product harder to extend.",
+      "Find the system boundaries, ownership lines, and delivery risks that make production surfaces harder to extend.",
   },
   {
     id: "implementation-momentum",
-    title: "Implementation momentum",
+    title: "Delivery confidence",
     detail:
-      "Move from recommendations to code with scoped product engineering work that lands in the repo.",
+      "Turn recommendations into scoped implementation work with tests, reviewable checkpoints, and clear handoff notes.",
   },
   {
     id: "system-confidence",
-    title: "System confidence",
+    title: "Operational calm",
     detail:
-      "Tighten accessibility, SEO, performance, testing, and data structure before the surface becomes expensive to change.",
+      "Tighten performance, accessibility, SEO, observability, and release paths before small issues become business risk.",
   },
 ];
 
 export const operatingPrinciples = [
-  "Make the domain obvious before making the component reusable.",
-  "Prefer fewer moving parts when the product does not need a platform yet.",
-  "Use tests to protect behavior and accessibility, not just implementation details.",
-  "Keep data close to the page until a real integration earns its weight.",
+  "Design the system before polishing the screen.",
+  "Make abstractions earn their place.",
+  "Treat performance and accessibility as product quality.",
+  "Automate checks that protect important releases.",
+  "Document decisions so teams can maintain the work.",
 ] as const;
 
 export const buildSteps: BuildStep[] = [
   {
     id: "foundation",
-    title: "Foundation",
+    title: "Understand the real constraint",
     detail:
-      "Build the shared platform first: UI, layouts, forms, tables, notifications, and content primitives.",
+      "Start with the workflow, release risk, business constraint, and team context before naming the technical fix.",
   },
   {
     id: "public-proof",
-    title: "Public Proof",
+    title: "Map the system",
     detail:
-      "Use the public portfolio to frame the system and explain why the monorepo exists.",
+      "Make the data flow, ownership boundaries, coupling, and quality gaps visible enough to discuss calmly.",
   },
   {
     id: "strongest-signal",
-    title: "Strongest Signal",
+    title: "Ship the narrow fix",
     detail:
-      "Prioritize product surfaces that prove the highest-value day-to-day engineering work.",
+      "Land the smallest meaningful slice with tests, documentation, and verification tied to the outcome.",
   },
   {
     id: "specialization",
-    title: "Specialization",
+    title: "Leave a maintainable path",
     detail:
-      "Layer in domain-specific flows once the foundation is reusable enough to accelerate each surface.",
+      "Hand off decisions, tradeoffs, and follow-up risks so the team can keep moving after the engagement.",
   },
 ];
 
 export const pages: PageData[] = [
   {
     slug: "",
-    subheading: "Available for client work",
-    title: "Senior product engineering for teams that need cleaner systems.",
+    subheading: "Senior full-stack engineering",
+    title:
+      "Reliable web platforms for teams that need clearer architecture and safer delivery.",
     intro:
-      "Architecture review, advisory, and implementation support for frontend platforms, product surfaces, and content-driven systems.",
-    seoTitle: "Guy Romelle Magayano - Product Engineering Consultant",
+      "Production-focused engineering across commerce, publishing, SaaS, internal tools, and content-heavy systems.",
+    seoTitle: "Guy Romelle Magayano - Senior Full-Stack Software Engineer",
     seoDescription:
-      "Hire Guy Romelle Magayano for architecture review, product engineering advisory, and implementation sprints for frontend and platform systems.",
+      "Senior full-stack software engineer building, modernizing, and stabilizing reliable web platforms across commerce, publishing, SaaS, and internal systems.",
     seoCanonicalPath: "/",
   },
   {
     slug: "about",
     subheading: "About",
-    title:
-      "A product engineer who prefers systems that stay calm under growth.",
+    title: "A senior engineer focused on systems that stay clear under growth.",
     intro:
-      "How I think about product engineering, reusable systems, and maintainable delivery.",
+      "Background, priorities, and working principles behind the way I build and stabilize web platforms.",
     seoTitle: "About - Guy Romelle Magayano",
     seoDescription:
-      "Background, priorities, and engineering principles behind the way I build software systems.",
+      "Background, priorities, and engineering principles behind Guy Romelle Magayano's full-stack platform work.",
     seoCanonicalPath: "/about",
   },
   {
-    slug: "articles",
-    subheading: "Articles",
+    slug: "notes",
+    subheading: "Notes",
+    title: "Notes on architecture, delivery, and maintainable web platforms.",
+    intro:
+      "Short writing on architecture, release safety, content systems, and the mechanics behind reliable product engineering.",
+    seoTitle: "Notes - Guy Romelle Magayano",
+    seoDescription:
+      "Notes on frontend architecture, platform systems, release safety, content modeling, and pragmatic product engineering.",
+    seoCanonicalPath: "/notes",
+  },
+  {
+    slug: "capabilities",
+    subheading: "Capabilities",
     title:
-      "Articles on architecture, systems, and reusable product foundations.",
+      "Full-stack engineering for clearer architecture, better performance, and safer releases.",
     intro:
-      "Writing on architecture, delivery, reusable UI systems, and the mechanics behind good product engineering.",
-    seoTitle: "Articles - Guy Romelle Magayano",
+      "Practical support across platform engineering, commerce and CMS architecture, quality systems, and technical leadership.",
+    seoTitle: "Capabilities - Guy Romelle Magayano",
     seoDescription:
-      "Essays and notes on frontend architecture, platform systems, and pragmatic product engineering.",
-    seoCanonicalPath: "/articles",
+      "Capabilities across full-stack platform engineering, commerce and CMS architecture, performance, testing, release reliability, and technical leadership.",
+    seoCanonicalPath: "/capabilities",
   },
   {
-    slug: "services",
-    subheading: "Services",
-    title: "Architecture review, advisory, and direct implementation work.",
+    slug: "work",
+    subheading: "Work",
+    title:
+      "Selected production work across commerce, publishing, SaaS, and operations.",
     intro:
-      "I help teams make better frontend and platform decisions, then turn those decisions into maintainable implementation work.",
-    seoTitle: "Services - Guy Romelle Magayano",
+      "A curated view of production systems, platform improvements, and delivery work across business-critical web surfaces.",
+    seoTitle: "Work - Guy Romelle Magayano",
     seoDescription:
-      "Consulting, architecture review, advisory, and senior implementation work for frontend and platform systems.",
-    seoCanonicalPath: "/services",
-  },
-  {
-    slug: "projects",
-    subheading: "Projects",
-    title: "One platform story, several product surfaces.",
-    intro:
-      "A lineup of domain-specific apps built on one shared platform foundation.",
-    seoTitle: "Projects - Guy Romelle Magayano",
-    seoDescription:
-      "A catalog of reusable, product-style applications across admin, SaaS, commerce, operations, and content workflows.",
-    seoCanonicalPath: "/projects",
+      "Selected work by Guy Romelle Magayano across commerce, publishing, SaaS, internal tooling, public-sector systems, performance, and release reliability.",
+    seoCanonicalPath: "/work",
   },
   {
     slug: "uses",
@@ -258,15 +259,15 @@ export const pages: PageData[] = [
     seoCanonicalPath: "/uses",
   },
   {
-    slug: "hire",
-    subheading: "Hire",
-    title: "Share the current constraint and the outcome you need.",
+    slug: "contact",
+    subheading: "Contact",
+    title: "Start with the current constraint and the outcome you need.",
     intro:
-      "Share your context and constraints, and I’ll help you move faster with the right product engineering move.",
-    seoTitle: "Hire - Guy Romelle Magayano",
+      "For roles, consulting, advisory, or platform modernization work, send the context, constraint, and result you need.",
+    seoTitle: "Contact - Guy Romelle Magayano",
     seoDescription:
-      "Start a consulting or product engineering conversation about architecture, advisory, or implementation work.",
-    seoCanonicalPath: "/hire",
+      "Contact Guy Romelle Magayano about senior full-stack engineering roles, architecture review, technical advisory, or implementation work.",
+    seoCanonicalPath: "/contact",
   },
   {
     slug: "privacy",
@@ -276,19 +277,20 @@ export const pages: PageData[] = [
       "How this portfolio handles hosting logs, analytics, performance measurement, direct contact paths, and external profile links.",
     seoTitle: "Privacy and Consent - Guy Romelle Magayano",
     seoDescription:
-      "Privacy and analytics disclosure for the Guy Romelle Magayano portfolio and services site.",
+      "Privacy and analytics disclosure for the Guy Romelle Magayano portfolio and professional site.",
     seoCanonicalPath: "/privacy",
   },
   {
-    slug: "book",
-    subheading: "Book",
-    title: "Choose the best starting point.",
+    slug: "labs",
+    subheading: "Labs",
+    title:
+      "Engineering lab surfaces that show how I think about product systems.",
     intro:
-      "Pick the path that matches your current constraint, from focused review to a scoped implementation sprint.",
-    seoTitle: "Book - Guy Romelle Magayano",
+      "Production-style demos exploring platform foundations, product systems, commerce flows, operational consoles, and content workflows.",
+    seoTitle: "Labs - Guy Romelle Magayano",
     seoDescription:
-      "Choose a starting path for architecture review, advisory, or implementation work.",
-    seoCanonicalPath: "/book",
+      "Engineering lab demos by Guy Romelle Magayano showing platform foundations, SaaS, commerce, operations, and content workflow thinking.",
+    seoCanonicalPath: "/labs",
   },
 ];
 

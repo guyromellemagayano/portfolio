@@ -1,0 +1,139 @@
+---
+import CTA from "@web/components/CTA.astro";
+import PageIntro from "@web/components/PageIntro.astro";
+import ServiceCard from "@web/components/ServiceCard.astro";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import { capabilityClusters, services } from "@web/data/services";
+import {
+  buildPortfolioPageMetadata,
+  getPortfolioBrochurePage,
+} from "@web/lib/portfolio-brochure";
+import {
+  appendStructuredData,
+  buildProfessionalServiceStructuredData,
+} from "@web/lib/structured-data";
+
+const { page } = await getPortfolioBrochurePage("capabilities");
+const metadata = appendStructuredData(
+  buildPortfolioPageMetadata(page),
+  buildProfessionalServiceStructuredData(page, services)
+);
+---
+
+<BaseLayout metadata={metadata}>
+  <PageIntro
+    subheading={page.subheading}
+    title={page.title}
+    intro={page.intro}
+  />
+
+  <section
+    aria-labelledby="capabilities-offerings-heading"
+    class="mx-auto max-w-6xl px-6 py-12 sm:px-8"
+    role="region"
+  >
+    <h2
+      id="capabilities-offerings-heading"
+      class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+    >
+      Ways to work together
+    </h2>
+    <div class="mt-10 grid gap-4 lg:grid-cols-3">
+      {services.map((service) => <ServiceCard service={service} showPrice />)}
+    </div>
+  </section>
+
+  <section
+    aria-labelledby="capabilities-clusters-heading"
+    class="mx-auto max-w-6xl border-t border-zinc-950/10 px-6 py-16 sm:px-8"
+    role="region"
+  >
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+      <h2
+        id="capabilities-clusters-heading"
+        class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+      >
+        Capability clusters that usually come with the work.
+      </h2>
+      <div class="space-y-4">
+        {
+          capabilityClusters.map((cluster) => (
+            <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
+              <h3 class="text-lg font-medium text-zinc-950">{cluster.title}</h3>
+              <p class="mt-3 text-sm leading-7 text-zinc-600">
+                {cluster.items.join(" · ")}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section
+    aria-labelledby="capabilities-process-heading"
+    class="mx-auto max-w-6xl border-t border-zinc-950/10 px-6 py-16 sm:px-8"
+    role="region"
+  >
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+      <div>
+        <p
+          class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase"
+        >
+          Delivery shape
+        </p>
+        <h2
+          id="capabilities-process-heading"
+          class="mt-3 text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+        >
+          Each engagement starts with constraints, then moves toward a smaller
+          set of durable decisions.
+        </h2>
+        <p class="mt-5 text-sm leading-7 text-zinc-600">
+          The work is intentionally practical: identify what is slowing the team
+          down, make the first architectural moves visible, and leave the owning
+          team with implementation context they can keep using.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+        {
+          services.map((service) => (
+            <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
+              <h3 class="text-xl font-medium tracking-tight text-zinc-950">
+                {service.title}
+              </h3>
+              <div class="mt-5 grid gap-6 md:grid-cols-2">
+                <div>
+                  <h4 class="text-sm font-semibold text-zinc-950">Process</h4>
+                  <ul class="mt-3 space-y-2 text-sm leading-6 text-zinc-600">
+                    {service.process.map((step) => (
+                      <li>{step}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="text-sm font-semibold text-zinc-950">Outcome</h4>
+                  <ul class="mt-3 space-y-2 text-sm leading-6 text-zinc-600">
+                    {service.outcomes.map((outcome) => (
+                      <li>{outcome}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="Not sure which engagement shape fits yet?"
+    body="Start with the current bottleneck, the product surface that is getting hard to extend, and whether you need review, guidance, or hands-on execution."
+    primaryHref="/contact"
+    primaryLabel="Start a conversation"
+    secondaryHref="/work"
+    secondaryLabel="View selected work"
+  />
+</BaseLayout>

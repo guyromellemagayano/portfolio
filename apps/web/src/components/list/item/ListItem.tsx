@@ -71,7 +71,7 @@ export function ArticleListItem<P extends Record<string, unknown> = {}>(
   const articleData = {
     id: article.slug?.trim(),
     title: article.title?.trim(),
-    slug: `/articles/${article.slug?.trim()}`,
+    slug: `/notes/${article.slug?.trim()}`,
     date: article.date?.trim(),
     description: article.description?.trim(),
   };

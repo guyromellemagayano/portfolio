@@ -137,7 +137,7 @@ export function ArticleSearch<P extends Record<string, unknown> = {}>(
                     className="md:grid md:grid-cols-4 md:items-baseline"
                   >
                     <Card className="md:col-span-3">
-                      <Card.Title href={`/articles/${article.slug}`}>
+                      <Card.Title href={`/notes/${article.slug}`}>
                         {article.title}
                       </Card.Title>
                       <Card.Eyebrow
@@ -150,7 +150,7 @@ export function ArticleSearch<P extends Record<string, unknown> = {}>(
                       </Card.Eyebrow>
                       <Card.Description>{article.description}</Card.Description>
                       <Card.Cta
-                        href={`/articles/${article.slug}`}
+                        href={`/notes/${article.slug}`}
                         title={`${ARTICLE_SEARCH_I18N.cta}: ${article.title}`}
                       >
                         {ARTICLE_SEARCH_I18N.cta}

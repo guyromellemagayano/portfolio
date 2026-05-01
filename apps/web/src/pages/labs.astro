@@ -1,0 +1,65 @@
+---
+import PageIntro from "@web/components/PageIntro.astro";
+import ProjectCard from "@web/components/ProjectCard.astro";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import { getProjectPath, labProjects } from "@web/data/projects";
+import {
+  buildPortfolioPageMetadata,
+  getPortfolioBrochurePage,
+} from "@web/lib/portfolio-brochure";
+import {
+  appendStructuredData,
+  buildCollectionPageStructuredData,
+} from "@web/lib/structured-data";
+
+const { page } = await getPortfolioBrochurePage("labs");
+const metadata = appendStructuredData(
+  buildPortfolioPageMetadata(page),
+  buildCollectionPageStructuredData(page, labProjects, getProjectPath)
+);
+const featuredLabs = labProjects.filter((project) => project.featured);
+---
+
+<BaseLayout metadata={metadata}>
+  <PageIntro
+    subheading={page.subheading}
+    title={page.title}
+    intro={page.intro}
+  />
+
+  <section
+    aria-labelledby="labs-showcase-heading"
+    class="mx-auto max-w-6xl px-6 py-12 sm:px-8"
+    role="region"
+  >
+    <h2
+      id="labs-showcase-heading"
+      class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+    >
+      Featured lab surfaces
+    </h2>
+    <div class="mt-10 grid gap-4 lg:grid-cols-3">
+      {featuredLabs.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+
+  <section
+    aria-labelledby="labs-catalog-heading"
+    class="mx-auto max-w-6xl border-t border-zinc-950/10 px-6 py-16 sm:px-8"
+    role="region"
+  >
+    <h2
+      id="labs-catalog-heading"
+      class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
+    >
+      Lab catalog
+    </h2>
+    <div class="mt-10 grid gap-4 lg:grid-cols-2">
+      {
+        labProjects.map((project) => (
+          <ProjectCard project={project} compact idPrefix="labs-catalog" />
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/pages/rss.xml.ts
  * @author Guy Romelle Magayano
- * @description Static RSS feed for local portfolio articles.
+ * @description Static RSS feed for local portfolio notes.
  */
 
 import { type APIRoute } from "astro";
@@ -27,22 +27,22 @@ function getRssDate(value: string): string {
     : parsedDate.toUTCString();
 }
 
-/** Renders the public RSS feed for article syndication. */
+/** Renders the public RSS feed for note syndication. */
 export const GET: APIRoute = async () => {
   const articles = await getAllArticles();
   const siteUrl =
     toAbsoluteSiteUrl("/") ?? "https://www.guyromellemagayano.com/";
   const feedUrl = toAbsoluteSiteUrl("/rss.xml") ?? `${siteUrl}rss.xml`;
-  const articlesUrl =
-    toAbsoluteSiteUrl("/articles") ?? `${siteUrl.replace(/\/$/, "")}/articles`;
+  const notesUrl =
+    toAbsoluteSiteUrl("/notes") ?? `${siteUrl.replace(/\/$/, "")}/notes`;
   const items = articles
     .filter(
       (article) => !article.hideFromSitemap && article.seoNoIndex !== true
     )
     .map((article) => {
       const articleUrl =
-        toAbsoluteSiteUrl(`/articles/${article.slug}`) ??
-        `${siteUrl.replace(/\/$/, "")}/articles/${article.slug}`;
+        toAbsoluteSiteUrl(`/notes/${article.slug}`) ??
+        `${siteUrl.replace(/\/$/, "")}/notes/${article.slug}`;
 
       return [
         "    <item>",
@@ -63,9 +63,9 @@ export const GET: APIRoute = async () => {
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
     "  <channel>",
-    `    <title>${escapeXml(`${SITE_NAME} Articles`)}</title>`,
-    `    <link>${escapeXml(articlesUrl)}</link>`,
-    "    <description>Articles on product engineering, frontend architecture, platform systems, and content-heavy product surfaces.</description>",
+    `    <title>${escapeXml(`${SITE_NAME} Notes`)}</title>`,
+    `    <link>${escapeXml(notesUrl)}</link>`,
+    "    <description>Notes on product engineering, frontend architecture, platform systems, and content-heavy product surfaces.</description>",
     `    <lastBuildDate>${lastBuildDate}</lastBuildDate>`,
     `    <atom:link href="${escapeXml(feedUrl)}" rel="self" type="application/rss+xml" />`,
     items,

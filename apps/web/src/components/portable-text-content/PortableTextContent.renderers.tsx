@@ -167,7 +167,7 @@ function getInternalReferenceHref(value: unknown): string | undefined {
   const normalizedSlug = encodeURIComponent(slug);
 
   if (documentType === "article") {
-    return `/articles/${normalizedSlug}`;
+    return `/notes/${normalizedSlug}`;
   }
 
   return `/${normalizedSlug}`;

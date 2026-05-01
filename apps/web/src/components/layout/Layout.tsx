@@ -149,8 +149,8 @@ export function Layout<P extends Record<string, unknown> = {}>(
                     </Link>
                   ))}
                 </div>
-                <ShellActionLink href="/hire" variant="primary">
-                  Start a project
+                <ShellActionLink href="/contact" variant="primary">
+                  Start a conversation
                 </ShellActionLink>
               </div>
             </div>
@@ -186,11 +186,11 @@ export function Layout<P extends Record<string, unknown> = {}>(
                   deliver product work that still makes sense six months later.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <ShellActionLink href="/book" variant="primary">
-                    Choose a starting path
+                  <ShellActionLink href="/contact" variant="primary">
+                    Start a conversation
                   </ShellActionLink>
-                  <ShellActionLink href="/services">
-                    Explore services
+                  <ShellActionLink href="/capabilities">
+                    Explore capabilities
                   </ShellActionLink>
                 </div>
               </section>

@@ -51,7 +51,7 @@ export function Article<P extends Record<string, unknown> = {}>(
     description: article.description?.trim() ?? "",
     date: article.date?.trim() ?? null,
     formattedDate: formatDateSafely(article.date?.trim() ?? null),
-    slug: slugValue ? `/articles/${encodeURIComponent(slugValue)}` : undefined,
+    slug: slugValue ? `/notes/${encodeURIComponent(slugValue)}` : undefined,
   };
 
   return (

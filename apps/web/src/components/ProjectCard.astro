@@ -5,7 +5,7 @@
  * @description Static Astro project card rendered from local project data.
  */
 
-import { type Project } from "@web/data/projects";
+import { getProjectPath, type Project } from "@web/data/projects";
 
 type Props = {
   project: Project;
@@ -15,6 +15,8 @@ type Props = {
 
 const { project, compact = false, idPrefix = "" } = Astro.props;
 const articleId = idPrefix ? `${idPrefix}-${project.slug}` : project.slug;
+const projectPath = getProjectPath(project);
+const analyticsContentType = project.kind === "lab" ? "lab" : "work";
 ---
 
 <article
@@ -29,10 +31,10 @@ const articleId = idPrefix ? `${idPrefix}-${project.slug}` : project.slug;
   </p>
   <h3 class="mt-3 text-xl font-medium tracking-tight text-zinc-950">
     <a
-      href={`/projects/${project.slug}`}
+      href={projectPath}
       data-analytics-content-id={project.slug}
       data-analytics-content-name={project.title}
-      data-analytics-content-type="project"
+      data-analytics-content-type={analyticsContentType}
       data-analytics-placement="project-card-title"
     >
       {project.title}
@@ -71,13 +73,13 @@ const articleId = idPrefix ? `${idPrefix}-${project.slug}` : project.slug;
     }
   </div>
   <a
-    href={`/projects/${project.slug}`}
+    href={projectPath}
     class="mt-5 inline-flex text-sm font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4"
     data-analytics-content-id={project.slug}
     data-analytics-content-name={project.title}
-    data-analytics-content-type="project"
+    data-analytics-content-type={analyticsContentType}
     data-analytics-placement="project-card-cta"
   >
-    Read case study
+    {project.kind === "lab" ? "Explore lab" : "Read case study"}
   </a>
 </article>
