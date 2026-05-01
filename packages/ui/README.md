@@ -38,6 +38,7 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `Textarea`
 - `Label`
 - `Field`, `FieldLabel`, `FieldDescription`, `FieldError`
+- `Section`
 - `Separator`
 - `Skeleton`
 - `Alert`, `AlertTitle`, `AlertDescription`
@@ -98,6 +99,20 @@ import { Button } from "@portfolio/ui";
 ```
 
 The rendered control receives stable `data-analytics-*` attributes without loading an analytics runtime.
+
+Sections provide styled heading and description structure while preserving the primitive accessibility wiring:
+
+```typescript
+import { Section } from "@portfolio/ui";
+
+<Section
+  description="Proof points from recent delivery work."
+  heading="Selected work"
+  id="work"
+>
+  ...
+</Section>;
+```
 
 Field controls reduce form boilerplate by inheriting ids and accessibility state from `Field`:
 

@@ -79,7 +79,7 @@ Current API groups:
 
 - `Stable HTML wrappers`: stable MDN elements such as `A`, `Button`, `Img`, `Table`, `Svg`, and `Math`.
 - `Heading`: the single heading primitive for `h1` through `h6`, using `as` for the target heading level.
-- `Convenience primitives`: `Box`, `Text`, `Heading`, `VisuallyHidden`, `Field`, `FieldLabel`, `FieldDescription`, and `FieldError`.
+- `Convenience primitives`: `Box`, `Text`, `Heading`, `Section`, `VisuallyHidden`, `Field`, `FieldLabel`, `FieldDescription`, and `FieldError`.
 - `Types`: shared React primitive types consumed by this package and downstream UI components.
 
 Utility modules should only be exported when the package implementation actively uses them or when they are part of a deliberate, tested public primitive. The package does not expose dormant analytics or polymorphic helper utilities.
@@ -142,6 +142,22 @@ import { Button } from "@portfolio/components";
 ```
 
 The rendered element receives `data-analytics-event`, `data-analytics-placement`, and `data-analytics-target`.
+
+Sections can render a named heading and description without repeating id wiring:
+
+```tsx
+import { Section } from "@portfolio/components";
+
+<Section
+  description="Proof points from recent delivery work."
+  heading="Selected work"
+  id="work"
+>
+  ...
+</Section>;
+```
+
+The rendered `section` receives `aria-labelledby="work-heading"` and `aria-describedby="work-description"` when heading and description content are provided.
 
 ## Development
 

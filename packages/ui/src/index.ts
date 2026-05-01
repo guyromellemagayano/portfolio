@@ -12,6 +12,7 @@ export * from "./input";
 export * from "./label";
 export * from "./link";
 export * from "./popover";
+export * from "./section";
 export * from "./select";
 export * from "./separator";
 export * from "./sheet";

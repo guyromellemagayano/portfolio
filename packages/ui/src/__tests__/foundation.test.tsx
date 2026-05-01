@@ -23,6 +23,7 @@ import {
   Input,
   Label,
   Link,
+  Section,
   Separator,
   Skeleton,
   Table,
@@ -112,6 +113,13 @@ describe("foundational ui components", () => {
           <AvatarFallback>GM</AvatarFallback>
         </Avatar>
         <Separator />
+        <Section
+          description="Reusable product surface."
+          heading="Services"
+          id="services"
+        >
+          <p>Service content</p>
+        </Section>
         <Skeleton data-testid="loading-block" />
       </div>
     );
@@ -129,6 +137,21 @@ describe("foundational ui components", () => {
       "aria-orientation",
       "horizontal"
     );
+    expect(screen.getByRole("heading", { name: "Services" })).toHaveAttribute(
+      "data-slot",
+      "section-heading"
+    );
+    expect(screen.getByText("Reusable product surface.")).toHaveClass(
+      "text-muted-foreground"
+    );
+    const serviceSection = screen
+      .getByText("Service content")
+      .closest("section");
+    expect(serviceSection).toHaveAttribute(
+      "aria-labelledby",
+      "services-heading"
+    );
+    expect(serviceSection).toHaveAttribute("data-slot", "section");
     expect(screen.getByTestId("loading-block")).toHaveAttribute(
       "aria-hidden",
       "true"
