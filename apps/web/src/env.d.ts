@@ -2,7 +2,9 @@
 
 interface ImportMetaEnv {
   readonly PUBLIC_SENTRY_DSN?: string;
-  readonly PUBLIC_SENTRY_ENVIRONMENT?: string;
   readonly PUBLIC_SENTRY_RELEASE?: string;
+  readonly PUBLIC_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE?: string;
+  readonly PUBLIC_SENTRY_REPLAYS_SESSION_SAMPLE_RATE?: string;
   readonly PUBLIC_SENTRY_TRACES_SAMPLE_RATE?: string;
+  readonly PUBLIC_VERCEL_ENV?: string;
 }

@@ -62,16 +62,19 @@ const emailLink = getPortfolioSocialLinkByPlatform("email");
       </p>
       <p>
         Sentry can collect error messages, stack traces, browser and device
-        context, page URL, release, deployment environment, and sampled
-        performance traces. That data is used to diagnose broken pages,
+        context, request headers and IP address where available, page URL,
+        release, deployment environment, application logs, custom metrics,
+        release-health session status, sampled performance traces, and sampled
+        session replay data. That data is used to diagnose broken pages,
         JavaScript failures, and deployment regressions.
       </p>
 
       <h2>Cookies and local storage</h2>
       <p>
         Google Analytics may use cookies or similar browser storage to measure
-        visits and engagement. This site does not add session replay or
-        advertising pixels. Sentry session replay is not enabled.
+        visits and engagement. Sentry Session Replay may also use browser
+        storage for sampled debugging sessions and error-session capture. This
+        site does not add advertising pixels.
       </p>
 
       <h2>Contact</h2>

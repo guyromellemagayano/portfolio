@@ -20,12 +20,23 @@ if (
 
 const DEFAULT_SITE_URL = "https://www.guyromellemagayano.com";
 const DEFAULT_DEVELOPMENT_SITE_URL = "http://portfolio.local:4321";
+const sentryClientInitPath = fileURLToPath(
+  new URL("./sentry.client.config.ts", import.meta.url)
+);
+const sentryServerInitPath = fileURLToPath(
+  new URL("./sentry.server.config.ts", import.meta.url)
+);
 const LOCAL_DEV_ALLOWED_HOSTS = [
   "portfolio.local",
   "web.portfolio.orb.local",
   "portfolio-web.orb.local",
 ];
-const DEFAULT_SENTRY_TRACES_SAMPLE_RATE = 0.1;
+const DEFAULT_SENTRY_ORG = "stack-market-labs";
+const DEFAULT_SENTRY_PROJECT = "portfolio-web";
+const DEFAULT_SENTRY_RELEASE = "portfolio-web@1.0.0";
+const DEFAULT_SENTRY_TRACES_SAMPLE_RATE = 1.0;
+const DEFAULT_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE = 1.0;
+const DEFAULT_SENTRY_REPLAYS_SESSION_SAMPLE_RATE = 0.1;
 const LOCAL_ONLY_HOSTNAME_SUFFIXES = [".local"];
 const LOCAL_ONLY_HOSTNAMES = new Set([
   "localhost",
@@ -51,9 +62,37 @@ function readOptionalEnvValue(key) {
 }
 
 function readSampleRateEnvValue(key, fallback) {
-  const value = Number(readEnvValue(key));
+  const rawValue = readOptionalEnvValue(key);
+
+  if (!rawValue) {
+    return fallback;
+  }
+
+  const value = Number(rawValue);
 
   return Number.isFinite(value) && value >= 0 && value <= 1 ? value : fallback;
+}
+
+function getExplicitSentryRelease() {
+  return (
+    readOptionalEnvValue("SENTRY_RELEASE") ??
+    readOptionalEnvValue("VERCEL_GIT_COMMIT_SHA") ??
+    readOptionalEnvValue("GIT_HASH")
+  );
+}
+
+function getSentryRelease() {
+  return getExplicitSentryRelease() ?? DEFAULT_SENTRY_RELEASE;
+}
+
+function syncSentryReleaseEnv(release) {
+  if (release) {
+    process.env.SENTRY_RELEASE = release;
+
+    return;
+  }
+
+  delete process.env.SENTRY_RELEASE;
 }
 
 function isProductionRuntime() {
@@ -154,17 +193,27 @@ function getSiteUrlCandidates() {
 function getSentryBuildOptions() {
   const dsn = readOptionalEnvValue("SENTRY_DSN");
   const authToken = readOptionalEnvValue("SENTRY_AUTH_TOKEN");
-  const org = readOptionalEnvValue("SENTRY_ORG");
-  const project = readOptionalEnvValue("SENTRY_PROJECT");
-  const hasSourceMapCredentials = Boolean(authToken && org && project);
+  const org = readOptionalEnvValue("SENTRY_ORG") ?? DEFAULT_SENTRY_ORG;
+  const project =
+    readOptionalEnvValue("SENTRY_PROJECT") ?? DEFAULT_SENTRY_PROJECT;
+  const hasDsn = Boolean(dsn);
+  const release = getExplicitSentryRelease();
+  const canUploadSourceMaps = Boolean(authToken && org && project && release);
+
+  syncSentryReleaseEnv(release);
 
   return {
     authToken,
-    enabled: Boolean(dsn),
+    clientInitPath: sentryClientInitPath,
+    enabled: {
+      client: hasDsn,
+      server: hasDsn,
+    },
     org,
     project,
+    serverInitPath: sentryServerInitPath,
     sourcemaps: {
-      disable: hasSourceMapCredentials ? false : "disable-upload",
+      disable: canUploadSourceMaps ? false : true,
     },
     telemetry: false,
   };
@@ -175,20 +224,34 @@ function getSentryPublicRuntimeEnv() {
     "import.meta.env.PUBLIC_SENTRY_DSN": JSON.stringify(
       readOptionalEnvValue("SENTRY_DSN") ?? ""
     ),
-    "import.meta.env.PUBLIC_SENTRY_ENVIRONMENT": JSON.stringify(
-      readOptionalEnvValue("SENTRY_ENVIRONMENT") ?? resolveSiteUrlEnvironment()
+    "import.meta.env.PUBLIC_VERCEL_ENV": JSON.stringify(
+      resolveSiteUrlEnvironment()
     ),
     "import.meta.env.PUBLIC_SENTRY_RELEASE": JSON.stringify(
-      readOptionalEnvValue("SENTRY_RELEASE") ??
-        readOptionalEnvValue("VERCEL_GIT_COMMIT_SHA") ??
-        readOptionalEnvValue("GIT_HASH") ??
-        ""
+      getSentryRelease() ?? ""
     ),
     "import.meta.env.PUBLIC_SENTRY_TRACES_SAMPLE_RATE": JSON.stringify(
       String(
         readSampleRateEnvValue(
           "SENTRY_TRACES_SAMPLE_RATE",
           DEFAULT_SENTRY_TRACES_SAMPLE_RATE
+        )
+      )
+    ),
+    "import.meta.env.PUBLIC_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE":
+      JSON.stringify(
+        String(
+          readSampleRateEnvValue(
+            "SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE",
+            DEFAULT_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE
+          )
+        )
+      ),
+    "import.meta.env.PUBLIC_SENTRY_REPLAYS_SESSION_SAMPLE_RATE": JSON.stringify(
+      String(
+        readSampleRateEnvValue(
+          "SENTRY_REPLAYS_SESSION_SAMPLE_RATE",
+          DEFAULT_SENTRY_REPLAYS_SESSION_SAMPLE_RATE
         )
       )
     ),
