@@ -37,6 +37,7 @@ const DEFAULT_SENTRY_RELEASE = "portfolio-web@1.0.0";
 const DEFAULT_SENTRY_TRACES_SAMPLE_RATE = 1.0;
 const DEFAULT_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE = 1.0;
 const DEFAULT_SENTRY_REPLAYS_SESSION_SAMPLE_RATE = 0.1;
+const SENTRY_SOURCEMAP_FILES_TO_DELETE_AFTER_UPLOAD = ["dist/**/*.map"];
 const LOCAL_ONLY_HOSTNAME_SUFFIXES = [".local"];
 const LOCAL_ONLY_HOSTNAMES = new Set([
   "localhost",
@@ -214,6 +215,9 @@ function getSentryBuildOptions() {
     serverInitPath: sentryServerInitPath,
     sourcemaps: {
       disable: canUploadSourceMaps ? false : true,
+      filesToDeleteAfterUpload: canUploadSourceMaps
+        ? SENTRY_SOURCEMAP_FILES_TO_DELETE_AFTER_UPLOAD
+        : undefined,
     },
     telemetry: false,
   };
