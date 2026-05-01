@@ -107,18 +107,9 @@ describe("foundational ui components", () => {
   it("keeps field and table accessibility relationships intact", () => {
     render(
       <div>
-        <Field
-          controlId="email"
-          descriptionId="email-help"
-          errorId="email-error"
-          invalid
-        >
+        <Field id="email" invalid required>
           <FieldLabel>Email</FieldLabel>
-          <Input
-            aria-describedby="email-help email-error"
-            aria-invalid="true"
-            id="email"
-          />
+          <Input />
           <FieldDescription>Use a work email.</FieldDescription>
           <FieldError>Invalid email.</FieldError>
         </Field>
@@ -137,10 +128,23 @@ describe("foundational ui components", () => {
       </div>
     );
 
-    expect(screen.getByText("Email")).toHaveAttribute("for", "email");
+    expect(screen.getByText("Email")).toHaveAttribute("for", "email-control");
+    expect(screen.getByLabelText("Email")).toHaveAttribute(
+      "id",
+      "email-control"
+    );
+    expect(screen.getByLabelText("Email")).toHaveAttribute("required");
+    expect(screen.getByLabelText("Email")).toHaveAttribute(
+      "aria-invalid",
+      "true"
+    );
+    expect(screen.getByLabelText("Email")).toHaveAttribute(
+      "aria-describedby",
+      "email-description email-error"
+    );
     expect(screen.getByText("Use a work email.")).toHaveAttribute(
       "id",
-      "email-help"
+      "email-description"
     );
     expect(screen.getByRole("alert")).toHaveAttribute("id", "email-error");
     expect(screen.getByRole("columnheader", { name: "Name" })).toHaveAttribute(

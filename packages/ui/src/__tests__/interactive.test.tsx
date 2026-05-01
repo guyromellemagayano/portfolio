@@ -19,6 +19,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -108,14 +112,19 @@ describe("interactive ui components", () => {
           <TooltipTrigger>Hover me</TooltipTrigger>
           <TooltipContent>Tooltip content</TooltipContent>
         </Tooltip>
-        <Select defaultValue="one" open>
-          <SelectTrigger aria-label="Choice">
-            <SelectValue placeholder="Choose" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="one">One</SelectItem>
-          </SelectContent>
-        </Select>
+        <Field id="choice" invalid required>
+          <FieldLabel>Choice</FieldLabel>
+          <Select defaultValue="one" open>
+            <SelectTrigger>
+              <SelectValue placeholder="Choose" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="one">One</SelectItem>
+            </SelectContent>
+          </Select>
+          <FieldDescription>Choose one option.</FieldDescription>
+          <FieldError>Choice is required.</FieldError>
+        </Field>
       </TooltipProvider>
     );
 
@@ -140,5 +149,17 @@ describe("interactive ui components", () => {
     expect(
       document.querySelector('[data-slot="select-trigger"]')
     ).toHaveAttribute("data-slot", "select-trigger");
+    expect(
+      document.querySelector('[data-slot="select-trigger"]')
+    ).toHaveAttribute("id", "choice-control");
+    expect(
+      document.querySelector('[data-slot="select-trigger"]')
+    ).toHaveAttribute("aria-describedby", "choice-description choice-error");
+    expect(
+      document.querySelector('[data-slot="select-trigger"]')
+    ).toHaveAttribute("aria-invalid", "true");
+    expect(
+      document.querySelector('[data-slot="select-trigger"]')
+    ).toHaveAttribute("aria-required", "true");
   });
 });

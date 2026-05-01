@@ -10,6 +10,7 @@ Styled shadcn-inspired React design system components for the portfolio workspac
 - Source-owned shadcn-style components; no `shadcn/ui` runtime dependency
 - Tailwind-compatible class variants with `cva` and `cn()`
 - Radix-backed interactive primitives through the unified `radix-ui` package
+- Field-aware form controls that inherit accessibility ids and state from `Field`
 - Components tested with Vitest + Testing Library
 - TypeScript-first source and build pipeline
 - Workspace-integrated linting, formatting, and coverage scripts
@@ -54,6 +55,21 @@ import { Button, Card, CardContent, CardHeader, CardTitle } from "@portfolio/ui"
   </CardContent>
 </Card>;
 ```
+
+Field controls reduce form boilerplate by inheriting ids and accessibility state from `Field`:
+
+```typescript
+import { Field, FieldDescription, FieldError, FieldLabel, Input } from "@portfolio/ui";
+
+<Field id="email" invalid required>
+  <FieldLabel>Email</FieldLabel>
+  <Input />
+  <FieldDescription>Use a work email.</FieldDescription>
+  <FieldError>Enter a valid email.</FieldError>
+</Field>;
+```
+
+`Input`, `Textarea`, and `SelectTrigger` receive the generated control id, invalid/required state, and described-by relationships automatically.
 
 ### Interactive Components
 

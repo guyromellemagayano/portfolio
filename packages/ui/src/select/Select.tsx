@@ -4,6 +4,8 @@ import React from "react";
 import { Check, ChevronDown } from "lucide-react";
 import { Select as SelectPrimitive } from "radix-ui";
 
+import { useFieldControlProps } from "@portfolio/components";
+
 import { cn, getDataSlot } from "../utils";
 
 export const Select = SelectPrimitive.Root;
@@ -15,11 +17,12 @@ export const SelectTrigger = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >((props, ref) => {
   const { children, className, ...rest } = props;
+  const controlProps = useFieldControlProps(rest, { nativeRequired: false });
 
   return (
     <SelectPrimitive.Trigger
       ref={ref}
-      {...rest}
+      {...controlProps}
       className={cn(
         "border-input bg-background focus-visible:ring-ring flex h-10 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
         className
