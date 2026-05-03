@@ -134,7 +134,7 @@
       return;
     }
 
-    if (destinationPath === "/hire" || destinationPath === "/book") {
+    if (destinationPath === "/contact") {
       sendAnalyticsEvent("lead_start", {
         ...params,
         method: "site_navigation",

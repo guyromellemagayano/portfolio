@@ -45,15 +45,6 @@ const LOCAL_ONLY_HOSTNAMES = new Set([
   "0.0.0.0",
   "::1",
 ]);
-const LEGACY_REDIRECT_PATHS = new Set([
-  "/articles",
-  "/book",
-  "/hire",
-  "/projects",
-  "/services",
-]);
-const LEGACY_REDIRECT_PREFIXES = ["/articles/", "/projects/"];
-
 function readEnvValue(key) {
   return process.env[key]?.trim() ?? "";
 }
@@ -270,13 +261,7 @@ export default defineConfig({
       filter: (page) => {
         const pathname = new URL(page).pathname.replace(/\/+$/, "") || "/";
 
-        return (
-          !pathname.endsWith(".xml") &&
-          !LEGACY_REDIRECT_PATHS.has(pathname) &&
-          !LEGACY_REDIRECT_PREFIXES.some((prefix) =>
-            pathname.startsWith(prefix)
-          )
-        );
+        return !pathname.endsWith(".xml");
       },
       namespaces: {
         image: false,
