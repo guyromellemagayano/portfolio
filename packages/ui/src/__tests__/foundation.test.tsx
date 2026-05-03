@@ -21,8 +21,13 @@ import {
   FieldDescription,
   FieldError,
   FieldLabel,
+  Fieldset,
+  Form,
+  FormActions,
   Input,
+  InputField,
   Label,
+  Legend,
   Link,
   RadioGroup,
   RadioGroupItem,
@@ -226,6 +231,41 @@ describe("foundational ui components", () => {
       "col"
     );
     expect(screen.getByRole("cell", { name: "Portfolio" })).toBeInTheDocument();
+  });
+
+  it("renders form grouping semantics with styled slots", () => {
+    render(
+      <Form aria-label="Contact request">
+        <Fieldset disabled>
+          <Legend>Project details</Legend>
+          <InputField id="budget" label="Budget" required />
+        </Fieldset>
+        <FormActions>
+          <Button>Submit</Button>
+        </FormActions>
+      </Form>
+    );
+
+    expect(
+      screen.getByRole("form", { name: "Contact request" })
+    ).toHaveAttribute("data-slot", "form");
+    expect(
+      screen.getByRole("group", { name: "Project details" })
+    ).toHaveAttribute("data-slot", "fieldset");
+    expect(
+      screen.getByRole("group", { name: "Project details" })
+    ).toBeDisabled();
+    expect(screen.getByRole("group", { name: "Project details" })).toHaveClass(
+      "disabled:opacity-50"
+    );
+    expect(screen.getByRole("textbox", { name: "Budget" })).toBeDisabled();
+    expect(screen.getByText("Project details")).toHaveAttribute(
+      "data-slot",
+      "legend"
+    );
+    expect(
+      screen.getByRole("button", { name: "Submit" }).parentElement
+    ).toHaveAttribute("data-slot", "form-actions");
   });
 
   it("merges class names predictably", () => {

@@ -42,6 +42,7 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `SwitchField`
 - `RadioGroup`, `RadioGroupItem`, `RadioGroupOption`
 - `Label`
+- `Form`, `Fieldset`, `Legend`, `FormActions`
 - `Field`, `FieldLabel`, `FieldDescription`, `FieldError`
 - `Section`
 - `Separator`
@@ -118,6 +119,24 @@ import { Section } from "@portfolio/ui";
   ...
 </Section>;
 ```
+
+Forms expose styled native grouping semantics for full form flows:
+
+```typescript
+import { Button, Fieldset, Form, FormActions, InputField, Legend } from "@portfolio/ui";
+
+<Form aria-label="Contact request">
+  <Fieldset>
+    <Legend>Project details</Legend>
+    <InputField id="budget" label="Budget" required />
+  </Fieldset>
+  <FormActions>
+    <Button>Submit</Button>
+  </FormActions>
+</Form>;
+```
+
+Use `Fieldset` and `Legend` for grouped controls so screen readers receive a native group name without extra ARIA.
 
 Field controls reduce form boilerplate by inheriting ids and accessibility state from `Field`:
 
