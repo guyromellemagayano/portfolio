@@ -6,6 +6,16 @@ import {
   type TextareaRef,
 } from "@portfolio/components";
 
+import {
+  Field,
+  FieldDescription,
+  type FieldDescriptionProps,
+  FieldError,
+  type FieldErrorProps,
+  FieldLabel,
+  type FieldLabelProps,
+  type FieldProps,
+} from "../field";
 import { cn, getDataSlot } from "../utils";
 
 export type TextareaProps = TextareaPrimitiveProps;
@@ -29,3 +39,51 @@ export const Textarea = React.forwardRef<TextareaRef, TextareaProps>(
 );
 
 Textarea.displayName = "Textarea";
+
+export type TextareaFieldProps = Omit<FieldProps, "children"> & {
+  description?: React.ReactNode;
+  descriptionProps?: FieldDescriptionProps;
+  error?: React.ReactNode;
+  errorProps?: FieldErrorProps;
+  label: React.ReactNode;
+  labelProps?: FieldLabelProps;
+  textareaProps?: TextareaProps;
+};
+
+export const TextareaField = React.forwardRef<
+  React.ComponentRef<typeof Field>,
+  TextareaFieldProps
+>((props, ref) => {
+  const {
+    className,
+    description,
+    descriptionProps,
+    error,
+    errorProps,
+    invalid,
+    label,
+    labelProps,
+    textareaProps,
+    ...fieldProps
+  } = props;
+  const hasError = error !== undefined && error !== null;
+
+  return (
+    <Field
+      ref={ref}
+      {...fieldProps}
+      className={cn("gap-2", className)}
+      data-slot={getDataSlot(props, "textarea-field")}
+      invalid={invalid ?? (hasError ? true : undefined)}
+    >
+      <FieldLabel {...labelProps}>{label}</FieldLabel>
+      <Textarea {...textareaProps} />
+      {description !== undefined && description !== null ? (
+        <FieldDescription {...descriptionProps}>{description}</FieldDescription>
+      ) : null}
+      {hasError ? <FieldError {...errorProps}>{error}</FieldError> : null}
+    </Field>
+  );
+});
+
+TextareaField.displayName = "TextareaField";

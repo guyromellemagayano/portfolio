@@ -34,8 +34,8 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `Link`
 - `Badge`
 - `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`
-- `Input`
-- `Textarea`
+- `Input`, `InputField`
+- `Textarea`, `TextareaField`
 - `Checkbox`
 - `Switch`
 - `CheckboxField`
@@ -134,6 +134,41 @@ import { Field, FieldDescription, FieldError, FieldLabel, Input } from "@portfol
 
 `Input`, `Textarea`, and `SelectTrigger` receive the generated control id, invalid/required state, and described-by relationships automatically.
 
+Use the text field helpers when the common label/control/description/error layout is enough:
+
+```typescript
+import { InputField, SelectField, SelectItem, TextareaField } from "@portfolio/ui";
+
+<InputField
+  description="Use a work email."
+  error="Enter a valid email."
+  id="email"
+  inputProps={{ type: "email" }}
+  label="Email"
+  required
+/>;
+
+<TextareaField
+  description="Share the project context."
+  id="message"
+  label="Message"
+  textareaProps={{ rows: 4 }}
+/>;
+
+<SelectField
+  description="Choose the work type."
+  error="Select one option."
+  id="role"
+  label="Role"
+  placeholder="Choose a role"
+  required
+>
+  <SelectItem value="engineering">Engineering</SelectItem>
+</SelectField>;
+```
+
+Passing `error` marks the field invalid by default, while `invalid` remains available for explicit state control.
+
 Choice controls receive the same field state without native-only boilerplate:
 
 ```typescript
@@ -224,6 +259,7 @@ import {
 - `DropdownMenu`
 - `Tabs`
 - `Select`
+- `SelectField`
 - `Popover`
 - `Sheet`
 

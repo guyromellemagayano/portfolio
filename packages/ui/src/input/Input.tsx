@@ -6,6 +6,16 @@ import {
   type InputRef,
 } from "@portfolio/components";
 
+import {
+  Field,
+  FieldDescription,
+  type FieldDescriptionProps,
+  FieldError,
+  type FieldErrorProps,
+  FieldLabel,
+  type FieldLabelProps,
+  type FieldProps,
+} from "../field";
 import { cn, getDataSlot } from "../utils";
 
 export type InputProps = InputPrimitiveProps;
@@ -28,3 +38,51 @@ export const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 });
 
 Input.displayName = "Input";
+
+export type InputFieldProps = Omit<FieldProps, "children"> & {
+  description?: React.ReactNode;
+  descriptionProps?: FieldDescriptionProps;
+  error?: React.ReactNode;
+  errorProps?: FieldErrorProps;
+  inputProps?: InputProps;
+  label: React.ReactNode;
+  labelProps?: FieldLabelProps;
+};
+
+export const InputField = React.forwardRef<
+  React.ComponentRef<typeof Field>,
+  InputFieldProps
+>((props, ref) => {
+  const {
+    className,
+    description,
+    descriptionProps,
+    error,
+    errorProps,
+    inputProps,
+    invalid,
+    label,
+    labelProps,
+    ...fieldProps
+  } = props;
+  const hasError = error !== undefined && error !== null;
+
+  return (
+    <Field
+      ref={ref}
+      {...fieldProps}
+      className={cn("gap-2", className)}
+      data-slot={getDataSlot(props, "input-field")}
+      invalid={invalid ?? (hasError ? true : undefined)}
+    >
+      <FieldLabel {...labelProps}>{label}</FieldLabel>
+      <Input {...inputProps} />
+      {description !== undefined && description !== null ? (
+        <FieldDescription {...descriptionProps}>{description}</FieldDescription>
+      ) : null}
+      {hasError ? <FieldError {...errorProps}>{error}</FieldError> : null}
+    </Field>
+  );
+});
+
+InputField.displayName = "InputField";

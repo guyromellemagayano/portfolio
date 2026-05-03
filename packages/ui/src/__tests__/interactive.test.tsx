@@ -25,6 +25,7 @@ import {
   FieldDescription,
   FieldError,
   FieldLabel,
+  InputField,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -33,6 +34,7 @@ import {
   RadioGroupOption,
   Select,
   SelectContent,
+  SelectField,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -47,6 +49,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  TextareaField,
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -364,5 +367,67 @@ describe("interactive ui components", () => {
 
     expect(radio).toHaveAttribute("id", "plan-helper-pro");
     expect(radio).toHaveAccessibleDescription("For production teams.");
+  });
+
+  it("renders low-boilerplate accessible text field helpers", () => {
+    render(
+      <div>
+        <InputField
+          description="Use a work email."
+          error="Enter a valid email."
+          id="email-helper"
+          inputProps={{ type: "email" }}
+          label="Email"
+          required
+        />
+        <TextareaField
+          description="Share the project context."
+          id="message-helper"
+          label="Message"
+          textareaProps={{ rows: 4 }}
+        />
+        <SelectField
+          description="Choose the work type."
+          error="Select one option."
+          id="role-helper"
+          label="Role"
+          placeholder="Choose a role"
+          required
+          selectProps={{ defaultValue: "engineering" }}
+        >
+          <SelectItem value="engineering">Engineering</SelectItem>
+        </SelectField>
+      </div>
+    );
+
+    const email = screen.getByRole("textbox", { name: "Email" });
+    const message = screen.getByRole("textbox", { name: "Message" });
+    const role = screen.getByRole("combobox", { name: "Role" });
+
+    expect(email).toHaveAttribute("id", "email-helper-control");
+    expect(email).toHaveAttribute(
+      "aria-describedby",
+      "email-helper-description email-helper-error"
+    );
+    expect(email).toHaveAccessibleDescription(
+      "Use a work email. Enter a valid email."
+    );
+    expect(email).toHaveAttribute("aria-invalid", "true");
+    expect(email).toHaveAttribute("required");
+
+    expect(message).toHaveAttribute("id", "message-helper-control");
+    expect(message).toHaveAccessibleDescription("Share the project context.");
+    expect(message).toHaveAttribute("rows", "4");
+
+    expect(role).toHaveAttribute("id", "role-helper-control");
+    expect(role).toHaveAttribute(
+      "aria-describedby",
+      "role-helper-description role-helper-error"
+    );
+    expect(role).toHaveAccessibleDescription(
+      "Choose the work type. Select one option."
+    );
+    expect(role).toHaveAttribute("aria-invalid", "true");
+    expect(role).toHaveAttribute("aria-required", "true");
   });
 });

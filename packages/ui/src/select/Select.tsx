@@ -6,6 +6,16 @@ import { Select as SelectPrimitive } from "radix-ui";
 
 import { useFieldControlProps } from "@portfolio/components";
 
+import {
+  Field,
+  FieldDescription,
+  type FieldDescriptionProps,
+  FieldError,
+  type FieldErrorProps,
+  FieldLabel,
+  type FieldLabelProps,
+  type FieldProps,
+} from "../field";
 import { cn, getDataSlot } from "../utils";
 
 export const Select = SelectPrimitive.Root;
@@ -126,3 +136,80 @@ export const SelectSeparator = React.forwardRef<
 });
 
 SelectSeparator.displayName = "SelectSeparator";
+
+export type SelectFieldProps = Omit<FieldProps, "children"> & {
+  children: React.ReactNode;
+  contentProps?: Omit<
+    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>,
+    "children"
+  >;
+  description?: React.ReactNode;
+  descriptionProps?: FieldDescriptionProps;
+  error?: React.ReactNode;
+  errorProps?: FieldErrorProps;
+  label: React.ReactNode;
+  labelProps?: FieldLabelProps;
+  placeholder?: React.ComponentPropsWithoutRef<
+    typeof SelectPrimitive.Value
+  >["placeholder"];
+  selectProps?: Omit<
+    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>,
+    "children"
+  >;
+  triggerProps?: Omit<
+    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
+    "children"
+  >;
+  valueProps?: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>;
+};
+
+export const SelectField = React.forwardRef<
+  React.ComponentRef<typeof Field>,
+  SelectFieldProps
+>((props, ref) => {
+  const {
+    children,
+    className,
+    contentProps,
+    description,
+    descriptionProps,
+    error,
+    errorProps,
+    invalid,
+    label,
+    labelProps,
+    placeholder,
+    selectProps,
+    triggerProps,
+    valueProps,
+    ...fieldProps
+  } = props;
+  const hasError = error !== undefined && error !== null;
+
+  return (
+    <Field
+      ref={ref}
+      {...fieldProps}
+      className={cn("gap-2", className)}
+      data-slot={getDataSlot(props, "select-field")}
+      invalid={invalid ?? (hasError ? true : undefined)}
+    >
+      <FieldLabel {...labelProps}>{label}</FieldLabel>
+      <Select {...selectProps}>
+        <SelectTrigger {...triggerProps}>
+          <SelectValue
+            {...valueProps}
+            placeholder={valueProps?.placeholder ?? placeholder}
+          />
+        </SelectTrigger>
+        <SelectContent {...contentProps}>{children}</SelectContent>
+      </Select>
+      {description !== undefined && description !== null ? (
+        <FieldDescription {...descriptionProps}>{description}</FieldDescription>
+      ) : null}
+      {hasError ? <FieldError {...errorProps}>{error}</FieldError> : null}
+    </Field>
+  );
+});
+
+SelectField.displayName = "SelectField";
