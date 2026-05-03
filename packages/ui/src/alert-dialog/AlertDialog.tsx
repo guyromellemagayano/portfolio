@@ -31,11 +31,38 @@ export const AlertDialogOverlay = React.forwardRef<
 
 AlertDialogOverlay.displayName = "AlertDialogOverlay";
 
+export type AlertDialogContentProps = Omit<
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>,
+  "title"
+> & {
+  description?: React.ReactNode;
+  descriptionProps?: React.ComponentPropsWithoutRef<
+    typeof AlertDialogPrimitive.Description
+  >;
+  headerProps?: React.HTMLAttributes<HTMLDivElement>;
+  title?: React.ReactNode;
+  titleProps?: React.ComponentPropsWithoutRef<
+    typeof AlertDialogPrimitive.Title
+  >;
+};
+
 export const AlertDialogContent = React.forwardRef<
   React.ComponentRef<typeof AlertDialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
+  AlertDialogContentProps
 >((props, ref) => {
-  const { className, ...rest } = props;
+  const {
+    children,
+    className,
+    description,
+    descriptionProps,
+    headerProps,
+    title,
+    titleProps,
+    ...rest
+  } = props;
+  const hasDescription = description !== undefined && description !== null;
+  const hasTitle = title !== undefined && title !== null;
+  const hasGeneratedHeader = hasTitle || hasDescription;
 
   return (
     <AlertDialogPortal>
@@ -48,7 +75,21 @@ export const AlertDialogContent = React.forwardRef<
           className
         )}
         data-slot={getDataSlot(props, "alert-dialog-content")}
-      />
+      >
+        {hasGeneratedHeader ? (
+          <AlertDialogHeader {...headerProps}>
+            {hasTitle ? (
+              <AlertDialogTitle {...titleProps}>{title}</AlertDialogTitle>
+            ) : null}
+            {hasDescription ? (
+              <AlertDialogDescription {...descriptionProps}>
+                {description}
+              </AlertDialogDescription>
+            ) : null}
+          </AlertDialogHeader>
+        ) : null}
+        {children}
+      </AlertDialogPrimitive.Content>
     </AlertDialogPortal>
   );
 });

@@ -38,7 +38,9 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `Textarea`
 - `Checkbox`
 - `Switch`
-- `RadioGroup`, `RadioGroupItem`
+- `CheckboxField`
+- `SwitchField`
+- `RadioGroup`, `RadioGroupItem`, `RadioGroupOption`
 - `Label`
 - `Field`, `FieldLabel`, `FieldDescription`, `FieldError`
 - `Section`
@@ -172,6 +174,48 @@ import {
 
 `Checkbox`, `Switch`, and `RadioGroup` inherit the field label, description, required state, and invalid state through ARIA attributes while keeping item labels local to each option.
 
+Use the choice field helpers when the common label/control/description layout is enough:
+
+```typescript
+import {
+  CheckboxField,
+  Field,
+  FieldDescription,
+  FieldLabel,
+  RadioGroup,
+  RadioGroupOption,
+  SwitchField,
+} from "@portfolio/ui";
+
+<CheckboxField
+  description="Required before continuing."
+  error="Accept the terms to continue."
+  id="terms"
+  label="Accept terms"
+  required
+/>;
+
+<SwitchField
+  description="Receive product updates."
+  id="updates"
+  label="Email updates"
+  required
+/>;
+
+<Field id="plan" required>
+  <FieldLabel>Plan</FieldLabel>
+  <RadioGroup defaultValue="pro">
+    <RadioGroupOption
+      description="For production teams."
+      id="plan-pro"
+      label="Pro"
+      value="pro"
+    />
+  </RadioGroup>
+  <FieldDescription>Select one plan.</FieldDescription>
+</Field>;
+```
+
 ### Interactive Components
 
 - `Dialog`
@@ -200,7 +244,31 @@ import { Dialog, DialogContent, DialogTrigger } from "@portfolio/ui";
 </Dialog>;
 ```
 
-Prefer `title`, `description`, and `closeLabel` on `DialogContent` and `SheetContent` for the common path. They render the Radix title, description, and named close control automatically. Use `headerProps`, `titleProps`, and `descriptionProps` when the generated header needs custom attributes or classes. Manual composition with `DialogHeader`, `DialogTitle`, `DialogDescription`, `SheetHeader`, `SheetTitle`, and `SheetDescription` remains supported for custom layouts.
+```typescript
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogTrigger,
+} from "@portfolio/ui";
+
+<AlertDialog>
+  <AlertDialogTrigger>Delete project</AlertDialogTrigger>
+  <AlertDialogContent
+    description="This action permanently removes the selected project."
+    title="Delete project"
+  >
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>;
+```
+
+Prefer `title`, `description`, and `closeLabel` on `DialogContent` and `SheetContent` for the common path. Use `title` and `description` on `AlertDialogContent` so confirm flows have an accessible name and description without repeating header markup. Use `headerProps`, `titleProps`, and `descriptionProps` when the generated header needs custom attributes or classes. Manual composition with `DialogHeader`, `DialogTitle`, `DialogDescription`, `SheetHeader`, `SheetTitle`, `SheetDescription`, `AlertDialogHeader`, `AlertDialogTitle`, and `AlertDialogDescription` remains supported for custom layouts.
 
 ### Legacy Demo Component
 

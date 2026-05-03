@@ -11,6 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   Checkbox,
+  CheckboxField,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -29,6 +30,7 @@ import {
   PopoverTrigger,
   RadioGroup,
   RadioGroupItem,
+  RadioGroupOption,
   Select,
   SelectContent,
   SelectItem,
@@ -40,6 +42,7 @@ import {
   SheetHeader,
   SheetTitle,
   Switch,
+  SwitchField,
   Tabs,
   TabsContent,
   TabsList,
@@ -93,6 +96,37 @@ describe("interactive ui components", () => {
     expect(
       screen.getByRole("button", { name: "Close filters" })
     ).toBeInTheDocument();
+  });
+
+  it("renders low-boilerplate accessible alert dialog content", () => {
+    render(
+      <AlertDialog open>
+        <AlertDialogContent
+          description="This action permanently removes the selected project."
+          headerProps={{ id: "alert-generated-header" }}
+          title="Delete project"
+          titleProps={{ className: "custom-title" }}
+        >
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    );
+
+    expect(
+      screen.getByRole("alertdialog", { name: "Delete project" })
+    ).toHaveAccessibleDescription(
+      "This action permanently removes the selected project."
+    );
+    expect(document.getElementById("alert-generated-header")).toHaveAttribute(
+      "data-slot",
+      "alert-dialog-header"
+    );
+    expect(screen.getByText("Delete project")).toHaveClass("custom-title");
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
   });
 
   it("renders dialog and alert dialog surfaces", () => {
@@ -272,5 +306,63 @@ describe("interactive ui components", () => {
     );
     expect(radioGroup).toHaveAttribute("aria-invalid", "true");
     expect(radioGroup).toHaveAttribute("aria-required", "true");
+  });
+
+  it("renders low-boilerplate accessible choice field helpers", () => {
+    render(
+      <div>
+        <CheckboxField
+          description="Required before continuing."
+          error="Accept the terms to continue."
+          id="terms-helper"
+          label="Accept terms"
+          required
+        />
+        <SwitchField
+          description="Receive product updates."
+          id="updates-helper"
+          label="Email updates"
+          required
+        />
+        <Field id="plan-helper" required>
+          <FieldLabel>Plan</FieldLabel>
+          <RadioGroup defaultValue="pro">
+            <RadioGroupOption
+              description="For production teams."
+              id="plan-helper-pro"
+              label="Pro"
+              value="pro"
+            />
+          </RadioGroup>
+          <FieldDescription>Select one plan.</FieldDescription>
+        </Field>
+      </div>
+    );
+
+    const checkbox = screen.getByRole("checkbox", { name: "Accept terms" });
+    const switchControl = screen.getByRole("switch", {
+      name: "Email updates",
+    });
+    const radio = screen.getByRole("radio", { name: "Pro" });
+
+    expect(checkbox).toHaveAttribute("id", "terms-helper-control");
+    expect(checkbox).toHaveAttribute(
+      "aria-describedby",
+      "terms-helper-description terms-helper-error"
+    );
+    expect(checkbox).toHaveAccessibleDescription(
+      "Required before continuing. Accept the terms to continue."
+    );
+    expect(checkbox).toHaveAttribute("aria-invalid", "true");
+    expect(checkbox).toHaveAttribute("aria-required", "true");
+
+    expect(switchControl).toHaveAttribute("id", "updates-helper-control");
+    expect(switchControl).toHaveAccessibleDescription(
+      "Receive product updates."
+    );
+    expect(switchControl).toHaveAttribute("aria-required", "true");
+
+    expect(radio).toHaveAttribute("id", "plan-helper-pro");
+    expect(radio).toHaveAccessibleDescription("For production teams.");
   });
 });

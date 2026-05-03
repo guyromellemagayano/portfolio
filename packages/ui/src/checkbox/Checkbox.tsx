@@ -5,6 +5,16 @@ import { Checkbox as CheckboxPrimitive } from "radix-ui";
 
 import { useFieldControlProps } from "@portfolio/components";
 
+import {
+  Field,
+  FieldDescription,
+  type FieldDescriptionProps,
+  FieldError,
+  type FieldErrorProps,
+  FieldLabel,
+  type FieldLabelProps,
+  type FieldProps,
+} from "../field";
 import { cn, getDataSlot } from "../utils";
 
 export type CheckboxProps = React.ComponentPropsWithoutRef<
@@ -51,3 +61,57 @@ export const Checkbox = React.forwardRef<
 });
 
 Checkbox.displayName = "Checkbox";
+
+export type CheckboxFieldProps = Omit<FieldProps, "children"> & {
+  checkboxProps?: CheckboxProps;
+  description?: React.ReactNode;
+  descriptionProps?: FieldDescriptionProps;
+  error?: React.ReactNode;
+  errorProps?: FieldErrorProps;
+  label: React.ReactNode;
+  labelProps?: FieldLabelProps;
+};
+
+export const CheckboxField = React.forwardRef<
+  React.ComponentRef<typeof Field>,
+  CheckboxFieldProps
+>((props, ref) => {
+  const {
+    checkboxProps,
+    className,
+    description,
+    descriptionProps,
+    error,
+    errorProps,
+    invalid,
+    label,
+    labelProps,
+    ...fieldProps
+  } = props;
+  const hasError = error !== undefined && error !== null;
+
+  return (
+    <Field
+      ref={ref}
+      {...fieldProps}
+      className={cn("gap-2", className)}
+      data-slot={getDataSlot(props, "checkbox-field")}
+      invalid={invalid ?? (hasError ? true : undefined)}
+    >
+      <div className="flex items-start gap-3">
+        <Checkbox className="mt-0.5" {...checkboxProps} />
+        <div className="grid gap-1">
+          <FieldLabel {...labelProps}>{label}</FieldLabel>
+          {description !== undefined && description !== null ? (
+            <FieldDescription {...descriptionProps}>
+              {description}
+            </FieldDescription>
+          ) : null}
+        </div>
+      </div>
+      {hasError ? <FieldError {...errorProps}>{error}</FieldError> : null}
+    </Field>
+  );
+});
+
+CheckboxField.displayName = "CheckboxField";

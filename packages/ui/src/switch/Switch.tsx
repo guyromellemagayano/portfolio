@@ -4,6 +4,16 @@ import { Switch as SwitchPrimitive } from "radix-ui";
 
 import { useFieldControlProps } from "@portfolio/components";
 
+import {
+  Field,
+  FieldDescription,
+  type FieldDescriptionProps,
+  FieldError,
+  type FieldErrorProps,
+  FieldLabel,
+  type FieldLabelProps,
+  type FieldProps,
+} from "../field";
 import { cn, getDataSlot } from "../utils";
 
 export type SwitchProps = React.ComponentPropsWithoutRef<
@@ -41,3 +51,57 @@ export const Switch = React.forwardRef<
 });
 
 Switch.displayName = "Switch";
+
+export type SwitchFieldProps = Omit<FieldProps, "children"> & {
+  description?: React.ReactNode;
+  descriptionProps?: FieldDescriptionProps;
+  error?: React.ReactNode;
+  errorProps?: FieldErrorProps;
+  label: React.ReactNode;
+  labelProps?: FieldLabelProps;
+  switchProps?: SwitchProps;
+};
+
+export const SwitchField = React.forwardRef<
+  React.ComponentRef<typeof Field>,
+  SwitchFieldProps
+>((props, ref) => {
+  const {
+    className,
+    description,
+    descriptionProps,
+    error,
+    errorProps,
+    invalid,
+    label,
+    labelProps,
+    switchProps,
+    ...fieldProps
+  } = props;
+  const hasError = error !== undefined && error !== null;
+
+  return (
+    <Field
+      ref={ref}
+      {...fieldProps}
+      className={cn("gap-2", className)}
+      data-slot={getDataSlot(props, "switch-field")}
+      invalid={invalid ?? (hasError ? true : undefined)}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="grid gap-1">
+          <FieldLabel {...labelProps}>{label}</FieldLabel>
+          {description !== undefined && description !== null ? (
+            <FieldDescription {...descriptionProps}>
+              {description}
+            </FieldDescription>
+          ) : null}
+        </div>
+        <Switch {...switchProps} />
+      </div>
+      {hasError ? <FieldError {...errorProps}>{error}</FieldError> : null}
+    </Field>
+  );
+});
+
+SwitchField.displayName = "SwitchField";
