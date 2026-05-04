@@ -1,21 +1,73 @@
+/// <reference types="@testing-library/jest-dom" />
+
 import { cleanup } from "@testing-library/react";
 import { afterEach, vi } from "vitest";
 
 import "@testing-library/jest-dom";
 
-// Mock window.matchMedia
-Object.defineProperty(window, "matchMedia", {
-  writable: true,
-  value: vi.fn().mockImplementation((query: string) => ({
+function createMatchMediaMock(query: string): MediaQueryList {
+  const listeners = new Set<EventListenerOrEventListenerObject>();
+
+  const mediaQueryList: {
+    addEventListener: (
+      type: string,
+      listener: EventListenerOrEventListenerObject | null
+    ) => void;
+    dispatchEvent: (event: Event) => boolean;
+    matches: boolean;
+    media: string;
+    onchange:
+      | ((this: MediaQueryList, event: MediaQueryListEvent) => unknown)
+      | null;
+    removeEventListener: (
+      type: string,
+      listener: EventListenerOrEventListenerObject | null
+    ) => void;
+  } = {
     matches: false,
     media: query,
     onchange: null,
-    addListener: vi.fn(), // deprecated
-    removeListener: vi.fn(), // deprecated
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
+    addEventListener: vi.fn(
+      (type: string, listener: EventListenerOrEventListenerObject | null) => {
+        if (type === "change" && listener) {
+          listeners.add(listener);
+        }
+      }
+    ),
+    removeEventListener: vi.fn(
+      (type: string, listener: EventListenerOrEventListenerObject | null) => {
+        if (type === "change" && listener) {
+          listeners.delete(listener);
+        }
+      }
+    ),
+    dispatchEvent: vi.fn((event: Event) => {
+      if (event.type !== "change") return true;
+
+      for (const listener of listeners) {
+        if (typeof listener === "function") {
+          listener.call(mediaQueryList as unknown as EventTarget, event);
+        } else {
+          listener.handleEvent(event);
+        }
+      }
+
+      mediaQueryList.onchange?.call(
+        mediaQueryList as unknown as MediaQueryList,
+        event as MediaQueryListEvent
+      );
+
+      return true;
+    }),
+  };
+
+  return mediaQueryList as unknown as MediaQueryList;
+}
+
+// Mock window.matchMedia
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: vi.fn().mockImplementation(createMatchMediaMock),
 });
 
 // Mock IntersectionObserver
