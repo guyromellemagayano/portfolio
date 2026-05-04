@@ -20,6 +20,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
   Checkbox,
@@ -56,7 +57,9 @@ import {
   Switch,
   Table,
   TableBody,
+  TableCaption,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -158,6 +161,7 @@ describe("foundational ui components", () => {
             <CardDescription>Design system card</CardDescription>
           </CardHeader>
           <CardContent>Content</CardContent>
+          <CardFooter>Footer actions</CardFooter>
         </Card>
         <Alert>
           <AlertTitle>Heads up</AlertTitle>
@@ -168,6 +172,7 @@ describe("foundational ui components", () => {
           <AvatarFallback>GM</AvatarFallback>
         </Avatar>
         <Separator />
+        <Separator orientation="vertical" />
         <Section
           description="Reusable product surface."
           heading="Services"
@@ -183,15 +188,24 @@ describe("foundational ui components", () => {
       "data-slot",
       "card-title"
     );
+    expect(screen.getByText("Footer actions")).toHaveAttribute(
+      "data-slot",
+      "card-footer"
+    );
     expect(screen.getByRole("alert")).toHaveAttribute("data-slot", "alert");
     expect(screen.getByAltText("Guy")).toHaveAttribute(
       "data-slot",
       "avatar-image"
     );
-    expect(screen.getByRole("separator")).toHaveAttribute(
+    expect(screen.getAllByRole("separator")[0]).toHaveAttribute(
       "aria-orientation",
       "horizontal"
     );
+    expect(screen.getAllByRole("separator")[1]).toHaveAttribute(
+      "aria-orientation",
+      "vertical"
+    );
+    expect(screen.getAllByRole("separator")[1]).toHaveClass("h-full");
     expect(screen.getByRole("heading", { name: "Services" })).toHaveAttribute(
       "data-slot",
       "section-heading"
@@ -447,6 +461,7 @@ describe("foundational ui components", () => {
           <FieldError>Invalid email.</FieldError>
         </Field>
         <Table>
+          <TableCaption>Recent projects</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead scope="col">Name</TableHead>
@@ -457,6 +472,11 @@ describe("foundational ui components", () => {
               <TableCell>Portfolio</TableCell>
             </TableRow>
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell>Total</TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
       </div>
     );
@@ -486,6 +506,14 @@ describe("foundational ui components", () => {
       "col"
     );
     expect(screen.getByRole("cell", { name: "Portfolio" })).toBeInTheDocument();
+    expect(screen.getByText("Recent projects")).toHaveAttribute(
+      "data-slot",
+      "table-caption"
+    );
+    expect(screen.getByText("Total").closest("tfoot")).toHaveAttribute(
+      "data-slot",
+      "table-footer"
+    );
   });
 
   it("renders form grouping semantics with styled slots", () => {

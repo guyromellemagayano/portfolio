@@ -20,11 +20,14 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
   Field,
   FieldDescription,
@@ -40,12 +43,16 @@ import {
   Select,
   SelectContent,
   SelectField,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   Switch,
@@ -199,6 +206,9 @@ describe("interactive ui components", () => {
               <DialogTitle>Dialog title</DialogTitle>
               <DialogDescription>Dialog description</DialogDescription>
             </DialogHeader>
+            <DialogFooter>
+              <button type="button">Close dialog</button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
         <AlertDialog open>
@@ -220,6 +230,9 @@ describe("interactive ui components", () => {
       document.querySelector('[data-slot="dialog-content"]')
     ).toHaveTextContent("Dialog title");
     expect(
+      document.querySelector('[data-slot="dialog-footer"]')
+    ).toHaveTextContent("Close dialog");
+    expect(
       document.querySelector('[data-slot="alert-dialog-content"]')
     ).toHaveTextContent("Delete item");
   });
@@ -230,7 +243,9 @@ describe("interactive ui components", () => {
         <DropdownMenu open>
           <DropdownMenuTrigger>Menu</DropdownMenuTrigger>
           <DropdownMenuContent>
+            <DropdownMenuLabel>Account</DropdownMenuLabel>
             <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuSeparator />
           </DropdownMenuContent>
         </DropdownMenu>
         <Popover open>
@@ -238,11 +253,14 @@ describe("interactive ui components", () => {
           <PopoverContent>Popover content</PopoverContent>
         </Popover>
         <Sheet open>
-          <SheetContent>
+          <SheetContent side="left">
             <SheetHeader>
               <SheetTitle>Sheet title</SheetTitle>
               <SheetDescription>Sheet description</SheetDescription>
             </SheetHeader>
+            <SheetFooter>
+              <button type="button">Apply filters</button>
+            </SheetFooter>
           </SheetContent>
         </Sheet>
         <Tabs defaultValue="one">
@@ -262,7 +280,11 @@ describe("interactive ui components", () => {
               <SelectValue placeholder="Choose" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="one">One</SelectItem>
+              <SelectGroup>
+                <SelectLabel>Numbers</SelectLabel>
+                <SelectItem value="one">One</SelectItem>
+              </SelectGroup>
+              <SelectSeparator />
             </SelectContent>
           </Select>
           <FieldDescription>Choose one option.</FieldDescription>
@@ -275,6 +297,12 @@ describe("interactive ui components", () => {
       document.querySelector('[data-slot="dropdown-menu-content"]')
     ).toHaveAttribute("data-slot", "dropdown-menu-content");
     expect(
+      document.querySelector('[data-slot="dropdown-menu-label"]')
+    ).toHaveTextContent("Account");
+    expect(
+      document.querySelector('[data-slot="dropdown-menu-separator"]')
+    ).toHaveAttribute("data-slot", "dropdown-menu-separator");
+    expect(
       document.querySelector('[data-slot="popover-content"]')
     ).toHaveTextContent("Popover content");
     expect(
@@ -283,6 +311,12 @@ describe("interactive ui components", () => {
     expect(
       document.querySelector('[data-slot="sheet-content"]')
     ).toHaveAttribute("data-slot", "sheet-content");
+    expect(document.querySelector('[data-slot="sheet-content"]')).toHaveClass(
+      "left-0"
+    );
+    expect(
+      document.querySelector('[data-slot="sheet-footer"]')
+    ).toHaveTextContent("Apply filters");
     expect(
       document.querySelector('[data-slot="tabs-trigger"]')
     ).toHaveAttribute("data-slot", "tabs-trigger");
@@ -304,6 +338,12 @@ describe("interactive ui components", () => {
     expect(
       document.querySelector('[data-slot="select-trigger"]')
     ).toHaveAttribute("aria-required", "true");
+    expect(
+      document.querySelector('[data-slot="select-label"]')
+    ).toHaveTextContent("Numbers");
+    expect(
+      document.querySelector('[data-slot="select-separator"]')
+    ).toHaveAttribute("data-slot", "select-separator");
   });
 
   it("wires field accessibility state into choice controls", () => {
@@ -315,11 +355,17 @@ describe("interactive ui components", () => {
           <FieldDescription>Required before continuing.</FieldDescription>
           <FieldError>Accept the terms to continue.</FieldError>
         </Field>
+        <Checkbox aria-label="Custom checkbox">
+          <span data-testid="custom-checkbox-indicator">Selected</span>
+        </Checkbox>
         <Field id="updates" required>
           <FieldLabel>Email updates</FieldLabel>
           <Switch />
           <FieldDescription>Receive product updates.</FieldDescription>
         </Field>
+        <Switch aria-label="Custom switch">
+          <span data-testid="custom-switch-thumb">On</span>
+        </Switch>
         <Field id="plan" invalid required>
           <FieldLabel>Plan</FieldLabel>
           <RadioGroup defaultValue="pro">
@@ -367,6 +413,10 @@ describe("interactive ui components", () => {
     );
     expect(radioGroup).toHaveAttribute("aria-invalid", "true");
     expect(radioGroup).toHaveAttribute("aria-required", "true");
+    expect(screen.getByTestId("custom-checkbox-indicator")).toHaveTextContent(
+      "Selected"
+    );
+    expect(screen.getByTestId("custom-switch-thumb")).toHaveTextContent("On");
   });
 
   it("renders low-boilerplate accessible choice field helpers", () => {
@@ -381,6 +431,7 @@ describe("interactive ui components", () => {
         />
         <SwitchField
           description="Receive product updates."
+          error="Choose whether to receive updates."
           id="updates-helper"
           label="Email updates"
           required
@@ -393,6 +444,12 @@ describe("interactive ui components", () => {
               id="plan-helper-pro"
               label="Pro"
               value="pro"
+            />
+            <RadioGroupOption
+              id="plan-helper-basic"
+              itemProps={{ "aria-describedby": "plan-helper-external-note" }}
+              label="Basic"
+              value="basic"
             />
           </RadioGroup>
           <FieldDescription>Select one plan.</FieldDescription>
@@ -419,12 +476,17 @@ describe("interactive ui components", () => {
 
     expect(switchControl).toHaveAttribute("id", "updates-helper-control");
     expect(switchControl).toHaveAccessibleDescription(
-      "Receive product updates."
+      "Receive product updates. Choose whether to receive updates."
     );
+    expect(switchControl).toHaveAttribute("aria-invalid", "true");
     expect(switchControl).toHaveAttribute("aria-required", "true");
 
     expect(radio).toHaveAttribute("id", "plan-helper-pro");
     expect(radio).toHaveAccessibleDescription("For production teams.");
+    expect(screen.getByRole("radio", { name: "Basic" })).toHaveAttribute(
+      "aria-describedby",
+      "plan-helper-external-note"
+    );
   });
 
   it("renders low-boilerplate accessible text field helpers", () => {
@@ -440,6 +502,7 @@ describe("interactive ui components", () => {
         />
         <TextareaField
           description="Share the project context."
+          error="Project context is required."
           id="message-helper"
           label="Message"
           textareaProps={{ rows: 4 }}
@@ -474,7 +537,10 @@ describe("interactive ui components", () => {
     expect(email).toHaveAttribute("required");
 
     expect(message).toHaveAttribute("id", "message-helper-control");
-    expect(message).toHaveAccessibleDescription("Share the project context.");
+    expect(message).toHaveAccessibleDescription(
+      "Share the project context. Project context is required."
+    );
+    expect(message).toHaveAttribute("aria-invalid", "true");
     expect(message).toHaveAttribute("rows", "4");
 
     expect(role).toHaveAttribute("id", "role-helper-control");

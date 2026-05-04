@@ -462,10 +462,10 @@ The package test suite covers:
 
 Coverage thresholds are configured in `vitest.config.ts`:
 
-- Statements: `80`
-- Branches: `75`
-- Functions: `80`
-- Lines: `80`
+- Statements: `85`
+- Branches: `85`
+- Functions: `85`
+- Lines: `85`
 
 ## Dependencies
 
