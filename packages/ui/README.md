@@ -1,4 +1,4 @@
-<!-- markdownlint-disable no-emphasis-as-heading line-length -->
+<!-- markdownlint-disable -->
 
 # `@portfolio/ui`
 
