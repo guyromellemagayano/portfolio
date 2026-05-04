@@ -1,6 +1,9 @@
 import React from "react";
 
 import {
+  Div,
+  type DivProps,
+  type DivRef,
   Fieldset as FieldsetPrimitive,
   type FieldsetProps as FieldsetPrimitiveProps,
   type FieldsetRef,
@@ -12,6 +15,7 @@ import {
   type LegendRef,
 } from "@portfolio/components";
 
+import { StatusMessage, type StatusMessageProps } from "../live-region";
 import { cn, getDataSlot } from "../utils";
 
 export type FormProps = FormPrimitiveProps;
@@ -88,3 +92,74 @@ export const FormActions = React.forwardRef<HTMLDivElement, FormActionsProps>(
 );
 
 FormActions.displayName = "FormActions";
+
+export type FormStatusProps = StatusMessageProps;
+
+export const FormStatus = React.forwardRef<
+  React.ComponentRef<typeof StatusMessage>,
+  FormStatusProps
+>((props, ref) => {
+  return (
+    <StatusMessage
+      ref={ref}
+      {...props}
+      data-slot={getDataSlot(props, "form-status")}
+    />
+  );
+});
+
+FormStatus.displayName = "FormStatus";
+
+export type FormErrorSummaryProps = DivProps & {
+  errors?: readonly React.ReactNode[];
+  title?: React.ReactNode;
+};
+
+export const FormErrorSummary = React.forwardRef<DivRef, FormErrorSummaryProps>(
+  (props, ref) => {
+    const {
+      children,
+      className,
+      errors,
+      role = "alert",
+      title = "There is a problem",
+      ...rest
+    } = props;
+    const hasErrors = errors && errors.length > 0;
+
+    return (
+      <Div
+        ref={ref}
+        role={role}
+        {...rest}
+        className={cn(
+          "border-destructive/40 bg-destructive/5 text-destructive rounded-lg border p-4",
+          className
+        )}
+        data-slot={getDataSlot(props, "form-error-summary")}
+      >
+        <p className="font-medium" data-slot="form-error-summary-title">
+          {title}
+        </p>
+        {hasErrors ? (
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
+            {errors.map((error) => (
+              <li key={getFormErrorKey(error)}>{error}</li>
+            ))}
+          </ul>
+        ) : null}
+        {children}
+      </Div>
+    );
+  }
+);
+
+FormErrorSummary.displayName = "FormErrorSummary";
+
+function getFormErrorKey(error: React.ReactNode) {
+  if (React.isValidElement(error) && error.key !== null) {
+    return error.key;
+  }
+
+  return String(error);
+}

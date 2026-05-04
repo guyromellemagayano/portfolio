@@ -39,6 +39,8 @@ export type AlertDialogContentProps = Omit<
   descriptionProps?: React.ComponentPropsWithoutRef<
     typeof AlertDialogPrimitive.Description
   >;
+  footer?: React.ReactNode;
+  footerProps?: React.HTMLAttributes<HTMLDivElement>;
   headerProps?: React.HTMLAttributes<HTMLDivElement>;
   title?: React.ReactNode;
   titleProps?: React.ComponentPropsWithoutRef<
@@ -55,12 +57,15 @@ export const AlertDialogContent = React.forwardRef<
     className,
     description,
     descriptionProps,
+    footer,
+    footerProps,
     headerProps,
     title,
     titleProps,
     ...rest
   } = props;
   const hasDescription = description !== undefined && description !== null;
+  const hasFooter = footer !== undefined && footer !== null;
   const hasTitle = title !== undefined && title !== null;
   const hasGeneratedHeader = hasTitle || hasDescription;
 
@@ -89,6 +94,9 @@ export const AlertDialogContent = React.forwardRef<
           </AlertDialogHeader>
         ) : null}
         {children}
+        {hasFooter ? (
+          <AlertDialogFooter {...footerProps}>{footer}</AlertDialogFooter>
+        ) : null}
       </AlertDialogPrimitive.Content>
     </AlertDialogPortal>
   );

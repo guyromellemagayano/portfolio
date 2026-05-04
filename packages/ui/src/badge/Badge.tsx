@@ -3,7 +3,14 @@ import React from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { Span, type SpanProps, type SpanRef } from "@portfolio/components";
+import {
+  Div,
+  type DivProps,
+  type DivRef,
+  Span,
+  type SpanProps,
+  type SpanRef,
+} from "@portfolio/components";
 
 import { cn, getDataSlot } from "../utils";
 
@@ -41,3 +48,63 @@ export const Badge = React.forwardRef<SpanRef, BadgeProps>((props, ref) => {
 });
 
 Badge.displayName = "Badge";
+
+export type BadgeListProps = DivProps;
+
+export const BadgeList = React.forwardRef<DivRef, BadgeListProps>(
+  (props, ref) => {
+    const { className, role = "list", ...rest } = props;
+
+    return (
+      <Div
+        ref={ref}
+        role={role}
+        {...rest}
+        className={cn("flex flex-wrap items-center gap-2", className)}
+        data-slot={getDataSlot(props, "badge-list")}
+      />
+    );
+  }
+);
+
+BadgeList.displayName = "BadgeList";
+
+export type StatusBadgeProps = BadgeProps & {
+  status?: "error" | "info" | "neutral" | "success" | "warning";
+};
+
+export const StatusBadge = React.forwardRef<SpanRef, StatusBadgeProps>(
+  (props, ref) => {
+    const {
+      className,
+      status = "neutral",
+      variant = "outline",
+      ...rest
+    } = props;
+
+    return (
+      <Badge
+        ref={ref}
+        variant={variant}
+        {...rest}
+        className={cn(
+          status === "error"
+            ? "border-destructive/40 text-destructive"
+            : undefined,
+          status === "info" ? "border-primary/40 text-primary" : undefined,
+          status === "success"
+            ? "border-emerald-500/40 text-emerald-700 dark:text-emerald-400"
+            : undefined,
+          status === "warning"
+            ? "border-amber-500/40 text-amber-700 dark:text-amber-400"
+            : undefined,
+          className
+        )}
+        data-slot={getDataSlot(props, "status-badge")}
+        data-status={status}
+      />
+    );
+  }
+);
+
+StatusBadge.displayName = "StatusBadge";

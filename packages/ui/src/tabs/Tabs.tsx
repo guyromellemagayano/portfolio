@@ -69,3 +69,65 @@ export const TabsContent = React.forwardRef<
 });
 
 TabsContent.displayName = "TabsContent";
+
+export type TabsPanelData = {
+  content: React.ReactNode;
+  contentProps?: Omit<
+    React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>,
+    "children" | "value"
+  >;
+  label: React.ReactNode;
+  triggerProps?: Omit<
+    React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>,
+    "children" | "value"
+  >;
+  value: string;
+};
+
+export type TabsPanelsProps = Omit<
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>,
+  "children"
+> & {
+  listProps?: React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>;
+  panels: readonly TabsPanelData[];
+};
+
+export const TabsPanels = React.forwardRef<
+  React.ComponentRef<typeof TabsPrimitive.Root>,
+  TabsPanelsProps
+>((props, ref) => {
+  const { defaultValue, listProps, panels, ...rest } = props;
+  const resolvedDefaultValue = defaultValue ?? panels[0]?.value;
+
+  return (
+    <TabsPrimitive.Root
+      ref={ref}
+      defaultValue={resolvedDefaultValue}
+      {...rest}
+      data-slot={getDataSlot(props, "tabs-panels")}
+    >
+      <TabsList {...listProps}>
+        {panels.map((panel) => (
+          <TabsTrigger
+            key={panel.value}
+            value={panel.value}
+            {...panel.triggerProps}
+          >
+            {panel.label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {panels.map((panel) => (
+        <TabsContent
+          key={panel.value}
+          value={panel.value}
+          {...panel.contentProps}
+        >
+          {panel.content}
+        </TabsContent>
+      ))}
+    </TabsPrimitive.Root>
+  );
+});
+
+TabsPanels.displayName = "TabsPanels";

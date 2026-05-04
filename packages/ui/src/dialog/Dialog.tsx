@@ -42,6 +42,8 @@ export type DialogContentProps = Omit<
   descriptionProps?: React.ComponentPropsWithoutRef<
     typeof DialogPrimitive.Description
   >;
+  footer?: React.ReactNode;
+  footerProps?: React.HTMLAttributes<HTMLDivElement>;
   headerProps?: React.HTMLAttributes<HTMLDivElement>;
   title?: React.ReactNode;
   titleProps?: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>;
@@ -57,12 +59,15 @@ export const DialogContent = React.forwardRef<
     closeLabel = "Close",
     description,
     descriptionProps,
+    footer,
+    footerProps,
     headerProps,
     title,
     titleProps,
     ...rest
   } = props;
   const hasDescription = description !== undefined && description !== null;
+  const hasFooter = footer !== undefined && footer !== null;
   const hasTitle = title !== undefined && title !== null;
   const hasGeneratedHeader = hasTitle || hasDescription;
 
@@ -91,6 +96,9 @@ export const DialogContent = React.forwardRef<
           </DialogHeader>
         ) : null}
         {children}
+        {hasFooter ? (
+          <DialogFooter {...footerProps}>{footer}</DialogFooter>
+        ) : null}
         <DialogPrimitive.Close className="focus-visible:ring-ring absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:outline-none">
           <X aria-hidden="true" className="h-4 w-4" />
           <VisuallyHidden>{closeLabel}</VisuallyHidden>

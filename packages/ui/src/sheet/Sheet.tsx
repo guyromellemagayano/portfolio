@@ -61,6 +61,8 @@ export type SheetContentProps = Omit<
     descriptionProps?: React.ComponentPropsWithoutRef<
       typeof SheetPrimitive.Description
     >;
+    footer?: React.ReactNode;
+    footerProps?: React.HTMLAttributes<HTMLDivElement>;
     headerProps?: React.HTMLAttributes<HTMLDivElement>;
     title?: React.ReactNode;
     titleProps?: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>;
@@ -76,6 +78,8 @@ export const SheetContent = React.forwardRef<
     closeLabel = "Close",
     description,
     descriptionProps,
+    footer,
+    footerProps,
     headerProps,
     side,
     title,
@@ -83,6 +87,7 @@ export const SheetContent = React.forwardRef<
     ...rest
   } = props;
   const hasDescription = description !== undefined && description !== null;
+  const hasFooter = footer !== undefined && footer !== null;
   const hasTitle = title !== undefined && title !== null;
   const hasGeneratedHeader = hasTitle || hasDescription;
 
@@ -106,6 +111,9 @@ export const SheetContent = React.forwardRef<
           </SheetHeader>
         ) : null}
         {children}
+        {hasFooter ? (
+          <SheetFooter {...footerProps}>{footer}</SheetFooter>
+        ) : null}
         <SheetPrimitive.Close className="focus-visible:ring-ring absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:outline-none">
           <X aria-hidden="true" className="h-4 w-4" />
           <VisuallyHidden>{closeLabel}</VisuallyHidden>

@@ -14,10 +14,28 @@ import {
 
 import { cn, getDataSlot } from "../utils";
 
-export type AvatarProps = DivProps;
+export type AvatarProps = DivProps & {
+  alt?: string;
+  fallback?: React.ReactNode;
+  fallbackProps?: AvatarFallbackProps;
+  imageProps?: Omit<AvatarImageProps, "alt" | "decorative" | "src">;
+  name?: string;
+  src?: string;
+};
 
 export const Avatar = React.forwardRef<DivRef, AvatarProps>((props, ref) => {
-  const { className, ...rest } = props;
+  const {
+    alt,
+    children,
+    className,
+    fallback,
+    fallbackProps,
+    imageProps,
+    name,
+    src,
+    ...rest
+  } = props;
+  const generatedFallback = fallback ?? getAvatarInitials(name);
 
   return (
     <Div
@@ -28,7 +46,15 @@ export const Avatar = React.forwardRef<DivRef, AvatarProps>((props, ref) => {
         className
       )}
       data-slot={getDataSlot(props, "avatar")}
-    />
+    >
+      {src ? (
+        <AvatarImage {...imageProps} alt={alt ?? name ?? ""} src={src} />
+      ) : null}
+      {generatedFallback ? (
+        <AvatarFallback {...fallbackProps}>{generatedFallback}</AvatarFallback>
+      ) : null}
+      {children}
+    </Div>
   );
 });
 
@@ -74,3 +100,17 @@ export const AvatarFallback = React.forwardRef<SpanRef, AvatarFallbackProps>(
 );
 
 AvatarFallback.displayName = "AvatarFallback";
+
+function getAvatarInitials(name: string | undefined) {
+  if (!name) {
+    return undefined;
+  }
+
+  return name
+    .trim()
+    .split(/\s+/u)
+    .slice(0, 2)
+    .map((part) => part.charAt(0))
+    .join("")
+    .toUpperCase();
+}

@@ -5,6 +5,8 @@ import {
   type CaptionProps as CaptionPrimitiveProps,
   type CaptionRef,
   Div,
+  type DivProps,
+  type DivRef,
   Table as TablePrimitive,
   type TableProps as TablePrimitiveProps,
   type TableRef as TablePrimitiveRef,
@@ -30,24 +32,42 @@ import {
 
 import { cn, getDataSlot } from "../utils";
 
-export type TableProps = TablePrimitiveProps;
+export type TableContainerProps = DivProps;
 
-export const Table = React.forwardRef<TablePrimitiveRef, TableProps>(
+export const TableContainer = React.forwardRef<DivRef, TableContainerProps>(
   (props, ref) => {
     const { className, ...rest } = props;
 
     return (
       <Div
-        className="relative w-full overflow-auto"
-        data-slot="table-container"
-      >
+        ref={ref}
+        {...rest}
+        className={cn("relative w-full overflow-auto", className)}
+        data-slot={getDataSlot(props, "table-container")}
+      />
+    );
+  }
+);
+
+TableContainer.displayName = "TableContainer";
+
+export type TableProps = TablePrimitiveProps & {
+  containerProps?: TableContainerProps;
+};
+
+export const Table = React.forwardRef<TablePrimitiveRef, TableProps>(
+  (props, ref) => {
+    const { className, containerProps, ...rest } = props;
+
+    return (
+      <TableContainer {...containerProps}>
         <TablePrimitive
           ref={ref}
           {...rest}
           className={cn("w-full caption-bottom text-sm", className)}
           data-slot={getDataSlot(props, "table")}
         />
-      </Div>
+      </TableContainer>
     );
   }
 );
@@ -190,3 +210,59 @@ export const TableCaption = React.forwardRef<CaptionRef, TableCaptionProps>(
 );
 
 TableCaption.displayName = "TableCaption";
+
+export type TableEmptyProps = TdProps & {
+  colSpan: number;
+};
+
+export const TableEmpty = React.forwardRef<TdRef, TableEmptyProps>(
+  (props, ref) => {
+    const { children = "No results.", className, colSpan, ...rest } = props;
+
+    return (
+      <TableRow data-slot="table-empty-row">
+        <TableCell
+          ref={ref}
+          colSpan={colSpan}
+          {...rest}
+          className={cn("text-muted-foreground h-24 text-center", className)}
+          data-slot={getDataSlot(props, "table-empty")}
+        >
+          {children}
+        </TableCell>
+      </TableRow>
+    );
+  }
+);
+
+TableEmpty.displayName = "TableEmpty";
+
+export type TableLoadingProps = TableEmptyProps & {
+  busyLabel?: string;
+};
+
+export const TableLoading = React.forwardRef<TdRef, TableLoadingProps>(
+  (props, ref) => {
+    const {
+      busyLabel = "Loading table rows",
+      children = "Loading...",
+      className,
+      ...rest
+    } = props;
+
+    return (
+      <TableEmpty
+        ref={ref}
+        aria-busy="true"
+        aria-label={busyLabel}
+        {...rest}
+        className={cn("animate-pulse", className)}
+        data-slot={getDataSlot(props, "table-loading")}
+      >
+        {children}
+      </TableEmpty>
+    );
+  }
+);
+
+TableLoading.displayName = "TableLoading";

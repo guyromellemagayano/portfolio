@@ -28,6 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
   Field,
   FieldDescription,
@@ -36,6 +37,9 @@ import {
   InputField,
   Popover,
   PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
   PopoverTrigger,
   RadioGroup,
   RadioGroupItem,
@@ -60,8 +64,15 @@ import {
   Tabs,
   TabsContent,
   TabsList,
+  TabsPanels,
   TabsTrigger,
   TextareaField,
+  Toast,
+  ToastAction,
+  ToastClose,
+  ToastDescription,
+  Toaster,
+  ToastTitle,
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -75,6 +86,7 @@ describe("interactive ui components", () => {
         <DialogContent
           closeLabel="Close profile editor"
           description="Update the account details shown on your public profile."
+          footer={<button type="button">Save profile</button>}
           title="Edit profile"
         >
           <p>Profile form fields</p>
@@ -94,6 +106,10 @@ describe("interactive ui components", () => {
       "data-slot",
       "visually-hidden"
     );
+    expect(screen.getByText("Save profile").parentElement).toHaveAttribute(
+      "data-slot",
+      "dialog-footer"
+    );
   });
 
   it("renders low-boilerplate accessible sheet content", () => {
@@ -102,6 +118,7 @@ describe("interactive ui components", () => {
         <SheetContent
           closeLabel="Close filters"
           description="Refine the visible project list."
+          footer={<button type="button">Apply filters</button>}
           title="Project filters"
         >
           <p>Filter controls</p>
@@ -119,6 +136,10 @@ describe("interactive ui components", () => {
       "data-slot",
       "visually-hidden"
     );
+    expect(screen.getByText("Apply filters").parentElement).toHaveAttribute(
+      "data-slot",
+      "sheet-footer"
+    );
   });
 
   it("renders low-boilerplate accessible alert dialog content", () => {
@@ -126,15 +147,16 @@ describe("interactive ui components", () => {
       <AlertDialog open>
         <AlertDialogContent
           description="This action permanently removes the selected project."
+          footer={
+            <>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction>Delete</AlertDialogAction>
+            </>
+          }
           headerProps={{ id: "alert-generated-header" }}
           title="Delete project"
           titleProps={{ className: "custom-title" }}
-        >
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>Delete</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
+        />
       </AlertDialog>
     );
 
@@ -244,13 +266,36 @@ describe("interactive ui components", () => {
           <DropdownMenuTrigger>Menu</DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Account</DropdownMenuLabel>
-            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem
+              analytics={{ event: "menu_click", placement: "account_menu" }}
+              shortcut="P"
+            >
+              Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem destructive>
+              Delete
+              <DropdownMenuShortcut>Del</DropdownMenuShortcut>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
           </DropdownMenuContent>
         </DropdownMenu>
         <Popover open>
           <PopoverTrigger>Open popover</PopoverTrigger>
-          <PopoverContent>Popover content</PopoverContent>
+          <PopoverContent
+            description="Popover description"
+            title="Popover title"
+          >
+            Popover content
+          </PopoverContent>
+        </Popover>
+        <Popover open>
+          <PopoverTrigger>Open custom popover</PopoverTrigger>
+          <PopoverContent>
+            <PopoverHeader>
+              <PopoverTitle>Manual popover</PopoverTitle>
+              <PopoverDescription>Manual description</PopoverDescription>
+            </PopoverHeader>
+          </PopoverContent>
         </Popover>
         <Sheet open>
           <SheetContent side="left">
@@ -269,10 +314,36 @@ describe("interactive ui components", () => {
           </TabsList>
           <TabsContent value="one">Panel one</TabsContent>
         </Tabs>
+        <TabsPanels
+          panels={[
+            {
+              content: "Generated panel",
+              label: "Generated",
+              value: "generated",
+            },
+          ]}
+        />
         <Tooltip open>
           <TooltipTrigger>Hover me</TooltipTrigger>
-          <TooltipContent>Tooltip content</TooltipContent>
+          <TooltipContent label="Tooltip label" />
         </Tooltip>
+        <Toaster>
+          <Toast open intent="success">
+            <ToastTitle>Saved</ToastTitle>
+            <ToastDescription>Profile saved.</ToastDescription>
+            <ToastAction altText="Undo save">Undo</ToastAction>
+            <ToastClose closeLabel="Dismiss saved message" />
+          </Toast>
+          <Toast open intent="error">
+            <ToastTitle>Failed</ToastTitle>
+          </Toast>
+          <Toast open intent="warning">
+            <ToastTitle>Review</ToastTitle>
+          </Toast>
+          <Toast open>
+            <ToastTitle>Queued</ToastTitle>
+          </Toast>
+        </Toaster>
         <Field id="choice" invalid required>
           <FieldLabel>Choice</FieldLabel>
           <Select defaultValue="one" open>
@@ -303,11 +374,28 @@ describe("interactive ui components", () => {
       document.querySelector('[data-slot="dropdown-menu-separator"]')
     ).toHaveAttribute("data-slot", "dropdown-menu-separator");
     expect(
+      document.querySelector('[data-slot="dropdown-menu-item"]')
+    ).toHaveAttribute("data-analytics-event", "menu_click");
+    expect(
+      document.querySelector('[data-slot="dropdown-menu-shortcut"]')
+    ).toHaveTextContent("P");
+    expect(document.querySelector("[data-destructive]")).toHaveTextContent(
+      "Delete"
+    );
+    expect(
       document.querySelector('[data-slot="popover-content"]')
-    ).toHaveTextContent("Popover content");
+    ).toHaveAttribute("aria-labelledby");
     expect(
       document.querySelector('[data-slot="popover-content"]')
     ).toHaveAttribute("data-slot", "popover-content");
+    expect(screen.getByText("Popover title")).toHaveAttribute(
+      "data-slot",
+      "popover-title"
+    );
+    expect(screen.getByText("Manual popover")).toHaveAttribute(
+      "data-slot",
+      "popover-title"
+    );
     expect(
       document.querySelector('[data-slot="sheet-content"]')
     ).toHaveAttribute("data-slot", "sheet-content");
@@ -320,9 +408,47 @@ describe("interactive ui components", () => {
     expect(
       document.querySelector('[data-slot="tabs-trigger"]')
     ).toHaveAttribute("data-slot", "tabs-trigger");
+    expect(document.querySelector('[data-slot="tabs-panels"]')).toHaveAttribute(
+      "data-slot",
+      "tabs-panels"
+    );
+    expect(screen.getByText("Generated panel")).toBeInTheDocument();
     expect(
       document.querySelector('[data-slot="tooltip-content"]')
-    ).toHaveAttribute("data-slot", "tooltip-content");
+    ).toHaveTextContent("Tooltip label");
+    expect(screen.getByText("Saved")).toHaveAttribute(
+      "data-slot",
+      "toast-title"
+    );
+    expect(screen.getByText("Profile saved.")).toHaveAttribute(
+      "data-slot",
+      "toast-description"
+    );
+    expect(
+      document.querySelector('[data-slot="toast-action"]')
+    ).toHaveTextContent("Undo");
+    expect(
+      document.querySelector('[data-slot="toast-action"]')
+    ).toHaveAttribute("data-slot", "toast-action");
+    expect(
+      screen.getByText("Failed").closest('[data-slot="toast"]')
+    ).toHaveAttribute("data-intent", "error");
+    expect(
+      screen.getByText("Review").closest('[data-slot="toast"]')
+    ).toHaveAttribute("data-intent", "warning");
+    expect(
+      screen.getByText("Queued").closest('[data-slot="toast"]')
+    ).toHaveAttribute("data-intent", "neutral");
+    expect(
+      document.querySelector('[data-slot="toast-close"]')
+    ).toHaveTextContent("Dismiss saved message");
+    expect(document.querySelector('[data-slot="toast-close"]')).toHaveAttribute(
+      "data-slot",
+      "toast-close"
+    );
+    expect(
+      document.querySelector('[data-slot="toast-viewport"]')
+    ).toHaveAttribute("data-slot", "toast-viewport");
     expect(
       document.querySelector('[data-slot="select-trigger"]')
     ).toHaveAttribute("data-slot", "select-trigger");

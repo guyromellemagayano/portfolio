@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 
 import {
   Alert,
@@ -9,6 +10,7 @@ import {
   AvatarFallback,
   AvatarImage,
   Badge,
+  BadgeList,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -17,6 +19,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbTrail,
   Button,
+  Callout,
   Card,
   CardContent,
   CardDescription,
@@ -25,6 +28,10 @@ import {
   CardTitle,
   Checkbox,
   cn,
+  CodeBlock,
+  Combobox,
+  ComboboxField,
+  CopyButton,
   DescriptionDetails,
   DescriptionList,
   DescriptionListItem,
@@ -35,13 +42,22 @@ import {
   EmptyStateHeader,
   EmptyStateIcon,
   EmptyStateTitle,
+  FeatureItem,
+  FeatureList,
   Field,
   FieldDescription,
   FieldError,
   FieldLabel,
   Fieldset,
+  Figure,
+  FigureCaption,
+  FigureImage,
   Form,
   FormActions,
+  FormErrorSummary,
+  FormStatus,
+  getAnalyticsAttributes,
+  InlineCode,
   Input,
   InputField,
   Label,
@@ -56,24 +72,37 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  Prose,
   RadioGroup,
   RadioGroupItem,
+  SearchField,
+  SearchInput,
   Section,
   Separator,
   Skeleton,
+  SkeletonCard,
+  SkeletonText,
   SkipLink,
   SkipLinkTarget,
+  Stat,
+  StatGroup,
+  StatusBadge,
   StatusMessage,
   Switch,
   Table,
   TableBody,
   TableCaption,
   TableCell,
+  TableContainer,
+  TableEmpty,
   TableFooter,
   TableHead,
   TableHeader,
+  TableLoading,
   TableRow,
   Textarea,
+  Timeline,
+  TimelineItem,
   VisuallyHidden,
 } from "../index";
 
@@ -237,6 +266,112 @@ describe("foundational ui components", () => {
     );
   });
 
+  it("renders editorial content helpers with semantic structure", async () => {
+    const user = userEvent.setup();
+    const writeText = vi.fn().mockResolvedValue(undefined);
+
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText },
+    });
+
+    render(
+      <div>
+        <Prose as="article" aria-label="Article body">
+          <p>
+            Use <InlineCode>pnpm test</InlineCode> before release.
+          </p>
+        </Prose>
+        <CodeBlock code="pnpm test" language="bash" />
+        <CopyButton text="copied text" />
+        <Callout
+          actions={<Button>Review</Button>}
+          description="Check the release notes before publishing."
+          icon={<span>!</span>}
+          intent="warning"
+          title="Release note"
+        />
+        <Timeline>
+          <TimelineItem
+            description="Prepared the package release."
+            time="2026"
+            timeProps={{ dateTime: "2026" }}
+            title="Release prep"
+          />
+        </Timeline>
+        <StatGroup aria-label="Project stats">
+          <Stat description="Production launches" label="Projects" value="12" />
+        </StatGroup>
+        <FeatureList
+          items={[
+            {
+              description: "Accessible defaults.",
+              icon: <span>*</span>,
+              title: "Semantic helpers",
+            },
+          ]}
+        />
+        <Figure
+          alt="Portfolio UI preview"
+          caption="A generated preview of the package surface."
+          src="/preview.png"
+        />
+        <Figure>
+          <FigureImage alt="Manual preview" src="/manual.png" />
+          <FigureCaption>Manual caption.</FigureCaption>
+        </Figure>
+      </div>
+    );
+
+    expect(
+      screen.getByRole("article", { name: "Article body" })
+    ).toHaveAttribute("data-slot", "prose");
+    expect(
+      screen.getAllByText("pnpm test", { selector: "code" })[0]
+    ).toHaveAttribute("data-slot", "inline-code");
+    expect(screen.getByText("bash")).toHaveAttribute(
+      "data-slot",
+      "code-block-language"
+    );
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
+    expect(writeText).toHaveBeenCalledWith("pnpm test");
+    await user.click(screen.getByRole("button", { name: "Copy" }));
+    expect(writeText).toHaveBeenCalledWith("copied text");
+    expect(screen.getByRole("note")).toHaveAttribute("data-intent", "warning");
+    expect(screen.getByText("!").parentElement).toHaveAttribute(
+      "data-slot",
+      "callout-icon"
+    );
+    expect(
+      screen.getByRole("button", { name: "Review" }).parentElement
+    ).toHaveAttribute("data-slot", "callout-actions");
+    expect(screen.getByText("2026").tagName).toBe("TIME");
+    expect(screen.getByText("Release prep")).toHaveAttribute(
+      "data-slot",
+      "timeline-title"
+    );
+    expect(screen.getByRole("list", { name: "Project stats" })).toHaveAttribute(
+      "data-slot",
+      "stat-group"
+    );
+    expect(screen.getByText("12")).toHaveAttribute("data-slot", "stat-value");
+    expect(screen.getByText("Semantic helpers")).toHaveAttribute(
+      "data-slot",
+      "feature-title"
+    );
+    expect(screen.getByAltText("Portfolio UI preview")).toHaveAttribute(
+      "loading",
+      "lazy"
+    );
+    expect(
+      screen.getByText("A generated preview of the package surface.")
+    ).toHaveAttribute("data-slot", "figure-caption");
+    expect(screen.getByText("Manual caption.")).toHaveAttribute(
+      "data-slot",
+      "figure-caption"
+    );
+  });
+
   it("renders empty state semantics with generated accessible wiring", () => {
     render(
       <EmptyState
@@ -321,6 +456,285 @@ describe("foundational ui components", () => {
     expect(
       screen.getByRole("button", { name: "Clear filters" }).parentElement
     ).toHaveAttribute("data-slot", "empty-state-actions");
+  });
+
+  it("renders low-boilerplate display, loading, and form status helpers", async () => {
+    const user = userEvent.setup();
+    const onClear = vi.fn();
+    const onValueChange = vi.fn();
+
+    render(
+      <div>
+        <Card
+          description="Generated card description."
+          footer={<Button>Open</Button>}
+          title="Generated card"
+        >
+          Card body.
+        </Card>
+        <Alert
+          actions={<Button>Retry</Button>}
+          description="The request failed."
+          icon={<span>!</span>}
+          title="Could not save"
+        />
+        <Section
+          actions={<Button>View all</Button>}
+          description="Current package state."
+          eyebrow="Packages"
+          heading="UI updates"
+          id="ui-updates"
+        >
+          <p>Section body.</p>
+        </Section>
+        <TableContainer>
+          <Table>
+            <TableBody>
+              <TableEmpty colSpan={2}>No projects.</TableEmpty>
+              <TableLoading colSpan={2} />
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <SkeletonText lines={2} />
+        <SkeletonCard />
+        <BadgeList aria-label="Statuses">
+          <StatusBadge status="success">Live</StatusBadge>
+        </BadgeList>
+        <Avatar name="Guy Romelle Magayano" src="/avatar.png" />
+        <Avatar>
+          <AvatarImage alt="Manual avatar" src="/manual-avatar.png" />
+          <AvatarFallback>MA</AvatarFallback>
+        </Avatar>
+        <Form aria-label="Settings form">
+          <FormErrorSummary errors={["Email is required."]} />
+          <FormStatus intent="success">Saved.</FormStatus>
+          <SearchField
+            id="search"
+            inputProps={{
+              onClear,
+              readOnly: true,
+              value: "portfolio",
+            }}
+            label="Search"
+          />
+          <ComboboxField
+            comboboxProps={{
+              onValueChange,
+              options: [
+                { label: "Engineering", value: "engineering" },
+                { label: "Design", value: "design" },
+              ],
+              placeholder: "Choose team",
+            }}
+            id="team"
+            label="Team"
+          />
+        </Form>
+      </div>
+    );
+
+    expect(screen.getByText("Generated card")).toHaveAttribute(
+      "data-slot",
+      "card-title"
+    );
+    expect(
+      screen.getByText("Card body.").closest('[data-slot="card-content"]')
+    ).toBeInTheDocument();
+    const alerts = screen.getAllByRole("alert");
+    expect(alerts[0]).toHaveTextContent("Could not save");
+    expect(
+      screen.getByRole("button", { name: "Retry" }).parentElement
+    ).toHaveAttribute("data-slot", "alert-actions");
+    expect(screen.getByText("Packages")).toHaveAttribute(
+      "data-slot",
+      "section-eyebrow"
+    );
+    expect(screen.getByText("View all").parentElement).toHaveAttribute(
+      "data-slot",
+      "section-actions"
+    );
+    expect(screen.getByText("No projects.")).toHaveAttribute(
+      "data-slot",
+      "table-empty"
+    );
+    expect(screen.getByLabelText("Loading table rows")).toHaveAttribute(
+      "aria-busy",
+      "true"
+    );
+    expect(
+      document.querySelector('[data-slot="skeleton-text"]')
+    ).toHaveAttribute("aria-hidden", "true");
+    expect(
+      document.querySelector('[data-slot="skeleton-card"]')
+    ).toHaveAttribute("aria-hidden", "true");
+    expect(screen.getByRole("list", { name: "Statuses" })).toHaveAttribute(
+      "data-slot",
+      "badge-list"
+    );
+    expect(screen.getByText("Live")).toHaveAttribute("data-status", "success");
+    expect(screen.getByAltText("Guy Romelle Magayano")).toHaveAttribute(
+      "data-slot",
+      "avatar-image"
+    );
+    expect(screen.getByText("GR")).toHaveAttribute(
+      "data-slot",
+      "avatar-fallback"
+    );
+    expect(alerts[1]).toHaveTextContent("Email is required.");
+    expect(screen.getByText("Saved.")).toHaveAttribute(
+      "data-slot",
+      "form-status"
+    );
+    await user.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(onClear).toHaveBeenCalledTimes(1);
+    await user.click(screen.getByRole("option", { name: "Engineering" }));
+    expect(onValueChange).toHaveBeenCalledWith("engineering");
+  });
+
+  it("covers alternate helper branches without extra consumer wiring", async () => {
+    const user = userEvent.setup();
+    const onClear = vi.fn();
+    const onInputChange = vi.fn();
+    const onValueChange = vi.fn();
+
+    render(
+      <div>
+        <Prose readable={false} data-testid="compact-prose">
+          <p>Compact editorial body.</p>
+        </Prose>
+        <Callout intent="error">Critical issue.</Callout>
+        <Callout intent="info" role="status">
+          Informational body.
+        </Callout>
+        <FeatureList
+          aria-label="Ordered features"
+          items={[
+            { key: "custom-title", title: <span>Custom title</span> },
+            { description: false, icon: false, title: 2 },
+          ]}
+          ordered
+        >
+          <FeatureItem title="Manual feature">Manual feature body.</FeatureItem>
+        </FeatureList>
+        <Figure decorative src="/decorative.png" />
+        <StatGroup aria-label="Custom stats" role="group">
+          <Stat role="presentation">Custom stat body.</Stat>
+        </StatGroup>
+        <Timeline>
+          <TimelineItem
+            marker={<span>1</span>}
+            markerProps={{ "aria-hidden": false }}
+          >
+            Manual milestone.
+          </TimelineItem>
+        </Timeline>
+        <FormErrorSummary
+          errors={[<span key="budget-error">Budget required.</span>]}
+          title="Fix these fields"
+        />
+        <SearchInput
+          aria-label="Hidden clear search"
+          clearLabel="Clear hidden search"
+          readOnly
+          showClear={false}
+          value="portfolio"
+        />
+        <SearchInput
+          aria-label="Numeric search"
+          clearLabel="Clear numeric search"
+          onClear={onClear}
+          readOnly
+          value={0}
+        />
+        <Combobox
+          emptyMessage="No teams found."
+          inputProps={{
+            "aria-controls": "controlled-team-list",
+            "aria-label": "Controlled team",
+            onChange: onInputChange,
+          }}
+          onValueChange={onValueChange}
+          options={[
+            { disabled: true, label: "Design", value: "design" },
+            {
+              description: "Builds systems",
+              label: "Engineering",
+              searchText: "engineering team",
+              value: "engineering",
+            },
+          ]}
+          value="design"
+        />
+      </div>
+    );
+
+    expect(screen.getByTestId("compact-prose")).not.toHaveClass("max-w-3xl");
+    expect(
+      screen.getByText("Critical issue.").closest('[data-slot="callout"]')
+    ).toHaveAttribute("role", "alert");
+    expect(
+      screen.getByText("Informational body.").closest('[data-slot="callout"]')
+    ).toHaveAttribute("role", "status");
+    expect(screen.getByRole("list", { name: "Ordered features" }).tagName).toBe(
+      "OL"
+    );
+    expect(screen.getByText("Manual feature body.")).toBeInTheDocument();
+    expect(
+      document.querySelector('img[src="/decorative.png"]')
+    ).toHaveAttribute("alt", "");
+    expect(screen.getByRole("group", { name: "Custom stats" })).toHaveAttribute(
+      "data-slot",
+      "stat-group"
+    );
+    expect(
+      screen.getByText("Custom stat body.").closest('[data-slot="stat"]')
+    ).toHaveAttribute("role", "presentation");
+    expect(screen.getByText("1").parentElement).toHaveAttribute(
+      "aria-hidden",
+      "false"
+    );
+    expect(
+      screen
+        .getByText("Fix these fields")
+        .closest('[data-slot="form-error-summary-title"]')
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Clear hidden search" })
+    ).not.toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: "Clear numeric search" })
+    );
+    expect(onClear).toHaveBeenCalledTimes(1);
+
+    const controlledTeam = screen.getByRole("combobox", {
+      name: "Controlled team",
+    });
+    expect(controlledTeam).toHaveAttribute(
+      "aria-controls",
+      "controlled-team-list"
+    );
+    expect(screen.getByRole("option", { name: "Design" })).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+    await user.click(screen.getByRole("option", { name: "Design" }));
+    expect(onValueChange).not.toHaveBeenCalled();
+    fireEvent.change(controlledTeam, { target: { value: "zzz" } });
+    expect(onInputChange).toHaveBeenCalled();
+    expect(screen.getByText("No teams found.")).toBeInTheDocument();
+
+    expect(getAnalyticsAttributes(undefined)).toEqual({});
+    expect(
+      getAnalyticsAttributes({
+        " ": "ignored",
+        campaignId: 123,
+        customNull: null,
+        event: "component_seen",
+      })
+    ).toEqual({
+      "data-analytics-campaign-id": "123",
+      "data-analytics-event": "component_seen",
+    });
   });
 
   it("renders description lists from item data with native terms and details", () => {

@@ -3,7 +3,9 @@ import React from "react";
 
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 
-import { cn, getDataSlot } from "../utils";
+import { type ComponentAnalyticsAttributes } from "@portfolio/components";
+
+import { cn, getAnalyticsAttributes, getDataSlot } from "../utils";
 
 export const DropdownMenu = DropdownMenuPrimitive.Root;
 export const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
@@ -36,22 +38,43 @@ export const DropdownMenuContent = React.forwardRef<
 
 DropdownMenuContent.displayName = "DropdownMenuContent";
 
+export type DropdownMenuItemProps = React.ComponentPropsWithoutRef<
+  typeof DropdownMenuPrimitive.Item
+> & {
+  analytics?: ComponentAnalyticsAttributes;
+  destructive?: boolean;
+  shortcut?: React.ReactNode;
+};
+
 export const DropdownMenuItem = React.forwardRef<
   React.ComponentRef<typeof DropdownMenuPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item>
+  DropdownMenuItemProps
 >((props, ref) => {
-  const { className, ...rest } = props;
+  const { analytics, children, className, destructive, shortcut, ...rest } =
+    props;
 
   return (
     <DropdownMenuPrimitive.Item
       ref={ref}
+      {...getAnalyticsAttributes(analytics)}
       {...rest}
       className={cn(
         "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-none select-none disabled:pointer-events-none disabled:opacity-50",
+        destructive
+          ? "text-destructive focus:bg-destructive/10 focus:text-destructive"
+          : undefined,
         className
       )}
+      data-destructive={destructive ? "" : undefined}
       data-slot={getDataSlot(props, "dropdown-menu-item")}
-    />
+    >
+      <span className="min-w-0 flex-1" data-slot="dropdown-menu-item-label">
+        {children}
+      </span>
+      {shortcut ? (
+        <DropdownMenuShortcut>{shortcut}</DropdownMenuShortcut>
+      ) : null}
+    </DropdownMenuPrimitive.Item>
   );
 });
 
@@ -92,3 +115,19 @@ export const DropdownMenuSeparator = React.forwardRef<
 });
 
 DropdownMenuSeparator.displayName = "DropdownMenuSeparator";
+
+export const DropdownMenuShortcut = (
+  props: React.HTMLAttributes<HTMLSpanElement>
+) => {
+  const { className, ...rest } = props;
+
+  return (
+    <span
+      {...rest}
+      className={cn("text-muted-foreground ml-6 text-xs", className)}
+      data-slot={getDataSlot(props, "dropdown-menu-shortcut")}
+    />
+  );
+};
+
+DropdownMenuShortcut.displayName = "DropdownMenuShortcut";

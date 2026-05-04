@@ -10,14 +10,48 @@ import {
   P,
   type PProps,
   type PRef,
+  type PrimitiveElement,
 } from "@portfolio/components";
 
 import { cn, getDataSlot } from "../utils";
 
 type CardPartProps = DivProps;
 
-export const Card = React.forwardRef<DivRef, CardPartProps>((props, ref) => {
-  const { className, ...rest } = props;
+export type CardProps = CardPartProps & {
+  contentProps?: CardPartProps;
+  description?: React.ReactNode;
+  descriptionProps?: CardDescriptionProps;
+  footer?: React.ReactNode;
+  footerProps?: CardPartProps;
+  headerProps?: CardPartProps;
+  title?: React.ReactNode;
+  titleAs?: PrimitiveElement;
+  titleProps?: CardTitleProps;
+};
+
+function hasRenderableContent(value: React.ReactNode) {
+  return value !== null && value !== undefined && value !== false;
+}
+
+export const Card = React.forwardRef<DivRef, CardProps>((props, ref) => {
+  const {
+    children,
+    className,
+    contentProps,
+    description,
+    descriptionProps,
+    footer,
+    footerProps,
+    headerProps,
+    title,
+    titleAs,
+    titleProps,
+    ...rest
+  } = props;
+  const hasTitle = hasRenderableContent(title);
+  const hasDescription = hasRenderableContent(description);
+  const hasFooter = hasRenderableContent(footer);
+  const hasGeneratedContent = hasTitle || hasDescription || hasFooter;
 
   return (
     <Div
@@ -28,7 +62,28 @@ export const Card = React.forwardRef<DivRef, CardPartProps>((props, ref) => {
         className
       )}
       data-slot={getDataSlot(props, "card")}
-    />
+    >
+      {hasTitle || hasDescription ? (
+        <CardHeader {...headerProps}>
+          {hasTitle ? (
+            <CardTitle as={titleAs} {...titleProps}>
+              {title}
+            </CardTitle>
+          ) : null}
+          {hasDescription ? (
+            <CardDescription {...descriptionProps}>
+              {description}
+            </CardDescription>
+          ) : null}
+        </CardHeader>
+      ) : null}
+      {hasGeneratedContent ? (
+        <CardContent {...contentProps}>{children}</CardContent>
+      ) : (
+        children
+      )}
+      {hasFooter ? <CardFooter {...footerProps}>{footer}</CardFooter> : null}
+    </Div>
   );
 });
 
@@ -51,7 +106,7 @@ export const CardHeader = React.forwardRef<DivRef, CardPartProps>(
 
 CardHeader.displayName = "CardHeader";
 
-export type CardTitleProps = HeadingProps;
+export type CardTitleProps = HeadingProps<PrimitiveElement>;
 
 export const CardTitle = React.forwardRef<HeadingRef, CardTitleProps>(
   (props, ref) => {

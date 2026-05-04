@@ -12,9 +12,11 @@ export const TooltipPortal = TooltipPrimitive.Portal;
 
 export const TooltipContent = React.forwardRef<
   React.ComponentRef<typeof TooltipPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & {
+    label?: React.ReactNode;
+  }
 >((props, ref) => {
-  const { className, sideOffset = 4, ...rest } = props;
+  const { children, className, label, sideOffset = 4, ...rest } = props;
 
   return (
     <TooltipPrimitive.Portal>
@@ -27,7 +29,9 @@ export const TooltipContent = React.forwardRef<
           className
         )}
         data-slot={getDataSlot(props, "tooltip-content")}
-      />
+      >
+        {label ?? children}
+      </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );
 });
