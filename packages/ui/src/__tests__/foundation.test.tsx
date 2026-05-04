@@ -42,6 +42,7 @@ import {
   TableHeader,
   TableRow,
   Textarea,
+  VisuallyHidden,
 } from "../index";
 
 describe("foundational ui components", () => {
@@ -58,6 +59,10 @@ describe("foundational ui components", () => {
           variant="ghost"
         >
           Track save
+        </Button>
+        <Button aria-labelledby="menu-label" size="icon">
+          <span aria-hidden="true">...</span>
+          <VisuallyHidden id="menu-label">Open menu</VisuallyHidden>
         </Button>
         <Link href="https://example.com" newTab>
           Docs
@@ -99,6 +104,13 @@ describe("foundational ui components", () => {
       "data-analytics-placement",
       "toolbar"
     );
+    expect(screen.getByRole("button", { name: "Open menu" })).toHaveAttribute(
+      "data-slot",
+      "button"
+    );
+    const hiddenLabel = document.querySelector('[data-slot="visually-hidden"]');
+    expect(hiddenLabel).toHaveTextContent("Open menu");
+    expect(hiddenLabel).toHaveClass("sr-only");
     expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute(
       "rel",
       "noopener noreferrer"

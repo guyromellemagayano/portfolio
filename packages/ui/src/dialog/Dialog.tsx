@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
 
 import { cn, getDataSlot } from "../utils";
+import { VisuallyHidden } from "../visually-hidden";
 
 export const Dialog = DialogPrimitive.Root;
 export const DialogTrigger = DialogPrimitive.Trigger;
@@ -92,7 +93,7 @@ export const DialogContent = React.forwardRef<
         {children}
         <DialogPrimitive.Close className="focus-visible:ring-ring absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:outline-none">
           <X aria-hidden="true" className="h-4 w-4" />
-          <span className="sr-only">{closeLabel}</span>
+          <VisuallyHidden>{closeLabel}</VisuallyHidden>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPortal>

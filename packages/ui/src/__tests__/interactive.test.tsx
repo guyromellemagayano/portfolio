@@ -78,6 +78,10 @@ describe("interactive ui components", () => {
     expect(
       screen.getByRole("button", { name: "Close profile editor" })
     ).toBeInTheDocument();
+    expect(screen.getByText("Close profile editor")).toHaveAttribute(
+      "data-slot",
+      "visually-hidden"
+    );
   });
 
   it("renders low-boilerplate accessible sheet content", () => {
@@ -99,6 +103,10 @@ describe("interactive ui components", () => {
     expect(
       screen.getByRole("button", { name: "Close filters" })
     ).toBeInTheDocument();
+    expect(screen.getByText("Close filters")).toHaveAttribute(
+      "data-slot",
+      "visually-hidden"
+    );
   });
 
   it("renders low-boilerplate accessible alert dialog content", () => {

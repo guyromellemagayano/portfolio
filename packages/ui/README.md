@@ -31,6 +31,7 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 ### Foundational Components
 
 - `Button`
+- `VisuallyHidden`
 - `Link`
 - `Badge`
 - `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`
@@ -67,16 +68,22 @@ import { Button, Card, CardContent, CardHeader, CardTitle } from "@portfolio/ui"
 Button usage keeps action state explicit:
 
 ```typescript
-import { Button } from "@portfolio/ui";
+import { Button, VisuallyHidden } from "@portfolio/ui";
 
 <Button loading>Saving</Button>;
 <Button pressed>Pin</Button>;
 <Button aria-label="Open menu" size="icon">
   ...
 </Button>;
+<Button aria-labelledby="menu-label" size="icon">
+  <span aria-hidden="true">...</span>
+  <VisuallyHidden id="menu-label">Open menu</VisuallyHidden>
+</Button>;
 ```
 
 `loading` disables the button and adds `aria-busy` plus `data-loading`. `pressed` maps to `aria-pressed`. Icon-sized buttons require `aria-label` or `aria-labelledby`.
+
+Prefer visible text for button names. Use `aria-label` for simple icon-only controls, `aria-labelledby` when another visible or hidden node should name the control, and `VisuallyHidden` when text should remain available to assistive technology without changing the visual layout.
 
 Link usage exposes navigation semantics for styling and measurement:
 
