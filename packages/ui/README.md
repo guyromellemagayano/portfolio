@@ -11,6 +11,9 @@ Styled shadcn-inspired React design system components for the portfolio workspac
 - Tailwind-compatible class variants with `cva` and `cn()`
 - Radix-backed interactive primitives through the unified `radix-ui` package
 - Field-aware form controls that inherit accessibility ids and state from `Field`
+- Low-boilerplate generated title, description, footer, and status slots for common component layouts
+- Editorial content helpers for prose, code blocks, callouts, figures, timelines, stats, and feature lists
+- Search and combobox field helpers with accessible label, description, error, and clear-control wiring
 - Empty-state helpers for named fallback regions without repeated heading and description wiring
 - Description-list helpers for semantic metadata, specs, and definition groups
 - Button state helpers for icon labels, pending actions, and toggle controls
@@ -38,27 +41,36 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `SkipLink`, `SkipLinkTarget`
 - `Breadcrumb`, `BreadcrumbTrail`
 - `Pagination`, `PaginationControls`
-- `Badge`
+- `Badge`, `BadgeList`, `StatusBadge`
 - `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`
+- `InlineCode`, `CodeBlock`, `CodeBlockHeader`, `CodeBlockLanguage`, `CopyButton`
+- `Prose`
+- `Callout`, `CalloutIcon`, `CalloutTitle`, `CalloutDescription`, `CalloutActions`
 - `DescriptionList`, `DescriptionListItem`, `DescriptionTerm`, `DescriptionDetails`
 - `Input`, `InputField`
 - `Textarea`, `TextareaField`
+- `SearchInput`, `SearchField`
+- `Combobox`, `ComboboxField`
 - `Checkbox`
 - `Switch`
 - `CheckboxField`
 - `SwitchField`
 - `RadioGroup`, `RadioGroupItem`, `RadioGroupOption`
 - `Label`
-- `Form`, `Fieldset`, `Legend`, `FormActions`
+- `Form`, `Fieldset`, `Legend`, `FormActions`, `FormStatus`, `FormErrorSummary`
 - `Field`, `FieldLabel`, `FieldDescription`, `FieldError`
-- `Section`
+- `Section`, `SectionHeader`, `SectionEyebrow`, `SectionHeading`, `SectionDescription`, `SectionActions`
 - `EmptyState`, `EmptyStateHeader`, `EmptyStateIcon`, `EmptyStateTitle`, `EmptyStateDescription`, `EmptyStateActions`
 - `Separator`
-- `Skeleton`
+- `Skeleton`, `SkeletonText`, `SkeletonCard`
 - `LiveRegion`, `StatusMessage`
-- `Alert`, `AlertTitle`, `AlertDescription`
+- `Alert`, `AlertIcon`, `AlertTitle`, `AlertDescription`, `AlertActions`
 - `Avatar`, `AvatarImage`, `AvatarFallback`
-- `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption`
+- `TableContainer`, `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption`, `TableEmpty`, `TableLoading`
+- `FeatureList`, `FeatureItem`, `FeatureIcon`, `FeatureTitle`, `FeatureDescription`
+- `Figure`, `FigureImage`, `FigureCaption`
+- `Timeline`, `TimelineItem`, `TimelineMarker`, `TimelineTime`, `TimelineTitle`, `TimelineDescription`
+- `StatGroup`, `Stat`, `StatLabel`, `StatValue`, `StatDescription`
 
 ```typescript
 import { Button, Card, CardContent, CardHeader, CardTitle } from "@portfolio/ui";
@@ -71,6 +83,26 @@ import { Button, Card, CardContent, CardHeader, CardTitle } from "@portfolio/ui"
     <Button>View project</Button>
   </CardContent>
 </Card>;
+```
+
+Common card and alert layouts can generate their semantic substructure:
+
+```typescript
+import { Alert, Button, Card } from "@portfolio/ui";
+
+<Card
+  description="Launch readiness, quality gates, and support status."
+  footer={<Button>Open project</Button>}
+  title="Portfolio rebuild"
+>
+  Delivery notes and next actions.
+</Card>;
+
+<Alert
+  actions={<Button>Retry</Button>}
+  description="The release check failed."
+  title="Could not publish"
+/>;
 ```
 
 Button usage keeps action state explicit:
@@ -201,19 +233,68 @@ import { LiveRegion, StatusMessage } from "@portfolio/ui";
 
 `LiveRegion` defaults to `role="status"`, `aria-live="polite"`, and `aria-atomic="true"`. `StatusMessage` switches errors to assertive alert announcements and marks loading messages busy.
 
+Editorial helpers keep content-heavy surfaces semantic without repeated structure:
+
+```typescript
+import { Callout, CodeBlock, FeatureList, Figure, Prose, Stat, StatGroup, Timeline, TimelineItem } from "@portfolio/ui";
+
+<Prose as="article" aria-label="Implementation notes">
+  <p>Write content with native headings, lists, links, and code.</p>
+</Prose>;
+
+<CodeBlock code="pnpm --filter @portfolio/ui test:run:coverage" language="bash" />;
+
+<Callout
+  description="Check release health before publishing."
+  intent="warning"
+  title="Release note"
+/>;
+
+<FeatureList
+  items={[
+    {
+      description: "Generated titles, descriptions, icons, and item slots.",
+      title: "Low-boilerplate semantics",
+    },
+  ]}
+/>;
+
+<Figure
+  alt="Portfolio UI preview"
+  caption="A preview of the package surface."
+  src="/preview.png"
+/>;
+
+<Timeline>
+  <TimelineItem
+    description="Prepared package release notes."
+    time="2026"
+    title="Release prep"
+  />
+</Timeline>;
+
+<StatGroup aria-label="Project stats">
+  <Stat description="Production launches" label="Projects" value="12" />
+</StatGroup>;
+```
+
 Sections provide styled heading and description structure while preserving the primitive accessibility wiring:
 
 ```typescript
-import { Section } from "@portfolio/ui";
+import { Button, Section } from "@portfolio/ui";
 
 <Section
+  actions={<Button>View all</Button>}
   description="Proof points from recent delivery work."
+  eyebrow="Case studies"
   heading="Selected work"
   id="work"
 >
   ...
 </Section>;
 ```
+
+`Section` wires visible headings and descriptions into `aria-labelledby` and `aria-describedby` by default. Use `eyebrow`, `actions`, and the matching prop bags for common section headers, or compose `SectionHeader`, `SectionHeading`, `SectionDescription`, and `SectionActions` manually when the layout needs custom markup.
 
 Empty states provide named fallback regions with low-boilerplate title, description, icon, and action slots:
 
@@ -230,6 +311,29 @@ import { Button, EmptyState } from "@portfolio/ui";
 ```
 
 Use `EmptyStateHeader`, `EmptyStateIcon`, `EmptyStateTitle`, `EmptyStateDescription`, and `EmptyStateActions` directly when a fallback surface needs custom layout. The generated path wires `aria-labelledby` and `aria-describedby` from the visible title and description.
+
+Table, skeleton, and badge helpers cover common loading and status states:
+
+```typescript
+import { BadgeList, SkeletonCard, SkeletonText, StatusBadge, Table, TableBody, TableContainer, TableEmpty, TableLoading } from "@portfolio/ui";
+
+<BadgeList aria-label="Project statuses">
+  <StatusBadge status="success">Live</StatusBadge>
+  <StatusBadge status="warning">Review</StatusBadge>
+</BadgeList>;
+
+<TableContainer>
+  <Table>
+    <TableBody>
+      <TableEmpty colSpan={3}>No projects.</TableEmpty>
+      <TableLoading colSpan={3} />
+    </TableBody>
+  </Table>
+</TableContainer>;
+
+<SkeletonText lines={3} />;
+<SkeletonCard />;
+```
 
 Forms expose styled native grouping semantics for full form flows:
 
@@ -298,6 +402,39 @@ import { InputField, SelectField, SelectItem, TextareaField } from "@portfolio/u
 ```
 
 Passing `error` marks the field invalid by default, while `invalid` remains available for explicit state control.
+
+Search and combobox helpers follow the same field contract:
+
+```typescript
+import { ComboboxField, FormErrorSummary, FormStatus, SearchField } from "@portfolio/ui";
+
+<FormErrorSummary errors={["Email is required."]} />;
+<FormStatus intent="success">Saved.</FormStatus>;
+
+<SearchField
+  description="Search by project name or service."
+  id="project-search"
+  inputProps={{ onClear: () => setQuery(""), value: query }}
+  label="Search"
+/>;
+
+<ComboboxField
+  comboboxProps={{
+    onValueChange: setTeam,
+    options: [
+      { label: "Engineering", value: "engineering" },
+      { description: "Design systems and UX delivery.", label: "Design", value: "design" },
+    ],
+    placeholder: "Choose a team",
+    value: team,
+  }}
+  description="Choose the delivery track."
+  id="team"
+  label="Team"
+/>;
+```
+
+`SearchInput` shows its clear button only when there is a value and an `onClear` handler unless `showClear` is explicitly provided. `Combobox` renders a labeled input plus listbox, disabled option state, and an empty result message without requiring consumers to hand-write ARIA attributes.
 
 Choice controls receive the same field state without native-only boilerplate:
 
@@ -383,16 +520,17 @@ import {
 
 ### Interactive Components
 
-- `Dialog`
-- `AlertDialog`
-- `Tooltip`
-- `DropdownMenu`
+- `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`
+- `AlertDialog`, `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogFooter`
+- `Tooltip`, `TooltipContent`
+- `DropdownMenu`, `DropdownMenuItem`, `DropdownMenuShortcut`
 - `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent`, `AccordionPanel`
-- `Tabs`
+- `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `TabsPanels`
 - `Select`
 - `SelectField`
-- `Popover`
-- `Sheet`
+- `Popover`, `PopoverContent`, `PopoverHeader`, `PopoverTitle`, `PopoverDescription`
+- `Sheet`, `SheetContent`, `SheetHeader`, `SheetTitle`, `SheetDescription`, `SheetFooter`
+- `ToastProvider`, `ToastViewport`, `Toaster`, `Toast`, `ToastTitle`, `ToastDescription`, `ToastAction`, `ToastClose`
 
 Radix `asChild` composition belongs in this package, not in `@portfolio/components`.
 
@@ -420,6 +558,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@portfolio/ui";
   <DialogContent
     closeLabel="Close profile editor"
     description="Update the account details shown on your public profile."
+    footer={<button type="button">Save profile</button>}
     title="Edit profile"
   >
     Profile form fields
@@ -433,7 +572,6 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogFooter,
   AlertDialogTrigger,
 } from "@portfolio/ui";
 
@@ -441,17 +579,68 @@ import {
   <AlertDialogTrigger>Delete project</AlertDialogTrigger>
   <AlertDialogContent
     description="This action permanently removes the selected project."
+    footer={
+      <>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction>Delete</AlertDialogAction>
+      </>
+    }
     title="Delete project"
-  >
-    <AlertDialogFooter>
-      <AlertDialogCancel>Cancel</AlertDialogCancel>
-      <AlertDialogAction>Delete</AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
+  />
 </AlertDialog>;
 ```
 
-Prefer `title`, `description`, and `closeLabel` on `DialogContent` and `SheetContent` for the common path. Use `title` and `description` on `AlertDialogContent` so confirm flows have an accessible name and description without repeating header markup. Use `headerProps`, `titleProps`, and `descriptionProps` when the generated header needs custom attributes or classes. Manual composition with `DialogHeader`, `DialogTitle`, `DialogDescription`, `SheetHeader`, `SheetTitle`, `SheetDescription`, `AlertDialogHeader`, `AlertDialogTitle`, and `AlertDialogDescription` remains supported for custom layouts.
+Prefer `title`, `description`, `closeLabel`, and `footer` on `DialogContent` and `SheetContent` for the common path. Use `title`, `description`, and `footer` on `AlertDialogContent` so confirm flows have an accessible name, description, and action row without repeating header/footer markup. Use `headerProps`, `titleProps`, `descriptionProps`, and `footerProps` when generated slots need custom attributes or classes. Manual composition with `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `SheetHeader`, `SheetTitle`, `SheetDescription`, `SheetFooter`, `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, and `AlertDialogFooter` remains supported for custom layouts.
+
+Popover, tooltip, tabs, dropdown, and toast helpers keep generated naming and instrumentation close to the component that needs it:
+
+```typescript
+import {
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  PopoverContent,
+  TabsPanels,
+  Toast,
+  ToastAction,
+  ToastClose,
+  ToastDescription,
+  Toaster,
+  ToastTitle,
+  TooltipContent,
+} from "@portfolio/ui";
+
+<PopoverContent description="Filter the project list." title="Filters">
+  Filter controls
+</PopoverContent>;
+
+<TooltipContent label="Copy link" />;
+
+<DropdownMenuItem
+  analytics={{ event: "menu_click", placement: "project_menu" }}
+  shortcut="P"
+>
+  Project
+</DropdownMenuItem>;
+<DropdownMenuItem destructive>
+  Delete
+  <DropdownMenuShortcut>Del</DropdownMenuShortcut>
+</DropdownMenuItem>;
+
+<TabsPanels
+  panels={[
+    { content: "Overview content", label: "Overview", value: "overview" },
+  ]}
+/>;
+
+<Toaster>
+  <Toast open intent="success">
+    <ToastTitle>Saved</ToastTitle>
+    <ToastDescription>Profile saved.</ToastDescription>
+    <ToastAction altText="Undo save">Undo</ToastAction>
+    <ToastClose closeLabel="Dismiss saved message" />
+  </Toast>
+</Toaster>;
+```
 
 ### Legacy Demo Component
 
