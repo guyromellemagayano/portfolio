@@ -14,7 +14,7 @@ Portfolio monorepo for the public Astro site and retained Playwright setup.
 
 ```bash
 corepack enable
-corepack use pnpm@10.30.0
+corepack use pnpm@10.33.2
 pnpm install
 pnpm dev
 ```
