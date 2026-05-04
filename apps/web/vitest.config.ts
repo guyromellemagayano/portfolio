@@ -1,15 +1,14 @@
+import react from "@vitejs/plugin-react";
 import path from "path";
 import { fileURLToPath } from "url";
-import react from "@vitejs/plugin-react";
-import { getViteConfig } from "astro/config";
+import { defineConfig } from "vitest/config";
 
 import { reactPreset } from "@portfolio/vitest-presets";
 
-// Get __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default getViteConfig({
+export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: [
