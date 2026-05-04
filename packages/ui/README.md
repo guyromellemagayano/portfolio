@@ -283,6 +283,7 @@ import {
 - `AlertDialog`
 - `Tooltip`
 - `DropdownMenu`
+- `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent`, `AccordionPanel`
 - `Tabs`
 - `Select`
 - `SelectField`
@@ -290,6 +291,22 @@ import {
 - `Sheet`
 
 Radix `asChild` composition belongs in this package, not in `@portfolio/components`.
+
+```typescript
+import { Accordion, AccordionPanel } from "@portfolio/ui";
+
+<Accordion collapsible type="single">
+  <AccordionPanel
+    description="Typical launch windows are planned up front."
+    title="Delivery timeline"
+    value="timeline"
+  >
+    Most focused launches take two to four weeks.
+  </AccordionPanel>
+</Accordion>;
+```
+
+Use `AccordionPanel` for common disclosure rows. Use `AccordionItem`, `AccordionTrigger`, and `AccordionContent` directly when the trigger or content layout needs custom composition.
 
 ```typescript
 import { Dialog, DialogContent, DialogTrigger } from "@portfolio/ui";

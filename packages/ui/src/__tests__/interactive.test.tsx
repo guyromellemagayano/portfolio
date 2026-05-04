@@ -2,6 +2,11 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionPanel,
+  AccordionTrigger,
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -138,6 +143,51 @@ describe("interactive ui components", () => {
     expect(screen.getByText("Delete project")).toHaveClass("custom-title");
     expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
+  });
+
+  it("renders accessible accordion primitives and panels", () => {
+    render(
+      <div>
+        <Accordion collapsible defaultValue="scope" type="single">
+          <AccordionItem value="scope">
+            <AccordionTrigger>Project scope</AccordionTrigger>
+            <AccordionContent>
+              Discovery, delivery, and launch support.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <Accordion defaultValue="timeline" type="single">
+          <AccordionPanel
+            description="Typical launch windows are planned up front."
+            title="Delivery timeline"
+            value="timeline"
+          >
+            <p>Most focused launches take two to four weeks.</p>
+          </AccordionPanel>
+        </Accordion>
+      </div>
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Project scope" })
+    ).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByText("Project scope")).toHaveAttribute(
+      "data-slot",
+      "accordion-trigger"
+    );
+    expect(
+      screen.getByText("Discovery, delivery, and launch support.")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Delivery timeline" })
+    ).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByText("Delivery timeline")).toHaveAttribute(
+      "data-slot",
+      "accordion-panel-title"
+    );
+    expect(
+      screen.getByText("Typical launch windows are planned up front.")
+    ).toHaveAttribute("data-slot", "accordion-panel-description");
   });
 
   it("renders dialog and alert dialog surfaces", () => {
