@@ -36,6 +36,14 @@ import {
   Label,
   Legend,
   Link,
+  Pagination,
+  PaginationContent,
+  PaginationControls,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
   RadioGroup,
   RadioGroupItem,
   Section,
@@ -262,6 +270,81 @@ describe("foundational ui components", () => {
       "aria-current",
       "page"
     );
+  });
+
+  it("renders pagination semantics and low-boilerplate controls", () => {
+    render(
+      <div>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious href="/work?page=1" />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="/work?page=1">1</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink current href="/work?page=2">
+                2
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationEllipsis />
+            <PaginationItem>
+              <PaginationNext href="/work?page=3" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+        <PaginationControls
+          aria-label="Search pages"
+          next={{ disabled: true }}
+          pages={[
+            {
+              href: "/search?page=1",
+              label: "1",
+              linkProps: {
+                analytics: {
+                  event: "pagination_click",
+                  placement: "search_results",
+                },
+              },
+            },
+            { current: true, href: "/search?page=2", label: "2" },
+            { type: "ellipsis" },
+          ]}
+          previous={{ href: "/search?page=1" }}
+        />
+      </div>
+    );
+
+    expect(
+      screen.getByRole("navigation", { name: "Pagination" })
+    ).toHaveAttribute("data-slot", "pagination");
+    expect(
+      screen.getAllByRole("link", { name: "Previous page" })[0]
+    ).toHaveAttribute("data-slot", "pagination-previous");
+    expect(
+      screen.getAllByRole("link", { name: "Next page" })[0]
+    ).toHaveAttribute("data-slot", "pagination-next");
+    expect(
+      document.querySelector(
+        '[data-slot="pagination-link"][aria-current="page"]'
+      )
+    ).toHaveTextContent("2");
+    expect(screen.getAllByText("More pages")).toHaveLength(2);
+
+    const searchPagination = screen.getByRole("navigation", {
+      name: "Search pages",
+    });
+    expect(searchPagination).toHaveAttribute("data-slot", "pagination");
+    expect(screen.getAllByRole("link", { name: "1" })[1]).toHaveAttribute(
+      "data-analytics-event",
+      "pagination_click"
+    );
+    expect(
+      document.querySelector(
+        '[data-slot="pagination-next"][aria-disabled="true"]'
+      )
+    ).toHaveAttribute("data-disabled", "");
   });
 
   it("keeps field and table accessibility relationships intact", () => {

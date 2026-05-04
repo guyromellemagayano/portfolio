@@ -34,6 +34,7 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `VisuallyHidden`
 - `Link`
 - `Breadcrumb`, `BreadcrumbTrail`
+- `Pagination`, `PaginationControls`
 - `Badge`
 - `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`
 - `Input`, `InputField`
@@ -117,6 +118,24 @@ import { BreadcrumbTrail } from "@portfolio/ui";
 ```
 
 Use `BreadcrumbTrail` for the common route trail. Use `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`, `BreadcrumbLink`, `BreadcrumbPage`, and `BreadcrumbSeparator` directly when individual rows need custom labels, separators, or analytics props.
+
+Pagination helpers provide semantic navigation, current-page state, disabled edge controls, and accessible ellipsis text:
+
+```typescript
+import { PaginationControls } from "@portfolio/ui";
+
+<PaginationControls
+  next={{ href: "/work?page=3" }}
+  pages={[
+    { href: "/work?page=1", label: "1" },
+    { current: true, href: "/work?page=2", label: "2" },
+    { type: "ellipsis" },
+  ]}
+  previous={{ href: "/work?page=1" }}
+/>;
+```
+
+Use `Pagination`, `PaginationContent`, `PaginationItem`, `PaginationLink`, `PaginationPrevious`, `PaginationNext`, and `PaginationEllipsis` directly when a page needs custom item layout, labels, or analytics props.
 
 Styled components inherit primitive analytics metadata:
 
