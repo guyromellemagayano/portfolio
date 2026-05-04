@@ -51,6 +51,7 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `Section`
 - `Separator`
 - `Skeleton`
+- `LiveRegion`, `StatusMessage`
 - `Alert`, `AlertTitle`, `AlertDescription`
 - `Avatar`, `AvatarImage`, `AvatarFallback`
 - `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption`
@@ -163,6 +164,21 @@ import { Button } from "@portfolio/ui";
 ```
 
 The rendered control receives stable `data-analytics-*` attributes without loading an analytics runtime.
+
+Live regions provide accessible async feedback without repeated ARIA wiring:
+
+```typescript
+import { LiveRegion, StatusMessage } from "@portfolio/ui";
+
+<LiveRegion>Saved.</LiveRegion>;
+<LiveRegion role="alert" visuallyHidden>
+  Failed to save.
+</LiveRegion>;
+<StatusMessage intent="loading">Saving...</StatusMessage>;
+<StatusMessage intent="error">Could not save.</StatusMessage>;
+```
+
+`LiveRegion` defaults to `role="status"`, `aria-live="polite"`, and `aria-atomic="true"`. `StatusMessage` switches errors to assertive alert announcements and marks loading messages busy.
 
 Sections provide styled heading and description structure while preserving the primitive accessibility wiring:
 

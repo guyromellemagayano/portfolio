@@ -36,6 +36,7 @@ import {
   Label,
   Legend,
   Link,
+  LiveRegion,
   Pagination,
   PaginationContent,
   PaginationControls,
@@ -51,6 +52,7 @@ import {
   Skeleton,
   SkipLink,
   SkipLinkTarget,
+  StatusMessage,
   Switch,
   Table,
   TableBody,
@@ -391,6 +393,48 @@ describe("foundational ui components", () => {
       "id",
       "portfolio-main"
     );
+  });
+
+  it("renders live regions and status messages with announcement defaults", () => {
+    render(
+      <div>
+        <LiveRegion analytics={{ event: "profile_saved", placement: "form" }}>
+          Saved.
+        </LiveRegion>
+        <LiveRegion role="alert" visuallyHidden>
+          Failed.
+        </LiveRegion>
+        <StatusMessage intent="success">Profile saved.</StatusMessage>
+        <StatusMessage intent="error">Could not save profile.</StatusMessage>
+        <StatusMessage intent="loading">Saving profile.</StatusMessage>
+      </div>
+    );
+
+    const liveRegion = screen.getByText("Saved.");
+    expect(liveRegion).toHaveAttribute("role", "status");
+    expect(liveRegion).toHaveAttribute("aria-live", "polite");
+    expect(liveRegion).toHaveAttribute("aria-atomic", "true");
+    expect(liveRegion).toHaveAttribute("data-slot", "live-region");
+    expect(liveRegion).toHaveAttribute("data-analytics-event", "profile_saved");
+
+    const alertRegion = screen.getByText("Failed.");
+    expect(alertRegion).toHaveAttribute("role", "alert");
+    expect(alertRegion).toHaveAttribute("aria-live", "assertive");
+    expect(alertRegion).toHaveClass("sr-only");
+
+    const successMessage = screen.getByText("Profile saved.");
+    expect(successMessage).toHaveAttribute("role", "status");
+    expect(successMessage).toHaveAttribute("data-slot", "status-message");
+    expect(successMessage).toHaveAttribute("data-intent", "success");
+
+    const errorMessage = screen.getByText("Could not save profile.");
+    expect(errorMessage).toHaveAttribute("role", "alert");
+    expect(errorMessage).toHaveAttribute("aria-live", "assertive");
+    expect(errorMessage).toHaveAttribute("data-intent", "error");
+
+    const loadingMessage = screen.getByText("Saving profile.");
+    expect(loadingMessage).toHaveAttribute("aria-busy", "true");
+    expect(loadingMessage).toHaveAttribute("data-intent", "loading");
   });
 
   it("keeps field and table accessibility relationships intact", () => {
