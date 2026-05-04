@@ -9,6 +9,13 @@ import {
   AvatarFallback,
   AvatarImage,
   Badge,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbTrail,
   Button,
   Card,
   CardContent,
@@ -191,6 +198,69 @@ describe("foundational ui components", () => {
     expect(screen.getByTestId("loading-block")).toHaveAttribute(
       "aria-hidden",
       "true"
+    );
+  });
+
+  it("renders breadcrumb semantics and low-boilerplate trails", () => {
+    render(
+      <div>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Current page</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <BreadcrumbTrail
+          aria-label="Project breadcrumb"
+          items={[
+            {
+              href: "/",
+              label: "Home",
+              linkProps: {
+                analytics: {
+                  event: "breadcrumb_click",
+                  placement: "project_page",
+                },
+              },
+            },
+            { href: "/work", label: "Work" },
+            { label: "Portfolio rebuild" },
+          ]}
+        />
+      </div>
+    );
+
+    expect(
+      screen.getByRole("navigation", { name: "Breadcrumb" })
+    ).toHaveAttribute("data-slot", "breadcrumb");
+    expect(screen.getAllByRole("link", { name: "Home" })[0]).toHaveAttribute(
+      "href",
+      "/"
+    );
+    expect(screen.getByText("Current page")).toHaveAttribute(
+      "aria-current",
+      "page"
+    );
+    expect(
+      document.querySelector('[data-slot="breadcrumb-separator"]')
+    ).toHaveAttribute("aria-hidden", "true");
+
+    const projectBreadcrumb = screen.getByRole("navigation", {
+      name: "Project breadcrumb",
+    });
+    expect(projectBreadcrumb).toHaveAttribute("data-slot", "breadcrumb");
+    expect(screen.getAllByRole("link", { name: "Home" })[1]).toHaveAttribute(
+      "data-analytics-event",
+      "breadcrumb_click"
+    );
+    expect(screen.getByText("Portfolio rebuild")).toHaveAttribute(
+      "aria-current",
+      "page"
     );
   });
 

@@ -33,6 +33,7 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `Button`
 - `VisuallyHidden`
 - `Link`
+- `Breadcrumb`, `BreadcrumbTrail`
 - `Badge`
 - `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`
 - `Input`, `InputField`
@@ -100,6 +101,22 @@ import { Link } from "@portfolio/ui";
 ```
 
 Absolute web URLs receive `data-external` by default, `external` can override that state, and `newTab` maps to `target="_blank"` plus safe `rel` handling and `data-new-tab`.
+
+Breadcrumbs provide semantic navigation with an ordered trail and automatic current-page state:
+
+```typescript
+import { BreadcrumbTrail } from "@portfolio/ui";
+
+<BreadcrumbTrail
+  items={[
+    { href: "/", label: "Home" },
+    { href: "/work", label: "Work" },
+    { label: "Portfolio rebuild" },
+  ]}
+/>;
+```
+
+Use `BreadcrumbTrail` for the common route trail. Use `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`, `BreadcrumbLink`, `BreadcrumbPage`, and `BreadcrumbSeparator` directly when individual rows need custom labels, separators, or analytics props.
 
 Styled components inherit primitive analytics metadata:
 
