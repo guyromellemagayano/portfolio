@@ -11,6 +11,7 @@ Styled shadcn-inspired React design system components for the portfolio workspac
 - Tailwind-compatible class variants with `cva` and `cn()`
 - Radix-backed interactive primitives through the unified `radix-ui` package
 - Field-aware form controls that inherit accessibility ids and state from `Field`
+- Empty-state helpers for named fallback regions without repeated heading and description wiring
 - Button state helpers for icon labels, pending actions, and toggle controls
 - Components tested with Vitest + Testing Library
 - TypeScript-first source and build pipeline
@@ -49,6 +50,7 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `Form`, `Fieldset`, `Legend`, `FormActions`
 - `Field`, `FieldLabel`, `FieldDescription`, `FieldError`
 - `Section`
+- `EmptyState`, `EmptyStateHeader`, `EmptyStateIcon`, `EmptyStateTitle`, `EmptyStateDescription`, `EmptyStateActions`
 - `Separator`
 - `Skeleton`
 - `LiveRegion`, `StatusMessage`
@@ -193,6 +195,22 @@ import { Section } from "@portfolio/ui";
   ...
 </Section>;
 ```
+
+Empty states provide named fallback regions with low-boilerplate title, description, icon, and action slots:
+
+```typescript
+import { Button, EmptyState } from "@portfolio/ui";
+
+<EmptyState
+  actions={<Button>Start project</Button>}
+  description="Create the first project when you are ready."
+  icon={<span aria-hidden="true">+</span>}
+  id="projects-empty"
+  title="No projects yet"
+/>;
+```
+
+Use `EmptyStateHeader`, `EmptyStateIcon`, `EmptyStateTitle`, `EmptyStateDescription`, and `EmptyStateActions` directly when a fallback surface needs custom layout. The generated path wires `aria-labelledby` and `aria-describedby` from the visible title and description.
 
 Forms expose styled native grouping semantics for full form flows:
 

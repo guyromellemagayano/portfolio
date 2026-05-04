@@ -25,6 +25,12 @@ import {
   CardTitle,
   Checkbox,
   cn,
+  EmptyState,
+  EmptyStateActions,
+  EmptyStateDescription,
+  EmptyStateHeader,
+  EmptyStateIcon,
+  EmptyStateTitle,
   Field,
   FieldDescription,
   FieldError,
@@ -225,6 +231,92 @@ describe("foundational ui components", () => {
       "aria-hidden",
       "true"
     );
+  });
+
+  it("renders empty state semantics with generated accessible wiring", () => {
+    render(
+      <EmptyState
+        actions={<Button>Start project</Button>}
+        actionsProps={{ className: "mt-2" }}
+        description="Create the first project when you are ready."
+        icon={<span data-testid="empty-state-icon-glyph">+</span>}
+        id="projects-empty"
+        title="No projects yet"
+      />
+    );
+
+    const emptyState = screen.getByRole("region", {
+      name: "No projects yet",
+    });
+    expect(emptyState).toHaveAttribute("data-slot", "empty-state");
+    expect(emptyState).toHaveAttribute(
+      "aria-labelledby",
+      "projects-empty-title"
+    );
+    expect(emptyState).toHaveAttribute(
+      "aria-describedby",
+      "projects-empty-description"
+    );
+    expect(
+      screen.getByRole("heading", { level: 2, name: "No projects yet" })
+    ).toHaveAttribute("data-slot", "empty-state-title");
+    expect(
+      screen.getByText("Create the first project when you are ready.")
+    ).toHaveAttribute("data-slot", "empty-state-description");
+    expect(
+      screen.getByTestId("empty-state-icon-glyph").parentElement
+    ).toHaveAttribute("aria-hidden", "true");
+    expect(
+      screen.getByTestId("empty-state-icon-glyph").parentElement
+    ).toHaveAttribute("data-slot", "empty-state-icon");
+    expect(
+      screen.getByRole("button", { name: "Start project" }).parentElement
+    ).toHaveAttribute("data-slot", "empty-state-actions");
+    expect(
+      screen.getByRole("button", { name: "Start project" }).parentElement
+    ).toHaveClass("mt-2");
+  });
+
+  it("supports manual empty state composition with explicit naming", () => {
+    render(
+      <EmptyState
+        aria-describedby="manual-empty-description"
+        aria-labelledby="manual-empty-title"
+      >
+        <EmptyStateIcon aria-hidden={false}>
+          <span>!</span>
+        </EmptyStateIcon>
+        <EmptyStateHeader>
+          <EmptyStateTitle as="h3" id="manual-empty-title">
+            Nothing matched
+          </EmptyStateTitle>
+          <EmptyStateDescription id="manual-empty-description">
+            Try fewer filters or clear the current search.
+          </EmptyStateDescription>
+        </EmptyStateHeader>
+        <EmptyStateActions>
+          <Button variant="outline">Clear filters</Button>
+        </EmptyStateActions>
+      </EmptyState>
+    );
+
+    const emptyState = screen.getByRole("region", {
+      name: "Nothing matched",
+    });
+    expect(emptyState).toHaveAttribute(
+      "aria-describedby",
+      "manual-empty-description"
+    );
+    expect(
+      screen.getByRole("heading", { level: 3, name: "Nothing matched" })
+    ).toHaveAttribute("data-slot", "empty-state-title");
+    expect(screen.getByText("!").parentElement).toHaveAttribute(
+      "aria-hidden",
+      "false"
+    );
+    expect(
+      screen.getByRole("button", { name: "Clear filters" }).parentElement
+    ).toHaveAttribute("data-slot", "empty-state-actions");
   });
 
   it("renders breadcrumb semantics and low-boilerplate trails", () => {
