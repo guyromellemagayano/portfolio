@@ -25,6 +25,10 @@ import {
   CardTitle,
   Checkbox,
   cn,
+  DescriptionDetails,
+  DescriptionList,
+  DescriptionListItem,
+  DescriptionTerm,
   EmptyState,
   EmptyStateActions,
   EmptyStateDescription,
@@ -317,6 +321,90 @@ describe("foundational ui components", () => {
     expect(
       screen.getByRole("button", { name: "Clear filters" }).parentElement
     ).toHaveAttribute("data-slot", "empty-state-actions");
+  });
+
+  it("renders description lists from item data with native terms and details", () => {
+    render(
+      <DescriptionList
+        aria-label="Project facts"
+        items={[
+          {
+            description: "Astro and React",
+            term: "Stack",
+            termProps: {
+              analytics: {
+                event: "description_term_seen",
+                placement: "project_facts",
+              },
+            },
+          },
+          {
+            description: <Badge variant="outline">Live</Badge>,
+            detailsProps: { className: "text-foreground" },
+            itemProps: { className: "border-t pt-3" },
+            key: "status",
+            term: <span>Status</span>,
+          },
+          {
+            description: "Guy Romelle Magayano",
+            term: <span>Owner</span>,
+          },
+        ]}
+        orientation="inline"
+      />
+    );
+
+    const descriptionList = screen.getByLabelText("Project facts");
+    expect(descriptionList.tagName).toBe("DL");
+    expect(descriptionList).toHaveAttribute("data-slot", "description-list");
+    expect(screen.getByText("Stack").tagName).toBe("DT");
+    expect(screen.getByText("Stack")).toHaveAttribute(
+      "data-slot",
+      "description-term"
+    );
+    expect(screen.getByText("Stack")).toHaveAttribute(
+      "data-analytics-event",
+      "description_term_seen"
+    );
+    expect(screen.getByText("Astro and React").tagName).toBe("DD");
+    expect(screen.getByText("Astro and React")).toHaveAttribute(
+      "data-slot",
+      "description-details"
+    );
+    expect(screen.getByText("Stack").parentElement).toHaveAttribute(
+      "data-orientation",
+      "inline"
+    );
+    expect(
+      screen.getByText("Status").closest('[data-slot="description-list-item"]')
+    ).toHaveClass("border-t");
+    expect(screen.getByText("Live").closest("dd")).toHaveClass(
+      "text-foreground"
+    );
+    expect(screen.getByText("Owner").closest("dt")).toHaveAttribute(
+      "data-slot",
+      "description-term"
+    );
+  });
+
+  it("supports manual description list composition", () => {
+    render(
+      <DescriptionList aria-label="Manual facts">
+        <DescriptionListItem>
+          <DescriptionTerm>Role</DescriptionTerm>
+          <DescriptionDetails>Lead engineer</DescriptionDetails>
+        </DescriptionListItem>
+      </DescriptionList>
+    );
+
+    const descriptionList = screen.getByLabelText("Manual facts");
+    expect(descriptionList.tagName).toBe("DL");
+    expect(screen.getByText("Role").tagName).toBe("DT");
+    expect(screen.getByText("Lead engineer").tagName).toBe("DD");
+    expect(screen.getByText("Role").parentElement).toHaveAttribute(
+      "data-orientation",
+      "stacked"
+    );
   });
 
   it("renders breadcrumb semantics and low-boilerplate trails", () => {

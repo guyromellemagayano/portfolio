@@ -8,6 +8,7 @@ export * from "./button";
 export * from "./card";
 export * from "./checkbox";
 export * from "./counter-button";
+export * from "./description-list";
 export * from "./dialog";
 export * from "./dropdown-menu";
 export * from "./empty-state";

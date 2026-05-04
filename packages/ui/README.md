@@ -12,6 +12,7 @@ Styled shadcn-inspired React design system components for the portfolio workspac
 - Radix-backed interactive primitives through the unified `radix-ui` package
 - Field-aware form controls that inherit accessibility ids and state from `Field`
 - Empty-state helpers for named fallback regions without repeated heading and description wiring
+- Description-list helpers for semantic metadata, specs, and definition groups
 - Button state helpers for icon labels, pending actions, and toggle controls
 - Components tested with Vitest + Testing Library
 - TypeScript-first source and build pipeline
@@ -39,6 +40,7 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `Pagination`, `PaginationControls`
 - `Badge`
 - `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`
+- `DescriptionList`, `DescriptionListItem`, `DescriptionTerm`, `DescriptionDetails`
 - `Input`, `InputField`
 - `Textarea`, `TextareaField`
 - `Checkbox`
@@ -120,6 +122,23 @@ import { SkipLink, SkipLinkTarget } from "@portfolio/ui";
 ```
 
 Use `targetId` when a layout has a different target. `SkipLinkTarget` renders a focusable `main` landmark by default.
+
+Description lists render styled native `<dl>`, `<dt>`, and `<dd>` markup for metadata blocks without repeating the term/details structure:
+
+```typescript
+import { DescriptionList } from "@portfolio/ui";
+
+<DescriptionList
+  aria-label="Project facts"
+  items={[
+    { term: "Stack", description: "Astro and React" },
+    { term: "Status", description: "Live" },
+  ]}
+  orientation="inline"
+/>;
+```
+
+Use `DescriptionListItem`, `DescriptionTerm`, and `DescriptionDetails` directly when a definition group needs custom composition or per-item analytics props.
 
 Breadcrumbs provide semantic navigation with an ordered trail and automatic current-page state:
 
