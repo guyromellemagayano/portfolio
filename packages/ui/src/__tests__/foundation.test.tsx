@@ -49,6 +49,8 @@ import {
   Section,
   Separator,
   Skeleton,
+  SkipLink,
+  SkipLinkTarget,
   Switch,
   Table,
   TableBody,
@@ -345,6 +347,50 @@ describe("foundational ui components", () => {
         '[data-slot="pagination-next"][aria-disabled="true"]'
       )
     ).toHaveAttribute("data-disabled", "");
+  });
+
+  it("renders skip link navigation with a focus target", () => {
+    render(
+      <div>
+        <SkipLink analytics={{ event: "skip_link", placement: "shell" }} />
+        <SkipLink targetId="portfolio-main">Jump to portfolio</SkipLink>
+        <SkipLinkTarget>
+          <h1>Home</h1>
+        </SkipLinkTarget>
+        <SkipLinkTarget id="portfolio-main">
+          <h2>Portfolio</h2>
+        </SkipLinkTarget>
+      </div>
+    );
+
+    const defaultSkipLink = screen.getByRole("link", {
+      name: "Skip to content",
+    });
+    expect(defaultSkipLink).toHaveAttribute("href", "#main-content");
+    expect(defaultSkipLink).toHaveAttribute("data-slot", "skip-link");
+    expect(defaultSkipLink).toHaveAttribute(
+      "data-analytics-event",
+      "skip_link"
+    );
+    expect(defaultSkipLink).toHaveClass("sr-only");
+    expect(defaultSkipLink).toHaveClass("focus:not-sr-only");
+    expect(
+      screen.getByRole("link", { name: "Jump to portfolio" })
+    ).toHaveAttribute("href", "#portfolio-main");
+
+    expect(screen.getAllByRole("main")[0]).toHaveAttribute(
+      "id",
+      "main-content"
+    );
+    expect(screen.getAllByRole("main")[0]).toHaveAttribute("tabindex", "-1");
+    expect(screen.getAllByRole("main")[0]).toHaveAttribute(
+      "data-slot",
+      "skip-link-target"
+    );
+    expect(screen.getAllByRole("main")[1]).toHaveAttribute(
+      "id",
+      "portfolio-main"
+    );
   });
 
   it("keeps field and table accessibility relationships intact", () => {

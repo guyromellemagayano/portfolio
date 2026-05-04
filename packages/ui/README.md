@@ -33,6 +33,7 @@ Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the
 - `Button`
 - `VisuallyHidden`
 - `Link`
+- `SkipLink`, `SkipLinkTarget`
 - `Breadcrumb`, `BreadcrumbTrail`
 - `Pagination`, `PaginationControls`
 - `Badge`
@@ -102,6 +103,20 @@ import { Link } from "@portfolio/ui";
 ```
 
 Absolute web URLs receive `data-external` by default, `external` can override that state, and `newTab` maps to `target="_blank"` plus safe `rel` handling and `data-new-tab`.
+
+Skip links wire keyboard users to the main content target without custom ids or focus attributes:
+
+```typescript
+import { SkipLink, SkipLinkTarget } from "@portfolio/ui";
+
+<SkipLink />
+<SkipLinkTarget>
+  <h1>Home</h1>
+  ...
+</SkipLinkTarget>;
+```
+
+Use `targetId` when a layout has a different target. `SkipLinkTarget` renders a focusable `main` landmark by default.
 
 Breadcrumbs provide semantic navigation with an ordered trail and automatic current-page state:
 
