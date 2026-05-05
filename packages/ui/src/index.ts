@@ -10,7 +10,6 @@ export * from "./card";
 export * from "./checkbox";
 export * from "./code-block";
 export * from "./combobox";
-export * from "./counter-button";
 export * from "./description-list";
 export * from "./dialog";
 export * from "./dropdown-menu";

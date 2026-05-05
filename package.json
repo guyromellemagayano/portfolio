@@ -77,7 +77,6 @@
     "@portfolio/config-commit": "workspace:*",
     "@portfolio/config-eslint": "workspace:*",
     "@portfolio/config-typescript": "workspace:*",
-    "@portfolio/vitest-presets": "workspace:*",
     "@tailwindcss/typography": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",

@@ -252,9 +252,6 @@ importers:
       "@portfolio/config-typescript":
         specifier: workspace:*
         version: link:packages/config-typescript
-      "@portfolio/vitest-presets":
-        specifier: workspace:*
-        version: link:packages/vitest-presets
       "@tailwindcss/typography":
         specifier: "catalog:"
         version: 0.5.19(tailwindcss@4.2.4)
@@ -333,18 +330,9 @@ importers:
       "@headlessui/react":
         specifier: "catalog:"
         version: 2.2.10(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      "@portfolio/components":
-        specifier: workspace:*
-        version: link:../../packages/components
-      "@portfolio/hooks":
-        specifier: workspace:*
-        version: link:../../packages/hooks
       "@portfolio/logger":
         specifier: workspace:*
         version: link:../../packages/logger
-      "@portfolio/ui":
-        specifier: workspace:*
-        version: link:../../packages/ui
       "@portfolio/utils":
         specifier: workspace:*
         version: link:../../packages/utils
@@ -470,9 +458,6 @@ importers:
       "@portfolio/config-typescript":
         specifier: workspace:*
         version: link:../config-typescript
-      "@portfolio/vitest-presets":
-        specifier: workspace:*
-        version: link:../vitest-presets
       "@testing-library/jest-dom":
         specifier: "catalog:"
         version: 6.9.1
@@ -674,9 +659,6 @@ importers:
       "@portfolio/config-typescript":
         specifier: workspace:*
         version: link:../config-typescript
-      "@portfolio/vitest-presets":
-        specifier: workspace:*
-        version: link:../vitest-presets
       "@testing-library/react":
         specifier: "catalog:"
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -786,9 +768,6 @@ importers:
       "@portfolio/config-typescript":
         specifier: workspace:*
         version: link:../config-typescript
-      "@portfolio/vitest-presets":
-        specifier: workspace:*
-        version: link:../vitest-presets
       "@testing-library/jest-dom":
         specifier: "catalog:"
         version: 6.9.1
@@ -850,9 +829,6 @@ importers:
       "@portfolio/config-typescript":
         specifier: workspace:*
         version: link:../config-typescript
-      "@portfolio/vitest-presets":
-        specifier: workspace:*
-        version: link:../vitest-presets
       "@testing-library/react":
         specifier: "catalog:"
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -905,6 +881,12 @@ importers:
       "@portfolio/config-eslint":
         specifier: workspace:*
         version: link:../config-eslint
+      "@portfolio/config-typescript":
+        specifier: workspace:*
+        version: link:../config-typescript
+      "@portfolio/logger":
+        specifier: workspace:*
+        version: link:../logger
       "@testing-library/jest-dom":
         specifier: "catalog:"
         version: 6.9.1

@@ -56,7 +56,6 @@
   "devDependencies": {
     "@portfolio/config-eslint": "workspace:*",
     "@portfolio/config-typescript": "workspace:*",
-    "@portfolio/vitest-presets": "workspace:*",
     "@testing-library/react": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",

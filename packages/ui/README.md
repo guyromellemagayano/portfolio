@@ -29,7 +29,7 @@ This package exports foundational and interactive components from the root entry
 import { Button, Card, Dialog, Field, Input, Link } from "@portfolio/ui";
 ```
 
-Subpath imports (for example `@portfolio/ui/counter-button`) are not part of the public API for this package.
+Subpath imports (for example `@portfolio/ui/button`) are not part of the public API for this package.
 
 ## Components
 
@@ -641,10 +641,6 @@ import {
   </Toast>
 </Toaster>;
 ```
-
-### Legacy Demo Component
-
-`CounterButton` remains exported for compatibility with existing package tests, but it is not part of the long-term design-system surface.
 
 ## Installation
 

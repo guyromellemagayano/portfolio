@@ -26,10 +26,7 @@
   "dependencies": {
     "@astrojs/sitemap": "catalog:",
     "@headlessui/react": "catalog:",
-    "@portfolio/components": "workspace:*",
-    "@portfolio/hooks": "workspace:*",
     "@portfolio/logger": "workspace:*",
-    "@portfolio/ui": "workspace:*",
     "@portfolio/utils": "workspace:*",
     "@sentry/astro": "catalog:",
     "@vercel/analytics": "catalog:",
