@@ -31,10 +31,12 @@ import {
   shouldLog,
 } from "./utils";
 
+const DEFAULT_ENVIRONMENT = detectEnvironment();
+
 /** Default logger configuration */
 const DEFAULT_CONFIG: LoggerConfig = {
   level: LogLevelEnum.INFO,
-  environment: detectEnvironment(),
+  environment: DEFAULT_ENVIRONMENT,
   transports: [transports.console],
   formatter: formatters.console,
   enabled: true,
@@ -43,8 +45,8 @@ const DEFAULT_CONFIG: LoggerConfig = {
     sampleRate: 1.0,
   },
   errorHandling: {
-    handleExceptions: true,
-    handleRejections: true,
+    handleExceptions: DEFAULT_ENVIRONMENT !== "test",
+    handleRejections: DEFAULT_ENVIRONMENT !== "test",
     exitOnError: false,
   },
 };

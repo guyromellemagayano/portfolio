@@ -120,6 +120,38 @@ const logger = createLogger({
 });
 ```
 
+### Sentry SDK Plugin
+
+Initialize the framework SDK in the app, then attach it to `@portfolio/logger` as a transport plugin. The app owns its own tags and environment values.
+
+```typescript
+import * as Sentry from "@sentry/astro";
+import {
+  configureSentryLogger,
+  getSentryBaseRuntimeOptions,
+} from "@portfolio/logger";
+
+const appTags = {
+  "app.framework": "astro",
+  "app.name": "web",
+};
+
+const sentryOptions = getSentryBaseRuntimeOptions({
+  dsn: runtimeEnv.SENTRY_DSN,
+  environment: runtimeEnv.APP_ENV,
+  release: runtimeEnv.SENTRY_RELEASE,
+  tags: appTags,
+  tracesSampleRate: runtimeEnv.SENTRY_TRACES_SAMPLE_RATE,
+});
+
+if (sentryOptions) {
+  Sentry.init(sentryOptions);
+  configureSentryLogger(Sentry, { tags: appTags });
+}
+```
+
+The logger transport sends `warn` and `error` entries to Sentry by default. `logger.error(message, error)` also captures the original exception so stack traces stay attached to Sentry events.
+
 ### Provider-Specific Setup Reference
 
 Use `INTEGRATIONS.md` for full provider configuration examples and option details.

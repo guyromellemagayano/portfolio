@@ -4,7 +4,7 @@
  * @description Validates centralized mock modules and their core mocked behaviors.
  */
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("Centralized Mocks", () => {
   describe("@web/components mocks", () => {
@@ -140,12 +140,39 @@ describe("Centralized Mocks", () => {
       expect(mocks.logWarn).toBeDefined();
       expect(mocks.logError).toBeDefined();
       expect(mocks.logDebug).toBeDefined();
+      expect(mocks.configureSentryLogger).toBeDefined();
+      expect(mocks.createSentrySdkTransport).toBeDefined();
+      expect(mocks.getSentryBaseRuntimeOptions).toBeDefined();
+      expect(mocks.getSentryReplayRuntimeOptions).toBeDefined();
     });
 
     it("should allow calling logger functions", async () => {
       const mocks = await import("../__mocks__/@portfolio/logger");
       expect(() => mocks.logInfo("test")).not.toThrow();
       expect(() => mocks.logDebug("test")).not.toThrow();
+    });
+
+    it("should allow configuring the Sentry logger mock", async () => {
+      const mocks = await import("../__mocks__/@portfolio/logger");
+      const logger = mocks.configureSentryLogger({
+        captureException: vi.fn(),
+      });
+
+      expect(logger).toBe(mocks.logger);
+      expect(mocks.logger.addTransport).toHaveBeenCalled();
+      expect(mocks.getSentryBaseRuntimeOptions({})).toBeUndefined();
+      expect(
+        mocks.getSentryBaseRuntimeOptions({
+          dsn: " https://example@sentry.io/1 ",
+          tags: { "app.name": "test-web" },
+        })
+      ).toMatchObject({
+        dsn: "https://example@sentry.io/1",
+        enableLogs: true,
+        initialScope: {
+          tags: { "app.name": "test-web" },
+        },
+      });
     });
   });
 });

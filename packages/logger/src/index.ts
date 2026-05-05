@@ -74,6 +74,19 @@ export { integrations } from "./integrations";
 // Export core logger functionality
 export { createLogger, Logger, logger } from "./logger";
 
+// Export Sentry setup helpers
+export {
+  configureSentryLogger,
+  type ConfigureSentryLoggerOptions,
+  createSentrySdkTransport,
+  getSentryBaseRuntimeOptions,
+  getSentryReplayRuntimeOptions,
+  type SentryReplayRuntimeOptions,
+  type SentryRuntimeConfig,
+  type SentrySdkBridge,
+  type SentrySdkTransportOptions,
+} from "./sentry";
+
 // Export transports
 export {
   ConsoleTransport,

@@ -1,9 +1,11 @@
 import * as Sentry from "@sentry/astro";
 
+import { configureSentryLogger } from "@portfolio/logger";
+
 import {
   getSentryBaseRuntimeOptions,
   getSentryReplayRuntimeOptions,
-  SENTRY_CONSOLE_LOG_LEVELS,
+  SENTRY_APP_TAGS,
 } from "./sentry.shared";
 
 const sentryOptions = getSentryBaseRuntimeOptions();
@@ -15,10 +17,14 @@ if (sentryOptions) {
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.browserSessionIntegration({ lifecycle: "route" }),
-      Sentry.consoleLoggingIntegration({
-        levels: [...SENTRY_CONSOLE_LOG_LEVELS],
-      }),
       Sentry.replayIntegration(),
     ],
+  });
+
+  configureSentryLogger(Sentry, {
+    context: {
+      component: "portfolio-web",
+    },
+    tags: SENTRY_APP_TAGS,
   });
 }

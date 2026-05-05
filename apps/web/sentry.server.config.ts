@@ -1,19 +1,18 @@
 import * as Sentry from "@sentry/astro";
 
-import {
-  getSentryBaseRuntimeOptions,
-  SENTRY_CONSOLE_LOG_LEVELS,
-} from "./sentry.shared";
+import { configureSentryLogger } from "@portfolio/logger";
+
+import { getSentryBaseRuntimeOptions, SENTRY_APP_TAGS } from "./sentry.shared";
 
 const sentryOptions = getSentryBaseRuntimeOptions();
 
 if (sentryOptions) {
-  Sentry.init({
-    ...sentryOptions,
-    integrations: [
-      Sentry.consoleLoggingIntegration({
-        levels: [...SENTRY_CONSOLE_LOG_LEVELS],
-      }),
-    ],
+  Sentry.init(sentryOptions);
+
+  configureSentryLogger(Sentry, {
+    context: {
+      component: "portfolio-web",
+    },
+    tags: SENTRY_APP_TAGS,
   });
 }
