@@ -1,9 +1,15 @@
 ---
-import PageIntro from "@web/components/PageIntro.astro";
+import SplitSection from "@web/components/SplitSection.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import { certifications } from "@web/data/certifications";
 import { workExperience } from "@web/data/clients";
-import { focusAreas, operatingPrinciples, profile } from "@web/data/site";
+import {
+  focusAreas,
+  operatingPrinciples,
+  profile,
+  socialLinks,
+} from "@web/data/site";
+import portraitImage from "@web/images/portrait.jpg";
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
@@ -20,134 +26,166 @@ const formatRoleDate = (value?: string) =>
 ---
 
 <BaseLayout metadata={metadata}>
-  <PageIntro
-    subheading={page.subheading}
-    title={page.title}
-    intro={profile.heroIntro}
-  />
-
   <section
-    aria-labelledby="about-summary-heading"
-    class="mx-auto grid max-w-6xl gap-4 px-6 pt-12 sm:px-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]"
-    role="region"
+    class="mx-auto max-w-2xl px-4 pt-16 sm:px-8 sm:pt-32 lg:max-w-5xl lg:px-12"
   >
-    <div class="rounded-lg border border-zinc-950/10 bg-white p-6">
-      <h2
-        id="about-summary-heading"
-        class="text-xl font-medium tracking-tight text-zinc-950"
-      >
-        {profile.name}
-      </h2>
-      <p class="mt-3 text-sm leading-7 text-zinc-600">{profile.role}</p>
-      <p class="mt-5 text-sm leading-7 text-zinc-600">
-        I work across frontend architecture, platform foundations, content
-        modeling, and delivery systems. The common thread is making the product
-        easier to extend without creating a maze of exceptions.
-      </p>
-    </div>
+    <div
+      class="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12"
+    >
+      <div class="lg:pl-20">
+        <div class="max-w-xs px-2.5 lg:max-w-none">
+          <img
+            src={portraitImage.src}
+            alt={`${profile.name} portrait`}
+            width={portraitImage.width}
+            height={portraitImage.height}
+            class="aspect-square rotate-3 rounded-2xl bg-zinc-100 object-cover dark:bg-zinc-800"
+          />
+        </div>
+      </div>
 
-    <div class="rounded-lg border border-zinc-950/10 bg-white p-6">
-      <h2 class="text-sm font-semibold text-zinc-950">Focus areas</h2>
-      <div class="mt-4 flex flex-wrap gap-2" role="list">
-        {
-          focusAreas.map((area) => (
-            <span
-              class="rounded-full border border-zinc-950/10 px-3 py-2 text-sm text-zinc-700"
-              role="listitem"
-            >
-              {area}
-            </span>
-          ))
-        }
+      <div class="lg:order-first lg:row-span-2">
+        <p
+          class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase dark:text-zinc-400"
+        >
+          {page.subheading}
+        </p>
+        <h1
+          class="mt-3 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
+        >
+          {page.title}
+        </h1>
+        <div class="mt-6 space-y-7 text-base text-zinc-600 dark:text-zinc-300">
+          <p>{profile.heroIntro}</p>
+          <p>
+            I work across frontend architecture, platform foundations, content
+            modeling, and delivery systems. The throughline is clarity: make the
+            system easier to extend, easier to reason about, and less expensive
+            to change under pressure.
+          </p>
+          <p>
+            Most of my work sits where delivery slows down: route structures
+            that drift, content systems that stop fitting the product, release
+            paths that feel unsafe, or shared abstractions that are now hiding
+            more than they help.
+          </p>
+        </div>
+      </div>
+
+      <div class="lg:pl-20">
+        <ul role="list">
+          {
+            socialLinks.map((link, index) => (
+              <li class:list={[index > 0 && "mt-4", "flex"]}>
+                <a
+                  href={link.href}
+                  rel={
+                    link.href.startsWith("http")
+                      ? "noopener noreferrer"
+                      : undefined
+                  }
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  class="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-600 dark:text-zinc-100 dark:hover:text-teal-400"
+                >
+                  <span>{link.label}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </section>
 
-  <section
-    aria-labelledby="about-experience-heading"
-    class="mx-auto max-w-6xl border-t border-zinc-950/10 px-6 py-16 sm:px-8"
-    role="region"
+  <SplitSection
+    title="Focus areas"
+    sectionClass="mt-24"
+    intro="The themes that show up most often in my consulting and implementation work."
   >
-    <h2
-      id="about-experience-heading"
-      class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
-    >
-      Experience timeline
-    </h2>
-    <div class="mt-10 space-y-4">
+    <div class="flex flex-wrap gap-3">
+      {
+        focusAreas.map((area) => (
+          <span class="rounded-full border border-zinc-200 px-3 py-2 text-sm text-zinc-700 dark:border-zinc-700/60 dark:text-zinc-300">
+            {area}
+          </span>
+        ))
+      }
+    </div>
+  </SplitSection>
+
+  <SplitSection
+    title="Experience timeline"
+    sectionClass="mt-20"
+    intro="Recent roles that shaped the platform, publishing, and commerce work shown across the site."
+  >
+    <div class="space-y-8">
       {
         workExperience.map((entry) => (
-          <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <article>
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
               <div>
-                <h3 class="text-xl font-medium tracking-tight text-zinc-950">
+                <h3 class="text-base font-semibold text-zinc-800 dark:text-zinc-100">
                   {entry.role}
                 </h3>
-                <p class="mt-1 text-sm text-zinc-600">{entry.company}</p>
+                <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                  {entry.company}
+                </p>
               </div>
-              <p class="text-sm text-zinc-500">
+              <p class="text-sm text-zinc-400 dark:text-zinc-500">
                 {formatRoleDate(entry.startDate)} -{" "}
                 {entry.current ? "Present" : formatRoleDate(entry.endDate)}
               </p>
             </div>
-            <p class="mt-4 text-sm leading-7 text-zinc-600">{entry.summary}</p>
+            <p class="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-300">
+              {entry.summary}
+            </p>
           </article>
         ))
       }
     </div>
-  </section>
+  </SplitSection>
 
-  <section
-    aria-labelledby="about-certifications-heading"
-    class="mx-auto max-w-6xl border-t border-zinc-950/10 px-6 py-16 sm:px-8"
-    role="region"
+  <SplitSection
+    title="Certifications"
+    sectionClass="mt-20"
+    intro="A mix of earned credentials and current upskilling tracks that support the work."
   >
-    <h2
-      id="about-certifications-heading"
-      class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
-    >
-      Certifications
-    </h2>
-    <div class="mt-10 grid gap-4 lg:grid-cols-3">
+    <div class="grid gap-8 sm:grid-cols-2">
       {
         certifications.map((certification) => (
-          <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
-            <p class="text-xs font-semibold tracking-[0.24em] text-zinc-500 uppercase">
+          <article class="group relative flex flex-col items-start">
+            <div
+              aria-hidden="true"
+              class="absolute -inset-x-4 -inset-y-6 z-0 scale-95 rounded-2xl bg-zinc-50 opacity-0 transition duration-200 group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 dark:bg-zinc-800/50"
+            />
+            <p class="relative z-10 text-xs font-semibold tracking-[0.24em] text-zinc-500 uppercase dark:text-zinc-400">
               {certification.category}
             </p>
-            <h3 class="mt-3 text-lg font-medium tracking-tight text-zinc-950">
+            <h3 class="relative z-10 mt-4 text-base font-semibold text-zinc-800 dark:text-zinc-100">
               {certification.name}
             </h3>
-            <p class="mt-3 text-sm leading-7 text-zinc-600">
+            <p class="relative z-10 mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-300">
               {certification.earned ? "Earned proof point" : "In progress"}
             </p>
           </article>
         ))
       }
     </div>
-  </section>
+  </SplitSection>
 
-  <section
-    aria-labelledby="about-principles-heading"
-    class="mx-auto max-w-6xl border-t border-zinc-950/10 px-6 py-16 sm:px-8"
-    role="region"
+  <SplitSection
+    title="Working principles"
+    sectionClass="mt-20 pb-24"
+    intro="The rules that matter most once a codebase or team starts to grow."
   >
-    <div class="grid gap-4 lg:grid-cols-2">
-      <h2
-        id="about-principles-heading"
-        class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
-      >
-        The working rules behind the portfolio.
-      </h2>
-      <div class="space-y-4">
-        {
-          operatingPrinciples.map((principle) => (
-            <div class="rounded-lg border border-zinc-950/10 bg-white p-5 text-sm leading-7 text-zinc-600">
-              {principle}
-            </div>
-          ))
-        }
-      </div>
+    <div class="space-y-4">
+      {
+        operatingPrinciples.map((principle) => (
+          <p class="text-sm leading-7 text-zinc-600 dark:text-zinc-300">
+            {principle}
+          </p>
+        ))
+      }
     </div>
-  </section>
+  </SplitSection>
 </BaseLayout>

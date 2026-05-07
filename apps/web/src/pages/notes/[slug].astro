@@ -129,30 +129,36 @@ const formattedDate = formatDate(article.date);
 ---
 
 <BaseLayout metadata={metadata}>
-  <article class="mx-auto max-w-3xl px-6 pt-16 sm:px-8 sm:pt-24">
+  <article class="mx-auto max-w-2xl px-4 pt-16 sm:px-8 sm:pt-32 lg:max-w-3xl">
     <a
       href="/notes"
-      class="text-sm font-medium text-zinc-500 underline decoration-zinc-300 underline-offset-4"
+      class="text-sm font-medium text-zinc-500 transition hover:text-teal-600 dark:text-zinc-400 dark:hover:text-teal-400"
     >
       Back to notes
     </a>
-    <header class="mt-8">
-      <time class="text-sm text-zinc-500" datetime={article.date}
-        >{formattedDate}</time
+    <header class="mt-8 flex flex-col">
+      <time
+        class="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
+        datetime={article.date}
       >
+        <span
+          class="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-700"
+          aria-hidden="true"></span>
+        <span class="ml-3">{formattedDate}</span>
+      </time>
       <h1
-        class="mt-4 text-4xl font-medium tracking-tight text-zinc-950 sm:text-6xl"
+        class="mt-6 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
       >
         {article.title}
       </h1>
-      <p class="mt-6 text-lg leading-8 text-zinc-600">
+      <p class="mt-6 text-base leading-8 text-zinc-600 dark:text-zinc-300">
         {article.description}
       </p>
     </header>
 
     {
       article.image ? (
-        <figure class="my-8 overflow-hidden rounded-2xl border border-zinc-200/60 bg-zinc-50">
+        <figure class="my-8 overflow-hidden rounded-2xl border border-zinc-200/60 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
           <img
             src={article.image}
             alt={article.imageAlt || article.title}
@@ -165,7 +171,7 @@ const formattedDate = formatDate(article.date);
       ) : null
     }
 
-    <div class="prose-zinc prose mt-10 max-w-none">
+    <div class="prose-zinc prose mt-10 max-w-none dark:prose-invert">
       <RichText value={article.body} fallbackImageAlt={article.title} />
     </div>
   </article>

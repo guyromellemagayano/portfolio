@@ -33,12 +33,16 @@ const metadata = appendStructuredData(
 
   <section
     aria-labelledby="notes-list-heading"
-    class="mx-auto max-w-6xl px-6 py-12 sm:px-8"
+    class="mx-auto max-w-2xl px-4 py-16 sm:px-8 lg:max-w-5xl lg:px-12"
     role="region"
   >
     <h2 id="notes-list-heading" class="sr-only">Note list</h2>
-    <div class="grid gap-4 lg:grid-cols-2">
-      {articles.map((article) => <ArticleCard article={article} />)}
+    <div
+      class="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40"
+    >
+      <div class="flex max-w-3xl flex-col space-y-16">
+        {articles.map((article) => <ArticleCard article={article} />)}
+      </div>
     </div>
   </section>
 </BaseLayout>

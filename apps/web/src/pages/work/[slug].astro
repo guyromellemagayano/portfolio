@@ -1,5 +1,6 @@
 ---
 import CTA from "@web/components/CTA.astro";
+import SplitSection from "@web/components/SplitSection.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import { getProjectPath, type Project, workProjects } from "@web/data/projects";
 import {
@@ -81,107 +82,104 @@ const metadata = buildProjectMetadata(project);
 ---
 
 <BaseLayout metadata={metadata}>
-  <article class="mx-auto max-w-6xl px-6 pt-16 sm:px-8 sm:pt-24">
-    <a
-      href="/work"
-      class="text-sm font-medium text-zinc-500 underline decoration-zinc-300 underline-offset-4"
+  <article>
+    <header
+      class="mx-auto max-w-2xl px-4 pt-16 sm:px-8 sm:pt-32 lg:max-w-5xl lg:px-12"
     >
-      Back to work
-    </a>
-    <header class="mt-8 max-w-4xl">
-      <p
-        class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase"
+      <a
+        href="/work"
+        class="text-sm font-medium text-zinc-500 transition hover:text-teal-600 dark:text-zinc-400 dark:hover:text-teal-400"
       >
-        {project.path}
-      </p>
-      <h1
-        class="mt-3 text-4xl font-medium tracking-tight text-zinc-950 sm:text-6xl"
-      >
-        {project.title}
-      </h1>
-      <p class="mt-6 text-lg leading-8 text-zinc-600">
-        {project.description}
-      </p>
+        Back to work
+      </a>
+      <div class="mt-8 max-w-2xl">
+        <p
+          class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase dark:text-zinc-400"
+        >
+          {project.path}
+        </p>
+        <h1
+          class="mt-3 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
+        >
+          {project.title}
+        </h1>
+        <p class="mt-6 text-base leading-8 text-zinc-600 dark:text-zinc-300">
+          {project.description}
+        </p>
+        <div
+          class="mt-8 flex flex-wrap gap-2"
+          role="list"
+          aria-label={`${project.title} tags`}
+        >
+          {
+            project.tags.map((tag) => (
+              <span
+                class="rounded-full border border-zinc-200 px-3 py-1.5 text-xs text-zinc-500 dark:border-zinc-700/60 dark:text-zinc-400"
+                role="listitem"
+              >
+                {tag}
+              </span>
+            ))
+          }
+        </div>
+      </div>
     </header>
 
-    <section
-      aria-labelledby="case-study-summary-heading"
-      class="grid gap-4 border-t border-zinc-950/10 py-12 lg:grid-cols-3"
-      role="region"
+    <SplitSection
+      title="Problem"
+      intro="The delivery or product-system constraint that made the work necessary."
+      sectionClass="mt-20"
     >
-      <h2 id="case-study-summary-heading" class="sr-only">
-        Case study summary
-      </h2>
-      <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
-        <h3 class="text-sm font-semibold text-zinc-950">Problem</h3>
-        <p class="mt-3 text-sm leading-7 text-zinc-600">
-          {project.caseStudy.problem}
-        </p>
-      </article>
-      <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
-        <h3 class="text-sm font-semibold text-zinc-950">Role</h3>
-        <p class="mt-3 text-sm leading-7 text-zinc-600">
-          {project.caseStudy.role}
-        </p>
-      </article>
-      <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
-        <h3 class="text-sm font-semibold text-zinc-950">Outcome</h3>
-        <p class="mt-3 text-sm leading-7 text-zinc-600">
-          {project.caseStudy.outcome}
-        </p>
-      </article>
-    </section>
+      <p class="text-sm leading-7 text-zinc-600 dark:text-zinc-300">
+        {project.caseStudy.problem}
+      </p>
+    </SplitSection>
 
-    <section
-      aria-labelledby="case-study-decisions-heading"
-      class="grid gap-10 border-t border-zinc-950/10 py-16 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
-      role="region"
+    <SplitSection
+      title="Role"
+      intro="Where I sat in the implementation and decision-making loop."
+      sectionClass="mt-20"
     >
-      <div>
-        <p
-          class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase"
-        >
-          Decisions
-        </p>
-        <h2
-          id="case-study-decisions-heading"
-          class="mt-3 text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
-        >
-          The implementation choices behind the surface.
-        </h2>
-      </div>
-      <div class="grid gap-4">
+      <p class="text-sm leading-7 text-zinc-600 dark:text-zinc-300">
+        {project.caseStudy.role}
+      </p>
+    </SplitSection>
+
+    <SplitSection
+      title="Decisions"
+      intro="The architectural and product choices that carried the outcome."
+      sectionClass="mt-20"
+    >
+      <div class="space-y-6">
         {
           project.caseStudy.decisions.map((decision) => (
-            <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
-              <p class="text-sm leading-7 text-zinc-600">{decision}</p>
-            </article>
+            <p class="text-sm leading-7 text-zinc-600 dark:text-zinc-300">
+              {decision}
+            </p>
           ))
         }
       </div>
-    </section>
+    </SplitSection>
 
-    <section
-      aria-labelledby="case-study-proof-heading"
-      class="border-t border-zinc-950/10 py-16"
-      role="region"
+    <SplitSection
+      title="Outcome"
+      intro="The practical result of the work once the main implementation decisions were in place."
+      sectionClass="mt-20"
     >
-      <h2
-        id="case-study-proof-heading"
-        class="text-3xl font-medium tracking-tight text-zinc-950 sm:text-4xl"
-      >
-        Proof points
-      </h2>
-      <div class="mt-8 grid gap-4 lg:grid-cols-3">
-        {
-          project.caseStudy.proof.map((proofPoint) => (
-            <article class="rounded-lg border border-zinc-950/10 bg-white p-6">
-              <p class="text-sm leading-7 text-zinc-600">{proofPoint}</p>
-            </article>
-          ))
-        }
-      </div>
-    </section>
+      <p class="text-sm leading-7 text-zinc-600 dark:text-zinc-300">
+        {project.caseStudy.outcome}
+      </p>
+    </SplitSection>
+
+    <SplitSection
+      title="Proof points"
+      intro="Signals that show what changed, what shipped, or what got easier to sustain."
+      sectionClass="mt-20"
+    >
+      <ul class="space-y-3 text-sm leading-7 text-zinc-600 dark:text-zinc-300">
+        {project.caseStudy.proof.map((proofPoint) => <li>{proofPoint}</li>)}
+      </ul>
+    </SplitSection>
   </article>
 
   <CTA

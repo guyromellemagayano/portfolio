@@ -1,0 +1,70 @@
+---
+/**
+ * @file apps/web/src/components/SplitSection.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native section layout inspired by the archived site template.
+ */
+
+type Props = {
+  title: string;
+  eyebrow?: string;
+  intro?: string;
+  id?: string;
+  sectionClass?: string;
+  contentClass?: string;
+};
+
+const {
+  title,
+  eyebrow,
+  intro,
+  id,
+  sectionClass = "",
+  contentClass = "",
+} = Astro.props;
+
+const headingId =
+  id ||
+  `section-${title
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")}`;
+---
+
+<section
+  aria-labelledby={headingId}
+  class:list={[
+    "mx-auto max-w-2xl px-4 sm:px-8 lg:max-w-5xl lg:px-12",
+    sectionClass,
+  ]}
+  role="region"
+>
+  <div class="grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4">
+    <div>
+      {
+        eyebrow ? (
+          <p class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase dark:text-zinc-400">
+            {eyebrow}
+          </p>
+        ) : null
+      }
+      <h2
+        id={headingId}
+        class="mt-2 text-sm font-semibold text-zinc-800 dark:text-zinc-100"
+      >
+        {title}
+      </h2>
+      {
+        intro ? (
+          <p class="mt-4 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
+            {intro}
+          </p>
+        ) : null
+      }
+    </div>
+    <div class:list={["md:col-span-3", contentClass]}>
+      <slot />
+    </div>
+  </div>
+</section>
