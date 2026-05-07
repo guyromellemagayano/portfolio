@@ -20,7 +20,6 @@ function readEnvValue(key: string): string | undefined {
   return process.env[key]?.trim() || undefined;
 }
 
-const useExternalServers = readEnvValue("E2E_USE_EXTERNAL_SERVERS") === "1";
 const configuredBaseUrl = readEnvValue("E2E_BASE_URL");
 const configuredDevelopmentSiteUrl = readEnvValue("SITE_URL_DEVELOPMENT");
 const configuredWebPort = Number.parseInt(
@@ -31,11 +30,9 @@ const webServerPort = Number.isFinite(configuredWebPort)
   ? configuredWebPort
   : 4321;
 const localSiteUrl =
-  configuredDevelopmentSiteUrl || `http://portfolio.local:${webServerPort}`;
-const hostBaseUrl = `http://localhost:${webServerPort}`;
-const baseURL =
-  configuredBaseUrl ?? (useExternalServers ? localSiteUrl : hostBaseUrl);
-const configuredWebServers = useExternalServers
+  configuredDevelopmentSiteUrl || `http://localhost:${webServerPort}`;
+const baseURL = configuredBaseUrl ?? localSiteUrl;
+const configuredWebServers = configuredBaseUrl
   ? undefined
   : [
       {

@@ -12,7 +12,7 @@ const LOCAL_ONLY_HOSTNAMES = new Set([
   "::1",
 ]);
 const DEFAULT_SITE_URL = "https://www.guyromellemagayano.com";
-const DEFAULT_DEVELOPMENT_SITE_URL = "http://portfolio.local:4321";
+const DEFAULT_DEVELOPMENT_SITE_URL = "http://localhost:4321";
 type SiteUrlEnvironment = "development" | "preview" | "production";
 
 /** Reads and trims an env var value from the current server runtime. */

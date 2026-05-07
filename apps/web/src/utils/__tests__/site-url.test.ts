@@ -26,7 +26,7 @@ describe("site URL helpers", () => {
     vi.stubEnv("VERCEL_ENV", "production");
     vi.stubEnv("SITE_URL_PRODUCTION", "https://example.com/");
     vi.stubEnv("SITE_URL_PREVIEW", "https://preview.example.com/");
-    vi.stubEnv("SITE_URL_DEVELOPMENT", "http://portfolio.local:4321/");
+    vi.stubEnv("SITE_URL_DEVELOPMENT", "http://localhost:4321/");
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "portfolio.vercel.app");
 
     expect(resolveSiteUrlBase()).toBe("https://example.com");
@@ -66,9 +66,9 @@ describe("site URL helpers", () => {
 
   it("uses SITE_URL_DEVELOPMENT in development", () => {
     vi.stubEnv("VERCEL_ENV", "development");
-    vi.stubEnv("SITE_URL_DEVELOPMENT", "http://portfolio.local:4321/");
+    vi.stubEnv("SITE_URL_DEVELOPMENT", "http://localhost:4321/");
 
-    expect(resolveSiteUrlBase()).toBe("http://portfolio.local:4321");
+    expect(resolveSiteUrlBase()).toBe("http://localhost:4321");
   });
 
   it("builds absolute URLs for relative paths when a site URL base can be resolved", () => {
@@ -84,7 +84,7 @@ describe("site URL helpers", () => {
     vi.stubEnv("VERCEL_ENV", "development");
 
     expect(toAbsoluteSiteUrl("/feed.xml")).toBe(
-      "http://portfolio.local:4321/feed.xml"
+      "http://localhost:4321/feed.xml"
     );
   });
 

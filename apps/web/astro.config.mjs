@@ -19,18 +19,14 @@ if (
 }
 
 const DEFAULT_SITE_URL = "https://www.guyromellemagayano.com";
-const DEFAULT_DEVELOPMENT_SITE_URL = "http://portfolio.local:4321";
+const DEFAULT_DEVELOPMENT_SITE_URL = "http://localhost:4321";
 const sentryClientInitPath = fileURLToPath(
   new URL("./sentry.client.config.ts", import.meta.url)
 );
 const sentryServerInitPath = fileURLToPath(
   new URL("./sentry.server.config.ts", import.meta.url)
 );
-const LOCAL_DEV_ALLOWED_HOSTS = [
-  "portfolio.local",
-  "web.portfolio.orb.local",
-  "portfolio-web.orb.local",
-];
+const LOCAL_DEV_ALLOWED_HOSTS = ["localhost", "127.0.0.1"];
 const DEFAULT_SENTRY_ORG = "stack-market-labs";
 const DEFAULT_SENTRY_PROJECT = "portfolio-web";
 const DEFAULT_SENTRY_RELEASE = "portfolio-web@1.0.0";
