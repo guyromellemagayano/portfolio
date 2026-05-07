@@ -298,11 +298,9 @@ export function buildBookingStructuredData(page: PageData): StructuredData {
 }
 
 /** Builds collection JSON-LD for article and project index pages. */
-export function buildCollectionPageStructuredData(
-  page: PageData,
-  items: Array<ArticleWithSlug | Project>,
-  getItemUrl: (item: ArticleWithSlug | Project) => string
-): StructuredData {
+export function buildCollectionPageStructuredData<
+  T extends ArticleWithSlug | Project,
+>(page: PageData, items: T[], getItemUrl: (item: T) => string): StructuredData {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
