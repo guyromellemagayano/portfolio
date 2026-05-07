@@ -1,8 +1,6 @@
 SHELL := /bin/sh
 
 PNPM ?= pnpm
-DOCKER_COMPOSE ?= docker compose
-COMPOSE_SERVICE ?= web
 ENV_FILE ?= .env
 ENV_EXAMPLE_FILE ?= .env.example
 
@@ -39,15 +37,11 @@ daily: format-check lint check-types test ## Run the common daily local check su
 quick: lint check-types test ## Run the fast pre-commit confidence suite.
 
 .PHONY: dev
-dev: ## Start the Docker-backed web dev server in the foreground.
-	$(DOCKER_COMPOSE) up --build $(COMPOSE_SERVICE)
-
-.PHONY: dev-detached
-dev-detached: ## Start the Docker-backed web dev server in the background.
-	$(DOCKER_COMPOSE) up --build --detach $(COMPOSE_SERVICE)
+dev: ## Start the local web app and package watchers on the host machine.
+	@$(load_env) $(PNPM) dev
 
 .PHONY: dev-host
-dev-host: ## Start the web dev server directly on the host machine.
+dev-host: ## Alias for the host-local development workflow.
 	@$(load_env) $(PNPM) dev:host
 
 .PHONY: lint-fix
@@ -73,39 +67,14 @@ install: ## Install workspace dependencies with the lockfile.
 	$(PNPM) install --frozen-lockfile
 
 .PHONY: doctor
-doctor: ## Validate Compose config and print local service status.
-	$(DOCKER_COMPOSE) config >/dev/null
-	$(DOCKER_COMPOSE) ps
+doctor: ## Print local tool versions and the configured local URL.
+	@node --version
+	@$(PNPM) --version
 	@$(load_env) $(local_web_url) printf "Local URL: %s\n" "$$local_web_url"
 
 .PHONY: smoke
 smoke: ## Check that the local web URL returns an HTTP success response.
 	@$(load_env) $(local_web_url) curl -fsS "$$local_web_url" >/dev/null
-
-##@ Docker runtime
-
-.PHONY: logs
-logs: ## Follow Docker web service logs.
-	$(DOCKER_COMPOSE) logs --follow $(COMPOSE_SERVICE)
-
-.PHONY: ps
-ps: ## Show Docker Compose service status.
-	$(DOCKER_COMPOSE) ps
-
-.PHONY: shell
-shell: ## Open a shell inside the running web container.
-	$(DOCKER_COMPOSE) exec $(COMPOSE_SERVICE) sh
-
-.PHONY: down
-down: ## Stop Docker services and remove orphan containers.
-	$(DOCKER_COMPOSE) down --remove-orphans
-
-.PHONY: restart
-restart: down dev-detached ## Restart the Docker-backed web dev server.
-
-.PHONY: build-image
-build-image: ## Build the local Docker web image.
-	$(DOCKER_COMPOSE) build $(COMPOSE_SERVICE)
 
 ##@ Web verification
 

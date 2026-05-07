@@ -19,16 +19,13 @@ pnpm install
 pnpm dev
 ```
 
-Local development runs through Docker Compose on OrbStack. The web app is available at `http://portfolio.local:4321` by default. `SITE_URL_DEVELOPMENT`, `SITE_URL_PREVIEW`, and `SITE_URL_PRODUCTION` control environment-specific site origins, while `WEB_HOST` and `WEB_PORT` control the local server bind.
+Local development runs directly on the host machine. The web app is available at `http://localhost:4321` by default. `SITE_URL_DEVELOPMENT`, `SITE_URL_PREVIEW`, and `SITE_URL_PRODUCTION` control environment-specific site origins, while `WEB_HOST` and `WEB_PORT` control the local server bind.
 
 Useful daily Make commands:
 
 ```bash
 make help
 make dev
-make dev-detached
-make logs
-make down
 make quick
 make daily
 ```
@@ -57,7 +54,7 @@ make test
 make build
 ```
 
-Deployment stays outside Docker:
+Deployment stays on Vercel and runs outside local containers:
 
 ```bash
 make deploy
