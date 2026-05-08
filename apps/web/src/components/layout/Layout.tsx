@@ -190,7 +190,7 @@ export function Layout<P extends Record<string, unknown> = {}>(
                     Start a conversation
                   </ShellActionLink>
                   <ShellActionLink href="/capabilities">
-                    Explore capabilities
+                    Explore services
                   </ShellActionLink>
                 </div>
               </section>

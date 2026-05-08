@@ -179,7 +179,7 @@ export function buildPersonStructuredData(): StructuredData {
     },
     makesOffer: {
       "@type": "OfferCatalog",
-      name: "Product engineering capabilities",
+      name: "Product engineering services",
       url: getPageUrl("/capabilities"),
     },
     contactPoint: email
@@ -195,7 +195,7 @@ export function buildPersonStructuredData(): StructuredData {
   };
 }
 
-/** Builds service-oriented JSON-LD for the capabilities page. */
+/** Builds service-oriented JSON-LD for the services page. */
 export function buildProfessionalServiceStructuredData(
   page: PageData,
   services: Service[]
@@ -206,7 +206,7 @@ export function buildProfessionalServiceStructuredData(
     "@context": "https://schema.org",
     "@id": `${servicesUrl}#professional-service`,
     "@type": "ProfessionalService",
-    name: `${profile.name} - Product Engineering Capabilities`,
+    name: `${profile.name} - Product Engineering Services`,
     url: servicesUrl,
     description: page.seoDescription || page.intro,
     provider: getPersonReference(),

@@ -21,7 +21,7 @@ describe("structured data builders", () => {
   it("builds breadcrumb lists with absolute item URLs", () => {
     const structuredData = buildBreadcrumbListStructuredData([
       { name: "Home", path: "/" },
-      { name: "Capabilities", path: "/capabilities" },
+      { name: "Services", path: "/capabilities" },
     ]);
 
     expect(structuredData).toMatchObject({
@@ -37,7 +37,7 @@ describe("structured data builders", () => {
         {
           "@type": "ListItem",
           position: 2,
-          name: "Capabilities",
+          name: "Services",
           item: "https://www.guyromellemagayano.com/capabilities",
         },
       ],

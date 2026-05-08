@@ -1,4 +1,5 @@
 ---
+import PathwayCards from "@web/components/PathwayCards.astro";
 import SplitSection from "@web/components/SplitSection.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import { certifications } from "@web/data/certifications";
@@ -6,6 +7,7 @@ import { workExperience } from "@web/data/clients";
 import {
   focusAreas,
   operatingPrinciples,
+  pagePathways,
   profile,
   socialLinks,
 } from "@web/data/site";
@@ -175,7 +177,7 @@ const formatRoleDate = (value?: string) =>
 
   <SplitSection
     title="Working principles"
-    sectionClass="mt-20 pb-24"
+    sectionClass="mt-20"
     intro="The rules that matter most once a codebase or team starts to grow."
   >
     <div class="space-y-4">
@@ -188,4 +190,13 @@ const formatRoleDate = (value?: string) =>
       }
     </div>
   </SplitSection>
+
+  <PathwayCards
+    eyebrow="Next"
+    id="about-next-steps-heading"
+    title="Move from background to evidence."
+    intro="The next useful signal is either proof of past work, a service shape, or direct context for a conversation."
+    pathways={pagePathways.about}
+    sectionClass="mt-20 pb-24"
+  />
 </BaseLayout>

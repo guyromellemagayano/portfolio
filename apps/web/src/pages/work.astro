@@ -1,8 +1,10 @@
 ---
 import PageIntro from "@web/components/PageIntro.astro";
+import PathwayCards from "@web/components/PathwayCards.astro";
 import ProjectCard from "@web/components/ProjectCard.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import { getProjectPath, workProjects } from "@web/data/projects";
+import { pagePathways } from "@web/data/site";
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
@@ -42,4 +44,13 @@ const metadata = appendStructuredData(
       {workProjects.map((project) => <ProjectCard project={project} />)}
     </div>
   </section>
+
+  <PathwayCards
+    eyebrow="Next"
+    id="work-next-steps-heading"
+    title="Turn proof into the next decision."
+    intro="Production examples are most useful when they connect to a service shape, working style, or current constraint."
+    pathways={pagePathways.work}
+    sectionClass="pb-24"
+  />
 </BaseLayout>

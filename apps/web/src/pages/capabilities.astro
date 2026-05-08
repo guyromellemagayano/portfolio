@@ -1,9 +1,11 @@
 ---
 import PageIntro from "@web/components/PageIntro.astro";
+import PathwayCards from "@web/components/PathwayCards.astro";
 import ServiceCard from "@web/components/ServiceCard.astro";
 import SplitSection from "@web/components/SplitSection.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import { capabilityClusters, services } from "@web/data/services";
+import { pagePathways } from "@web/data/site";
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
@@ -67,7 +69,7 @@ const metadata = appendStructuredData(
   <SplitSection
     title="How engagements usually move"
     intro="The work starts by making the actual constraint visible, then narrows into the smallest durable implementation slice."
-    sectionClass="mt-20 pb-24"
+    sectionClass="mt-20"
   >
     <div class="space-y-10">
       {
@@ -103,4 +105,13 @@ const metadata = appendStructuredData(
       }
     </div>
   </SplitSection>
+
+  <PathwayCards
+    eyebrow="Next"
+    id="services-next-steps-heading"
+    title="Validate the service path before reaching out."
+    intro="Proof, writing, and direct context each answer a different part of the fit question."
+    pathways={pagePathways.capabilities}
+    sectionClass="mt-20 pb-24"
+  />
 </BaseLayout>

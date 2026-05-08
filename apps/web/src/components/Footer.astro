@@ -8,7 +8,12 @@
 import { navigationLinks, profile, socialLinks } from "@web/data/site";
 
 const currentYear = new Date().getFullYear();
-const footerLinks = navigationLinks.filter((link) => link.showInFooter);
+const primaryFooterLinks = navigationLinks.filter(
+  (link) => link.showInFooter && link.footerGroup !== "reference"
+);
+const referenceFooterLinks = navigationLinks.filter(
+  (link) => link.showInFooter && link.footerGroup === "reference"
+);
 ---
 
 <footer class="mt-32 flex-none" aria-label="Site footer">
@@ -19,31 +24,50 @@ const footerLinks = navigationLinks.filter((link) => link.showInFooter);
           <div
             class="border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40"
           >
-            <div
-              class="flex flex-col items-center justify-between gap-6 md:flex-row"
-            >
-              <nav
-                class="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200"
-                aria-label="Footer navigation"
-              >
-                {
-                  footerLinks.map((link) => (
-                    <a
-                      href={link.href}
-                      class="transition hover:text-teal-600 dark:hover:text-teal-400"
-                      data-analytics-content-id={link.href}
-                      data-analytics-content-name={link.label}
-                      data-analytics-content-type="navigation"
-                      data-analytics-placement="footer-nav"
-                    >
-                      {link.label}
-                    </a>
-                  ))
-                }
-              </nav>
+            <div class="flex flex-col justify-between gap-8 md:flex-row">
+              <div class="space-y-4">
+                <nav
+                  class="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 md:justify-start dark:text-zinc-200"
+                  aria-label="Primary footer navigation"
+                >
+                  {
+                    primaryFooterLinks.map((link) => (
+                      <a
+                        href={link.href}
+                        class="transition hover:text-teal-600 dark:hover:text-teal-400"
+                        data-analytics-content-id={link.href}
+                        data-analytics-content-name={link.label}
+                        data-analytics-content-type="navigation"
+                        data-analytics-placement="footer-primary-nav"
+                      >
+                        {link.label}
+                      </a>
+                    ))
+                  }
+                </nav>
+                <nav
+                  class="flex flex-wrap justify-center gap-x-5 gap-y-1 text-sm text-zinc-500 md:justify-start dark:text-zinc-400"
+                  aria-label="Reference footer navigation"
+                >
+                  {
+                    referenceFooterLinks.map((link) => (
+                      <a
+                        href={link.href}
+                        class="transition hover:text-teal-600 dark:hover:text-teal-400"
+                        data-analytics-content-id={link.href}
+                        data-analytics-content-name={link.label}
+                        data-analytics-content-type="navigation"
+                        data-analytics-placement="footer-reference-nav"
+                      >
+                        {link.label}
+                      </a>
+                    ))
+                  }
+                </nav>
+              </div>
 
               <div
-                class="flex flex-wrap items-center justify-center gap-4 text-sm text-zinc-400 dark:text-zinc-500"
+                class="flex flex-wrap items-center justify-center gap-4 text-sm text-zinc-400 md:justify-end dark:text-zinc-500"
               >
                 <p>
                   &copy; {currentYear}

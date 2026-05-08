@@ -1,7 +1,9 @@
 ---
 import ArticleCard from "@web/components/ArticleCard.astro";
 import PageIntro from "@web/components/PageIntro.astro";
+import PathwayCards from "@web/components/PathwayCards.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
+import { pagePathways } from "@web/data/site";
 import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
@@ -45,4 +47,13 @@ const metadata = appendStructuredData(
       </div>
     </div>
   </section>
+
+  <PathwayCards
+    eyebrow="Next"
+    id="notes-next-steps-heading"
+    title="Move from ideas to evidence or action."
+    intro="The notes explain judgment; the next signal is either service fit, production proof, or a specific constraint."
+    pathways={pagePathways.notes}
+    sectionClass="pb-24"
+  />
 </BaseLayout>

@@ -28,6 +28,7 @@ export interface NavigationLink {
   href: string;
   showInHeader: boolean;
   showInFooter: boolean;
+  footerGroup?: "primary" | "reference";
 }
 
 export interface SocialLink {
@@ -49,6 +50,14 @@ export interface ClientOutcome {
   detail: string;
 }
 
+export interface SitePathway {
+  id: string;
+  title: string;
+  description: string;
+  href: string;
+  cta: string;
+}
+
 export const profile: Profile = {
   name: "Guy Romelle Magayano",
   role: "Senior full-stack software engineer",
@@ -64,33 +73,56 @@ export const navigationLinks: NavigationLink[] = [
     href: "/work",
     showInHeader: true,
     showInFooter: true,
+    footerGroup: "primary",
   },
   {
-    label: "Capabilities",
+    label: "Services",
     href: "/capabilities",
     showInHeader: true,
     showInFooter: true,
+    footerGroup: "primary",
   },
-  { label: "About", href: "/about", showInHeader: true, showInFooter: true },
   {
     label: "Notes",
     href: "/notes",
     showInHeader: true,
     showInFooter: true,
+    footerGroup: "primary",
+  },
+  {
+    label: "About",
+    href: "/about",
+    showInHeader: true,
+    showInFooter: true,
+    footerGroup: "primary",
   },
   {
     label: "Contact",
     href: "/contact",
-    showInHeader: true,
+    showInHeader: false,
     showInFooter: true,
+    footerGroup: "primary",
   },
-  { label: "Labs", href: "/labs", showInHeader: false, showInFooter: true },
-  { label: "Uses", href: "/uses", showInHeader: false, showInFooter: false },
+  {
+    label: "Labs",
+    href: "/labs",
+    showInHeader: false,
+    showInFooter: true,
+    footerGroup: "reference",
+  },
+  {
+    label: "Uses",
+    href: "/uses",
+    showInHeader: false,
+    showInFooter: true,
+    footerGroup: "reference",
+  },
   {
     label: "Privacy",
     href: "/privacy",
     showInHeader: false,
     showInFooter: true,
+    footerGroup: "reference",
   },
 ];
 
@@ -188,6 +220,158 @@ export const buildSteps: BuildStep[] = [
   },
 ];
 
+export const homePathways: SitePathway[] = [
+  {
+    id: "production-proof",
+    title: "Review production proof",
+    description:
+      "Production examples across platform, commerce, publishing, SaaS, and operational systems.",
+    href: "/work",
+    cta: "View work",
+  },
+  {
+    id: "service-fit",
+    title: "Find the right service",
+    description:
+      "Architecture review, advisory input, and direct implementation for contained product surfaces.",
+    href: "/capabilities",
+    cta: "View services",
+  },
+  {
+    id: "engineering-judgment",
+    title: "Read the thinking",
+    description:
+      "Practical writing on architecture, delivery risk, content systems, and maintainable product work.",
+    href: "/notes",
+    cta: "Read notes",
+  },
+];
+
+export const pagePathways = {
+  about: [
+    {
+      id: "about-work",
+      title: "See the work behind the biography",
+      description:
+        "Production and platform examples that make the background more concrete.",
+      href: "/work",
+      cta: "View work",
+    },
+    {
+      id: "about-services",
+      title: "Map the experience to your need",
+      description:
+        "Architecture review, advisory, and delivery sprint paths for different constraints.",
+      href: "/capabilities",
+      cta: "View services",
+    },
+    {
+      id: "about-contact",
+      title: "Start with direct context",
+      description:
+        "Share the workflow, risk, or product surface where senior engineering judgment would help.",
+      href: "/contact",
+      cta: "Contact me",
+    },
+  ],
+  capabilities: [
+    {
+      id: "services-work",
+      title: "Validate the services against proof",
+      description:
+        "Selected work showing how the services map to real product systems.",
+      href: "/work",
+      cta: "View work",
+    },
+    {
+      id: "services-notes",
+      title: "Read the technical thinking",
+      description:
+        "Architecture and delivery notes that show the decision-making style behind the work.",
+      href: "/notes",
+      cta: "Read notes",
+    },
+    {
+      id: "services-contact",
+      title: "Discuss the engagement shape",
+      description:
+        "Send the product context, delivery risk, and outcome that would make the work worthwhile.",
+      href: "/contact",
+      cta: "Start a conversation",
+    },
+  ],
+  labs: [
+    {
+      id: "labs-work",
+      title: "Compare labs with production work",
+      description:
+        "Move from product-system experiments into production examples with client and platform context.",
+      href: "/work",
+      cta: "View work",
+    },
+    {
+      id: "labs-services",
+      title: "Turn an experiment into implementation",
+      description:
+        "Services for teams that want similar product-system thinking applied to a real codebase.",
+      href: "/capabilities",
+      cta: "View services",
+    },
+  ],
+  notes: [
+    {
+      id: "notes-services",
+      title: "Turn the thinking into a scope",
+      description:
+        "Service paths for product surfaces or platforms facing similar constraints.",
+      href: "/capabilities",
+      cta: "View services",
+    },
+    {
+      id: "notes-work",
+      title: "See where the ideas show up",
+      description:
+        "Review selected work for production examples of architecture, delivery, and platform decisions.",
+      href: "/work",
+      cta: "View work",
+    },
+    {
+      id: "notes-contact",
+      title: "Start a focused conversation",
+      description:
+        "Send the system constraint, team context, and outcome you need to make real.",
+      href: "/contact",
+      cta: "Contact me",
+    },
+  ],
+  work: [
+    {
+      id: "work-services",
+      title: "Map the proof to a service",
+      description:
+        "Compare the production examples with review, advisory, and sprint options for your team.",
+      href: "/capabilities",
+      cta: "View services",
+    },
+    {
+      id: "work-about",
+      title: "Understand the working style",
+      description:
+        "Read the background, focus areas, and principles behind the implementation decisions.",
+      href: "/about",
+      cta: "About Guy",
+    },
+    {
+      id: "work-contact",
+      title: "Bring the constraint",
+      description:
+        "Start with the workflow, delivery risk, and outcome that would make senior help useful.",
+      href: "/contact",
+      cta: "Start a conversation",
+    },
+  ],
+} satisfies Record<string, SitePathway[]>;
+
 export const pages: PageData[] = [
   {
     slug: "",
@@ -225,14 +409,14 @@ export const pages: PageData[] = [
   },
   {
     slug: "capabilities",
-    subheading: "Capabilities",
+    subheading: "Services",
     title:
-      "Full-stack engineering for clearer architecture, better performance, and safer releases.",
+      "Senior engineering services for clearer systems and safer delivery.",
     intro:
-      "Practical support across platform engineering, commerce and CMS architecture, quality systems, and technical leadership.",
-    seoTitle: "Capabilities - Guy Romelle Magayano",
+      "Architecture review, technical advisory, and implementation support for teams working through platform, commerce, CMS, performance, and release constraints.",
+    seoTitle: "Services - Guy Romelle Magayano",
     seoDescription:
-      "Capabilities across full-stack platform engineering, commerce and CMS architecture, performance, testing, release reliability, and technical leadership.",
+      "Senior engineering services across architecture review, technical advisory, delivery sprints, platform engineering, commerce and CMS architecture, performance, testing, and release reliability.",
     seoCanonicalPath: "/capabilities",
   },
   {

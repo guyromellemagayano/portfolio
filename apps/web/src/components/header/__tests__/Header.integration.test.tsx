@@ -23,7 +23,7 @@ vi.mock("@web/lib/i18n", () => ({
         brandName: "Guy Romelle Magayano",
         labels: {
           home: "Home",
-          capabilities: "Capabilities",
+          capabilities: "Services",
           blog: "Blog",
           work: "Work",
           contact: "Contact",
@@ -267,13 +267,11 @@ describe("Header Integration", () => {
     it("navigation links have correct hrefs", () => {
       render(<Header />);
 
-      const capabilitiesLinks = screen.getAllByRole("link", {
-        name: /capabilities/i,
+      const serviceLinks = screen.getAllByRole("link", {
+        name: /services/i,
       });
       expect(
-        capabilitiesLinks.some(
-          (el) => el.getAttribute("href") === "/capabilities"
-        )
+        serviceLinks.some((el) => el.getAttribute("href") === "/capabilities")
       ).toBe(true);
 
       const articleLinks = screen.getAllByRole("link", { name: /notes/i });
