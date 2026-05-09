@@ -11,18 +11,17 @@ import SplitSection from "@web/components/SplitSection.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import { getProjectPath, labProjects, type Project } from "@web/data/projects";
 import {
+  buildPageMetadata,
   buildOpenGraphImages,
   buildTwitterImages,
-  DEFAULT_TWITTER_CARD,
+  resolveMetadataDescription,
   resolveMetadataTitle,
-  SITE_NAME,
 } from "@web/lib/metadata";
 import { type WebPageMetadata } from "@web/lib/metadata.types";
 import {
   buildBreadcrumbListStructuredData,
   buildProjectStructuredData,
 } from "@web/lib/structured-data";
-import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 export function getStaticPaths() {
   return labProjects.map((project) => ({
@@ -41,36 +40,19 @@ if (!project) {
 
 function buildProjectMetadata(projectRecord: Project): WebPageMetadata {
   const projectPath = getProjectPath(projectRecord);
-  const canonicalUrl = toAbsoluteSiteUrl(projectPath);
   const title = `${projectRecord.title} Lab`;
-  const description = projectRecord.caseStudy.outcome;
+  const description = resolveMetadataDescription(
+    projectRecord.caseStudy.outcome,
+    projectRecord.description,
+    projectRecord.title
+  );
 
-  return {
-    title: resolveMetadataTitle(title, projectRecord.title),
+  return buildPageMetadata({
+    canonicalPathOrUrl: projectPath,
     description,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    robots: {
-      index: true,
-      follow: true,
-    },
-    openGraph: {
-      type: "website",
-      title,
-      description,
-      url: canonicalUrl,
-      siteName: SITE_NAME,
-      images: buildOpenGraphImages({
-        alt: `${projectRecord.title} lab by Guy Romelle Magayano`,
-      }),
-    },
-    twitter: {
-      card: DEFAULT_TWITTER_CARD,
-      title,
-      description,
-      images: buildTwitterImages(),
-    },
+    openGraphImages: buildOpenGraphImages({
+      alt: `${projectRecord.title} lab by Guy Romelle Magayano`,
+    }),
     structuredData: [
       buildProjectStructuredData(projectRecord),
       buildBreadcrumbListStructuredData([
@@ -82,7 +64,9 @@ function buildProjectMetadata(projectRecord: Project): WebPageMetadata {
         },
       ]),
     ],
-  };
+    title: resolveMetadataTitle(title, projectRecord.title),
+    twitterImages: buildTwitterImages(),
+  });
 }
 
 const metadata = buildProjectMetadata(project);

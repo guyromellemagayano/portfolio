@@ -1,0 +1,55 @@
+---
+/**
+ * @file apps/web/src/layouts/document/HeadBasics.astro
+ * @author Guy Romelle Magayano
+ * @description Core head metadata block for document defaults and route metadata.
+ */
+
+type Props = {
+  bingSiteVerification: string;
+  canonicalUrl?: string;
+  description: string;
+  lightThemeColor: string;
+  robotsContent: string;
+  siteName: string;
+  themeBootstrapScript: string;
+  title: string;
+};
+
+const {
+  bingSiteVerification,
+  canonicalUrl,
+  description,
+  lightThemeColor,
+  robotsContent,
+  siteName,
+  themeBootstrapScript,
+  title,
+} = Astro.props;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="application-name" content={siteName} />
+<meta name="theme-color" content={lightThemeColor} />
+<meta name="color-scheme" content="light dark" />
+<script is:inline set:html={themeBootstrapScript} />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/svg+xml" href="/icon.svg" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={`${siteName} notes`}
+  href="/rss.xml"
+/>
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content={robotsContent} />
+{
+  bingSiteVerification ? (
+    <meta name="msvalidate.01" content={bingSiteVerification} />
+  ) : null
+}
+{canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}

@@ -1,0 +1,25 @@
+---
+/**
+ * @file apps/web/src/layouts/document/HeadStructuredData.astro
+ * @author Guy Romelle Magayano
+ * @description Structured data script block for the shared document shell.
+ */
+
+import { type StructuredData } from "@web/lib/metadata.types";
+
+type Props = {
+  structuredDataItems: StructuredData[];
+};
+
+const { structuredDataItems } = Astro.props;
+---
+
+{
+  structuredDataItems.map((structuredData) => (
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+  ))
+}

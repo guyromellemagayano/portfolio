@@ -7,18 +7,16 @@
 import { getPage, type PageData, socialLinks } from "@web/data/site";
 import {
   buildOpenGraphImages,
+  buildPageMetadata,
   buildTwitterImages,
-  DEFAULT_TWITTER_CARD,
+  resolveMetadataDescription,
   resolveMetadataTitle,
-  resolveMetadataTitleText,
-  SITE_NAME,
 } from "@web/lib/metadata";
 import { type WebPageMetadata } from "@web/lib/metadata.types";
 import {
   buildBreadcrumbListStructuredData,
   buildWebPageStructuredData,
 } from "@web/lib/structured-data";
-import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 /** Resolves a brochure page by slug and throws when the slug is missing. */
 export async function getPortfolioBrochurePage(slug: string): Promise<{
@@ -31,13 +29,12 @@ export async function getPortfolioBrochurePage(slug: string): Promise<{
 
 /** Builds route metadata from the canonical brochure page record. */
 export function buildPortfolioPageMetadata(page: PageData): WebPageMetadata {
-  const description = page.seoDescription || page.intro || page.title;
-  const socialTitle = resolveMetadataTitleText(page.seoTitle, page.title);
-  const canonicalUrl = page.seoCanonicalPath
-    ? toAbsoluteSiteUrl(page.seoCanonicalPath)
-    : undefined;
+  const description = resolveMetadataDescription(
+    page.seoDescription,
+    page.intro,
+    page.title
+  );
   const pagePath = page.seoCanonicalPath || (page.slug ? `/${page.slug}` : "/");
-  const pageUrl = canonicalUrl ?? toAbsoluteSiteUrl(pagePath);
   const structuredData = [
     buildWebPageStructuredData(page),
     ...(page.slug
@@ -52,38 +49,22 @@ export function buildPortfolioPageMetadata(page: PageData): WebPageMetadata {
   const title =
     page.slug === ""
       ? {
-          absolute: socialTitle,
+          absolute: resolveMetadataDescription(page.seoTitle, page.title),
         }
       : resolveMetadataTitle(page.seoTitle, page.title);
 
-  return {
-    title,
+  return buildPageMetadata({
+    canonicalPathOrUrl: pagePath,
     description,
-    alternates: canonicalUrl
-      ? {
-          canonical: canonicalUrl,
-        }
-      : undefined,
+    openGraphImages: buildOpenGraphImages(),
     robots: {
       index: page.seoNoIndex === true ? false : true,
       follow: true,
     },
-    openGraph: {
-      type: "website",
-      title: socialTitle,
-      description,
-      url: pageUrl,
-      siteName: SITE_NAME,
-      images: buildOpenGraphImages(),
-    },
-    twitter: {
-      card: DEFAULT_TWITTER_CARD,
-      title: socialTitle,
-      description,
-      images: buildTwitterImages(),
-    },
     structuredData,
-  };
+    title,
+    twitterImages: buildTwitterImages(),
+  });
 }
 
 /** Resolves a specific portfolio social link by canonical platform name. */

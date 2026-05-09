@@ -1,0 +1,27 @@
+---
+/**
+ * @file apps/web/src/layouts/document/BodyIntegrations.astro
+ * @author Guy Romelle Magayano
+ * @description Body-level integration markup for the shared document shell.
+ */
+
+type Props = {
+  googleTagManagerNoScriptUrl: string;
+};
+
+const { googleTagManagerNoScriptUrl } = Astro.props;
+---
+
+{
+  googleTagManagerNoScriptUrl ? (
+    <noscript>
+      <iframe
+        src={googleTagManagerNoScriptUrl}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+        title="Google Tag Manager"
+      />
+    </noscript>
+  ) : null
+}

@@ -15,6 +15,24 @@ export const DEFAULT_SOCIAL_IMAGE_WIDTH = 1200;
 export const DEFAULT_SOCIAL_IMAGE_HEIGHT = 630;
 export const DEFAULT_TWITTER_CARD = "summary_large_image";
 
+type MetadataCandidate = string | null | undefined;
+type MetadataRobots = NonNullable<WebPageMetadata["robots"]>;
+type OpenGraphImages = NonNullable<
+  NonNullable<WebPageMetadata["openGraph"]>["images"]
+>;
+type MetadataBuildInput = {
+  canonicalPathOrUrl: string;
+  description: string;
+  openGraphImages?: OpenGraphImages;
+  openGraphPublishedTime?: string;
+  openGraphType?: "article" | "website";
+  robots?: MetadataRobots;
+  structuredData?: WebPageMetadata["structuredData"];
+  title: WebPageMetadata["title"];
+  twitterCard?: string;
+  twitterImages?: string[];
+};
+
 const SITE_TITLE_SUFFIX_PATTERN = new RegExp(
   `\\s*(?:\\||-|–|—)\\s*${SITE_NAME.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`,
   "iu"
@@ -63,16 +81,93 @@ export function resolveMetadataTitle(
   return normalizedTitle;
 }
 
-/** Resolves a plain text title for social metadata fields. */
-export function resolveMetadataTitleText(
-  primaryValue?: string,
-  fallbackValue?: string
+/** Formats a resolved metadata title into the final plain-text title shown in the document head. */
+export function formatResolvedMetadataTitle(
+  titleValue?: WebPageMetadata["title"]
 ): string {
-  return (
-    normalizeMetadataTitle(primaryValue) ??
-    normalizeMetadataTitle(fallbackValue) ??
-    SITE_NAME
-  );
+  if (typeof titleValue === "string") {
+    return `${titleValue} | ${SITE_NAME}`;
+  }
+
+  return titleValue?.absolute || titleValue?.default || SITE_NAME;
+}
+
+/** Resolves the first non-empty metadata description candidate. */
+export function resolveMetadataDescription(
+  ...candidates: MetadataCandidate[]
+): string {
+  for (const candidate of candidates) {
+    const normalizedCandidate = candidate?.trim();
+
+    if (normalizedCandidate) {
+      return normalizedCandidate;
+    }
+  }
+
+  return SITE_NAME;
+}
+
+/** Clamps a metadata description to a crawl-friendly length without breaking its suffix. */
+export function clampMetadataDescription(
+  value: string,
+  maxLength = 160
+): string {
+  const normalizedValue = value.trim();
+
+  if (normalizedValue.length <= maxLength) {
+    return normalizedValue;
+  }
+
+  return `${normalizedValue.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
+/** Builds a route metadata record with consistent canonical, title, and social metadata. */
+export function buildPageMetadata(input: MetadataBuildInput): WebPageMetadata {
+  const titleText = formatResolvedMetadataTitle(input.title);
+  const description = input.description.trim();
+  const canonicalUrl = toAbsoluteSiteUrl(input.canonicalPathOrUrl);
+
+  if (!titleText) {
+    throw new Error("Expected a non-empty metadata title.");
+  }
+
+  if (!description) {
+    throw new Error("Expected a non-empty metadata description.");
+  }
+
+  if (!canonicalUrl) {
+    throw new Error(
+      `Expected a valid metadata canonical path or URL, received "${input.canonicalPathOrUrl}".`
+    );
+  }
+
+  return {
+    title: input.title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    robots: input.robots ?? {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      type: input.openGraphType ?? "website",
+      title: titleText,
+      description,
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+      publishedTime: input.openGraphPublishedTime,
+      images: input.openGraphImages,
+    },
+    twitter: {
+      card: input.twitterCard ?? DEFAULT_TWITTER_CARD,
+      title: titleText,
+      description,
+      images: input.twitterImages,
+    },
+    structuredData: input.structuredData,
+  };
 }
 
 /** Builds a default Open Graph image array for page metadata. */

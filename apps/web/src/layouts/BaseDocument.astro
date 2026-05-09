@@ -5,9 +5,18 @@
  * @description Shared document shell for metadata, analytics, and theme setup.
  */
 
-import Analytics from "@vercel/analytics/astro";
-import SpeedInsights from "@vercel/speed-insights/astro";
+import BodyIntegrations from "@web/layouts/document/BodyIntegrations.astro";
+import HeadBasics from "@web/layouts/document/HeadBasics.astro";
+import HeadIntegrations from "@web/layouts/document/HeadIntegrations.astro";
+import HeadSocialMeta from "@web/layouts/document/HeadSocialMeta.astro";
+import HeadStructuredData from "@web/layouts/document/HeadStructuredData.astro";
+import { resolveDocumentIntegrations } from "@web/lib/document-integrations";
+import { resolveDocumentMetadata } from "@web/lib/document-metadata";
 import { type WebPageMetadata } from "@web/lib/metadata.types";
+import {
+  buildThemeBootstrapScript,
+  LIGHT_THEME_COLOR,
+} from "@web/lib/theme-bootstrap";
 
 import "@web/styles/tailwind.css";
 
@@ -16,293 +25,45 @@ type Props = {
 };
 
 const { metadata } = Astro.props;
-const siteName = "Guy Romelle Magayano";
-const titleValue = metadata?.title;
-const title =
-  typeof titleValue === "string"
-    ? `${titleValue} | ${siteName}`
-    : titleValue?.absolute || titleValue?.default || siteName;
-const description =
-  metadata?.description ||
-  "Portfolio of Guy Romelle Magayano, focused on product engineering, platform systems, and reusable web architecture.";
-const canonicalUrl = metadata?.alternates?.canonical;
-const robotsIndex = metadata?.robots?.index === false ? "noindex" : "index";
-const robotsFollow = metadata?.robots?.follow === false ? "nofollow" : "follow";
-const openGraph = metadata?.openGraph;
-const twitter = metadata?.twitter;
-const googleAnalyticsMeasurementId =
-  globalThis.process?.env?.GOOGLE_ANALYTICS_MEASUREMENT_ID?.trim() ?? "";
-const googleTagManagerContainerId =
-  globalThis.process?.env?.GOOGLE_TAG_MANAGER_CONTAINER_ID?.trim() ?? "";
-const bingSiteVerification =
-  globalThis.process?.env?.BING_SITE_VERIFICATION?.trim() ?? "";
-const shouldRenderVercelObservability = Boolean(
-  globalThis.process?.env?.VERCEL_ENV?.trim()
-);
-const structuredDataItems = metadata?.structuredData
-  ? Array.isArray(metadata.structuredData)
-    ? metadata.structuredData
-    : [metadata.structuredData]
-  : [];
-const googleAnalyticsBootstrapScript = googleAnalyticsMeasurementId
-  ? `
-window.dataLayer = window.dataLayer || [];
-window.gtag = window.gtag || function gtag() {
-  window.dataLayer.push(arguments);
-};
-window.gtag("js", new Date());
-window.gtag("config", ${JSON.stringify(googleAnalyticsMeasurementId)});
-`
-  : "";
-const googleTagManagerBootstrapScript = googleTagManagerContainerId
-  ? `
-(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":
-new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
-"https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,"script","dataLayer",${JSON.stringify(googleTagManagerContainerId)});
-`
-  : "";
-const LIGHT_THEME_COLOR = "#fafaf9";
-const DARK_THEME_COLOR = "#09090b";
-const themeBootstrapScript = `
-(() => {
-  const storageKey = "theme";
-  const root = document.documentElement;
-  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
-
-  function getStoredTheme() {
-    try {
-      const theme = window.localStorage.getItem(storageKey);
-      return theme === "dark" || theme === "light" ? theme : null;
-    } catch {
-      return null;
-    }
-  }
-
-  function getSystemTheme() {
-    return media.matches ? "dark" : "light";
-  }
-
-  function getPreferredTheme() {
-    return getStoredTheme() ?? getSystemTheme();
-  }
-
-  function applyTheme(theme) {
-    const nextTheme = theme === "dark" ? "dark" : "light";
-    root.classList.toggle("dark", nextTheme === "dark");
-    root.dataset.theme = nextTheme;
-    root.style.colorScheme = nextTheme;
-
-    if (themeColorMeta) {
-      themeColorMeta.setAttribute(
-        "content",
-        nextTheme === "dark" ? ${JSON.stringify(DARK_THEME_COLOR)} : ${JSON.stringify(LIGHT_THEME_COLOR)}
-      );
-    }
-
-    window.dispatchEvent(
-      new CustomEvent("portfolio-theme-change", {
-        detail: { theme: nextTheme },
-      })
-    );
-  }
-
-  function setPreferredTheme(theme) {
-    const nextTheme = theme === "dark" ? "dark" : "light";
-
-    try {
-      window.localStorage.setItem(storageKey, nextTheme);
-    } catch {}
-
-    applyTheme(nextTheme);
-  }
-
-  function clearPreferredTheme() {
-    try {
-      window.localStorage.removeItem(storageKey);
-    } catch {}
-
-    applyTheme(getPreferredTheme());
-  }
-
-  function getResolvedTheme() {
-    return root.classList.contains("dark") ? "dark" : "light";
-  }
-
-  window.__portfolioTheme = {
-    clearPreferredTheme,
-    getPreferredTheme,
-    getResolvedTheme,
-    getStoredTheme,
-    getSystemTheme,
-    setPreferredTheme,
-    toggleTheme() {
-      setPreferredTheme(getResolvedTheme() === "dark" ? "light" : "dark");
-    },
-  };
-
-  applyTheme(getPreferredTheme());
-
-  const handleSystemThemeChange = () => {
-    if (!getStoredTheme()) {
-      applyTheme(getPreferredTheme());
-    }
-  };
-
-  if (typeof media.addEventListener === "function") {
-    media.addEventListener("change", handleSystemThemeChange);
-  } else if (typeof media.addListener === "function") {
-    media.addListener(handleSystemThemeChange);
-  }
-})();
-`;
+const documentMetadata = resolveDocumentMetadata(metadata);
+const documentIntegrations = resolveDocumentIntegrations();
+const themeBootstrapScript = buildThemeBootstrapScript();
 ---
 
 <!doctype html>
 <html lang="en" class="h-full antialiased">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="application-name" content={siteName} />
-    <meta name="theme-color" content={LIGHT_THEME_COLOR} />
-    <meta name="color-scheme" content="light dark" />
-    <script is:inline set:html={themeBootstrapScript} />
-    {
-      googleTagManagerContainerId ? (
-        <script is:inline set:html={googleTagManagerBootstrapScript} />
-      ) : null
-    }
-    {shouldRenderVercelObservability ? <Analytics /> : null}
-    {shouldRenderVercelObservability ? <SpeedInsights /> : null}
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title={`${siteName} notes`}
-      href="/rss.xml"
+    <HeadBasics
+      bingSiteVerification={documentIntegrations.bingSiteVerification}
+      canonicalUrl={documentMetadata.canonicalUrl}
+      description={documentMetadata.description}
+      lightThemeColor={LIGHT_THEME_COLOR}
+      robotsContent={documentMetadata.robotsContent}
+      siteName={documentMetadata.siteName}
+      themeBootstrapScript={themeBootstrapScript}
+      title={documentMetadata.title}
     />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <meta name="robots" content={`${robotsIndex},${robotsFollow}`} />
-    {
-      bingSiteVerification ? (
-        <meta name="msvalidate.01" content={bingSiteVerification} />
-      ) : null
-    }
-    {
-      googleAnalyticsMeasurementId ? (
-        <>
-          <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(
-              googleAnalyticsMeasurementId
-            )}`}
-          />
-          <script is:inline set:html={googleAnalyticsBootstrapScript} />
-          <script
-            data-google-analytics-measurement-id={googleAnalyticsMeasurementId}
-            defer
-            src="/analytics-events.js"
-          />
-        </>
-      ) : null
-    }
-    {canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}
-    {
-      openGraph?.type ? (
-        <meta property="og:type" content={openGraph.type} />
-      ) : null
-    }
-    {
-      openGraph?.title ? (
-        <meta property="og:title" content={openGraph.title} />
-      ) : null
-    }
-    {
-      openGraph?.description ? (
-        <meta property="og:description" content={openGraph.description} />
-      ) : null
-    }
-    {openGraph?.url ? <meta property="og:url" content={openGraph.url} /> : null}
-    <meta property="og:locale" content="en_US" />
-    {
-      openGraph?.siteName ? (
-        <meta property="og:site_name" content={openGraph.siteName} />
-      ) : null
-    }
-    {
-      openGraph?.publishedTime ? (
-        <meta
-          property="article:published_time"
-          content={openGraph.publishedTime}
-        />
-      ) : null
-    }
-    {
-      openGraph?.images?.map((image) => (
-        <>
-          <meta property="og:image" content={image.url} />
-          {image.alt ? (
-            <meta property="og:image:alt" content={image.alt} />
-          ) : null}
-          {image.width ? (
-            <meta property="og:image:width" content={String(image.width)} />
-          ) : null}
-          {image.height ? (
-            <meta property="og:image:height" content={String(image.height)} />
-          ) : null}
-        </>
-      ))
-    }
-    {twitter?.card ? <meta name="twitter:card" content={twitter.card} /> : null}
-    {
-      twitter?.title ? (
-        <meta name="twitter:title" content={twitter.title} />
-      ) : null
-    }
-    {
-      twitter?.description ? (
-        <meta name="twitter:description" content={twitter.description} />
-      ) : null
-    }
-    {
-      twitter?.images?.map((image) => (
-        <meta name="twitter:image" content={image} />
-      ))
-    }
-    {
-      structuredDataItems.map((structuredData) => (
-        <script
-          is:inline
-          type="application/ld+json"
-          set:html={JSON.stringify(structuredData)}
-        />
-      ))
-    }
+    <HeadIntegrations
+      googleAnalyticsBootstrapScript={documentIntegrations.googleAnalyticsBootstrapScript}
+      googleAnalyticsMeasurementId={documentIntegrations.googleAnalyticsMeasurementId}
+      googleAnalyticsScriptUrl={documentIntegrations.googleAnalyticsScriptUrl}
+      googleTagManagerBootstrapScript={documentIntegrations.googleTagManagerBootstrapScript}
+      shouldRenderVercelObservability={documentIntegrations.shouldRenderVercelObservability}
+    />
+    <HeadSocialMeta
+      openGraph={documentMetadata.openGraph}
+      twitter={documentMetadata.twitter}
+    />
+    <HeadStructuredData
+      structuredDataItems={documentMetadata.structuredDataItems}
+    />
   </head>
   <body
     class="flex h-full flex-col bg-zinc-50 text-zinc-950 dark:bg-black dark:text-zinc-100"
   >
-    {
-      googleTagManagerContainerId ? (
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${encodeURIComponent(
-              googleTagManagerContainerId
-            )}`}
-            height="0"
-            width="0"
-            style="display:none;visibility:hidden"
-            title="Google Tag Manager"
-          />
-        </noscript>
-      ) : null
-    }
+    <BodyIntegrations
+      googleTagManagerNoScriptUrl={documentIntegrations.googleTagManagerNoScriptUrl}
+    />
     <slot />
   </body>
 </html>

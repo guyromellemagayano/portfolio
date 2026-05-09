@@ -11,12 +11,12 @@ import RichText from "@web/components/RichText.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import { type WebPageMetadata } from "@web/lib/metadata.types";
 import {
+  buildPageMetadata,
   buildOpenGraphImages,
+  clampMetadataDescription,
   buildTwitterImages,
-  DEFAULT_TWITTER_CARD,
+  resolveMetadataDescription,
   resolveMetadataTitle,
-  resolveMetadataTitleText,
-  SITE_NAME,
 } from "@web/lib/metadata";
 import {
   buildBreadcrumbListStructuredData,
@@ -27,7 +27,6 @@ import {
   getPageBySlug,
   type StandalonePageDetail,
 } from "@web/utils/pages";
-import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 export async function getStaticPaths() {
   const staticRouteSlugs = new Set([
@@ -58,50 +57,25 @@ if (!page) {
   return Astro.redirect("/404", 404);
 }
 
-const clampDescription = (value: string) => {
-  const normalized = value.trim();
-  return normalized.length <= 160
-    ? normalized
-    : `${normalized.slice(0, 159).trimEnd()}…`;
-};
-
 function buildStandalonePageMetadata(
   pageRecord: StandalonePageDetail
 ): WebPageMetadata {
-  const description = clampDescription(
-    pageRecord.seoDescription || pageRecord.intro || pageRecord.title
+  const description = clampMetadataDescription(
+    resolveMetadataDescription(
+      pageRecord.seoDescription,
+      pageRecord.intro,
+      pageRecord.title
+    )
   );
-  const socialTitle = resolveMetadataTitleText(
-    pageRecord.seoOgTitle ?? pageRecord.seoTitle,
-    pageRecord.title
-  );
-  const canonicalUrl = toAbsoluteSiteUrl(
-    pageRecord.seoCanonicalPath || `/${pageRecord.slug}`
-  );
+  const canonicalPath = pageRecord.seoCanonicalPath || `/${pageRecord.slug}`;
 
-  return {
-    title: resolveMetadataTitle(pageRecord.seoTitle, pageRecord.title),
+  return buildPageMetadata({
+    canonicalPathOrUrl: canonicalPath,
     description,
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    openGraphImages: buildOpenGraphImages(),
     robots: {
       index: pageRecord.seoNoIndex === true ? false : true,
       follow: pageRecord.seoNoFollow === true ? false : true,
-    },
-    openGraph: {
-      type: "website",
-      title: socialTitle,
-      description,
-      url: canonicalUrl,
-      siteName: SITE_NAME,
-      images: buildOpenGraphImages(),
-    },
-    twitter: {
-      card: pageRecord.seoTwitterCard ?? DEFAULT_TWITTER_CARD,
-      title: socialTitle,
-      description,
-      images: buildTwitterImages(),
     },
     structuredData: [
       buildStandalonePageStructuredData(pageRecord),
@@ -109,11 +83,14 @@ function buildStandalonePageMetadata(
         { name: "Home", path: "/" },
         {
           name: pageRecord.subheading || pageRecord.title,
-          path: pageRecord.seoCanonicalPath || `/${pageRecord.slug}`,
+          path: canonicalPath,
         },
       ]),
     ],
-  };
+    title: resolveMetadataTitle(pageRecord.seoTitle, pageRecord.title),
+    twitterCard: pageRecord.seoTwitterCard,
+    twitterImages: buildTwitterImages(),
+  });
 }
 
 const metadata = buildStandalonePageMetadata(page);

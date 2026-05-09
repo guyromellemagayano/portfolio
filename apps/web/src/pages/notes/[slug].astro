@@ -10,15 +10,15 @@ import RichText from "@web/components/RichText.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import { formatDate } from "@web/lib/format-date";
 import {
+  buildPageMetadata,
   buildOpenGraphImages,
   buildTwitterImages,
+  clampMetadataDescription,
   DEFAULT_SOCIAL_IMAGE_HEIGHT,
   DEFAULT_SOCIAL_IMAGE_PATH,
   DEFAULT_SOCIAL_IMAGE_WIDTH,
-  DEFAULT_TWITTER_CARD,
+  resolveMetadataDescription,
   resolveMetadataTitle,
-  resolveMetadataTitleText,
-  SITE_NAME,
 } from "@web/lib/metadata";
 import { type WebPageMetadata } from "@web/lib/metadata.types";
 import {
@@ -30,7 +30,6 @@ import {
   getArticleBySlug,
   type ArticleDetail,
 } from "@web/utils/articles";
-import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 export async function getStaticPaths() {
   const articles = await getAllArticles();
@@ -49,29 +48,18 @@ if (!article) {
   return Astro.redirect("/404", 404);
 }
 
-const clampDescription = (value: string) => {
-  const normalized = value.trim();
-  return normalized.length <= 160
-    ? normalized
-    : `${normalized.slice(0, 159).trimEnd()}...`;
-};
-
 function getNotePath(articleRecord: ArticleDetail): string {
   return articleRecord.seoCanonicalPath || `/notes/${articleRecord.slug}`;
 }
 
 function buildArticleMetadata(articleRecord: ArticleDetail): WebPageMetadata {
-  const description = clampDescription(
-    articleRecord.seoDescription ||
-      articleRecord.description ||
-      articleRecord.title
-  );
-  const socialTitle = resolveMetadataTitleText(
-    articleRecord.seoOgTitle ?? articleRecord.seoTitle,
-    articleRecord.title
+  const description = clampMetadataDescription(
+    resolveMetadataDescription(
+      articleRecord.seoDescription,
+      articleRecord.description || articleRecord.title
+    )
   );
   const notePath = getNotePath(articleRecord);
-  const canonicalUrl = toAbsoluteSiteUrl(notePath);
   const socialImagePath =
     articleRecord.seoOgImage ||
     articleRecord.image ||
@@ -81,41 +69,26 @@ function buildArticleMetadata(articleRecord: ArticleDetail): WebPageMetadata {
     articleRecord.imageAlt ||
     articleRecord.title;
 
-  return {
-    title: resolveMetadataTitle(articleRecord.seoTitle, articleRecord.title),
+  return buildPageMetadata({
+    canonicalPathOrUrl: notePath,
     description,
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    openGraphImages: buildOpenGraphImages({
+      alt: socialImageAlt,
+      height:
+        articleRecord.seoOgImageHeight ||
+        articleRecord.imageHeight ||
+        DEFAULT_SOCIAL_IMAGE_HEIGHT,
+      pathOrUrl: socialImagePath,
+      width:
+        articleRecord.seoOgImageWidth ||
+        articleRecord.imageWidth ||
+        DEFAULT_SOCIAL_IMAGE_WIDTH,
+    }),
+    openGraphPublishedTime: articleRecord.date,
+    openGraphType: "article",
     robots: {
       index: articleRecord.seoNoIndex === true ? false : true,
       follow: articleRecord.seoNoFollow === true ? false : true,
-    },
-    openGraph: {
-      type: "article",
-      title: socialTitle,
-      description,
-      url: canonicalUrl,
-      siteName: SITE_NAME,
-      publishedTime: articleRecord.date,
-      images: buildOpenGraphImages({
-        alt: socialImageAlt,
-        height:
-          articleRecord.seoOgImageHeight ||
-          articleRecord.imageHeight ||
-          DEFAULT_SOCIAL_IMAGE_HEIGHT,
-        pathOrUrl: socialImagePath,
-        width:
-          articleRecord.seoOgImageWidth ||
-          articleRecord.imageWidth ||
-          DEFAULT_SOCIAL_IMAGE_WIDTH,
-      }),
-    },
-    twitter: {
-      card: articleRecord.seoTwitterCard ?? DEFAULT_TWITTER_CARD,
-      title: socialTitle,
-      description,
-      images: buildTwitterImages({ pathOrUrl: socialImagePath }),
     },
     structuredData: [
       buildArticleStructuredData(articleRecord),
@@ -128,7 +101,10 @@ function buildArticleMetadata(articleRecord: ArticleDetail): WebPageMetadata {
         },
       ]),
     ],
-  };
+    title: resolveMetadataTitle(articleRecord.seoTitle, articleRecord.title),
+    twitterCard: articleRecord.seoTwitterCard,
+    twitterImages: buildTwitterImages({ pathOrUrl: socialImagePath }),
+  });
 }
 
 const metadata = buildArticleMetadata(article);

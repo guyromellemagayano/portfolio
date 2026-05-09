@@ -1,0 +1,50 @@
+---
+/**
+ * @file apps/web/src/layouts/document/HeadIntegrations.astro
+ * @author Guy Romelle Magayano
+ * @description Head-level analytics and observability markup for the shared document shell.
+ */
+
+import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
+
+type Props = {
+  googleAnalyticsBootstrapScript: string;
+  googleAnalyticsMeasurementId: string;
+  googleAnalyticsScriptUrl: string;
+  googleTagManagerBootstrapScript: string;
+  shouldRenderVercelObservability: boolean;
+};
+
+const {
+  googleAnalyticsBootstrapScript,
+  googleAnalyticsMeasurementId,
+  googleAnalyticsScriptUrl,
+  googleTagManagerBootstrapScript,
+  shouldRenderVercelObservability,
+} = Astro.props;
+
+const hasGoogleAnalytics = googleAnalyticsMeasurementId.length > 0;
+const hasGoogleTagManager = googleTagManagerBootstrapScript.length > 0;
+---
+
+{
+  hasGoogleTagManager ? (
+    <script is:inline set:html={googleTagManagerBootstrapScript} />
+  ) : null
+}
+{shouldRenderVercelObservability ? <Analytics /> : null}
+{shouldRenderVercelObservability ? <SpeedInsights /> : null}
+{
+  hasGoogleAnalytics ? (
+    <>
+      <script async src={googleAnalyticsScriptUrl} />
+      <script is:inline set:html={googleAnalyticsBootstrapScript} />
+      <script
+        data-google-analytics-measurement-id={googleAnalyticsMeasurementId}
+        defer
+        src="/analytics-events.js"
+      />
+    </>
+  ) : null
+}

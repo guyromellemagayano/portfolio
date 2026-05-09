@@ -32,7 +32,7 @@ describe("buildPortfolioPageMetadata", () => {
     );
     expect(metadata.openGraph).toMatchObject({
       type: "website",
-      title: "Services",
+      title: "Services | Guy Romelle Magayano",
       siteName: "Guy Romelle Magayano",
       images: [
         {
@@ -45,7 +45,7 @@ describe("buildPortfolioPageMetadata", () => {
     });
     expect(metadata.twitter).toMatchObject({
       card: "summary_large_image",
-      title: "Services",
+      title: "Services | Guy Romelle Magayano",
       images: ["https://www.guyromellemagayano.com/og-image.png"],
     });
     expect(metadata.robots).toEqual({
@@ -96,6 +96,12 @@ describe("buildPortfolioPageMetadata", () => {
 
     expect(metadata.title).toEqual({
       absolute: "Guy Romelle Magayano - Product Engineering Consultant",
+    });
+    expect(metadata.openGraph).toMatchObject({
+      title: "Guy Romelle Magayano - Product Engineering Consultant",
+    });
+    expect(metadata.twitter).toMatchObject({
+      title: "Guy Romelle Magayano - Product Engineering Consultant",
     });
   });
 });
