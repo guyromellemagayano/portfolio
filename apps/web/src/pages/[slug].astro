@@ -1,4 +1,5 @@
 ---
+import Container from "@web/components/Container.astro";
 import PageIntro from "@web/components/PageIntro.astro";
 import RichText from "@web/components/RichText.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
@@ -120,13 +121,12 @@ const metadata = buildStandalonePageMetadata(page);
   />
   {
     page.body.length > 0 ? (
-      <section
-        class="mx-auto max-w-2xl px-4 py-16 sm:px-8 lg:max-w-3xl"
-        aria-label={`${page.title} content`}
-      >
-        <div class="prose-zinc prose max-w-none dark:prose-invert">
-          <RichText value={page.body} fallbackImageAlt={page.title} />
-        </div>
+      <section aria-label={`${page.title} content`}>
+        <Container class="py-16">
+          <div class="prose-zinc prose max-w-3xl dark:prose-invert">
+            <RichText value={page.body} fallbackImageAlt={page.title} />
+          </div>
+        </Container>
       </section>
     ) : null
   }

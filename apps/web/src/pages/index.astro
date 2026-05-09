@@ -1,4 +1,10 @@
 ---
+import ButtonLink from "@web/components/ButtonLink.astro";
+import Container from "@web/components/Container.astro";
+import Eyebrow from "@web/components/Eyebrow.astro";
+import Heading from "@web/components/Heading.astro";
+import HeroSimpleLeftAligned from "@web/components/HeroSimpleLeftAligned.astro";
+import PlainButtonLink from "@web/components/PlainButtonLink.astro";
 import ArticleCard from "@web/components/ArticleCard.astro";
 import PathwayCards from "@web/components/PathwayCards.astro";
 import ProjectCard from "@web/components/ProjectCard.astro";
@@ -51,77 +57,68 @@ const formatRoleDate = (value?: string) =>
 ---
 
 <BaseLayout metadata={metadata}>
-  <section
+  <HeroSimpleLeftAligned
     aria-labelledby="home-hero-heading"
-    class="mx-auto max-w-2xl px-4 pt-16 sm:px-8 sm:pt-32 lg:max-w-5xl lg:px-12"
+    class="pt-16 sm:pt-32"
     role="region"
   >
-    <div class="max-w-2xl">
-      <p
-        class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase dark:text-zinc-400"
+    <Eyebrow slot="eyebrow" as="p">
+      {page.subheading}
+    </Eyebrow>
+    <Heading slot="headline" id="home-hero-heading" class="max-w-5xl">
+      {profile.heroTitle}
+    </Heading>
+    <p slot="subheadline">{profile.heroIntro}</p>
+    <div slot="cta" class="flex flex-wrap items-center gap-4">
+      <ButtonLink
+        href="/work"
+        size="lg"
+        data-analytics-content-id="/work"
+        data-analytics-content-name="View selected work"
+        data-analytics-content-type="call_to_action"
+        data-analytics-placement="home-hero-primary"
       >
-        {page.subheading}
-      </p>
-      <h1
-        id="home-hero-heading"
-        class="mt-4 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
+        View selected work
+      </ButtonLink>
+      <PlainButtonLink
+        href="/capabilities"
+        size="lg"
+        data-analytics-content-id="/capabilities"
+        data-analytics-content-name="Explore services"
+        data-analytics-content-type="call_to_action"
+        data-analytics-placement="home-hero-secondary"
       >
-        {profile.heroTitle}
-      </h1>
-      <p class="mt-6 text-base leading-8 text-zinc-600 dark:text-zinc-300">
-        {profile.heroIntro}
-      </p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a
-          href="/work"
-          class="inline-flex items-center justify-center rounded-full bg-zinc-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700"
-          data-analytics-content-id="/work"
-          data-analytics-content-name="View selected work"
-          data-analytics-content-type="call_to_action"
-          data-analytics-placement="home-hero-primary"
-        >
-          View selected work
-        </a>
-        <a
-          href="/capabilities"
-          class="inline-flex items-center justify-center rounded-full border border-zinc-200 bg-white px-5 py-3 text-sm font-medium text-zinc-800 transition hover:border-zinc-300 dark:border-zinc-700/60 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-600"
-          data-analytics-content-id="/capabilities"
-          data-analytics-content-name="Explore services"
-          data-analytics-content-type="call_to_action"
-          data-analytics-placement="home-hero-secondary"
-        >
-          Explore services
-        </a>
-      </div>
-      <ul
-        class="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm text-zinc-600 dark:text-zinc-300"
-        role="list"
-      >
-        {
-          socialLinks.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                rel={
-                  link.href.startsWith("http")
-                    ? "noopener noreferrer"
-                    : undefined
-                }
-                target={link.href.startsWith("http") ? "_blank" : undefined}
-                class="transition hover:text-teal-600 dark:hover:text-teal-400"
-                data-analytics-content-id={link.id}
-                data-analytics-content-name={link.label}
-                data-analytics-content-type="social_link"
-                data-analytics-placement="home-social"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+        Explore services
+        <span aria-hidden="true">→</span>
+      </PlainButtonLink>
     </div>
-  </section>
+    <ul
+      slot="footer"
+      class="flex flex-wrap gap-x-6 gap-y-3 text-sm text-mist-700 dark:text-mist-400"
+      role="list"
+    >
+      {
+        socialLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              rel={
+                link.href.startsWith("http") ? "noopener noreferrer" : undefined
+              }
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              class="transition hover:text-teal-600 dark:hover:text-teal-400"
+              data-analytics-content-id={link.id}
+              data-analytics-content-name={link.label}
+              data-analytics-content-type="social_link"
+              data-analytics-placement="home-social"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </HeroSimpleLeftAligned>
 
   <PathwayCards
     eyebrow="Start here"
@@ -138,7 +135,7 @@ const formatRoleDate = (value?: string) =>
         PHOTO_GALLERY_PHOTOS.map((photo, index) => (
           <div
             class:list={[
-              "relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-72 sm:rounded-2xl",
+              "relative aspect-9/10 w-44 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-72 sm:rounded-2xl",
               "dark:bg-zinc-800",
               index % 5 === 0 || index % 5 === 2 || index % 5 === 3
                 ? "rotate-2"
@@ -158,7 +155,7 @@ const formatRoleDate = (value?: string) =>
     </div>
   </section>
 
-  <section class="mx-auto mt-24 max-w-2xl px-4 sm:px-8 lg:max-w-5xl lg:px-12">
+  <Container class="mt-24">
     <div class="grid grid-cols-1 gap-16 lg:grid-cols-[minmax(0,1fr)_20rem]">
       <div class="space-y-20">
         <section aria-labelledby="home-work-heading">
@@ -330,5 +327,5 @@ const formatRoleDate = (value?: string) =>
         </section>
       </aside>
     </div>
-  </section>
+  </Container>
 </BaseLayout>

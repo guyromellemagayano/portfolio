@@ -1,0 +1,72 @@
+---
+/**
+ * @file apps/web/src/components/HeroTwoColumnWithPhoto.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native two-column photo hero ported from the archived demo sections.
+ */
+
+import Container from "@web/components/Container.astro";
+import Text from "@web/components/Text.astro";
+
+type Props = {
+  class?: string;
+  containerClass?: string;
+  contentClass?: string;
+  photoColumnClass?: string;
+  subheadlineClass?: string;
+  asideClass?: string;
+};
+
+const {
+  class: className = "",
+  containerClass = "",
+  contentClass = "",
+  photoColumnClass = "",
+  subheadlineClass = "",
+  asideClass = "",
+  ...rest
+} = Astro.props;
+
+const hasSubheadline = Astro.slots.has("subheadline");
+const hasAside = Astro.slots.has("aside");
+---
+
+<section {...rest} class:list={["py-16", className]}>
+  <Container class:list={["flex gap-16 max-xl:flex-col", containerClass]}>
+    <div
+      class:list={[
+        "flex flex-1 flex-col items-start justify-center gap-6",
+        contentClass,
+      ]}
+    >
+      <slot name="eyebrow" />
+      <slot name="headline" />
+      {
+        hasSubheadline ? (
+          <Text
+            size="lg"
+            class:list={["flex max-w-3xl flex-col gap-4", subheadlineClass]}
+          >
+            <slot name="subheadline" />
+          </Text>
+        ) : null
+      }
+      <slot name="cta" />
+    </div>
+
+    <div class:list={["flex flex-1 flex-col gap-8", photoColumnClass]}>
+      <div
+        class="overflow-hidden rounded-xl outline -outline-offset-1 outline-black/5 dark:outline-white/5"
+      >
+        <slot name="photo" />
+      </div>
+      {
+        hasAside ? (
+          <div class={asideClass}>
+            <slot name="aside" />
+          </div>
+        ) : null
+      }
+    </div>
+  </Container>
+</section>

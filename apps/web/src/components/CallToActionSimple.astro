@@ -1,0 +1,79 @@
+---
+/**
+ * @file apps/web/src/components/CallToActionSimple.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native simple CTA section ported from the archived demo sections.
+ */
+
+import Container from "@web/components/Container.astro";
+import Eyebrow from "@web/components/Eyebrow.astro";
+import Subheading from "@web/components/Subheading.astro";
+import Text from "@web/components/Text.astro";
+
+type Props = {
+  eyebrow?: string;
+  headline?: string;
+  headlineId?: string;
+  subheadline?: string;
+  class?: string;
+  containerClass?: string;
+  headlineClass?: string;
+  subheadlineClass?: string;
+};
+
+const {
+  eyebrow,
+  headline,
+  headlineId,
+  subheadline,
+  class: className = "",
+  containerClass = "",
+  headlineClass = "",
+  subheadlineClass = "",
+  ...rest
+} = Astro.props;
+---
+
+<section {...rest} class:list={["py-16", className]}>
+  <Container class:list={["flex flex-col gap-10", containerClass]}>
+    <div class="flex flex-col gap-6">
+      <div class="flex max-w-4xl flex-col gap-2">
+        {
+          Astro.slots.has("eyebrow") ? (
+            <slot name="eyebrow" />
+          ) : eyebrow ? (
+            <Eyebrow as="p">{eyebrow}</Eyebrow>
+          ) : null
+        }
+
+        {
+          Astro.slots.has("headline") ? (
+            <slot name="headline" />
+          ) : headline ? (
+            <Subheading id={headlineId} class={headlineClass}>
+              {headline}
+            </Subheading>
+          ) : null
+        }
+      </div>
+
+      {
+        Astro.slots.has("subheadline") ? (
+          <slot name="subheadline" />
+        ) : subheadline ? (
+          <Text
+            as="div"
+            class:list={[
+              "flex max-w-3xl flex-col gap-4 text-pretty",
+              subheadlineClass,
+            ]}
+          >
+            {subheadline}
+          </Text>
+        ) : null
+      }
+    </div>
+
+    <slot name="cta" />
+  </Container>
+</section>

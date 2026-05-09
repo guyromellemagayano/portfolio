@@ -1,4 +1,5 @@
 ---
+import Container from "@web/components/Container.astro";
 import PageIntro from "@web/components/PageIntro.astro";
 import { profile } from "@web/data/site";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
@@ -20,83 +21,83 @@ const emailLink = getPortfolioSocialLinkByPlatform("email");
     intro={page.intro}
   />
 
-  <section
-    aria-labelledby="privacy-content-heading"
-    class="mx-auto max-w-2xl px-4 py-16 sm:px-8 lg:max-w-3xl"
-    role="region"
-  >
-    <h2 id="privacy-content-heading" class="sr-only">
-      Privacy and consent details
-    </h2>
-    <div class="prose-zinc prose max-w-none dark:prose-invert">
-      <p>
-        This site is a static portfolio and professional site for {
-          profile.name
-        }. It can load Google Analytics, Vercel Web Analytics, and Vercel Speed
-        Insights when those services are configured for the deployed site. It
-        can also use Sentry to report application errors and performance traces.
-      </p>
+  <section aria-labelledby="privacy-content-heading" role="region">
+    <Container class="py-16">
+      <h2 id="privacy-content-heading" class="sr-only">
+        Privacy and consent details
+      </h2>
+      <div class="prose-zinc prose max-w-3xl dark:prose-invert">
+        <p>
+          This site is a static portfolio and professional site for {
+            profile.name
+          }. It can load Google Analytics, Vercel Web Analytics, and Vercel
+          Speed Insights when those services are configured for the deployed
+          site. It can also use Sentry to report application errors and
+          performance traces.
+        </p>
 
-      <h2>Information handled today</h2>
-      <p>
-        The site can receive standard hosting logs such as request path, user
-        agent, approximate timestamp, referrer, and IP address. Those logs are
-        used for security, debugging, abuse prevention, and deployment
-        operations. If you email me or open an external profile, the information
-        you provide is handled by your email provider or that external service.
-      </p>
+        <h2>Information handled today</h2>
+        <p>
+          The site can receive standard hosting logs such as request path, user
+          agent, approximate timestamp, referrer, and IP address. Those logs are
+          used for security, debugging, abuse prevention, and deployment
+          operations. If you email me or open an external profile, the
+          information you provide is handled by your email provider or that
+          external service.
+        </p>
 
-      <h2>Analytics and measurement</h2>
-      <p>
-        When Google Analytics is enabled, the site measures page views,
-        navigation clicks, outbound profile links, direct contact clicks,
-        article search terms, scroll depth, section views, and visible
-        capability, work, note, lab, or call-to-action cards. The purpose is to
-        understand which pages, capabilities, notes, and contact paths help
-        visitors evaluate the portfolio and request work.
-      </p>
-      <p>
-        Vercel Web Analytics can measure aggregate page views and referrers, and
-        Vercel Speed Insights can measure web performance signals such as page
-        load and Core Web Vitals. Those measurements are used to understand site
-        health and improve performance.
-      </p>
-      <p>
-        Sentry can collect error messages, stack traces, browser and device
-        context, request headers and IP address where available, page URL,
-        release, deployment environment, application logs, custom metrics,
-        release-health session status, sampled performance traces, and sampled
-        session replay data. That data is used to diagnose broken pages,
-        JavaScript failures, and deployment regressions.
-      </p>
+        <h2>Analytics and measurement</h2>
+        <p>
+          When Google Analytics is enabled, the site measures page views,
+          navigation clicks, outbound profile links, direct contact clicks,
+          article search terms, scroll depth, section views, and visible
+          capability, work, note, lab, or call-to-action cards. The purpose is
+          to understand which pages, capabilities, notes, and contact paths help
+          visitors evaluate the portfolio and request work.
+        </p>
+        <p>
+          Vercel Web Analytics can measure aggregate page views and referrers,
+          and Vercel Speed Insights can measure web performance signals such as
+          page load and Core Web Vitals. Those measurements are used to
+          understand site health and improve performance.
+        </p>
+        <p>
+          Sentry can collect error messages, stack traces, browser and device
+          context, request headers and IP address where available, page URL,
+          release, deployment environment, application logs, custom metrics,
+          release-health session status, sampled performance traces, and sampled
+          session replay data. That data is used to diagnose broken pages,
+          JavaScript failures, and deployment regressions.
+        </p>
 
-      <h2>Cookies and local storage</h2>
-      <p>
-        Google Analytics may use cookies or similar browser storage to measure
-        visits and engagement. Sentry Session Replay may also use browser
-        storage for sampled debugging sessions and error-session capture. This
-        site does not add advertising pixels.
-      </p>
+        <h2>Cookies and local storage</h2>
+        <p>
+          Google Analytics may use cookies or similar browser storage to measure
+          visits and engagement. Sentry Session Replay may also use browser
+          storage for sampled debugging sessions and error-session capture. This
+          site does not add advertising pixels.
+        </p>
 
-      <h2>Contact</h2>
-      <p>
-        Questions about this privacy and consent baseline can be sent through
-        the contact page
-        {
-          emailLink ? (
-            <>
-              {" "}
-              or by emailing{" "}
-              <a href={emailLink.href}>Guy Romelle Magayano directly</a>
-            </>
-          ) : null
-        }
-        .
-      </p>
+        <h2>Contact</h2>
+        <p>
+          Questions about this privacy and consent baseline can be sent through
+          the contact page
+          {
+            emailLink ? (
+              <>
+                {" "}
+                or by emailing{" "}
+                <a href={emailLink.href}>Guy Romelle Magayano directly</a>
+              </>
+            ) : null
+          }
+          .
+        </p>
 
-      <p>
-        <strong>Last updated:</strong> May 1, 2026.
-      </p>
-    </div>
+        <p>
+          <strong>Last updated:</strong> May 1, 2026.
+        </p>
+      </div>
+    </Container>
   </section>
 </BaseLayout>

@@ -1,4 +1,5 @@
 ---
+import Container from "@web/components/Container.astro";
 import PageIntro from "@web/components/PageIntro.astro";
 import PathwayCards from "@web/components/PathwayCards.astro";
 import ProjectCard from "@web/components/ProjectCard.astro";
@@ -28,21 +29,19 @@ const metadata = appendStructuredData(
     intro={page.intro}
   />
 
-  <section
-    aria-labelledby="work-showcase-heading"
-    class="mx-auto max-w-2xl px-4 py-16 sm:px-8 lg:max-w-5xl lg:px-12"
-    role="region"
-  >
-    <h2
-      id="work-showcase-heading"
-      class="max-w-2xl text-2xl font-semibold tracking-tight text-zinc-800 sm:text-3xl dark:text-zinc-100"
-    >
-      Case studies and platform slices across commerce, publishing, SaaS, and
-      operational tooling.
-    </h2>
-    <div class="mt-10 grid gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-      {workProjects.map((project) => <ProjectCard project={project} />)}
-    </div>
+  <section aria-labelledby="work-showcase-heading" role="region">
+    <Container class="py-16">
+      <h2
+        id="work-showcase-heading"
+        class="max-w-2xl text-2xl font-semibold tracking-tight text-zinc-800 sm:text-3xl dark:text-zinc-100"
+      >
+        Case studies and platform slices across commerce, publishing, SaaS, and
+        operational tooling.
+      </h2>
+      <div class="mt-10 grid gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+        {workProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </Container>
   </section>
 
   <PathwayCards

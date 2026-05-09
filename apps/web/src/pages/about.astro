@@ -1,4 +1,7 @@
 ---
+import Eyebrow from "@web/components/Eyebrow.astro";
+import Heading from "@web/components/Heading.astro";
+import HeroTwoColumnWithPhoto from "@web/components/HeroTwoColumnWithPhoto.astro";
 import PathwayCards from "@web/components/PathwayCards.astro";
 import SplitSection from "@web/components/SplitSection.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
@@ -28,76 +31,60 @@ const formatRoleDate = (value?: string) =>
 ---
 
 <BaseLayout metadata={metadata}>
-  <section
-    class="mx-auto max-w-2xl px-4 pt-16 sm:px-8 sm:pt-32 lg:max-w-5xl lg:px-12"
+  <HeroTwoColumnWithPhoto
+    aria-labelledby="about-hero-heading"
+    class="pt-16 sm:pt-32"
+    role="region"
+    subheadlineClass="max-w-2xl space-y-7 text-base/8 text-zinc-600 dark:text-zinc-300"
   >
-    <div
-      class="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12"
-    >
-      <div class="lg:pl-20">
-        <div class="max-w-xs px-2.5 lg:max-w-none">
-          <img
-            src={portraitImage.src}
-            alt={`${profile.name} portrait`}
-            width={portraitImage.width}
-            height={portraitImage.height}
-            class="aspect-square rotate-3 rounded-2xl bg-zinc-100 object-cover dark:bg-zinc-800"
-          />
-        </div>
-      </div>
-
-      <div class="lg:order-first lg:row-span-2">
-        <p
-          class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase dark:text-zinc-400"
-        >
-          {page.subheading}
-        </p>
-        <h1
-          class="mt-3 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
-        >
-          {page.title}
-        </h1>
-        <div class="mt-6 space-y-7 text-base text-zinc-600 dark:text-zinc-300">
-          <p>{profile.heroIntro}</p>
-          <p>
-            I work across frontend architecture, platform foundations, content
-            modeling, and delivery systems. The throughline is clarity: make the
-            system easier to extend, easier to reason about, and less expensive
-            to change under pressure.
-          </p>
-          <p>
-            Most of my work sits where delivery slows down: route structures
-            that drift, content systems that stop fitting the product, release
-            paths that feel unsafe, or shared abstractions that are now hiding
-            more than they help.
-          </p>
-        </div>
-      </div>
-
-      <div class="lg:pl-20">
-        <ul role="list">
-          {
-            socialLinks.map((link, index) => (
-              <li class:list={[index > 0 && "mt-4", "flex"]}>
-                <a
-                  href={link.href}
-                  rel={
-                    link.href.startsWith("http")
-                      ? "noopener noreferrer"
-                      : undefined
-                  }
-                  target={link.href.startsWith("http") ? "_blank" : undefined}
-                  class="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-600 dark:text-zinc-100 dark:hover:text-teal-400"
-                >
-                  <span>{link.label}</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+    <Eyebrow slot="eyebrow" as="p">
+      {page.subheading}
+    </Eyebrow>
+    <Heading slot="headline" id="about-hero-heading" class="max-w-4xl">
+      {page.title}
+    </Heading>
+    <div slot="subheadline">
+      <p>{profile.heroIntro}</p>
+      <p>
+        I work across frontend architecture, platform foundations, content
+        modeling, and delivery systems. The throughline is clarity: make the
+        system easier to extend, easier to reason about, and less expensive to
+        change under pressure.
+      </p>
+      <p>
+        Most of my work sits where delivery slows down: route structures that
+        drift, content systems that stop fitting the product, release paths that
+        feel unsafe, or shared abstractions that are now hiding more than they
+        help.
+      </p>
     </div>
-  </section>
+    <img
+      slot="photo"
+      src={portraitImage.src}
+      alt={`${profile.name} portrait`}
+      width={portraitImage.width}
+      height={portraitImage.height}
+      class="aspect-square w-full bg-zinc-100 object-cover dark:bg-zinc-800"
+    />
+    <ul slot="aside" role="list" class="space-y-4">
+      {
+        socialLinks.map((link) => (
+          <li class="flex">
+            <a
+              href={link.href}
+              rel={
+                link.href.startsWith("http") ? "noopener noreferrer" : undefined
+              }
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              class="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-600 dark:text-zinc-100 dark:hover:text-teal-400"
+            >
+              <span>{link.label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </HeroTwoColumnWithPhoto>
 
   <SplitSection
     title="Focus areas"

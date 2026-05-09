@@ -1,0 +1,36 @@
+---
+/**
+ * @file apps/web/src/components/HeroSimpleLeftAligned.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native hero section ported from the archived demo sections.
+ */
+
+import Container from "@web/components/Container.astro";
+import Text from "@web/components/Text.astro";
+
+const { class: className = "", ...rest } = Astro.props;
+const hasSubheadline = Astro.slots.has("subheadline");
+const hasFooter = Astro.slots.has("footer");
+---
+
+<section {...rest} class:list={["py-16", className]}>
+  <Container class="flex flex-col items-start gap-6">
+    <slot name="eyebrow" />
+    <slot name="headline" />
+    {
+      hasSubheadline ? (
+        <Text size="lg" class="flex max-w-xl flex-col gap-4">
+          <slot name="subheadline" />
+        </Text>
+      ) : null
+    }
+    <slot name="cta" />
+    {
+      hasFooter ? (
+        <div class="pt-4">
+          <slot name="footer" />
+        </div>
+      ) : null
+    }
+  </Container>
+</section>

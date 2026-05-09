@@ -1,0 +1,69 @@
+---
+/**
+ * @file apps/web/src/components/CallToActionSimpleCentered.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native centered CTA section ported from the archived demo sections.
+ */
+
+import Container from "@web/components/Container.astro";
+import Subheading from "@web/components/Subheading.astro";
+import Text from "@web/components/Text.astro";
+
+type Props = {
+  headline?: string;
+  headlineId?: string;
+  subheadline?: string;
+  class?: string;
+  containerClass?: string;
+  headlineClass?: string;
+  subheadlineClass?: string;
+};
+
+const {
+  headline,
+  headlineId,
+  subheadline,
+  class: className = "",
+  containerClass = "",
+  headlineClass = "",
+  subheadlineClass = "",
+  ...rest
+} = Astro.props;
+---
+
+<section {...rest} class:list={["py-16", className]}>
+  <Container class:list={["flex flex-col items-center gap-10", containerClass]}>
+    <div class="flex flex-col gap-6">
+      {
+        Astro.slots.has("headline") ? (
+          <slot name="headline" />
+        ) : headline ? (
+          <Subheading
+            id={headlineId}
+            class:list={["max-w-4xl text-center", headlineClass]}
+          >
+            {headline}
+          </Subheading>
+        ) : null
+      }
+
+      {
+        Astro.slots.has("subheadline") ? (
+          <slot name="subheadline" />
+        ) : subheadline ? (
+          <Text
+            as="div"
+            class:list={[
+              "flex max-w-3xl flex-col gap-4 text-center text-pretty",
+              subheadlineClass,
+            ]}
+          >
+            {subheadline}
+          </Text>
+        ) : null
+      }
+    </div>
+
+    <slot name="cta" />
+  </Container>
+</section>

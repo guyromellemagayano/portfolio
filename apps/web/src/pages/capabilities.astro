@@ -1,6 +1,7 @@
 ---
 import PageIntro from "@web/components/PageIntro.astro";
 import PathwayCards from "@web/components/PathwayCards.astro";
+import Section from "@web/components/Section.astro";
 import ServiceCard from "@web/components/ServiceCard.astro";
 import SplitSection from "@web/components/SplitSection.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
@@ -29,21 +30,17 @@ const metadata = appendStructuredData(
     intro={page.intro}
   />
 
-  <section
+  <Section
     aria-labelledby="capabilities-offerings-heading"
-    class="mx-auto max-w-2xl px-4 py-16 sm:px-8 lg:max-w-5xl lg:px-12"
+    class="py-16"
+    headline="Ways to work together"
+    headlineId="capabilities-offerings-heading"
     role="region"
   >
-    <h2
-      id="capabilities-offerings-heading"
-      class="max-w-2xl text-2xl font-semibold tracking-tight text-zinc-800 sm:text-3xl dark:text-zinc-100"
-    >
-      Ways to work together
-    </h2>
     <div class="mt-10 grid gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
       {services.map((service) => <ServiceCard service={service} showPrice />)}
     </div>
-  </section>
+  </Section>
 
   <SplitSection
     title="Capability clusters"
