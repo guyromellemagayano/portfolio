@@ -1,0 +1,19 @@
+---
+/**
+ * @file apps/web/src/components/Container.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native container primitive ported from the archived demo elements.
+ */
+
+const { as: Component = "div", class: className = "", ...rest } = Astro.props;
+---
+
+<Component
+  {...rest}
+  class:list={[
+    "mx-auto w-full max-w-2xl px-6 md:max-w-3xl lg:max-w-7xl lg:px-10",
+    className,
+  ]}
+>
+  <slot />
+</Component>

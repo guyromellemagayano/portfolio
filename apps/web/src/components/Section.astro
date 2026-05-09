@@ -1,0 +1,86 @@
+---
+/**
+ * @file apps/web/src/components/Section.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native section wrapper ported from the archived demo elements.
+ */
+
+import Container from "@web/components/Container.astro";
+import Eyebrow from "@web/components/Eyebrow.astro";
+import Subheading from "@web/components/Subheading.astro";
+import Text from "@web/components/Text.astro";
+
+type Props = {
+  eyebrow?: string;
+  headline?: string;
+  headlineId?: string;
+  subheadline?: string;
+  class?: string;
+  containerClass?: string;
+  headerClass?: string;
+  headlineClass?: string;
+  subheadlineClass?: string;
+};
+
+const {
+  eyebrow,
+  headline,
+  headlineId,
+  subheadline,
+  class: className = "",
+  containerClass = "",
+  headerClass = "",
+  headlineClass = "",
+  subheadlineClass = "",
+  ...rest
+} = Astro.props;
+
+const hasHeader =
+  Boolean(eyebrow) ||
+  Boolean(headline) ||
+  Boolean(subheadline) ||
+  Astro.slots.has("eyebrow") ||
+  Astro.slots.has("headline") ||
+  Astro.slots.has("subheadline") ||
+  Astro.slots.has("cta");
+---
+
+<section {...rest} class:list={["py-16", className]}>
+  <Container class:list={["flex flex-col gap-10 sm:gap-16", containerClass]}>
+    {
+      hasHeader ? (
+        <div class:list={["flex max-w-2xl flex-col gap-6", headerClass]}>
+          <div class="flex flex-col gap-2">
+            {Astro.slots.has("eyebrow") ? (
+              <slot name="eyebrow" />
+            ) : eyebrow ? (
+              <Eyebrow as="p">{eyebrow}</Eyebrow>
+            ) : null}
+
+            {Astro.slots.has("headline") ? (
+              <slot name="headline" />
+            ) : headline ? (
+              <Subheading id={headlineId} class={headlineClass}>
+                {headline}
+              </Subheading>
+            ) : null}
+          </div>
+
+          {Astro.slots.has("subheadline") ? (
+            <slot name="subheadline" />
+          ) : subheadline ? (
+            <Text as="div" class={subheadlineClass}>
+              {subheadline}
+            </Text>
+          ) : null}
+
+          <slot name="cta" />
+        </div>
+      ) : null
+    }
+
+    <div>
+      <slot />
+    </div>
+  </Container>
+</section>

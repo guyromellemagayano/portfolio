@@ -1,0 +1,42 @@
+---
+/**
+ * @file apps/web/src/components/PlainButtonLink.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native plain CTA link primitive ported from the archived demo elements.
+ */
+
+const {
+  href: rawHref,
+  size = "md",
+  color = "dark/light",
+  target,
+  rel,
+  class: className = "",
+  ...rest
+} = Astro.props;
+
+const href =
+  typeof rawHref === "string" && rawHref.trim().length > 0 ? rawHref : "#";
+const sizeClass = size === "lg" ? "px-4 py-2" : "px-3 py-1";
+const isExternalHref = /^https?:\/\//i.test(href);
+const resolvedTarget = target ?? (isExternalHref ? "_blank" : undefined);
+const resolvedRel =
+  rel ?? (resolvedTarget === "_blank" ? "noopener noreferrer" : undefined);
+---
+
+<a
+  {...rest}
+  href={href}
+  target={resolvedTarget}
+  rel={resolvedRel}
+  class:list={[
+    "inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm/7 font-medium transition",
+    color === "dark/light" &&
+      "text-mist-950 hover:bg-mist-950/10 dark:text-white dark:hover:bg-white/10",
+    color === "light" && "text-white hover:bg-white/15 dark:hover:bg-white/10",
+    sizeClass,
+    className,
+  ]}
+>
+  <slot />
+</a>

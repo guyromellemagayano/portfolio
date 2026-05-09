@@ -1,0 +1,26 @@
+---
+/**
+ * @file apps/web/src/components/Text.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native body copy primitive ported from the archived demo elements.
+ */
+
+const {
+  as: Component = "div",
+  size = "md",
+  class: className = "",
+  ...rest
+} = Astro.props;
+---
+
+<Component
+  {...rest}
+  class:list={[
+    size === "md" && "text-base/7",
+    size === "lg" && "text-lg/8",
+    "text-mist-700 dark:text-mist-400",
+    className,
+  ]}
+>
+  <slot />
+</Component>

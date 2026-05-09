@@ -1,0 +1,69 @@
+---
+/**
+ * @file apps/web/src/components/AnnouncementBadge.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native announcement badge ported from the archived demo elements.
+ */
+
+const {
+  text = "",
+  href: rawHref,
+  cta = "Learn more",
+  variant = "normal",
+  target,
+  rel,
+  class: className = "",
+  ...rest
+} = Astro.props;
+
+const href =
+  typeof rawHref === "string" && rawHref.trim().length > 0 ? rawHref : "#";
+const isExternalHref = /^https?:\/\//i.test(href);
+const resolvedTarget = target ?? (isExternalHref ? "_blank" : undefined);
+const resolvedRel =
+  rel ?? (resolvedTarget === "_blank" ? "noopener noreferrer" : undefined);
+---
+
+<a
+  {...rest}
+  href={href}
+  target={resolvedTarget}
+  rel={resolvedRel}
+  data-variant={variant}
+  class:list={[
+    "group relative inline-flex max-w-full gap-x-3 overflow-hidden rounded-md px-3.5 py-2 text-sm/6 transition max-sm:flex-col sm:items-center sm:rounded-full sm:px-3 sm:py-0.5",
+    variant === "normal" &&
+      "bg-mist-950/5 text-mist-950 hover:bg-mist-950/10 dark:bg-white/5 dark:text-white dark:ring-1 dark:ring-white/5 dark:hover:bg-white/10",
+    variant === "overlay" &&
+      "bg-mist-950/15 text-white hover:bg-mist-950/20 dark:bg-mist-950/20 dark:hover:bg-mist-950/25",
+    className,
+  ]}
+>
+  <span class="text-pretty sm:truncate">{text}</span>
+  <span
+    class:list={[
+      "h-3 w-px max-sm:hidden",
+      variant === "normal" && "bg-mist-950/20 dark:bg-white/10",
+      variant === "overlay" && "bg-white/20",
+    ]}
+    aria-hidden="true"></span>
+  <span
+    class:list={[
+      "inline-flex shrink-0 items-center gap-2 font-semibold",
+      variant === "normal" && "text-mist-950 dark:text-white",
+    ]}
+  >
+    {cta}
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      class="size-4 shrink-0"
+      aria-hidden="true"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="m5 3 5 5-5 5"
+      ></path>
+    </svg>
+  </span>
+</a>

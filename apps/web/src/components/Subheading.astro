@@ -1,0 +1,19 @@
+---
+/**
+ * @file apps/web/src/components/Subheading.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native subheading primitive ported from the archived demo elements.
+ */
+
+const { as: Component = "h2", class: className = "", ...rest } = Astro.props;
+---
+
+<Component
+  {...rest}
+  class:list={[
+    "font-display text-3xl/9 font-medium tracking-[-0.03em] text-pretty text-mist-950 sm:text-[2.5rem]/10 dark:text-white",
+    className,
+  ]}
+>
+  <slot />
+</Component>

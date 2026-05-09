@@ -1,0 +1,26 @@
+---
+/**
+ * @file apps/web/src/components/Heading.astro
+ * @author Guy Romelle Magayano
+ * @description Astro-native display heading primitive ported from the archived demo elements.
+ */
+
+const {
+  as: Component = "h1",
+  color = "dark/light",
+  class: className = "",
+  ...rest
+} = Astro.props;
+---
+
+<Component
+  {...rest}
+  class:list={[
+    "font-display text-5xl/12 tracking-[-0.04em] text-balance sm:text-[4rem]/16",
+    color === "dark/light" && "text-mist-950 dark:text-white",
+    color === "light" && "text-white",
+    className,
+  ]}
+>
+  <slot />
+</Component>
