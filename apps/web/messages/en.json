@@ -63,7 +63,12 @@
       },
       "labels": {
         "navigation": "Footer navigation",
-        "footer": "Site footer"
+        "footer": "Site footer",
+        "social": "Social links"
+      },
+      "sections": {
+        "explore": "Explore",
+        "reference": "Reference"
       },
       "brandName": "Guy Romelle Magayano"
     },

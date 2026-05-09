@@ -5,108 +5,178 @@
  * @description Static Astro footer styled after the archived site template.
  */
 
+import Container from "@web/components/Container.astro";
+import EmailSignupForm from "@web/components/EmailSignupForm.astro";
 import { navigationLinks, profile, socialLinks } from "@web/data/site";
+import { getTranslations } from "@web/lib/i18n";
 
+const footerI18n = await getTranslations("components.footer");
+const newsletterFormI18n = await getTranslations(
+  "components.form.newsletterForm"
+);
 const currentYear = new Date().getFullYear();
-const primaryFooterLinks = navigationLinks.filter(
-  (link) => link.showInFooter && link.footerGroup !== "reference"
-);
-const referenceFooterLinks = navigationLinks.filter(
-  (link) => link.showInFooter && link.footerGroup === "reference"
-);
+const footerLinkGroups = [
+  {
+    id: "explore",
+    title: footerI18n("sections.explore"),
+    placement: "footer-explore-nav",
+    links: navigationLinks.filter(
+      (link) => link.showInFooter && link.footerGroup !== "reference"
+    ),
+  },
+  {
+    id: "reference",
+    title: footerI18n("sections.reference"),
+    placement: "footer-reference-nav",
+    links: navigationLinks.filter(
+      (link) => link.showInFooter && link.footerGroup === "reference"
+    ),
+  },
+];
+
+function isHttpHref(href: string): boolean {
+  return /^https?:\/\//i.test(href);
+}
 ---
 
-<footer class="mt-32 flex-none" aria-label="Site footer">
-  <div class="sm:px-8">
-    <div class="mx-auto w-full max-w-7xl lg:px-8">
-      <div class="relative px-4 sm:px-8 lg:px-12">
-        <div class="mx-auto max-w-2xl lg:max-w-5xl">
-          <div
-            class="border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40"
+<footer class="flex-none pt-16" aria-label={footerI18n("labels.footer")}>
+  <div
+    class="bg-mist-950/2.5 py-16 text-mist-950 dark:bg-white/5 dark:text-white"
+  >
+    <Container class="flex flex-col gap-16">
+      <div class="grid grid-cols-1 gap-x-6 gap-y-16 text-sm/7 lg:grid-cols-2">
+        <div class="flex max-w-sm flex-col gap-2">
+          <p
+            id="footer-newsletter-heading"
+            class="text-sm/7 font-semibold text-mist-950 dark:text-white"
           >
-            <div class="flex flex-col justify-between gap-8 md:flex-row">
-              <div class="space-y-4">
-                <nav
-                  class="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 md:justify-start dark:text-zinc-200"
-                  aria-label="Primary footer navigation"
-                >
-                  {
-                    primaryFooterLinks.map((link) => (
-                      <a
-                        href={link.href}
-                        class="transition hover:text-teal-600 dark:hover:text-teal-400"
-                        data-analytics-content-id={link.href}
-                        data-analytics-content-name={link.label}
-                        data-analytics-content-type="navigation"
-                        data-analytics-placement="footer-primary-nav"
-                      >
-                        {link.label}
-                      </a>
-                    ))
-                  }
-                </nav>
-                <nav
-                  class="flex flex-wrap justify-center gap-x-5 gap-y-1 text-sm text-zinc-500 md:justify-start dark:text-zinc-400"
-                  aria-label="Reference footer navigation"
-                >
-                  {
-                    referenceFooterLinks.map((link) => (
-                      <a
-                        href={link.href}
-                        class="transition hover:text-teal-600 dark:hover:text-teal-400"
-                        data-analytics-content-id={link.href}
-                        data-analytics-content-name={link.label}
-                        data-analytics-content-type="navigation"
-                        data-analytics-placement="footer-reference-nav"
-                      >
-                        {link.label}
-                      </a>
-                    ))
-                  }
-                </nav>
-              </div>
-
-              <div
-                class="flex flex-wrap items-center justify-center gap-4 text-sm text-zinc-400 md:justify-end dark:text-zinc-500"
-              >
-                <p>
-                  &copy; {currentYear}
-                  {profile.name}. All rights reserved.
-                </p>
-                <div
-                  class="flex flex-wrap gap-3"
-                  role="list"
-                  aria-label="Social links"
-                >
-                  {
-                    socialLinks.map((link) => (
-                      <a
-                        href={link.href}
-                        rel={
-                          link.href.startsWith("http")
-                            ? "noopener noreferrer"
-                            : undefined
-                        }
-                        target={
-                          link.href.startsWith("http") ? "_blank" : undefined
-                        }
-                        class="transition hover:text-teal-600 dark:hover:text-teal-400"
-                        data-analytics-content-id={link.id}
-                        data-analytics-content-name={link.label}
-                        data-analytics-content-type="social_link"
-                        data-analytics-placement="footer-social"
-                        role="listitem"
-                      >
-                        {link.label}
-                      </a>
-                    ))
-                  }
-                </div>
-              </div>
-            </div>
+            {newsletterFormI18n("heading")}
+          </p>
+          <div
+            id="footer-newsletter-description"
+            class="flex flex-col gap-4 text-mist-700 dark:text-mist-400"
+          >
+            <p>{newsletterFormI18n("description")}</p>
           </div>
+          <EmailSignupForm
+            action="/thank-you"
+            method="post"
+            class="mt-2"
+            inputId="footer-email"
+            label={newsletterFormI18n("emailAddressLabel")}
+            placeholder={newsletterFormI18n("emailAddressLabel")}
+            cta={newsletterFormI18n("joinButtonTextLabel")}
+            aria-labelledby="footer-newsletter-heading"
+            aria-describedby="footer-newsletter-description"
+          />
         </div>
+
+        <nav
+          aria-label={footerI18n("labels.navigation")}
+          class="grid grid-cols-1 gap-6 sm:grid-cols-2"
+        >
+          {
+            footerLinkGroups.map((group) => (
+              <section aria-labelledby={`footer-group-${group.id}`}>
+                <h2
+                  id={`footer-group-${group.id}`}
+                  class="text-sm/7 font-semibold text-mist-950 dark:text-white"
+                >
+                  {group.title}
+                </h2>
+                <ul role="list" class="mt-2 flex flex-col gap-2">
+                  {group.links.map((link) => (
+                    <li class="text-mist-700 dark:text-mist-400">
+                      <a
+                        href={link.href}
+                        class="transition hover:text-mist-950 dark:hover:text-white"
+                        data-analytics-content-id={link.href}
+                        data-analytics-content-name={link.label}
+                        data-analytics-content-type="navigation"
+                        data-analytics-placement={group.placement}
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))
+          }
+        </nav>
       </div>
-    </div>
+
+      <div
+        class="flex flex-col gap-8 text-sm/7 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <p class="text-mist-600 dark:text-mist-500">
+          &copy; {currentYear}
+          {profile.name}. All rights reserved.
+        </p>
+
+        <ul
+          role="list"
+          class="flex items-center gap-4 sm:gap-10"
+          aria-label={footerI18n("labels.social")}
+        >
+          {
+            socialLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  rel={
+                    isHttpHref(link.href) ? "noopener noreferrer" : undefined
+                  }
+                  target={isHttpHref(link.href) ? "_blank" : undefined}
+                  aria-label={link.label}
+                  title={link.label}
+                  class="text-mist-950 transition hover:text-mist-700 dark:text-white dark:hover:text-mist-200"
+                  data-analytics-content-id={link.id}
+                  data-analytics-content-name={link.label}
+                  data-analytics-content-type="social_link"
+                  data-analytics-placement="footer-social"
+                >
+                  <span class="sr-only">{link.label}</span>
+                  {link.platform === "github" ? (
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      class="size-6"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.86 10.92c.57.1.78-.25.78-.55v-2.13c-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.27 1.19-3.07-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.19 1.17a10.98 10.98 0 0 1 5.8 0c2.22-1.48 3.19-1.17 3.19-1.17.63 1.58.23 2.75.11 3.04.74.8 1.19 1.82 1.19 3.07 0 4.41-2.69 5.39-5.25 5.67.41.36.77 1.06.77 2.13v3.16c0 .31.2.66.79.55A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+                    </svg>
+                  ) : link.platform === "linkedin" ? (
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      class="size-6"
+                      aria-hidden="true"
+                    >
+                      <path d="M4.98 3.5A2.48 2.48 0 1 0 5 8.46 2.48 2.48 0 0 0 4.98 3.5ZM3 9h4v12H3Zm7 0h3.83v1.64h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.58c0-1.33-.03-3.05-1.86-3.05-1.86 0-2.14 1.46-2.14 2.95V21h-4Z" />
+                    </svg>
+                  ) : (
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      class="size-6"
+                      aria-hidden="true"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M21.75 7.5v9A2.25 2.25 0 0 1 19.5 18.75h-15A2.25 2.25 0 0 1 2.25 16.5v-9m19.5 0A2.25 2.25 0 0 0 19.5 5.25h-15A2.25 2.25 0 0 0 2.25 7.5m19.5 0v.24a2.25 2.25 0 0 1-.98 1.86l-7.5 5a2.25 2.25 0 0 1-2.5 0l-7.5-5a2.25 2.25 0 0 1-.98-1.86V7.5"
+                      />
+                    </svg>
+                  )}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </Container>
   </div>
 </footer>

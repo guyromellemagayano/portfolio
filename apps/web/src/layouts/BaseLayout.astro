@@ -18,8 +18,8 @@ const { metadata } = Astro.props;
 ---
 
 <BaseDocument metadata={metadata}>
-  <div class="fixed inset-0 flex justify-center sm:px-8">
-    <div class="flex w-full max-w-7xl lg:px-8">
+  <div class="fixed inset-0 flex justify-center">
+    <div class="flex w-full">
       <div
         class="w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20"
       >
@@ -34,7 +34,7 @@ const { metadata } = Astro.props;
       Skip to main content
     </a>
     <Navbar />
-    <main id="main-content" class="flex-1">
+    <main id="main-content" class="isolate flex-1 overflow-clip">
       <slot />
     </main>
     <Footer />
