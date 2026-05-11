@@ -106,7 +106,7 @@ const metadata = buildStandalonePageMetadata(page);
     page.body.length > 0 ? (
       <section aria-label={`${page.title} content`}>
         <Container class="py-16">
-          <div class="prose-zinc prose max-w-3xl dark:prose-invert">
+          <div class="prose max-w-3xl prose-zinc dark:prose-invert">
             <RichText value={page.body} fallbackImageAlt={page.title} />
           </div>
         </Container>

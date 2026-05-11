@@ -6,11 +6,20 @@
  */
 
 import { navigationLinks, profile } from "@web/data/site";
-import avatarImage from "@web/images/avatar.jpg";
 
 const currentPath = Astro.url.pathname;
 const navLinks = navigationLinks.filter((link) => link.showInHeader);
 const mobileNavLinks = [...navLinks, { label: "Contact", href: "/contact" }];
+const lightModeLogo = {
+  src: "/site-logo-dark.svg",
+  width: 2160,
+  height: 798,
+};
+const darkModeLogo = {
+  src: "/site-logo-white.svg",
+  width: 2160,
+  height: 798,
+};
 
 function isActivePath(href: string): boolean {
   return currentPath === href || (href !== "/" && currentPath.startsWith(href));
@@ -76,21 +85,34 @@ function isActivePath(href: string): boolean {
       <div class="flex items-center">
         <a
           href="/"
-          class="inline-flex items-stretch"
+          class="inline-flex items-center"
           aria-label={`${profile.name} home`}
           data-analytics-content-id="/"
           data-analytics-content-name="Home"
           data-analytics-content-type="navigation"
           data-analytics-placement="header-brand"
         >
-          <img
-            src={avatarImage.src}
-            alt=""
-            width={avatarImage.width}
-            height={avatarImage.height}
-            class="size-10 rounded-full border border-mist-950/10 object-cover dark:border-white/10"
-          />
-          <span class="sr-only">{profile.name}</span>
+          <span
+            class="mt-2 inline-flex h-10 w-24 items-center"
+            aria-hidden="true"
+          >
+            <img
+              src={lightModeLogo.src}
+              alt=""
+              width={lightModeLogo.width}
+              height={lightModeLogo.height}
+              decoding="async"
+              class="block h-full w-full object-contain dark:hidden"
+            />
+            <img
+              src={darkModeLogo.src}
+              alt=""
+              width={darkModeLogo.width}
+              height={darkModeLogo.height}
+              decoding="async"
+              class="hidden h-full w-full object-contain dark:block"
+            />
+          </span>
         </a>
       </div>
 

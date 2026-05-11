@@ -3,10 +3,6 @@
 
 @plugin "@tailwindcss/typography";
 
-@config "../../typography.ts";
-
-@source "../../../../packages/ui/src";
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
