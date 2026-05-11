@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/lib/i18n.ts
  * @author Guy Romelle Magayano
- * @description Lightweight message lookup helpers for Astro-rendered React components.
+ * @description Lightweight message lookup helpers for the local English message catalog.
  */
 
 import messages from "../../messages/en.json";
@@ -48,13 +48,7 @@ function createTranslator(namespace?: string) {
   };
 }
 
-/** Returns a scoped translation function compatible with the old component call sites. */
-// eslint-disable-next-line react-x/no-unnecessary-use-prefix
-export function useTranslations(namespace?: string) {
-  return createTranslator(namespace);
-}
-
-/** Server-side alias for shared utilities that previously requested translations. */
+/** Returns a scoped translation function for server-side Astro modules. */
 export async function getTranslations(namespace?: string) {
   return createTranslator(namespace);
 }
