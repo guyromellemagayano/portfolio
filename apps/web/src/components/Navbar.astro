@@ -11,14 +11,14 @@ const currentPath = Astro.url.pathname;
 const navLinks = navigationLinks.filter((link) => link.showInHeader);
 const mobileNavLinks = [...navLinks, { label: "Contact", href: "/contact" }];
 const lightModeLogo = {
-  src: "/site-logo-dark.svg",
-  width: 2160,
-  height: 798,
+  src: "/site-logo-light.svg",
+  width: 4289,
+  height: 1573,
 };
 const darkModeLogo = {
-  src: "/site-logo-white.svg",
-  width: 2160,
-  height: 798,
+  src: "/site-logo-dark.svg",
+  width: 4289,
+  height: 1573,
 };
 
 function isActivePath(href: string): boolean {
@@ -97,18 +97,18 @@ function isActivePath(href: string): boolean {
             aria-hidden="true"
           >
             <img
-              src={lightModeLogo.src}
-              alt=""
-              width={lightModeLogo.width}
-              height={lightModeLogo.height}
-              decoding="async"
-              class="block h-full w-full object-contain dark:hidden"
-            />
-            <img
               src={darkModeLogo.src}
               alt=""
               width={darkModeLogo.width}
               height={darkModeLogo.height}
+              decoding="async"
+              class="block h-full w-full object-contain dark:hidden"
+            />
+            <img
+              src={lightModeLogo.src}
+              alt=""
+              width={lightModeLogo.width}
+              height={lightModeLogo.height}
               decoding="async"
               class="hidden h-full w-full object-contain dark:block"
             />
