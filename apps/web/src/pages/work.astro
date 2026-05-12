@@ -2,60 +2,28 @@
 /**
  * @file apps/web/src/pages/work.astro
  * @author Guy Romelle Magayano
- * @description Work index page for selected projects and case studies.
+ * @description Legacy work route that redirects to the selected work section on the about page.
  */
 
-import Container from "@web/components/Container.astro";
-import PageIntro from "@web/components/PageIntro.astro";
-import PathwayCards from "@web/components/PathwayCards.astro";
-import ProjectCard from "@web/components/ProjectCard.astro";
-import BaseLayout from "@web/layouts/BaseLayout.astro";
-import { getProjectPath, workProjects } from "@web/data/projects";
-import { pagePathways } from "@web/data/site";
-import {
-  buildPortfolioPageMetadata,
-  getPortfolioBrochurePage,
-} from "@web/lib/portfolio-brochure";
-import {
-  appendStructuredData,
-  buildCollectionPageStructuredData,
-} from "@web/lib/structured-data";
+import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
-const { page } = await getPortfolioBrochurePage("work");
-const metadata = appendStructuredData(
-  buildPortfolioPageMetadata(page),
-  buildCollectionPageStructuredData(page, workProjects, getProjectPath)
-);
+const destination = "/about#selected-work";
+const canonicalUrl =
+  toAbsoluteSiteUrl("/about") ?? "https://www.guyromellemagayano.com/about";
 ---
 
-<BaseLayout metadata={metadata}>
-  <PageIntro
-    subheading={page.subheading}
-    title={page.title}
-    intro={page.intro}
-  />
-
-  <section aria-labelledby="work-showcase-heading" role="region">
-    <Container class="py-16">
-      <h2
-        id="work-showcase-heading"
-        class="max-w-2xl text-2xl font-semibold tracking-tight text-zinc-800 sm:text-3xl dark:text-zinc-100"
-      >
-        Case studies and platform slices across commerce, publishing, SaaS, and
-        operational tooling.
-      </h2>
-      <div class="mt-10 grid gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-        {workProjects.map((project) => <ProjectCard project={project} />)}
-      </div>
-    </Container>
-  </section>
-
-  <PathwayCards
-    eyebrow="Next"
-    id="work-next-steps-heading"
-    title="Turn proof into the next decision."
-    intro="Production examples are most useful when they connect to a service shape, working style, or current constraint."
-    pathways={pagePathways.work}
-    sectionClass="pb-24"
-  />
-</BaseLayout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <meta name="robots" content="noindex,follow" />
+    <link rel="canonical" href={canonicalUrl} />
+    <title>Selected work moved | Guy Romelle Magayano</title>
+  </head>
+  <body>
+    <a href={destination}>
+      Redirecting from <code>/work</code> to <code>{destination}</code>
+    </a>
+  </body>
+</html>

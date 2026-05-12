@@ -69,13 +69,6 @@ export const profile: Profile = {
 
 export const navigationLinks: NavigationLink[] = [
   {
-    label: "Work",
-    href: "/work",
-    showInHeader: true,
-    showInFooter: true,
-    footerGroup: "primary",
-  },
-  {
     label: "Services",
     href: "/capabilities",
     showInHeader: true,
@@ -226,8 +219,8 @@ export const homePathways: SitePathway[] = [
     title: "Review production proof",
     description:
       "Production examples across platform, commerce, publishing, SaaS, and operational systems.",
-    href: "/work",
-    cta: "View work",
+    href: "/about#selected-work",
+    cta: "See case studies",
   },
   {
     id: "service-fit",
@@ -250,12 +243,12 @@ export const homePathways: SitePathway[] = [
 export const pagePathways = {
   about: [
     {
-      id: "about-work",
-      title: "See the work behind the biography",
+      id: "about-notes",
+      title: "Read the thinking behind the work",
       description:
-        "Production and platform examples that make the background more concrete.",
-      href: "/work",
-      cta: "View work",
+        "Architecture and delivery notes that show how the product and platform decisions are made.",
+      href: "/notes",
+      cta: "Read notes",
     },
     {
       id: "about-services",
@@ -280,8 +273,8 @@ export const pagePathways = {
       title: "Validate the services against proof",
       description:
         "Selected work showing how the services map to real product systems.",
-      href: "/work",
-      cta: "View work",
+      href: "/about#selected-work",
+      cta: "See case studies",
     },
     {
       id: "services-notes",
@@ -306,8 +299,8 @@ export const pagePathways = {
       title: "Compare labs with production work",
       description:
         "Move from product-system experiments into production examples with client and platform context.",
-      href: "/work",
-      cta: "View work",
+      href: "/about#selected-work",
+      cta: "See case studies",
     },
     {
       id: "labs-services",
@@ -332,8 +325,8 @@ export const pagePathways = {
       title: "See where the ideas show up",
       description:
         "Review selected work for production examples of architecture, delivery, and platform decisions.",
-      href: "/work",
-      cta: "View work",
+      href: "/about#selected-work",
+      cta: "See case studies",
     },
     {
       id: "notes-contact",
@@ -342,32 +335,6 @@ export const pagePathways = {
         "Send the system constraint, team context, and outcome you need to make real.",
       href: "/contact",
       cta: "Contact me",
-    },
-  ],
-  work: [
-    {
-      id: "work-services",
-      title: "Map the proof to a service",
-      description:
-        "Compare the production examples with review, advisory, and sprint options for your team.",
-      href: "/capabilities",
-      cta: "View services",
-    },
-    {
-      id: "work-about",
-      title: "Understand the working style",
-      description:
-        "Read the background, focus areas, and principles behind the implementation decisions.",
-      href: "/about",
-      cta: "About Guy",
-    },
-    {
-      id: "work-contact",
-      title: "Bring the constraint",
-      description:
-        "Start with the workflow, delivery risk, and outcome that would make senior help useful.",
-      href: "/contact",
-      cta: "Start a conversation",
     },
   ],
 } satisfies Record<string, SitePathway[]>;
@@ -390,10 +357,10 @@ export const pages: PageData[] = [
     subheading: "About",
     title: "A senior engineer focused on systems that stay clear under growth.",
     intro:
-      "Background, priorities, and working principles behind the way I build and stabilize web platforms.",
+      "Background, selected work, priorities, and working principles behind the way I build and stabilize web platforms.",
     seoTitle: "About - Guy Romelle Magayano",
     seoDescription:
-      "Background, priorities, and engineering principles behind Guy Romelle Magayano's full-stack platform work.",
+      "Background, selected work, and engineering principles behind Guy Romelle Magayano's full-stack platform work.",
     seoCanonicalPath: "/about",
   },
   {
@@ -418,18 +385,6 @@ export const pages: PageData[] = [
     seoDescription:
       "Senior engineering services across architecture review, technical advisory, delivery sprints, platform engineering, commerce and CMS architecture, performance, testing, and release reliability.",
     seoCanonicalPath: "/capabilities",
-  },
-  {
-    slug: "work",
-    subheading: "Work",
-    title:
-      "Selected production work across commerce, publishing, SaaS, and operations.",
-    intro:
-      "A curated view of production systems, platform improvements, and delivery work across business-critical web surfaces.",
-    seoTitle: "Work - Guy Romelle Magayano",
-    seoDescription:
-      "Selected work by Guy Romelle Magayano across commerce, publishing, SaaS, internal tooling, public-sector systems, performance, and release reliability.",
-    seoCanonicalPath: "/work",
   },
   {
     slug: "uses",

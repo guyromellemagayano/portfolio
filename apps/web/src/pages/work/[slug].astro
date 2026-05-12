@@ -57,7 +57,7 @@ function buildProjectMetadata(projectRecord: Project): WebPageMetadata {
       buildProjectStructuredData(projectRecord),
       buildBreadcrumbListStructuredData([
         { name: "Home", path: "/" },
-        { name: "Work", path: "/work" },
+        { name: "Selected work", path: "/about" },
         {
           name: projectRecord.title,
           path: projectPath,
@@ -77,10 +77,10 @@ const metadata = buildProjectMetadata(project);
     <header class="pt-16 sm:pt-32">
       <Container>
         <a
-          href="/work"
+          href="/about#selected-work"
           class="text-sm font-medium text-zinc-500 transition hover:text-teal-600 dark:text-zinc-400 dark:hover:text-teal-400"
         >
-          Back to work
+          Back to selected work
         </a>
         <div class="mt-8 max-w-2xl">
           <p

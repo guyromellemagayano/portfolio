@@ -2,17 +2,19 @@
 /**
  * @file apps/web/src/pages/about.astro
  * @author Guy Romelle Magayano
- * @description About page covering profile, experience, and working principles.
+ * @description About page covering profile, selected work, experience, and working principles.
  */
 
 import Eyebrow from "@web/components/Eyebrow.astro";
 import Heading from "@web/components/Heading.astro";
 import HeroTwoColumnWithPhoto from "@web/components/HeroTwoColumnWithPhoto.astro";
 import PathwayCards from "@web/components/PathwayCards.astro";
+import ProjectCard from "@web/components/ProjectCard.astro";
 import SplitSection from "@web/components/SplitSection.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import { certifications } from "@web/data/certifications";
 import { workExperience } from "@web/data/clients";
+import { getProjectPath, workProjects } from "@web/data/projects";
 import {
   focusAreas,
   operatingPrinciples,
@@ -25,9 +27,16 @@ import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
 } from "@web/lib/portfolio-brochure";
+import {
+  appendStructuredData,
+  buildCollectionPageStructuredData,
+} from "@web/lib/structured-data";
 
 const { page } = await getPortfolioBrochurePage("about");
-const metadata = buildPortfolioPageMetadata(page);
+const metadata = appendStructuredData(
+  buildPortfolioPageMetadata(page),
+  buildCollectionPageStructuredData(page, workProjects, getProjectPath)
+);
 const formatRoleDate = (value?: string) =>
   value
     ? new Intl.DateTimeFormat("en-US", { year: "numeric" }).format(
@@ -106,6 +115,16 @@ const formatRoleDate = (value?: string) =>
         ))
       }
     </div>
+  </SplitSection>
+
+  <SplitSection
+    id="selected-work"
+    title="Selected work"
+    sectionClass="mt-20 scroll-mt-32"
+    intro="Production case studies across commerce, publishing, SaaS, and operational systems that show how I work in real delivery environments."
+    contentClass="grid gap-x-12 gap-y-16 sm:grid-cols-2"
+  >
+    {workProjects.map((project) => <ProjectCard project={project} />)}
   </SplitSection>
 
   <SplitSection

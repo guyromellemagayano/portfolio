@@ -257,7 +257,7 @@ export default defineConfig({
       filter: (page) => {
         const pathname = new URL(page).pathname.replace(/\/+$/, "") || "/";
 
-        return !pathname.endsWith(".xml");
+        return !pathname.endsWith(".xml") && pathname !== "/work";
       },
       namespaces: {
         image: false,
