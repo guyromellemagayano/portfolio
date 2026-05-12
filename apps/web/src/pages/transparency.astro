@@ -1,0 +1,153 @@
+---
+/**
+ * @file apps/web/src/pages/transparency.astro
+ * @author Guy Romelle Magayano
+ * @description Transparency page explaining how the site operates, what it is for, and the boundaries behind it.
+ */
+
+import Container from "@web/components/Container.astro";
+import PageIntro from "@web/components/PageIntro.astro";
+import { profile } from "@web/data/site";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import {
+  buildPortfolioPageMetadata,
+  getPortfolioBrochurePage,
+  getPortfolioSocialLinkByPlatform,
+} from "@web/lib/portfolio-brochure";
+
+const { page } = await getPortfolioBrochurePage("transparency");
+const metadata = buildPortfolioPageMetadata(page);
+const emailLink = getPortfolioSocialLinkByPlatform("email");
+---
+
+<BaseLayout metadata={metadata}>
+  <PageIntro
+    subheading={page.subheading}
+    title={page.title}
+    intro={page.intro}
+  />
+
+  <section aria-labelledby="transparency-content-heading" role="region">
+    <Container class="py-16">
+      <h2 id="transparency-content-heading" class="sr-only">
+        Transparency details
+      </h2>
+      <div class="prose max-w-3xl prose-zinc dark:prose-invert">
+        <h2>Why this page exists</h2>
+        <p>
+          I would rather say these things plainly than leave them to guesswork.
+          If you are here as a client, recruiter, collaborator, or a curious
+          visitor, I want you to understand what this site is for, what kind of
+          professional intent sits behind it, and what boundaries matter to me.
+        </p>
+        <p>
+          I do not think trust should depend on reading between the lines. This
+          page exists so the site can speak more directly about that.
+        </p>
+
+        <h2>What this site is for</h2>
+        <p>
+          This site is the public home for {profile.name}'s work, writing,
+          experiments, and professional direction. It is where I try to make my
+          work legible: how I think, what I build, what I care about, and what
+          kind of problems I want to be trusted with.
+        </p>
+        <p>
+          It is also meant to help people decide whether there is a real fit for
+          a conversation, collaboration, or opportunity without needing to
+          decode a polished version of me first.
+        </p>
+
+        <h2>How this work is sustained</h2>
+        <p>
+          This site supports my professional work. That can include consulting,
+          advisory conversations, full-time opportunities, collaborations, or
+          other kinds of serious technical work. I do not want that intent to be
+          hidden.
+        </p>
+        <p>
+          At the same time, I do not want every page to read like an intake
+          form. The point is not to turn attention into a funnel. The point is
+          to present my work honestly enough that the right conversations can
+          happen for the right reasons.
+        </p>
+
+        <h2>Recommendations and incentives</h2>
+        <p>
+          If I recommend a tool, pattern, team, or way of working here, I want
+          that recommendation to be read as genuine judgment first, not as a
+          disguised sales layer.
+        </p>
+        <p>
+          There are no affiliate links, paid placements, or sponsored
+          recommendations on this site today. If that changes in a meaningful
+          way, I would rather label it plainly where it matters than hide it in
+          tone, momentum, or fine print.
+        </p>
+
+        <h2>Information and boundaries</h2>
+        <p>
+          Like most websites, this one can receive limited technical and
+          communication information needed to operate, understand usage at a
+          high level, and respond clearly when someone reaches out. I do not
+          want data collection to become the point of the site.
+        </p>
+        <ul>
+          <li>I do not sell visitor information.</li>
+          <li>I do not run this site as an advertising machine.</li>
+          <li>
+            I do not use hidden sponsorships or disguised paid recommendations.
+          </li>
+          <li>
+            I do not treat direct contact as permission for unrelated follow-up.
+          </li>
+          <li>
+            I do not want to collect more information than is useful for running
+            the site and responding well.
+          </li>
+        </ul>
+
+        <h2>Contact and next steps</h2>
+        <p>
+          If you contact me, I treat that as the start of a direct conversation,
+          not as consent for broad marketing or unrelated outreach.
+        </p>
+        <p>
+          If I need context to respond well, I may keep only what is useful for
+          that exchange. What I do not want is for a simple inquiry to quietly
+          turn into something broader than the person intended.
+        </p>
+        <p>
+          If future scheduling, payment, or formal engagement steps need to
+          happen, I would rather handle those through a separate page or flow
+          built for that purpose. A casual message should stay a casual message
+          until both sides are clearly choosing something more formal.
+        </p>
+        <p>
+          If anything here feels unclear, questions about this page can be sent
+          through the contact page
+          {
+            emailLink ? (
+              <>
+                {" "}
+                or by emailing <a href={emailLink.href}>{profile.name}</a>
+              </>
+            ) : null
+          }
+          .
+        </p>
+
+        <h2>Living note</h2>
+        <p>
+          This page is a living note, not a one-time statement. If the way this
+          site works changes in a meaningful way, I want this page to change
+          with it.
+        </p>
+
+        <p>
+          <strong>Last updated:</strong> May 12, 2026.
+        </p>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

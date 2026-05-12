@@ -111,8 +111,8 @@ export const navigationLinks: NavigationLink[] = [
     footerGroup: "reference",
   },
   {
-    label: "Privacy",
-    href: "/privacy",
+    label: "Transparency",
+    href: "/transparency",
     showInHeader: false,
     showInFooter: true,
     footerGroup: "reference",
@@ -409,15 +409,16 @@ export const pages: PageData[] = [
     seoCanonicalPath: "/contact",
   },
   {
-    slug: "privacy",
-    subheading: "Privacy and consent",
-    title: "How this site handles analytics and contact paths.",
+    slug: "transparency",
+    subheading: "Transparency",
+    title:
+      "What this site is for, how I work, and what I want to be clear about.",
     intro:
-      "How this portfolio handles hosting logs, analytics, performance measurement, direct contact paths, and external profile links.",
-    seoTitle: "Privacy and Consent - Guy Romelle Magayano",
+      "A plain-language note about how this portfolio operates, what kind of professional intent sits behind it, and what boundaries I try to keep visible.",
+    seoTitle: "Transparency - Guy Romelle Magayano",
     seoDescription:
-      "Privacy and analytics disclosure for the Guy Romelle Magayano portfolio and professional site.",
-    seoCanonicalPath: "/privacy",
+      "Transparency note for the Guy Romelle Magayano portfolio covering trust, disclosure, visitor boundaries, and how the site is meant to be used.",
+    seoCanonicalPath: "/transparency",
   },
   {
     slug: "labs",

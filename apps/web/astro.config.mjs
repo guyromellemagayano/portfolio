@@ -250,6 +250,9 @@ function getSentryPublicRuntimeEnv() {
 }
 
 export default defineConfig({
+  redirects: {
+    "/privacy": "/transparency",
+  },
   site,
   integrations: [
     sentry(getSentryBuildOptions()),
@@ -257,7 +260,11 @@ export default defineConfig({
       filter: (page) => {
         const pathname = new URL(page).pathname.replace(/\/+$/, "") || "/";
 
-        return !pathname.endsWith(".xml") && pathname !== "/work";
+        return (
+          !pathname.endsWith(".xml") &&
+          pathname !== "/privacy" &&
+          pathname !== "/work"
+        );
       },
       namespaces: {
         image: false,
