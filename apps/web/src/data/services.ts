@@ -1,8 +1,26 @@
 /**
  * @file apps/web/src/data/services.ts
  * @author Guy Romelle Magayano
- * @description Service offering data stored as simple page-ready records.
+ * @description Service offering data stored as JSON with typed runtime parsing.
  */
+
+import rawServicesDataJson from "@web/data/services.json";
+import {
+  assertExactKeys,
+  assertUniqueValues,
+  expectArray,
+  expectEnum,
+  expectOptionalBoolean,
+  expectOptionalString,
+  expectPathname,
+  expectRecord,
+  expectString,
+  expectStringArray,
+} from "@web/lib/json-data";
+
+const LINK_TARGETS = ["_blank", "_self"] as const;
+
+type BookingTarget = (typeof LINK_TARGETS)[number];
 
 export interface Service {
   id: string;
@@ -32,158 +50,148 @@ export interface BookingPath {
   description: string;
   cta: string;
   href: string;
-  target?: "_blank" | "_self";
+  target?: BookingTarget;
 }
 
-export const services: Service[] = [
-  {
-    id: "architecture-review",
-    title: "Architecture Review",
-    description:
-      "A focused audit of your frontend or product platform: structure, boundaries, delivery risks, and the changes that will create the most leverage.",
-    bullets: [
-      "Codebase and architecture review",
-      "A prioritized remediation plan",
-      "A working session to align next steps",
-    ],
-    outcomes: [
-      "A written map of the current architecture, including ownership boundaries and high-risk coupling.",
-      "A sequenced remediation plan that separates quick wins from deeper platform work.",
-      "Decision notes your team can use to align engineering, product, and design stakeholders.",
-    ],
-    process: [
-      "Inspect route structure, shared packages, data flow, accessibility, SEO, and performance risks.",
-      "Review the most important product workflows with the team that owns the surface.",
-      "Turn findings into an implementation-ready plan with tradeoffs and first changes.",
-    ],
-    icon: "Review",
-    price: "$3,000",
-    priceNote: "starting point",
-    bestFor:
-      "Teams about to scale a product surface, redesign a frontend foundation, or clean up a monorepo that is starting to fight back.",
-    cta: "Start a review",
-    href: "/contact",
-    featured: true,
-  },
-  {
-    id: "technical-advisory",
-    title: "Technical Advisory",
-    description:
-      "Ongoing product and platform guidance for teams that need strong engineering judgment without hiring a full-time staff-level lead immediately.",
-    bullets: [
-      "Architecture and design reviews",
-      "Async guidance on implementation direction",
-      "Ongoing input on standards and system boundaries",
-    ],
-    outcomes: [
-      "Clear technical direction before the team commits to costly product or platform decisions.",
-      "A recurring decision loop for architecture, standards, accessibility, SEO, and delivery risk.",
-      "Practical written guidance that helps senior engineers move without adding process weight.",
-    ],
-    process: [
-      "Set the decision cadence and the product surfaces that need advisory coverage.",
-      "Review proposed approaches, pull request direction, and architecture risks asynchronously.",
-      "Keep a running recommendation log so decisions remain visible after the engagement.",
-    ],
-    icon: "Advisory",
-    price: "$2,500",
-    priceNote: "per month",
-    bestFor:
-      "Founders, engineering leads, and teams working through product/platform tradeoffs in real time.",
-    cta: "Discuss advisory",
-    href: "/contact",
-    featured: true,
-  },
-  {
-    id: "delivery-sprint",
-    title: "Delivery Sprint",
-    description:
-      "A fixed-scope implementation sprint for high-leverage work like navigation refactors, design system foundations, content delivery layers, or portfolio/platform restructuring.",
-    bullets: [
-      "Scoped implementation plan",
-      "Hands-on code and architecture changes",
-      "Verification and handoff notes",
-    ],
-    outcomes: [
-      "A shipped slice of implementation work tied to a clear business or delivery constraint.",
-      "Code changes that improve the system boundary instead of only patching one screen.",
-      "Verification notes, follow-up recommendations, and handoff context for the owning team.",
-    ],
-    process: [
-      "Define the narrowest high-leverage scope and the acceptance checks for the sprint.",
-      "Implement the changes directly in the repo with tests and reviewable checkpoints.",
-      "Document what changed, what remains risky, and what should happen next.",
-    ],
-    icon: "Sprint",
-    price: "From $15,000",
-    priceNote: "fixed scope",
-    bestFor:
-      "Teams that already know the problem and need a senior engineer to push through the actual implementation.",
-    cta: "Scope a sprint",
-    href: "/contact",
-    featured: true,
-  },
-];
+type ServicesData = {
+  services: Service[];
+  capabilityClusters: CapabilityCluster[];
+  bookingPaths: BookingPath[];
+};
 
-export const capabilityClusters: CapabilityCluster[] = [
-  {
-    id: "platform-engineering",
-    title: "Platform Engineering",
-    items: [
-      "Full-stack product systems",
-      "API and data-flow boundaries",
-      "Internal tools and admin workflows",
-      "Maintainable architecture decisions",
-      "Documentation and handoff paths",
-    ],
-  },
-  {
-    id: "commerce-cms-architecture",
-    title: "Commerce and CMS Architecture",
-    items: [
-      "Storefront journeys",
-      "Checkout and order state",
-      "Content models and editorial workflows",
-      "SEO metadata and structured data",
-      "Localization and publishing operations",
-    ],
-  },
-  {
-    id: "performance-release-reliability",
-    title: "Performance and Release Reliability",
-    items: [
-      "Core Web Vitals",
-      "Regression coverage",
-      "CI/CD quality gates",
-      "Observability and runbooks",
-      "Safer release workflows",
-    ],
-  },
-];
+const SERVICES_DATA_KEYS = [
+  "services",
+  "capabilityClusters",
+  "bookingPaths",
+] as const;
+const SERVICE_KEYS = [
+  "id",
+  "title",
+  "description",
+  "bullets",
+  "outcomes",
+  "process",
+  "icon",
+  "price",
+  "priceNote",
+  "bestFor",
+  "cta",
+  "href",
+  "featured",
+] as const;
+const CAPABILITY_CLUSTER_KEYS = ["id", "title", "items"] as const;
+const BOOKING_PATH_KEYS = [
+  "id",
+  "title",
+  "description",
+  "cta",
+  "href",
+  "target",
+] as const;
 
-export const bookingPaths: BookingPath[] = [
-  {
-    id: "review-call",
-    title: "Architecture review call",
-    description:
-      "Best when you need a fast read on structure, risk, and the next few changes worth making.",
-    cta: "Start with review",
-    href: "/contact",
-  },
-  {
-    id: "advisory-fit",
-    title: "Advisory fit check",
-    description:
-      "Best when you want recurring senior engineering judgment around product and platform direction.",
-    cta: "Discuss advisory",
-    href: "/contact",
-  },
-  {
-    id: "sprint-scope",
-    title: "Delivery sprint scope",
-    description:
-      "Best when the problem is clear and you need direct implementation on a contained product surface.",
-    cta: "Scope a sprint",
-    href: "/contact",
-  },
-];
+function parseService(value: unknown, path: string): Service {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, SERVICE_KEYS, path);
+
+  return {
+    id: expectString(record.id, `${path}.id`),
+    title: expectString(record.title, `${path}.title`),
+    description: expectString(record.description, `${path}.description`),
+    bullets: expectStringArray(record.bullets, `${path}.bullets`),
+    outcomes: expectStringArray(record.outcomes, `${path}.outcomes`),
+    process: expectStringArray(record.process, `${path}.process`),
+    icon: expectString(record.icon, `${path}.icon`),
+    price: expectString(record.price, `${path}.price`),
+    priceNote: expectOptionalString(record.priceNote, `${path}.priceNote`),
+    bestFor: expectString(record.bestFor, `${path}.bestFor`),
+    cta: expectString(record.cta, `${path}.cta`),
+    href: expectPathname(record.href, `${path}.href`),
+    featured: expectOptionalBoolean(record.featured, `${path}.featured`),
+  };
+}
+
+function parseCapabilityCluster(
+  value: unknown,
+  path: string
+): CapabilityCluster {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, CAPABILITY_CLUSTER_KEYS, path);
+
+  return {
+    id: expectString(record.id, `${path}.id`),
+    title: expectString(record.title, `${path}.title`),
+    items: expectStringArray(record.items, `${path}.items`),
+  };
+}
+
+function parseBookingPath(value: unknown, path: string): BookingPath {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, BOOKING_PATH_KEYS, path);
+
+  return {
+    id: expectString(record.id, `${path}.id`),
+    title: expectString(record.title, `${path}.title`),
+    description: expectString(record.description, `${path}.description`),
+    cta: expectString(record.cta, `${path}.cta`),
+    href: expectPathname(record.href, `${path}.href`),
+    target:
+      typeof record.target === "undefined"
+        ? undefined
+        : expectEnum(record.target, LINK_TARGETS, `${path}.target`),
+  };
+}
+
+function createServicesData(value: unknown): ServicesData {
+  const path = "data/services.json";
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, SERVICES_DATA_KEYS, path);
+
+  const services = expectArray(record.services, `${path}.services`).map(
+    (entry, index) => parseService(entry, `${path}.services[${index}]`)
+  );
+  const capabilityClusters = expectArray(
+    record.capabilityClusters,
+    `${path}.capabilityClusters`
+  ).map((entry, index) =>
+    parseCapabilityCluster(entry, `${path}.capabilityClusters[${index}]`)
+  );
+  const bookingPaths = expectArray(
+    record.bookingPaths,
+    `${path}.bookingPaths`
+  ).map((entry, index) =>
+    parseBookingPath(entry, `${path}.bookingPaths[${index}]`)
+  );
+
+  assertUniqueValues(
+    services.map((service) => service.id),
+    "service id",
+    `${path}.services`
+  );
+  assertUniqueValues(
+    capabilityClusters.map((cluster) => cluster.id),
+    "capability cluster id",
+    `${path}.capabilityClusters`
+  );
+  assertUniqueValues(
+    bookingPaths.map((bookingPath) => bookingPath.id),
+    "booking path id",
+    `${path}.bookingPaths`
+  );
+
+  return {
+    services,
+    capabilityClusters,
+    bookingPaths,
+  };
+}
+
+const servicesData = createServicesData(rawServicesDataJson as unknown);
+
+export const services: Service[] = servicesData.services;
+export const capabilityClusters: CapabilityCluster[] =
+  servicesData.capabilityClusters;
+export const bookingPaths: BookingPath[] = servicesData.bookingPaths;

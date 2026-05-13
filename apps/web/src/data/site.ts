@@ -1,8 +1,39 @@
 /**
  * @file apps/web/src/data/site.ts
  * @author Guy Romelle Magayano
- * @description Core profile, page, and shell data for the Astro site.
+ * @description Core profile, page, and shell data parsed from local JSON records.
  */
+
+import rawSiteDataJson from "@web/data/site.json";
+import {
+  assertExactKeys,
+  assertUniqueValues,
+  expectArray,
+  expectBoolean,
+  expectEnum,
+  expectHref,
+  expectOptionalBoolean,
+  expectOptionalString,
+  expectPathname,
+  expectRecord,
+  expectString,
+  expectStringArray,
+} from "@web/lib/json-data";
+
+const FOOTER_GROUPS = ["primary", "reference"] as const;
+const SOCIAL_PLATFORMS = [
+  "email",
+  "github",
+  "instagram",
+  "linkedin",
+  "website",
+  "x",
+] as const;
+const PAGE_PATHWAY_KEYS = ["about", "capabilities", "labs", "notes"] as const;
+
+type FooterGroup = (typeof FOOTER_GROUPS)[number];
+type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
+type PagePathwayKey = (typeof PAGE_PATHWAY_KEYS)[number];
 
 export interface PageData {
   slug: string;
@@ -28,12 +59,12 @@ export interface NavigationLink {
   href: string;
   showInHeader: boolean;
   showInFooter: boolean;
-  footerGroup?: "primary" | "reference";
+  footerGroup?: FooterGroup;
 }
 
 export interface SocialLink {
   id: string;
-  platform: "email" | "github" | "instagram" | "linkedin" | "website" | "x";
+  platform: SocialPlatform;
   label: string;
   href: string;
 }
@@ -58,381 +89,320 @@ export interface SitePathway {
   cta: string;
 }
 
-export const profile: Profile = {
-  name: "Guy Romelle Magayano",
-  role: "Senior full-stack software engineer",
-  location: "Davao City, Philippines",
-  heroTitle: "Refined engineering for reliable web platforms.",
-  heroIntro:
-    "I build, modernize, and stabilize production web platforms across commerce, publishing, SaaS, internal tools, and content-heavy systems.",
+type SiteData = {
+  profile: Profile;
+  navigationLinks: NavigationLink[];
+  socialLinks: SocialLink[];
+  focusAreas: string[];
+  foundationCapabilities: string[];
+  clientOutcomes: ClientOutcome[];
+  operatingPrinciples: string[];
+  buildSteps: BuildStep[];
+  homePathways: SitePathway[];
+  pagePathways: Record<PagePathwayKey, SitePathway[]>;
+  pages: PageData[];
 };
 
-export const navigationLinks: NavigationLink[] = [
-  {
-    label: "Services",
-    href: "/capabilities",
-    showInHeader: true,
-    showInFooter: true,
-    footerGroup: "primary",
-  },
-  {
-    label: "Notes",
-    href: "/notes",
-    showInHeader: true,
-    showInFooter: true,
-    footerGroup: "primary",
-  },
-  {
-    label: "About",
-    href: "/about",
-    showInHeader: true,
-    showInFooter: true,
-    footerGroup: "primary",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-    showInHeader: false,
-    showInFooter: true,
-    footerGroup: "primary",
-  },
-  {
-    label: "Labs",
-    href: "/labs",
-    showInHeader: false,
-    showInFooter: true,
-    footerGroup: "reference",
-  },
-  {
-    label: "Uses",
-    href: "/uses",
-    showInHeader: false,
-    showInFooter: true,
-    footerGroup: "reference",
-  },
-  {
-    label: "Transparency",
-    href: "/transparency",
-    showInHeader: false,
-    showInFooter: true,
-    footerGroup: "reference",
-  },
-];
-
-export const socialLinks: SocialLink[] = [
-  {
-    id: "social-github",
-    platform: "github",
-    label: "GitHub",
-    href: "https://github.com/guyromellemagayano",
-  },
-  {
-    id: "social-linkedin",
-    platform: "linkedin",
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/guyromellemagayano",
-  },
-  {
-    id: "social-email",
-    platform: "email",
-    label: "Email",
-    href: "mailto:aspiredtechie2010@gmail.com",
-  },
-];
-
-export const focusAreas = [
-  "Full-stack Platform Engineering",
-  "Commerce and CMS Architecture",
-  "Performance and Release Reliability",
-  "Testing and Quality Systems",
-  "Technical Leadership",
-  "Accessibility and SEO",
+const SITE_DATA_KEYS = [
+  "profile",
+  "navigationLinks",
+  "socialLinks",
+  "focusAreas",
+  "foundationCapabilities",
+  "clientOutcomes",
+  "operatingPrinciples",
+  "buildSteps",
+  "homePathways",
+  "pagePathways",
+  "pages",
+] as const;
+const PROFILE_KEYS = [
+  "name",
+  "role",
+  "location",
+  "heroTitle",
+  "heroIntro",
+] as const;
+const NAVIGATION_LINK_KEYS = [
+  "label",
+  "href",
+  "showInHeader",
+  "showInFooter",
+  "footerGroup",
+] as const;
+const SOCIAL_LINK_KEYS = ["id", "platform", "label", "href"] as const;
+const CLIENT_OUTCOME_KEYS = ["id", "title", "detail"] as const;
+const BUILD_STEP_KEYS = ["id", "title", "detail"] as const;
+const SITE_PATHWAY_KEYS = [
+  "id",
+  "title",
+  "description",
+  "href",
+  "cta",
+] as const;
+const PAGE_KEYS = [
+  "slug",
+  "subheading",
+  "title",
+  "intro",
+  "seoTitle",
+  "seoDescription",
+  "seoCanonicalPath",
+  "seoNoIndex",
 ] as const;
 
-export const foundationCapabilities = [
-  "Production storefront and publishing workflows that stay maintainable under change",
-  "Full-stack product surfaces with explicit data flow, release checks, and observability",
-  "Accessibility, SEO, and Core Web Vitals treated as product-quality requirements",
-  "Technical direction that connects architecture decisions to team delivery risk",
-  "Documentation and tests that help teams maintain the work after handoff",
-] as const;
+function parseProfile(value: unknown, path: string): Profile {
+  const record = expectRecord(value, path);
 
-export const clientOutcomes: ClientOutcome[] = [
-  {
-    id: "architecture-clarity",
-    title: "Architecture clarity",
-    detail:
-      "Find the system boundaries, ownership lines, and delivery risks that make production surfaces harder to extend.",
-  },
-  {
-    id: "implementation-momentum",
-    title: "Delivery confidence",
-    detail:
-      "Turn recommendations into scoped implementation work with tests, reviewable checkpoints, and clear handoff notes.",
-  },
-  {
-    id: "system-confidence",
-    title: "Operational calm",
-    detail:
-      "Tighten performance, accessibility, SEO, observability, and release paths before small issues become business risk.",
-  },
-];
+  assertExactKeys(record, PROFILE_KEYS, path);
 
-export const operatingPrinciples = [
-  "Design the system before polishing the screen.",
-  "Make abstractions earn their place.",
-  "Treat performance and accessibility as product quality.",
-  "Automate checks that protect important releases.",
-  "Document decisions so teams can maintain the work.",
-] as const;
+  return {
+    name: expectString(record.name, `${path}.name`),
+    role: expectString(record.role, `${path}.role`),
+    location: expectString(record.location, `${path}.location`),
+    heroTitle: expectString(record.heroTitle, `${path}.heroTitle`),
+    heroIntro: expectString(record.heroIntro, `${path}.heroIntro`),
+  };
+}
 
-export const buildSteps: BuildStep[] = [
-  {
-    id: "foundation",
-    title: "Understand the real constraint",
-    detail:
-      "Start with the workflow, release risk, business constraint, and team context before naming the technical fix.",
-  },
-  {
-    id: "public-proof",
-    title: "Map the system",
-    detail:
-      "Make the data flow, ownership boundaries, coupling, and quality gaps visible enough to discuss calmly.",
-  },
-  {
-    id: "strongest-signal",
-    title: "Ship the narrow fix",
-    detail:
-      "Land the smallest meaningful slice with tests, documentation, and verification tied to the outcome.",
-  },
-  {
-    id: "specialization",
-    title: "Leave a maintainable path",
-    detail:
-      "Hand off decisions, tradeoffs, and follow-up risks so the team can keep moving after the engagement.",
-  },
-];
+function parseNavigationLink(value: unknown, path: string): NavigationLink {
+  const record = expectRecord(value, path);
 
-export const homePathways: SitePathway[] = [
-  {
-    id: "production-proof",
-    title: "Review production proof",
-    description:
-      "Production examples across platform, commerce, publishing, SaaS, and operational systems.",
-    href: "/about#selected-work",
-    cta: "See case studies",
-  },
-  {
-    id: "service-fit",
-    title: "Find the right service",
-    description:
-      "Architecture review, advisory input, and direct implementation for contained product surfaces.",
-    href: "/capabilities",
-    cta: "View services",
-  },
-  {
-    id: "engineering-judgment",
-    title: "Read the thinking",
-    description:
-      "Practical writing on architecture, delivery risk, content systems, and maintainable product work.",
-    href: "/notes",
-    cta: "Read notes",
-  },
-];
+  assertExactKeys(record, NAVIGATION_LINK_KEYS, path);
 
-export const pagePathways = {
-  about: [
-    {
-      id: "about-notes",
-      title: "Read the thinking behind the work",
-      description:
-        "Architecture and delivery notes that show how the product and platform decisions are made.",
-      href: "/notes",
-      cta: "Read notes",
-    },
-    {
-      id: "about-services",
-      title: "Map the experience to your need",
-      description:
-        "Architecture review, advisory, and delivery sprint paths for different constraints.",
-      href: "/capabilities",
-      cta: "View services",
-    },
-    {
-      id: "about-contact",
-      title: "Start with direct context",
-      description:
-        "Share the workflow, risk, or product surface where senior engineering judgment would help.",
-      href: "/contact",
-      cta: "Contact me",
-    },
-  ],
-  capabilities: [
-    {
-      id: "services-work",
-      title: "Validate the services against proof",
-      description:
-        "Selected work showing how the services map to real product systems.",
-      href: "/about#selected-work",
-      cta: "See case studies",
-    },
-    {
-      id: "services-notes",
-      title: "Read the technical thinking",
-      description:
-        "Architecture and delivery notes that show the decision-making style behind the work.",
-      href: "/notes",
-      cta: "Read notes",
-    },
-    {
-      id: "services-contact",
-      title: "Discuss the engagement shape",
-      description:
-        "Send the product context, delivery risk, and outcome that would make the work worthwhile.",
-      href: "/contact",
-      cta: "Start a conversation",
-    },
-  ],
-  labs: [
-    {
-      id: "labs-work",
-      title: "Compare labs with production work",
-      description:
-        "Move from product-system experiments into production examples with client and platform context.",
-      href: "/about#selected-work",
-      cta: "See case studies",
-    },
-    {
-      id: "labs-services",
-      title: "Turn an experiment into implementation",
-      description:
-        "Services for teams that want similar product-system thinking applied to a real codebase.",
-      href: "/capabilities",
-      cta: "View services",
-    },
-  ],
-  notes: [
-    {
-      id: "notes-services",
-      title: "Turn the thinking into a scope",
-      description:
-        "Service paths for product surfaces or platforms facing similar constraints.",
-      href: "/capabilities",
-      cta: "View services",
-    },
-    {
-      id: "notes-work",
-      title: "See where the ideas show up",
-      description:
-        "Review selected work for production examples of architecture, delivery, and platform decisions.",
-      href: "/about#selected-work",
-      cta: "See case studies",
-    },
-    {
-      id: "notes-contact",
-      title: "Start a focused conversation",
-      description:
-        "Send the system constraint, team context, and outcome you need to make real.",
-      href: "/contact",
-      cta: "Contact me",
-    },
-  ],
-} satisfies Record<string, SitePathway[]>;
+  return {
+    label: expectString(record.label, `${path}.label`),
+    href: expectPathname(record.href, `${path}.href`),
+    showInHeader: expectBoolean(record.showInHeader, `${path}.showInHeader`),
+    showInFooter: expectBoolean(record.showInFooter, `${path}.showInFooter`),
+    footerGroup:
+      typeof record.footerGroup === "undefined"
+        ? undefined
+        : expectEnum(record.footerGroup, FOOTER_GROUPS, `${path}.footerGroup`),
+  };
+}
 
-export const pages: PageData[] = [
-  {
-    slug: "",
-    subheading: "Senior full-stack engineering",
-    title:
-      "Reliable web platforms for teams that need clearer architecture and safer delivery.",
-    intro:
-      "Production-focused engineering across commerce, publishing, SaaS, internal tools, and content-heavy systems.",
-    seoTitle: "Guy Romelle Magayano - Senior Full-Stack Software Engineer",
-    seoDescription:
-      "Senior full-stack software engineer building, modernizing, and stabilizing reliable web platforms across commerce, publishing, SaaS, and internal systems.",
-    seoCanonicalPath: "/",
-  },
-  {
-    slug: "about",
-    subheading: "About",
-    title: "A senior engineer focused on systems that stay clear under growth.",
-    intro:
-      "Background, selected work, priorities, and working principles behind the way I build and stabilize web platforms.",
-    seoTitle: "About - Guy Romelle Magayano",
-    seoDescription:
-      "Background, selected work, and engineering principles behind Guy Romelle Magayano's full-stack platform work.",
-    seoCanonicalPath: "/about",
-  },
-  {
-    slug: "notes",
-    subheading: "Notes",
-    title: "Notes on architecture, delivery, and maintainable web platforms.",
-    intro:
-      "Short writing on architecture, release safety, content systems, and the mechanics behind reliable product engineering.",
-    seoTitle: "Notes - Guy Romelle Magayano",
-    seoDescription:
-      "Notes on frontend architecture, platform systems, release safety, content modeling, and pragmatic product engineering.",
-    seoCanonicalPath: "/notes",
-  },
-  {
-    slug: "capabilities",
-    subheading: "Services",
-    title:
-      "Senior engineering services for clearer systems and safer delivery.",
-    intro:
-      "Architecture review, technical advisory, and implementation support for teams working through platform, commerce, CMS, performance, and release constraints.",
-    seoTitle: "Services - Guy Romelle Magayano",
-    seoDescription:
-      "Senior engineering services across architecture review, technical advisory, delivery sprints, platform engineering, commerce and CMS architecture, performance, testing, and release reliability.",
-    seoCanonicalPath: "/capabilities",
-  },
-  {
-    slug: "uses",
-    subheading: "Uses",
-    title: "The setup behind the work.",
-    intro:
-      "Software, hardware, and workflow tools I use to ship maintainable product systems.",
-    seoTitle: "Uses - Guy Romelle Magayano",
-    seoDescription:
-      "Recommended tools, setup details, and workflow choices for product and platform engineering.",
-    seoCanonicalPath: "/uses",
-  },
-  {
-    slug: "contact",
-    subheading: "Contact",
-    title: "Start with the current constraint and the outcome you need.",
-    intro:
-      "For roles, consulting, advisory, or platform modernization work, send the context, constraint, and result you need.",
-    seoTitle: "Contact - Guy Romelle Magayano",
-    seoDescription:
-      "Contact Guy Romelle Magayano about senior full-stack engineering roles, architecture review, technical advisory, or implementation work.",
-    seoCanonicalPath: "/contact",
-  },
-  {
-    slug: "transparency",
-    subheading: "Transparency",
-    title:
-      "What this site is for, how I work, and what I want to be clear about.",
-    intro:
-      "A plain-language note about how this portfolio operates, what kind of professional intent sits behind it, and what boundaries I try to keep visible.",
-    seoTitle: "Transparency - Guy Romelle Magayano",
-    seoDescription:
-      "Transparency note for the Guy Romelle Magayano portfolio covering trust, disclosure, visitor boundaries, and how the site is meant to be used.",
-    seoCanonicalPath: "/transparency",
-  },
-  {
-    slug: "labs",
-    subheading: "Labs",
-    title:
-      "Engineering lab surfaces that show how I think about product systems.",
-    intro:
-      "Production-style demos exploring platform foundations, product systems, commerce flows, operational consoles, and content workflows.",
-    seoTitle: "Labs - Guy Romelle Magayano",
-    seoDescription:
-      "Engineering lab demos by Guy Romelle Magayano showing platform foundations, SaaS, commerce, operations, and content workflow thinking.",
-    seoCanonicalPath: "/labs",
-  },
-];
+function parseSocialLink(value: unknown, path: string): SocialLink {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, SOCIAL_LINK_KEYS, path);
+
+  return {
+    id: expectString(record.id, `${path}.id`),
+    platform: expectEnum(record.platform, SOCIAL_PLATFORMS, `${path}.platform`),
+    label: expectString(record.label, `${path}.label`),
+    href: expectHref(record.href, `${path}.href`),
+  };
+}
+
+function parseClientOutcome(value: unknown, path: string): ClientOutcome {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, CLIENT_OUTCOME_KEYS, path);
+
+  return {
+    id: expectString(record.id, `${path}.id`),
+    title: expectString(record.title, `${path}.title`),
+    detail: expectString(record.detail, `${path}.detail`),
+  };
+}
+
+function parseBuildStep(value: unknown, path: string): BuildStep {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, BUILD_STEP_KEYS, path);
+
+  return {
+    id: expectString(record.id, `${path}.id`),
+    title: expectString(record.title, `${path}.title`),
+    detail: expectString(record.detail, `${path}.detail`),
+  };
+}
+
+function parseSitePathway(value: unknown, path: string): SitePathway {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, SITE_PATHWAY_KEYS, path);
+
+  return {
+    id: expectString(record.id, `${path}.id`),
+    title: expectString(record.title, `${path}.title`),
+    description: expectString(record.description, `${path}.description`),
+    href: expectPathname(record.href, `${path}.href`),
+    cta: expectString(record.cta, `${path}.cta`),
+  };
+}
+
+function parsePageData(value: unknown, path: string): PageData {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, PAGE_KEYS, path);
+
+  return {
+    slug: expectString(record.slug, `${path}.slug`, { allowEmpty: true }),
+    subheading: expectString(record.subheading, `${path}.subheading`),
+    title: expectString(record.title, `${path}.title`),
+    intro: expectString(record.intro, `${path}.intro`),
+    seoTitle: expectOptionalString(record.seoTitle, `${path}.seoTitle`),
+    seoDescription: expectOptionalString(
+      record.seoDescription,
+      `${path}.seoDescription`
+    ),
+    seoCanonicalPath: expectPathname(
+      record.seoCanonicalPath,
+      `${path}.seoCanonicalPath`
+    ),
+    seoNoIndex: expectOptionalBoolean(record.seoNoIndex, `${path}.seoNoIndex`),
+  };
+}
+
+function parsePathwayGroup(value: unknown, path: string): SitePathway[] {
+  return expectArray(value, path).map((entry, index) =>
+    parseSitePathway(entry, `${path}[${index}]`)
+  );
+}
+
+function createSiteData(value: unknown): SiteData {
+  const path = "data/site.json";
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, SITE_DATA_KEYS, path);
+
+  const profile = parseProfile(record.profile, `${path}.profile`);
+  const navigationLinks = expectArray(
+    record.navigationLinks,
+    `${path}.navigationLinks`
+  ).map((entry, index) =>
+    parseNavigationLink(entry, `${path}.navigationLinks[${index}]`)
+  );
+  const socialLinks = expectArray(
+    record.socialLinks,
+    `${path}.socialLinks`
+  ).map((entry, index) =>
+    parseSocialLink(entry, `${path}.socialLinks[${index}]`)
+  );
+  const focusAreas = expectStringArray(record.focusAreas, `${path}.focusAreas`);
+  const foundationCapabilities = expectStringArray(
+    record.foundationCapabilities,
+    `${path}.foundationCapabilities`
+  );
+  const clientOutcomes = expectArray(
+    record.clientOutcomes,
+    `${path}.clientOutcomes`
+  ).map((entry, index) =>
+    parseClientOutcome(entry, `${path}.clientOutcomes[${index}]`)
+  );
+  const operatingPrinciples = expectStringArray(
+    record.operatingPrinciples,
+    `${path}.operatingPrinciples`
+  );
+  const buildSteps = expectArray(record.buildSteps, `${path}.buildSteps`).map(
+    (entry, index) => parseBuildStep(entry, `${path}.buildSteps[${index}]`)
+  );
+  const homePathways = parsePathwayGroup(
+    record.homePathways,
+    `${path}.homePathways`
+  );
+  const pagePathwaysRecord = expectRecord(
+    record.pagePathways,
+    `${path}.pagePathways`
+  );
+
+  assertExactKeys(
+    pagePathwaysRecord,
+    PAGE_PATHWAY_KEYS,
+    `${path}.pagePathways`
+  );
+
+  const pagePathways: Record<PagePathwayKey, SitePathway[]> = {
+    about: parsePathwayGroup(
+      pagePathwaysRecord.about,
+      `${path}.pagePathways.about`
+    ),
+    capabilities: parsePathwayGroup(
+      pagePathwaysRecord.capabilities,
+      `${path}.pagePathways.capabilities`
+    ),
+    labs: parsePathwayGroup(
+      pagePathwaysRecord.labs,
+      `${path}.pagePathways.labs`
+    ),
+    notes: parsePathwayGroup(
+      pagePathwaysRecord.notes,
+      `${path}.pagePathways.notes`
+    ),
+  };
+  const pages = expectArray(record.pages, `${path}.pages`).map((entry, index) =>
+    parsePageData(entry, `${path}.pages[${index}]`)
+  );
+
+  assertUniqueValues(
+    socialLinks.map((link) => link.id),
+    "social link id",
+    `${path}.socialLinks`
+  );
+  assertUniqueValues(
+    socialLinks.map((link) => link.platform),
+    "social platform",
+    `${path}.socialLinks`
+  );
+  assertUniqueValues(
+    clientOutcomes.map((outcome) => outcome.id),
+    "client outcome id",
+    `${path}.clientOutcomes`
+  );
+  assertUniqueValues(
+    buildSteps.map((step) => step.id),
+    "build step id",
+    `${path}.buildSteps`
+  );
+  assertUniqueValues(
+    homePathways.map((pathway) => pathway.id),
+    "home pathway id",
+    `${path}.homePathways`
+  );
+  for (const pathwayKey of PAGE_PATHWAY_KEYS) {
+    assertUniqueValues(
+      pagePathways[pathwayKey].map((pathway) => pathway.id),
+      `${pathwayKey} pathway id`,
+      `${path}.pagePathways.${pathwayKey}`
+    );
+  }
+  assertUniqueValues(
+    pages.map((page) => page.slug),
+    "page slug",
+    `${path}.pages`
+  );
+
+  return {
+    profile,
+    navigationLinks,
+    socialLinks,
+    focusAreas,
+    foundationCapabilities,
+    clientOutcomes,
+    operatingPrinciples,
+    buildSteps,
+    homePathways,
+    pagePathways,
+    pages,
+  };
+}
+
+const siteData = createSiteData(rawSiteDataJson as unknown);
+
+export const profile: Profile = siteData.profile;
+export const navigationLinks: NavigationLink[] = siteData.navigationLinks;
+export const socialLinks: SocialLink[] = siteData.socialLinks;
+export const focusAreas: string[] = siteData.focusAreas;
+export const foundationCapabilities: string[] = siteData.foundationCapabilities;
+export const clientOutcomes: ClientOutcome[] = siteData.clientOutcomes;
+export const operatingPrinciples: string[] = siteData.operatingPrinciples;
+export const buildSteps: BuildStep[] = siteData.buildSteps;
+export const homePathways: SitePathway[] = siteData.homePathways;
+export const pagePathways: Record<PagePathwayKey, SitePathway[]> =
+  siteData.pagePathways;
+export const pages: PageData[] = siteData.pages;
 
 export function getPage(slug: string): PageData {
   const normalizedSlug = slug.trim();

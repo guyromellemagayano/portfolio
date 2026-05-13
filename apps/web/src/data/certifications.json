@@ -1,0 +1,28 @@
+{
+  "certifications": [
+    {
+      "name": "Frontend Architecture",
+      "earned": true,
+      "variant": "yellow",
+      "category": "frontend"
+    },
+    {
+      "name": "Design Systems",
+      "earned": true,
+      "variant": "white",
+      "category": "frontend"
+    },
+    {
+      "name": "Platform Engineering",
+      "earned": true,
+      "variant": "yellow",
+      "category": "platform"
+    },
+    {
+      "name": "Content Modeling",
+      "earned": true,
+      "variant": "white",
+      "category": "architecture"
+    }
+  ]
+}
