@@ -1,0 +1,36 @@
+{
+  "standalonePages": [
+    {
+      "slug": "now",
+      "title": "Now",
+      "subheading": "What I am focused on",
+      "intro": "A personal snapshot of what I am learning, studying, and rehearsing right now.",
+      "updatedAt": "2026-05-09T00:00:00.000Z",
+      "hideFromSitemap": false,
+      "seoNoIndex": false,
+      "seoDescription": "A personal snapshot of what Guy Romelle Magayano is learning, studying, and rehearsing right now across software architecture, product thinking, and technical communication.",
+      "body": [
+        {
+          "type": "paragraph",
+          "key": "now-1",
+          "text": "Lately I have been spending a lot of time going back to fundamentals. I want my thinking to stay clear when a system gets messy, so I have been revisiting system design, data modeling, and the parts of frontend architecture that decide whether a product stays maintainable."
+        },
+        {
+          "type": "paragraph",
+          "key": "now-2",
+          "text": "I have also been studying by building small things on purpose. Short experiments, notes, and narrow refactors help me separate what I actually understand from what I only know how to repeat."
+        },
+        {
+          "type": "paragraph",
+          "key": "now-3",
+          "text": "Another focus right now is rehearsal. I want to explain architecture more simply, talk through tradeoffs without hiding behind jargon, stay calm while debugging, and turn vague product requests into plans that a team can really ship."
+        },
+        {
+          "type": "paragraph",
+          "key": "now-4",
+          "text": "This page is less a status report and more a snapshot of where my attention is going. If it changes often, that is probably a good sign."
+        }
+      ]
+    }
+  ]
+}

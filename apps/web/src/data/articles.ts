@@ -1,14 +1,32 @@
 /**
  * @file apps/web/src/data/articles.ts
  * @author Guy Romelle Magayano
- * @description Article data stored as simple page-ready records.
+ * @description Article data parsed from local JSON records.
  */
 
+import rawArticlesDataJson from "@web/data/articles.json";
 import {
   type ContentPortableTextBlock,
   type ContentPortableTextImageBlock,
   type ContentTwitterCard,
 } from "@web/data/portable-text";
+import { parseContentBody } from "@web/lib/content-body";
+import {
+  assertExactKeys,
+  assertUniqueValues,
+  expectArray,
+  expectDateTimeString,
+  expectEnum,
+  expectOptionalBoolean,
+  expectOptionalPositiveNumber,
+  expectOptionalString,
+  expectPathname,
+  expectRecord,
+  expectString,
+  expectStringArray,
+} from "@web/lib/json-data";
+
+const TWITTER_CARDS = ["summary", "summary_large_image"] as const;
 
 export interface Article {
   title: string;
@@ -39,141 +57,177 @@ export interface Article {
   body: Array<ContentPortableTextBlock | ContentPortableTextImageBlock>;
 }
 
-export const articleCategories = [
-  "All",
-  "Frontend Architecture",
-  "Design Systems",
-  "Monorepo",
-  "Content Modeling",
+type ArticlesData = {
+  articleCategories: string[];
+  articles: Article[];
+};
+
+const ARTICLES_DATA_KEYS = ["articleCategories", "articles"] as const;
+const ARTICLE_KEYS = [
+  "title",
+  "badge",
+  "category",
+  "slug",
+  "date",
+  "description",
+  "tags",
+  "featured",
+  "hideFromSitemap",
+  "seoNoIndex",
+  "seoTitle",
+  "seoDescription",
+  "seoCanonicalPath",
+  "seoNoFollow",
+  "seoOgTitle",
+  "seoOgDescription",
+  "seoOgImage",
+  "seoOgImageWidth",
+  "seoOgImageHeight",
+  "seoOgImageAlt",
+  "seoTwitterCard",
+  "image",
+  "imageWidth",
+  "imageHeight",
+  "imageAlt",
+  "body",
 ] as const;
 
-function paragraph(key: string, text: string): ContentPortableTextBlock {
+function expectSlug(value: unknown, path: string): string {
+  const slug = expectString(value, path);
+
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    throw new Error(
+      `Invalid local data at "${path}": expected kebab-case slug.`
+    );
+  }
+
+  return slug;
+}
+
+function parseArticle(
+  value: unknown,
+  categories: readonly string[],
+  path: string
+): Article {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, ARTICLE_KEYS, path);
+
+  const category = expectString(record.category, `${path}.category`);
+
+  if (!categories.includes(category)) {
+    throw new Error(
+      `Invalid local data at "${path}.category": expected a configured article category.`
+    );
+  }
+
   return {
-    _key: key,
-    _type: "block",
-    style: "normal",
-    children: [
-      {
-        _key: `${key}-span`,
-        _type: "span",
-        text,
-        marks: [],
-      },
-    ],
-    markDefs: [],
+    title: expectString(record.title, `${path}.title`),
+    badge: expectString(record.badge, `${path}.badge`),
+    category,
+    slug: expectSlug(record.slug, `${path}.slug`),
+    date: expectDateTimeString(record.date, `${path}.date`),
+    description: expectString(record.description, `${path}.description`),
+    tags: expectStringArray(record.tags, `${path}.tags`),
+    featured: expectOptionalBoolean(record.featured, `${path}.featured`),
+    hideFromSitemap: expectOptionalBoolean(
+      record.hideFromSitemap,
+      `${path}.hideFromSitemap`
+    ),
+    seoNoIndex: expectOptionalBoolean(record.seoNoIndex, `${path}.seoNoIndex`),
+    seoTitle: expectOptionalString(record.seoTitle, `${path}.seoTitle`),
+    seoDescription: expectOptionalString(
+      record.seoDescription,
+      `${path}.seoDescription`
+    ),
+    seoCanonicalPath:
+      typeof record.seoCanonicalPath === "undefined"
+        ? undefined
+        : expectPathname(record.seoCanonicalPath, `${path}.seoCanonicalPath`),
+    seoNoFollow: expectOptionalBoolean(
+      record.seoNoFollow,
+      `${path}.seoNoFollow`
+    ),
+    seoOgTitle: expectOptionalString(record.seoOgTitle, `${path}.seoOgTitle`),
+    seoOgDescription: expectOptionalString(
+      record.seoOgDescription,
+      `${path}.seoOgDescription`
+    ),
+    seoOgImage: expectOptionalString(record.seoOgImage, `${path}.seoOgImage`),
+    seoOgImageWidth: expectOptionalPositiveNumber(
+      record.seoOgImageWidth,
+      `${path}.seoOgImageWidth`
+    ),
+    seoOgImageHeight: expectOptionalPositiveNumber(
+      record.seoOgImageHeight,
+      `${path}.seoOgImageHeight`
+    ),
+    seoOgImageAlt: expectOptionalString(
+      record.seoOgImageAlt,
+      `${path}.seoOgImageAlt`
+    ),
+    seoTwitterCard:
+      typeof record.seoTwitterCard === "undefined"
+        ? undefined
+        : expectEnum(
+            record.seoTwitterCard,
+            TWITTER_CARDS,
+            `${path}.seoTwitterCard`
+          ),
+    image: expectOptionalString(record.image, `${path}.image`),
+    imageWidth: expectOptionalPositiveNumber(
+      record.imageWidth,
+      `${path}.imageWidth`
+    ),
+    imageHeight: expectOptionalPositiveNumber(
+      record.imageHeight,
+      `${path}.imageHeight`
+    ),
+    imageAlt: expectOptionalString(record.imageAlt, `${path}.imageAlt`),
+    body: parseContentBody(record.body, `${path}.body`),
   };
 }
 
-export const articles: Article[] = [
-  {
-    title: "Designing system boundaries before the UI starts drifting",
-    badge: "FRONTEND ARCHITECTURE",
-    category: "Frontend Architecture",
-    slug: "designing-system-boundaries-before-the-ui-starts-drifting",
-    date: "2026-04-18T00:00:00.000Z",
-    description:
-      "A practical way to tighten product architecture before every new screen becomes a one-off exception.",
-    tags: ["frontend-architecture", "design-systems", "product-systems"],
-    featured: true,
-    body: [
-      paragraph(
-        "system-boundaries-1",
-        "Strong product systems usually fail long before the UI looks obviously broken. The first signs are duplicated decisions, route-specific exceptions, and component APIs that stop describing real domain intent."
-      ),
-      paragraph(
-        "system-boundaries-2",
-        "The fix is rarely another wrapper component. It is usually a sharper boundary between layout concerns, domain state, and reusable product primitives."
-      ),
-      paragraph(
-        "system-boundaries-3",
-        "I like starting with the routes and the repeated user jobs because they reveal where the product already has natural seams. A dashboard, an editor, a checkout step, and an operational queue should not all ask the same component layer to solve different domain problems."
-      ),
-      paragraph(
-        "system-boundaries-4",
-        "The next useful move is to name which parts are durable and which parts are allowed to stay local. Shared navigation, page chrome, form behavior, content metadata, and accessibility primitives usually deserve a common home. One-off copy, single-route layout choices, and experimental flows usually do not."
-      ),
-      paragraph(
-        "system-boundaries-5",
-        "This matters for delivery speed because unclear boundaries make every change feel risky. Engineers hesitate to touch shared code, product teams lose confidence in estimates, and small UI requests become architecture debates."
-      ),
-      paragraph(
-        "system-boundaries-6",
-        "A good boundary is boring to use. It gives teams a small set of reliable decisions, makes exceptions visible, and leaves enough room for product-specific work without forcing every screen through the same abstraction."
-      ),
-    ],
-  },
-  {
-    title: "A monorepo should prove leverage, not just collect packages",
-    badge: "MONOREPO",
-    category: "Monorepo",
-    slug: "a-monorepo-should-prove-leverage-not-just-collect-packages",
-    date: "2026-04-05T00:00:00.000Z",
-    description:
-      "A portfolio monorepo only matters if the shared system makes each app cheaper to build and easier to reason about.",
-    tags: ["monorepo", "platform", "developer-experience"],
-    featured: true,
-    body: [
-      paragraph(
-        "monorepo-proof-1",
-        "A monorepo becomes expensive when teams centralize abstractions without proving where reuse pays off. Shared packages need to shorten delivery, not just tidy the repository tree."
-      ),
-      paragraph(
-        "monorepo-proof-2",
-        "The useful test is whether a new product surface can reuse navigation, content models, forms, tables, permissions, and release tooling without importing accidental complexity."
-      ),
-      paragraph(
-        "monorepo-proof-3",
-        "A healthy monorepo should make ownership easier to see. Shared packages should describe real contracts: UI primitives, typed helpers, testing presets, lint rules, and deployment assumptions that every app can actually depend on."
-      ),
-      paragraph(
-        "monorepo-proof-4",
-        "The failure mode is collecting packages before the product has repeated needs. That usually creates a second product inside the repo: one that exists only to maintain abstractions no app is clearly asking for."
-      ),
-      paragraph(
-        "monorepo-proof-5",
-        "The stronger approach is to let reuse earn its place. Keep page data local until an integration is justified. Keep app-specific code in the app until two surfaces prove the same problem exists. Keep package exports narrow enough that dependency direction stays obvious."
-      ),
-      paragraph(
-        "monorepo-proof-6",
-        "When the monorepo is doing its job, adding a new surface feels less like starting over and more like choosing from known building blocks with clear tradeoffs."
-      ),
-    ],
-  },
-  {
-    title: "Content models are product architecture, not editorial paperwork",
-    badge: "CONTENT MODELING",
-    category: "Content Modeling",
-    slug: "content-models-are-product-architecture-not-editorial-paperwork",
-    date: "2026-03-21T00:00:00.000Z",
-    description:
-      "Structured content earns its keep when it improves navigation, metadata, SEO, and delivery consistency across the whole product.",
-    tags: ["content-modeling", "cms", "seo"],
-    featured: true,
-    body: [
-      paragraph(
-        "content-modeling-1",
-        "Teams often treat content modeling as a tooling setup task. In practice it shapes route structure, metadata, preview flows, validation rules, and how reliably a site evolves."
-      ),
-      paragraph(
-        "content-modeling-2",
-        "When the model is explicit, pages become easier to render locally, easier to index, and easier to move between static delivery paths."
-      ),
-      paragraph(
-        "content-modeling-3",
-        "The important content decisions are product decisions. Which fields drive page titles, summaries, calls to action, dates, social previews, and structured data? Which records deserve their own routes? Which relationships should appear as navigation instead of living as hidden editor context?"
-      ),
-      paragraph(
-        "content-modeling-4",
-        "Those choices shape how reliably the site can be crawled, shared, and maintained. A clean model makes it hard to forget canonical URLs, time semantics, article descriptions, or service metadata because the rendering layer has a consistent contract."
-      ),
-      paragraph(
-        "content-modeling-5",
-        "Local typed data is often enough at the beginning. It keeps the editorial shape visible in code, lowers operational overhead, and makes future migration to a CMS less chaotic because the site already knows what a page or article needs."
-      ),
-      paragraph(
-        "content-modeling-6",
-        "A CMS becomes valuable when collaboration, preview, permissions, publishing workflow, or content volume justify the moving parts. Until then, the useful work is modeling the product honestly and keeping the rendering path easy to inspect."
-      ),
-    ],
-  },
-];
+function createArticlesData(value: unknown): ArticlesData {
+  const path = "data/articles.json";
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, ARTICLES_DATA_KEYS, path);
+
+  const articleCategories = expectStringArray(
+    record.articleCategories,
+    `${path}.articleCategories`
+  );
+  const articleCategoriesWithoutAll = articleCategories.filter(
+    (category) => category !== "All"
+  );
+  const articles = expectArray(record.articles, `${path}.articles`).map(
+    (entry, index) =>
+      parseArticle(
+        entry,
+        articleCategoriesWithoutAll,
+        `${path}.articles[${index}]`
+      )
+  );
+
+  assertUniqueValues(
+    articleCategories,
+    "article category",
+    `${path}.articleCategories`
+  );
+  assertUniqueValues(
+    articles.map((article) => article.slug),
+    "article slug",
+    `${path}.articles`
+  );
+
+  return {
+    articleCategories,
+    articles,
+  };
+}
+
+const articlesData = createArticlesData(rawArticlesDataJson as unknown);
+
+export const articleCategories: string[] = articlesData.articleCategories;
+export const articles: Article[] = articlesData.articles;

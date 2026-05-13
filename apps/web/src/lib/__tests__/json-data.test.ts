@@ -10,8 +10,10 @@ import {
   assertExactKeys,
   assertUniqueValues,
   expectDateString,
+  expectDateTimeString,
   expectEnum,
   expectOptionalDateString,
+  expectOptionalDateTimeString,
   expectOptionalString,
   expectPathname,
   expectRecord,
@@ -32,6 +34,18 @@ describe("json-data helpers", () => {
     );
     expect(() => expectDateString("2026-02-30", "data.date")).toThrow(
       'Invalid local data at "data.date": expected a valid calendar date.'
+    );
+  });
+
+  it("accepts valid ISO date-time strings and rejects lossy values", () => {
+    expect(expectDateTimeString("2026-05-13T00:00:00.000Z", "data.date")).toBe(
+      "2026-05-13T00:00:00.000Z"
+    );
+    expect(
+      expectOptionalDateTimeString(undefined, "data.date")
+    ).toBeUndefined();
+    expect(() => expectDateTimeString("2026-05-13", "data.date")).toThrow(
+      'Invalid local data at "data.date": expected ISO date-time string.'
     );
   });
 

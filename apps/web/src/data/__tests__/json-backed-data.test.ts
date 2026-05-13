@@ -6,8 +6,10 @@
 
 import { describe, expect, it } from "vitest";
 
+import { articleCategories, articles } from "@web/data/articles";
 import { clients, workExperience } from "@web/data/clients";
 import { getProjectPath, labProjects, workProjects } from "@web/data/projects";
+import { standalonePages } from "@web/data/standalone-pages";
 import { useCategories } from "@web/data/uses";
 
 describe("JSON-backed local data modules", () => {
@@ -49,5 +51,34 @@ describe("JSON-backed local data modules", () => {
     expect(getProjectPath(workProjects[0])).toBe(
       "/work/localized-commerce-platform"
     );
+  });
+
+  it("parses articles into portable text body records", () => {
+    expect(articleCategories).toContain("Content Modeling");
+    expect(articles).toHaveLength(3);
+    expect(articles[0]?.body[0]).toMatchObject({
+      _key: "system-boundaries-1",
+      _type: "block",
+      children: [
+        expect.objectContaining({
+          _type: "span",
+          text: expect.stringContaining("Strong product systems"),
+        }),
+      ],
+    });
+  });
+
+  it("parses standalone pages into portable text body records", () => {
+    expect(standalonePages).toHaveLength(1);
+    expect(standalonePages[0]).toMatchObject({
+      slug: "now",
+      updatedAt: "2026-05-09T00:00:00.000Z",
+      body: expect.arrayContaining([
+        expect.objectContaining({
+          _key: "now-1",
+          _type: "block",
+        }),
+      ]),
+    });
   });
 });

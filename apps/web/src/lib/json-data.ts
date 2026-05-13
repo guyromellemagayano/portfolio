@@ -96,6 +96,21 @@ export function expectDateString(value: unknown, path: string): string {
   return normalizedValue;
 }
 
+/** Ensures a value is an ISO date-time string. */
+export function expectDateTimeString(value: unknown, path: string): string {
+  const normalizedValue = expectString(value, path);
+  const normalizedDate = new Date(normalizedValue);
+
+  if (
+    Number.isNaN(normalizedDate.getTime()) ||
+    normalizedDate.toISOString() !== normalizedValue
+  ) {
+    fail(path, "expected ISO date-time string");
+  }
+
+  return normalizedValue;
+}
+
 /** Ensures a value matches one of the allowed string literals. */
 export function expectEnum<const T extends readonly string[]>(
   value: unknown,
@@ -162,6 +177,37 @@ export function expectOptionalDateString(
   }
 
   return expectDateString(value, path);
+}
+
+/** Ensures a value is an ISO date-time string when present. */
+export function expectOptionalDateTimeString(
+  value: unknown,
+  path: string
+): string | undefined {
+  if (typeof value === "undefined") {
+    return undefined;
+  }
+
+  return expectDateTimeString(value, path);
+}
+
+/** Ensures a value is a positive finite number when present. */
+export function expectOptionalPositiveNumber(
+  value: unknown,
+  path: string
+): number | undefined {
+  if (typeof value === "undefined") {
+    return undefined;
+  }
+
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
+    fail(
+      path,
+      `expected positive number, received ${describeValueType(value)}`
+    );
+  }
+
+  return value;
 }
 
 /** Ensures a value is a trimmed string when present. */

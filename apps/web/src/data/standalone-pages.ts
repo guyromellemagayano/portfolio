@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/data/standalone-pages.ts
  * @author Guy Romelle Magayano
- * @description Standalone page data stored as simple local records.
+ * @description Standalone page data parsed from local JSON records.
  */
 
 import {
@@ -9,6 +9,23 @@ import {
   type ContentPortableTextImageBlock,
   type ContentTwitterCard,
 } from "@web/data/portable-text";
+import rawStandalonePagesDataJson from "@web/data/standalone-pages.json";
+import { parseContentBody } from "@web/lib/content-body";
+import {
+  assertExactKeys,
+  assertUniqueValues,
+  expectArray,
+  expectEnum,
+  expectOptionalBoolean,
+  expectOptionalDateTimeString,
+  expectOptionalPositiveNumber,
+  expectOptionalString,
+  expectPathname,
+  expectRecord,
+  expectString,
+} from "@web/lib/json-data";
+
+const TWITTER_CARDS = ["summary", "summary_large_image"] as const;
 
 export interface StandalonePage {
   slug: string;
@@ -32,52 +49,132 @@ export interface StandalonePage {
   body: Array<ContentPortableTextBlock | ContentPortableTextImageBlock>;
 }
 
-function paragraph(key: string, text: string): ContentPortableTextBlock {
+type StandalonePagesData = {
+  standalonePages: StandalonePage[];
+};
+
+const STANDALONE_PAGES_DATA_KEYS = ["standalonePages"] as const;
+const STANDALONE_PAGE_KEYS = [
+  "slug",
+  "title",
+  "subheading",
+  "intro",
+  "updatedAt",
+  "hideFromSitemap",
+  "seoNoIndex",
+  "seoTitle",
+  "seoDescription",
+  "seoCanonicalPath",
+  "seoNoFollow",
+  "seoOgTitle",
+  "seoOgDescription",
+  "seoOgImage",
+  "seoOgImageWidth",
+  "seoOgImageHeight",
+  "seoOgImageAlt",
+  "seoTwitterCard",
+  "body",
+] as const;
+
+function expectSlug(value: unknown, path: string): string {
+  const slug = expectString(value, path);
+
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    throw new Error(
+      `Invalid local data at "${path}": expected kebab-case slug.`
+    );
+  }
+
+  return slug;
+}
+
+function parseStandalonePage(value: unknown, path: string): StandalonePage {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, STANDALONE_PAGE_KEYS, path);
+
   return {
-    _key: key,
-    _type: "block",
-    style: "normal",
-    children: [
-      {
-        _key: `${key}-span`,
-        _type: "span",
-        text,
-        marks: [],
-      },
-    ],
-    markDefs: [],
+    slug: expectSlug(record.slug, `${path}.slug`),
+    title: expectString(record.title, `${path}.title`),
+    subheading: expectOptionalString(record.subheading, `${path}.subheading`),
+    intro: expectOptionalString(record.intro, `${path}.intro`),
+    updatedAt: expectOptionalDateTimeString(
+      record.updatedAt,
+      `${path}.updatedAt`
+    ),
+    hideFromSitemap: expectOptionalBoolean(
+      record.hideFromSitemap,
+      `${path}.hideFromSitemap`
+    ),
+    seoNoIndex: expectOptionalBoolean(record.seoNoIndex, `${path}.seoNoIndex`),
+    seoTitle: expectOptionalString(record.seoTitle, `${path}.seoTitle`),
+    seoDescription: expectOptionalString(
+      record.seoDescription,
+      `${path}.seoDescription`
+    ),
+    seoCanonicalPath:
+      typeof record.seoCanonicalPath === "undefined"
+        ? undefined
+        : expectPathname(record.seoCanonicalPath, `${path}.seoCanonicalPath`),
+    seoNoFollow: expectOptionalBoolean(
+      record.seoNoFollow,
+      `${path}.seoNoFollow`
+    ),
+    seoOgTitle: expectOptionalString(record.seoOgTitle, `${path}.seoOgTitle`),
+    seoOgDescription: expectOptionalString(
+      record.seoOgDescription,
+      `${path}.seoOgDescription`
+    ),
+    seoOgImage: expectOptionalString(record.seoOgImage, `${path}.seoOgImage`),
+    seoOgImageWidth: expectOptionalPositiveNumber(
+      record.seoOgImageWidth,
+      `${path}.seoOgImageWidth`
+    ),
+    seoOgImageHeight: expectOptionalPositiveNumber(
+      record.seoOgImageHeight,
+      `${path}.seoOgImageHeight`
+    ),
+    seoOgImageAlt: expectOptionalString(
+      record.seoOgImageAlt,
+      `${path}.seoOgImageAlt`
+    ),
+    seoTwitterCard:
+      typeof record.seoTwitterCard === "undefined"
+        ? undefined
+        : expectEnum(
+            record.seoTwitterCard,
+            TWITTER_CARDS,
+            `${path}.seoTwitterCard`
+          ),
+    body: parseContentBody(record.body, `${path}.body`),
   };
 }
 
-export const standalonePages: StandalonePage[] = [
-  {
-    slug: "now",
-    title: "Now",
-    subheading: "What I am focused on",
-    intro:
-      "A personal snapshot of what I am learning, studying, and rehearsing right now.",
-    updatedAt: "2026-05-09T00:00:00.000Z",
-    hideFromSitemap: false,
-    seoNoIndex: false,
-    seoDescription:
-      "A personal snapshot of what Guy Romelle Magayano is learning, studying, and rehearsing right now across software architecture, product thinking, and technical communication.",
-    body: [
-      paragraph(
-        "now-1",
-        "Lately I have been spending a lot of time going back to fundamentals. I want my thinking to stay clear when a system gets messy, so I have been revisiting system design, data modeling, and the parts of frontend architecture that decide whether a product stays maintainable."
-      ),
-      paragraph(
-        "now-2",
-        "I have also been studying by building small things on purpose. Short experiments, notes, and narrow refactors help me separate what I actually understand from what I only know how to repeat."
-      ),
-      paragraph(
-        "now-3",
-        "Another focus right now is rehearsal. I want to explain architecture more simply, talk through tradeoffs without hiding behind jargon, stay calm while debugging, and turn vague product requests into plans that a team can really ship."
-      ),
-      paragraph(
-        "now-4",
-        "This page is less a status report and more a snapshot of where my attention is going. If it changes often, that is probably a good sign."
-      ),
-    ],
-  },
-];
+function createStandalonePagesData(value: unknown): StandalonePagesData {
+  const path = "data/standalone-pages.json";
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, STANDALONE_PAGES_DATA_KEYS, path);
+
+  const standalonePages = expectArray(
+    record.standalonePages,
+    `${path}.standalonePages`
+  ).map((entry, index) =>
+    parseStandalonePage(entry, `${path}.standalonePages[${index}]`)
+  );
+
+  assertUniqueValues(
+    standalonePages.map((page) => page.slug),
+    "standalone page slug",
+    `${path}.standalonePages`
+  );
+
+  return { standalonePages };
+}
+
+const standalonePagesData = createStandalonePagesData(
+  rawStandalonePagesDataJson as unknown
+);
+
+export const standalonePages: StandalonePage[] =
+  standalonePagesData.standalonePages;
