@@ -10,10 +10,14 @@ import image2 from "@web/images/photos/image-2.jpg";
 import image3 from "@web/images/photos/image-3.jpg";
 import image4 from "@web/images/photos/image-4.jpg";
 import image5 from "@web/images/photos/image-5.jpg";
-
-// ============================================================================
-// PHOTO GALLERY CONFIG TYPES
-// ============================================================================
+import {
+  assertExactKeys,
+  assertUniqueValues,
+  expectArray,
+  expectEnum,
+  expectRecord,
+} from "@web/lib/json-data";
+import { type ImageSource } from "@web/lib/media";
 
 export type PhotoGalleryImageKey =
   | "image1"
@@ -27,10 +31,6 @@ type PhotoGalleryConfigData = Readonly<{
     key: PhotoGalleryImageKey;
   }>;
 }>;
-
-// ============================================================================
-// PHOTO GALLERY CONFIG DATA
-// ============================================================================
 
 const PHOTO_GALLERY_IMAGE_KEYS: ReadonlyArray<PhotoGalleryImageKey> = [
   "image1",
@@ -48,30 +48,45 @@ const PHOTO_GALLERY_IMAGE_MAP: Record<PhotoGalleryImageKey, ImageSource> = {
   image5,
 };
 
-const isPhotoGalleryImageKey = (value: string): value is PhotoGalleryImageKey =>
-  PHOTO_GALLERY_IMAGE_KEYS.includes(value as PhotoGalleryImageKey);
+const PHOTO_GALLERY_CONFIG_KEYS = ["photos"] as const;
+const PHOTO_GALLERY_PHOTO_KEYS = ["key"] as const;
 
 const createPhotoGalleryConfigData = (): PhotoGalleryConfigData => {
-  const photos: ReadonlyArray<{ key: PhotoGalleryImageKey }> =
-    photoGalleryConfig.photos.map((photo) => {
-      if (!isPhotoGalleryImageKey(photo.key)) {
-        throw new Error(`Invalid photo gallery image key: ${photo.key}`);
-      }
+  const path = "data/photo-gallery.json";
+  const record = expectRecord(photoGalleryConfig, path);
 
-      return { key: photo.key };
-    });
+  assertExactKeys(record, PHOTO_GALLERY_CONFIG_KEYS, path);
+
+  const photos: ReadonlyArray<{ key: PhotoGalleryImageKey }> = expectArray(
+    record.photos,
+    `${path}.photos`
+  ).map((photo, index) => {
+    const photoPath = `${path}.photos[${index}]`;
+    const photoRecord = expectRecord(photo, photoPath);
+
+    assertExactKeys(photoRecord, PHOTO_GALLERY_PHOTO_KEYS, photoPath);
+
+    return {
+      key: expectEnum(
+        photoRecord.key,
+        PHOTO_GALLERY_IMAGE_KEYS,
+        `${photoPath}.key`
+      ),
+    };
+  });
+
+  assertUniqueValues(
+    photos.map((photo) => photo.key),
+    "photo gallery image key",
+    `${path}.photos`
+  );
 
   return { photos };
 };
 
 const PHOTO_GALLERY_CONFIG_DATA = createPhotoGalleryConfigData();
 
-// ============================================================================
-// PHOTO GALLERY EXPORTS
-// ============================================================================
-
 export const PHOTO_GALLERY_PHOTOS: ReadonlyArray<ImageSource> =
   PHOTO_GALLERY_CONFIG_DATA.photos.map(
     (photo) => PHOTO_GALLERY_IMAGE_MAP[photo.key]
   );
-import { type ImageSource } from "@web/lib/media";
