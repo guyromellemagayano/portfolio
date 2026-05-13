@@ -9,15 +9,15 @@ import Container from "@web/components/Container.astro";
 import PageIntro from "@web/components/PageIntro.astro";
 import RichText from "@web/components/RichText.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
-import { type WebPageMetadata } from "@web/lib/metadata.types";
 import {
-  buildPageMetadata,
   buildOpenGraphImages,
-  clampMetadataDescription,
+  buildPageMetadata,
   buildTwitterImages,
+  clampMetadataDescription,
   resolveMetadataDescription,
   resolveMetadataTitle,
 } from "@web/lib/metadata";
+import { type WebPageMetadata } from "@web/lib/metadata.types";
 import {
   buildBreadcrumbListStructuredData,
   buildStandalonePageStructuredData,

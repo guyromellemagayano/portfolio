@@ -4,7 +4,9 @@ import js from "@eslint/js";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
 import vitestPlugin from "@vitest/eslint-plugin";
+import astroParser from "astro-eslint-parser";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
+import astroPlugin from "eslint-plugin-astro";
 import nPlugin from "eslint-plugin-n";
 import prettierPlugin from "eslint-plugin-prettier";
 import reactRefresh from "eslint-plugin-react-refresh";
@@ -41,6 +43,7 @@ export const baseEslintConfig = [
       turbo: turboPlugin,
       prettier: prettierPlugin,
       n: nPlugin,
+      astro: astroPlugin,
       "@typescript-eslint": typescriptEslintPlugin,
       vitest: vitestPlugin,
       "react-refresh": reactRefresh,
@@ -146,6 +149,43 @@ export const baseEslintConfig = [
       "**/.npm-cache/**",
       "**/*.mdx",
     ],
+  },
+  {
+    files: ["**/*.astro"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+      parser: astroParser,
+      parserOptions: {
+        parser: typescriptParser,
+        project: tsProjects,
+        sourceType: "module",
+        ecmaVersion: "latest",
+        extraFileExtensions: [".astro"],
+        tsconfigRootDir: repoRoot,
+      },
+    },
+    rules: {
+      "no-undef": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          prefer: "type-imports",
+          fixStyle: "inline-type-imports",
+        },
+      ],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "ImportDeclaration[importKind='type']",
+          message:
+            'Use inline type import specifiers instead: `import { type Foo } from "module"`.',
+        },
+      ],
+    },
   },
   {
     files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],

@@ -10,8 +10,8 @@ import RichText from "@web/components/RichText.astro";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
 import { formatDate } from "@web/lib/format-date";
 import {
-  buildPageMetadata,
   buildOpenGraphImages,
+  buildPageMetadata,
   buildTwitterImages,
   clampMetadataDescription,
   DEFAULT_SOCIAL_IMAGE_HEIGHT,
@@ -26,9 +26,9 @@ import {
   buildBreadcrumbListStructuredData,
 } from "@web/lib/structured-data";
 import {
+  type ArticleDetail,
   getAllArticles,
   getArticleBySlug,
-  type ArticleDetail,
 } from "@web/utils/articles";
 
 export async function getStaticPaths() {
