@@ -5,6 +5,7 @@
  * @description Two-column section for paired content blocks.
  */
 
+import { Section as UiSection } from "@portfolio/ui";
 import Container from "@web/components/Container.astro";
 import Eyebrow from "@web/components/Eyebrow.astro";
 import Subheading from "@web/components/Subheading.astro";
@@ -37,7 +38,7 @@ const headingId =
     .replace(/^-+|-+$/g, "")}`;
 ---
 
-<section aria-labelledby={headingId} class={sectionClass} role="region">
+<UiSection aria-labelledby={headingId} className={sectionClass} role="region">
   <Container>
     <div
       class="grid grid-cols-1 items-baseline gap-y-8 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-x-12"
@@ -60,4 +61,4 @@ const headingId =
       </div>
     </div>
   </Container>
-</section>
+</UiSection>

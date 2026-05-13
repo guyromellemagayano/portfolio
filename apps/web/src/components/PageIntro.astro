@@ -5,6 +5,7 @@
  * @description Intro block for page titles, summaries, and context.
  */
 
+import { Section as UiSection } from "@portfolio/ui";
 import Container from "@web/components/Container.astro";
 import Eyebrow from "@web/components/Eyebrow.astro";
 import Heading from "@web/components/Heading.astro";
@@ -17,12 +18,18 @@ type Props = {
 };
 
 const { subheading, title, intro } = Astro.props;
+
+const headingId = `page-intro-${title
+  .trim()
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, "-")
+  .replace(/^-+|-+$/g, "")}`;
 ---
 
-<header>
+<UiSection as="header" aria-labelledby={headingId}>
   <Container class="pt-16 sm:pt-32">
     {subheading ? <Eyebrow as="p">{subheading}</Eyebrow> : null}
-    <Heading class="mt-3 max-w-2xl sm:max-w-3xl">
+    <Heading id={headingId} class="mt-3 max-w-2xl sm:max-w-3xl">
       {title}
     </Heading>
     {
@@ -33,4 +40,4 @@ const { subheading, title, intro } = Astro.props;
       ) : null
     }
   </Container>
-</header>
+</UiSection>

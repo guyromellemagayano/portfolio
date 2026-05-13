@@ -5,6 +5,7 @@
  * @description Two-column hero with profile imagery and supporting copy.
  */
 
+import { Section as UiSection } from "@portfolio/ui";
 import Container from "@web/components/Container.astro";
 import Text from "@web/components/Text.astro";
 
@@ -29,9 +30,10 @@ const {
 
 const hasSubheadline = Astro.slots.has("subheadline");
 const hasAside = Astro.slots.has("aside");
+const sectionClass = ["py-16", className].filter(Boolean).join(" ");
 ---
 
-<section {...rest} class:list={["py-16", className]}>
+<UiSection {...rest} className={sectionClass}>
   <Container class:list={["flex gap-16 max-xl:flex-col", containerClass]}>
     <div
       class:list={[
@@ -69,4 +71,4 @@ const hasAside = Astro.slots.has("aside");
       }
     </div>
   </Container>
-</section>
+</UiSection>

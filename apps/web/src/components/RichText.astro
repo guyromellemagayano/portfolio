@@ -5,6 +5,7 @@
  * @description Renderer for rich-text blocks from local content records.
  */
 
+import { Figure as UiFigure, Prose as UiProse } from "@portfolio/ui";
 import {
   type ContentPortableTextBlock,
   type ContentPortableTextImageBlock,
@@ -22,36 +23,38 @@ function getBlockText(block: ContentPortableTextBlock): string {
 }
 ---
 
-{
-  value.map((block) => {
-    if (block._type === "image") {
-      const image = block as ContentPortableTextImageBlock;
-      const src = image.asset?.url;
+<UiProse readable={false} className="contents">
+  {
+    value.map((block) => {
+      if (block._type === "image") {
+        const image = block as ContentPortableTextImageBlock;
+        const src = image.asset?.url;
 
-      if (!src) {
+        if (!src) {
+          return null;
+        }
+
+        return (
+          <UiFigure className="not-prose my-8 overflow-hidden rounded-2xl border border-zinc-200/60 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
+            <img
+              src={src}
+              alt={image.alt || fallbackImageAlt}
+              class="h-auto w-full object-cover"
+              width={image.asset?.width || 1600}
+              height={image.asset?.height || 900}
+              loading="lazy"
+            />
+          </UiFigure>
+        );
+      }
+
+      const text = getBlockText(block as ContentPortableTextBlock);
+
+      if (!text) {
         return null;
       }
 
-      return (
-        <figure class="not-prose my-8 overflow-hidden rounded-2xl border border-zinc-200/60 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
-          <img
-            src={src}
-            alt={image.alt || fallbackImageAlt}
-            class="h-auto w-full object-cover"
-            width={image.asset?.width || 1600}
-            height={image.asset?.height || 900}
-            loading="lazy"
-          />
-        </figure>
-      );
-    }
-
-    const text = getBlockText(block as ContentPortableTextBlock);
-
-    if (!text) {
-      return null;
-    }
-
-    return <p>{text}</p>;
-  })
-}
+      return <p>{text}</p>;
+    })
+  }
+</UiProse>

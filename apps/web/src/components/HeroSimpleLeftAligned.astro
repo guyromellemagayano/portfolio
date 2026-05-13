@@ -5,15 +5,17 @@
  * @description Hero section with left-aligned copy and action links.
  */
 
+import { Section as UiSection } from "@portfolio/ui";
 import Container from "@web/components/Container.astro";
 import Text from "@web/components/Text.astro";
 
 const { class: className = "", ...rest } = Astro.props;
 const hasSubheadline = Astro.slots.has("subheadline");
 const hasFooter = Astro.slots.has("footer");
+const sectionClass = ["py-16", className].filter(Boolean).join(" ");
 ---
 
-<section {...rest} class:list={["py-16", className]}>
+<UiSection {...rest} className={sectionClass}>
   <Container class="flex flex-col items-start gap-6">
     <slot name="eyebrow" />
     <slot name="headline" />
@@ -33,4 +35,4 @@ const hasFooter = Astro.slots.has("footer");
       ) : null
     }
   </Container>
-</section>
+</UiSection>

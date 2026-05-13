@@ -5,6 +5,7 @@
  * @description Section wrapper with shared spacing and heading support.
  */
 
+import { Section as UiSection } from "@portfolio/ui";
 import Container from "@web/components/Container.astro";
 import Eyebrow from "@web/components/Eyebrow.astro";
 import Subheading from "@web/components/Subheading.astro";
@@ -20,9 +21,11 @@ type Props = {
   headerClass?: string;
   headlineClass?: string;
   subheadlineClass?: string;
+  "aria-labelledby"?: string;
 };
 
 const {
+  "aria-labelledby": ariaLabelledBy,
   eyebrow,
   headline,
   headlineId,
@@ -43,9 +46,15 @@ const hasHeader =
   Astro.slots.has("headline") ||
   Astro.slots.has("subheadline") ||
   Astro.slots.has("cta");
+const labelledBy =
+  ariaLabelledBy ??
+  (headlineId && (headline || Astro.slots.has("headline"))
+    ? headlineId
+    : undefined);
+const sectionClass = ["py-16", className].filter(Boolean).join(" ");
 ---
 
-<section {...rest} class:list={["py-16", className]}>
+<UiSection {...rest} aria-labelledby={labelledBy} className={sectionClass}>
   <Container class:list={["flex flex-col gap-10 sm:gap-16", containerClass]}>
     {
       hasHeader ? (
@@ -83,4 +92,4 @@ const hasHeader =
       <slot />
     </div>
   </Container>
-</section>
+</UiSection>

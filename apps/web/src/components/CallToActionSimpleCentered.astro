@@ -5,6 +5,7 @@
  * @description Centered call-to-action section with headline and copy.
  */
 
+import { Section as UiSection } from "@portfolio/ui";
 import Container from "@web/components/Container.astro";
 import Subheading from "@web/components/Subheading.astro";
 import Text from "@web/components/Text.astro";
@@ -17,9 +18,11 @@ type Props = {
   containerClass?: string;
   headlineClass?: string;
   subheadlineClass?: string;
+  "aria-labelledby"?: string;
 };
 
 const {
+  "aria-labelledby": ariaLabelledBy,
   headline,
   headlineId,
   subheadline,
@@ -29,9 +32,16 @@ const {
   subheadlineClass = "",
   ...rest
 } = Astro.props;
+
+const labelledBy =
+  ariaLabelledBy ??
+  (headlineId && (headline || Astro.slots.has("headline"))
+    ? headlineId
+    : undefined);
+const sectionClass = ["py-16", className].filter(Boolean).join(" ");
 ---
 
-<section {...rest} class:list={["py-16", className]}>
+<UiSection {...rest} aria-labelledby={labelledBy} className={sectionClass}>
   <Container class:list={["flex flex-col items-center gap-10", containerClass]}>
     <div class="flex flex-col gap-6">
       {
@@ -66,4 +76,4 @@ const {
 
     <slot name="cta" />
   </Container>
-</section>
+</UiSection>

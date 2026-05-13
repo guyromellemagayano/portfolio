@@ -5,6 +5,7 @@
  * @description Email signup form with a single input and submit button.
  */
 
+import { FieldLabel, Input as UiInput } from "@portfolio/ui";
 import Button from "@web/components/Button.astro";
 
 const {
@@ -18,6 +19,15 @@ const {
   class: className = "",
   ...rest
 } = Astro.props;
+
+const inputClasses = [
+  "min-w-0 flex-1 bg-transparent px-3 text-sm/7 focus:outline-hidden",
+  variant === "normal" &&
+    "text-mist-950 placeholder:text-mist-500 dark:text-white dark:placeholder:text-mist-400",
+  variant === "overlay" && "text-white placeholder:text-white/60",
+]
+  .filter(Boolean)
+  .join(" ");
 ---
 
 <form
@@ -31,20 +41,15 @@ const {
     className,
   ]}
 >
-  <label for={inputId} class="sr-only">{label}</label>
-  <input
+  <FieldLabel htmlFor={inputId} className="sr-only">{label}</FieldLabel>
+  <UiInput
     id={inputId}
-    class:list={[
-      "min-w-0 flex-1 bg-transparent px-3 text-sm/7 focus:outline-hidden",
-      variant === "normal" &&
-        "text-mist-950 placeholder:text-mist-500 dark:text-white dark:placeholder:text-mist-400",
-      variant === "overlay" && "text-white placeholder:text-white/60",
-    ]}
+    className={inputClasses}
     type="email"
     name="email"
-    autocomplete="email"
-    inputmode="email"
-    spellcheck="false"
+    autoComplete="email"
+    inputMode="email"
+    spellCheck={false}
     required
     aria-label={label}
     placeholder={placeholder}
