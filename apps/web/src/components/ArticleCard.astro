@@ -5,6 +5,7 @@
  * @description Card preview for a note or article.
  */
 
+import { Card as UiCard, Link as UiLink } from "@portfolio/ui";
 import { type ArticleWithSlug } from "@web/utils/articles";
 import { formatDate } from "@web/lib/format-date";
 
@@ -16,11 +17,14 @@ const { article } = Astro.props;
 const formattedDate = formatDate(article.date);
 ---
 
-<article
-  class="group relative flex flex-col items-start"
-  data-analytics-content-id={article.slug}
-  data-analytics-content-name={article.title}
-  data-analytics-impression="article"
+<UiCard
+  as="article"
+  className="group relative flex flex-col items-start rounded-none border-0 bg-transparent p-0 text-inherit shadow-none"
+  analytics={{
+    contentId: article.slug,
+    contentName: article.title,
+    impression: "article",
+  }}
 >
   <div
     aria-hidden="true"
@@ -55,16 +59,19 @@ const formattedDate = formatDate(article.date);
   <h3
     class="relative z-10 mt-4 text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100"
   >
-    <a
+    <UiLink
       href={`/notes/${article.slug}`}
-      class="transition hover:text-teal-600"
-      data-analytics-content-id={article.slug}
-      data-analytics-content-name={article.title}
-      data-analytics-content-type="article"
-      data-analytics-placement="article-card-title"
+      variant={null}
+      className="transition hover:text-teal-600"
+      analytics={{
+        contentId: article.slug,
+        contentName: article.title,
+        contentType: "article",
+        placement: "article-card-title",
+      }}
     >
       {article.title}
-    </a>
+    </UiLink>
   </h3>
   <p
     class="relative z-10 mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-400"
@@ -84,4 +91,4 @@ const formattedDate = formatDate(article.date);
         stroke-linejoin="round"></path>
     </svg>
   </span>
-</article>
+</UiCard>

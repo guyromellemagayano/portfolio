@@ -25,11 +25,15 @@
   },
   "dependencies": {
     "@astrojs/mdx": "catalog:",
+    "@astrojs/react": "catalog:",
     "@astrojs/sitemap": "catalog:",
     "@portfolio/logger": "workspace:*",
+    "@portfolio/ui": "workspace:*",
     "@sentry/astro": "catalog:",
     "@vercel/analytics": "catalog:",
-    "@vercel/speed-insights": "catalog:"
+    "@vercel/speed-insights": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@astrojs/check": "catalog:",
@@ -38,6 +42,8 @@
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/typography": "catalog:",
     "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/ui": "catalog:",
     "astro": "catalog:",

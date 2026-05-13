@@ -5,6 +5,7 @@
  * @description Card preview for a project or case study.
  */
 
+import { Card as UiCard, Link as UiLink } from "@portfolio/ui";
 import { getProjectPath, type Project } from "@web/data/projects";
 
 type Props = {
@@ -19,12 +20,15 @@ const projectPath = getProjectPath(project);
 const analyticsContentType = project.kind === "lab" ? "lab" : "work";
 ---
 
-<article
+<UiCard
+  as="article"
   id={articleId}
-  class="group relative flex flex-col items-start"
-  data-analytics-content-id={project.slug}
-  data-analytics-content-name={project.title}
-  data-analytics-impression="project"
+  className="group relative flex flex-col items-start rounded-none border-0 bg-transparent p-0 text-inherit shadow-none"
+  analytics={{
+    contentId: project.slug,
+    contentName: project.title,
+    impression: "project",
+  }}
 >
   <div
     aria-hidden="true"
@@ -39,16 +43,19 @@ const analyticsContentType = project.kind === "lab" ? "lab" : "work";
   <h3
     class="relative z-10 mt-4 text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100"
   >
-    <a
+    <UiLink
       href={projectPath}
-      class="transition hover:text-teal-600"
-      data-analytics-content-id={project.slug}
-      data-analytics-content-name={project.title}
-      data-analytics-content-type={analyticsContentType}
-      data-analytics-placement="project-card-title"
+      variant={null}
+      className="transition hover:text-teal-600"
+      analytics={{
+        contentId: project.slug,
+        contentName: project.title,
+        contentType: analyticsContentType,
+        placement: "project-card-title",
+      }}
     >
       {project.title}
-    </a>
+    </UiLink>
   </h3>
   <p
     class="relative z-10 mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-400"
@@ -97,4 +104,4 @@ const analyticsContentType = project.kind === "lab" ? "lab" : "work";
         stroke-linejoin="round"></path>
     </svg>
   </span>
-</article>
+</UiCard>

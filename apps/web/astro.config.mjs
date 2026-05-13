@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import sentry from "@sentry/astro";
 import { defineConfig } from "astro/config";
@@ -255,6 +256,7 @@ export default defineConfig({
   },
   site,
   integrations: [
+    react(),
     sentry(getSentryBuildOptions()),
     sitemap({
       filter: (page) => {
