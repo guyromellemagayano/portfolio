@@ -1,395 +1,197 @@
 /**
  * @file apps/web/src/data/projects.ts
  * @author Guy Romelle Magayano
- * @description Project and product-surface data for portfolio pages.
+ * @description Project and product-surface data parsed from local JSON records.
  */
+
+import rawProjectsDataJson from "@web/data/projects.json";
+import {
+  assertExactKeys,
+  assertUniqueValues,
+  expectArray,
+  expectEnum,
+  expectHref,
+  expectOptionalBoolean,
+  expectOptionalString,
+  expectRecord,
+  expectString,
+  expectStringArray,
+} from "@web/lib/json-data";
+
+const PROJECT_KINDS = ["work", "lab"] as const;
+const LINK_TARGETS = ["_blank", "_self"] as const;
+
+type ProjectKind = (typeof PROJECT_KINDS)[number];
+type ProjectLinkTarget = (typeof LINK_TARGETS)[number];
 
 export interface ProjectLink {
   label: string;
   href: string;
-  target?: "_blank" | "_self";
+  target?: ProjectLinkTarget;
   rel?: string;
+}
+
+export interface ProjectCaseStudy {
+  problem: string;
+  role: string;
+  decisions: string[];
+  outcome: string;
+  proof: string[];
 }
 
 export interface Project {
   id: string;
   slug: string;
-  kind: "work" | "lab";
+  kind: ProjectKind;
   title: string;
   path: string;
   description: string;
   bullets: string[];
-  caseStudy: {
-    problem: string;
-    role: string;
-    decisions: string[];
-    outcome: string;
-    proof: string[];
-  };
+  caseStudy: ProjectCaseStudy;
   tags: string[];
   website?: ProjectLink;
   repository?: ProjectLink;
   featured?: boolean;
 }
 
-export const projects: Project[] = [
-  {
-    id: "localized-commerce-platform",
-    slug: "localized-commerce-platform",
-    kind: "work",
-    title: "Localized Commerce Platform",
-    path: "Commerce / IONA Commerce",
-    description:
-      "Localized storefront work across product listing, product detail, cart, checkout, account, CMS, performance, and release quality.",
-    bullets: [
-      "Next.js, Sanity, commercetools, and TypeScript storefront delivery",
-      "Revenue-critical flows across PLP, PDP, cart, checkout, and account",
-      "Performance, test coverage, and editorial workflow improvements",
-    ],
-    caseStudy: {
-      problem:
-        "A localized commerce platform needed storefront work that could support many markets without letting checkout, CMS, performance, and release quality drift apart.",
-      role: "I worked as a full-stack developer and consultant across storefront implementation, content workflow support, test coverage, and performance-minded delivery.",
-      decisions: [
-        "Kept product, cart, checkout, and account flows explicit instead of hiding state and eligibility rules inside isolated UI components.",
-        "Connected CMS workflow decisions to route metadata, page structure, and release confidence so editorial work did not become engineering handoff debt.",
-        "Treated Core Web Vitals, accessibility, and regression coverage as part of commerce quality rather than post-launch polish.",
-      ],
-      outcome:
-        "The work improved the maintainability of localized storefront delivery while supporting performance, content operations, and revenue-critical customer journeys.",
-      proof: [
-        "Supported commerce surfaces across localized markets and key buying journeys.",
-        "Worked across Next.js, Sanity, commercetools, TypeScript, testing, and frontend performance concerns.",
-        "Focused implementation on storefront behavior that directly affects conversion, content workflow, and release risk.",
-      ],
-    },
-    tags: ["commerce", "nextjs", "cms", "performance", "testing"],
-    featured: true,
-  },
-  {
-    id: "high-traffic-publishing-systems",
-    slug: "high-traffic-publishing-systems",
-    kind: "work",
-    title: "High-Traffic Publishing Systems",
-    path: "Media / X-Team and News Corp Australia",
-    description:
-      "Publishing platform modernization across WordPress VIP, React modules, templates, build workflows, tests, and release quality.",
-    bullets: [
-      "WordPress VIP and React work for high-traffic media brands",
-      "Template, module, build, and quality workflow modernization",
-      "Performance, documentation, and delivery improvements for publishing teams",
-    ],
-    caseStudy: {
-      problem:
-        "High-traffic publishing systems need fast editorial delivery without weakening template quality, performance, or release confidence.",
-      role: "I worked as a senior WordPress engineer on publishing templates, React modules, build workflows, quality checks, and handoff documentation.",
-      decisions: [
-        "Separated editorial template behavior from reusable module concerns so publishing pages could evolve without repeated one-off fixes.",
-        "Kept performance and quality checks close to the delivery workflow rather than treating them as occasional audits.",
-        "Documented implementation and onboarding details so the platform could be maintained by the wider engineering team.",
-      ],
-      outcome:
-        "The work strengthened publishing delivery for high-traffic brands by improving maintainability, frontend quality, and release confidence.",
-      proof: [
-        "Worked on WordPress VIP publishing systems and React-powered modules.",
-        "Supported performance and quality workflows for media surfaces with real traffic and editorial pressure.",
-        "Improved handoff clarity through documentation and implementation discipline.",
-      ],
-    },
-    tags: ["publishing", "wordpress-vip", "react", "performance"],
-    featured: true,
-  },
-  {
-    id: "seo-analytics-platform",
-    slug: "seo-analytics-platform",
-    kind: "work",
-    title: "SEO Analytics Platform",
-    path: "SaaS / Epic Design Labs and MultiplyMii",
-    description:
-      "A multi-tenant crawler and monitoring platform spanning dashboards, Django APIs, PostgreSQL, Go workers, AWS, observability, and CI/CD.",
-    bullets: [
-      "Next.js, Django REST Framework, PostgreSQL, Go workers, and AWS",
-      "Crawler, retry, dashboard, alerting, and observability workflows",
-      "Technical leadership across implementation, delivery, and operations",
-    ],
-    caseStudy: {
-      problem:
-        "A multi-tenant SEO analytics product needed reliable crawling, dashboards, async processing, alerts, and deployment workflows without turning operations into manual recovery work.",
-      role: "I led and implemented full-stack product, backend, worker, infrastructure, observability, and release workflow work across the platform.",
-      decisions: [
-        "Modeled crawl jobs, retries, dashboards, and alerts as operational product workflows instead of only backend tasks.",
-        "Used explicit service boundaries across frontend, API, worker, database, infrastructure, and monitoring concerns.",
-        "Invested in CI/CD, observability, and documentation so the system could be operated and extended with lower delivery risk.",
-      ],
-      outcome:
-        "The platform work improved the product's ability to crawl, monitor, report, and recover through clearer architecture and stronger operational feedback loops.",
-      proof: [
-        "Worked across Next.js, Django REST Framework, PostgreSQL, Go workers, AWS, Terraform, Docker, Sentry, CloudWatch, and CI/CD.",
-        "Connected dashboards, async processing, retries, alerts, and monitoring into one operational product model.",
-        "Provided technical leadership and delivery planning across product and platform surfaces.",
-      ],
-    },
-    tags: ["saas", "django", "aws", "observability", "ci-cd"],
-    featured: true,
-  },
-  {
-    id: "headless-commerce-editorial-platform",
-    slug: "headless-commerce-editorial-platform",
-    kind: "work",
-    title: "Headless Commerce and Editorial Platform",
-    path: "Commerce / MAKE Interactive and ZUID Creatives",
-    description:
-      "Headless commerce and editorial platform work across Gatsby, BigCommerce, Optimizely, Netlify, SEO, localization, and marketing workflows.",
-    bullets: [
-      "Headless commerce, CMS workflow, SEO, and localization delivery",
-      "Frontend architecture across Gatsby, BigCommerce, Optimizely, and Netlify",
-      "Performance and marketing velocity improvements for content-heavy buying paths",
-    ],
-    caseStudy: {
-      problem:
-        "Premium commerce and editorial sites need buying journeys, content operations, SEO foundations, and performance to reinforce each other rather than compete.",
-      role: "I delivered full-stack and frontend work across headless commerce, CMS, SEO, localization, and marketing platform concerns.",
-      decisions: [
-        "Connected product content, route structure, metadata, and buying journeys so editorial work supported search and conversion.",
-        "Kept the frontend architecture focused on performance, maintainability, and clear content ownership.",
-        "Modeled localization, store-finding, and campaign surfaces as product workflows rather than isolated pages.",
-      ],
-      outcome:
-        "The work supported a more maintainable commerce/editorial platform with stronger SEO foundations, clearer content workflows, and better customer journeys.",
-      proof: [
-        "Worked across Gatsby, BigCommerce, Optimizely, Netlify, WordPress, SEO, performance, and localization concerns.",
-        "Supported content-heavy commerce experiences where marketing velocity and product quality both mattered.",
-        "Tied technical implementation to customer journeys, content operations, and search visibility.",
-      ],
-    },
-    tags: ["headless-commerce", "cms", "seo", "gatsby", "bigcommerce"],
-  },
-  {
-    id: "public-sector-wordpress-systems",
-    slug: "public-sector-wordpress-systems",
-    kind: "work",
-    title: "Public-Sector WordPress Systems",
-    path: "Public Sector / Infosoft Studio",
-    description:
-      "Accessible, secure, and maintainable WordPress publishing systems for public-sector and organizational websites.",
-    bullets: [
-      "WordPress development for long-lived public information systems",
-      "Accessibility, security, publishing workflow, and maintainability concerns",
-      "Training, support, and operational care around content-heavy sites",
-    ],
-    caseStudy: {
-      problem:
-        "Public-sector publishing systems need clear content workflows, accessible interfaces, secure implementation, and maintainable operations over long lifecycles.",
-      role: "I built and maintained WordPress systems, templates, publishing workflows, automation, SEO, performance, and support paths.",
-      decisions: [
-        "Prioritized semantic content structure, accessibility, and editor usability because public information must remain easy to publish and consume.",
-        "Balanced custom implementation with maintainable WordPress patterns so the systems could be supported over time.",
-        "Kept security, performance, and content operations visible during delivery instead of handling them as separate cleanup work.",
-      ],
-      outcome:
-        "The work strengthened long-lived publishing systems by improving accessibility, maintainability, performance, and operational support.",
-      proof: [
-        "Built and maintained WordPress systems for public-sector and organizational use cases.",
-        "Worked across content workflow, security, accessibility, SEO, performance, and user support.",
-        "Supported systems where reliability and maintainability mattered beyond launch.",
-      ],
-    },
-    tags: ["wordpress", "accessibility", "security", "publishing"],
-  },
-  {
-    id: "guy-os",
-    slug: "guy-os",
-    kind: "lab",
-    title: "Guy OS",
-    path: "apps/web",
-    description:
-      "The public portfolio app that frames the monorepo as a coherent product platform.",
-    bullets: [
-      "Branding restraint and frontend quality",
-      "Case study storytelling and SEO",
-      "A clear entry point into the broader platform",
-    ],
-    caseStudy: {
-      problem:
-        "The portfolio needed to stop feeling like a loose collection of demos and start explaining the product engineering judgment behind the monorepo.",
-      role: "I rebuilt the public surface as an Astro-first portfolio with local typed data, structured metadata, and service-oriented positioning.",
-      decisions: [
-        "Moved public pages to static Astro templates instead of client-heavy React routes.",
-        "Kept data close to the pages so content can be reviewed without a remote content service.",
-        "Added search-friendly schema around the owner, capabilities, contact path, notes, and proof pages.",
-      ],
-      outcome:
-        "The site now behaves like a professional portfolio and services surface at the same time: fast static pages, clear calls to action, and stronger explanation of the platform work.",
-      proof: [
-        "Static build with production-safe sitemap and robots output.",
-        "Reusable local data records for capabilities, notes, work, labs, and profile content.",
-        "Structured page metadata that identifies Guy Romelle Magayano as owner, author, publisher, and provider.",
-      ],
-    },
-    tags: ["portfolio", "branding", "platform"],
-    website: {
-      label: "guyromellemagayano.com",
-      href: "https://www.guyromellemagayano.com",
-      target: "_blank",
-      rel: "noopener noreferrer",
-    },
-    featured: true,
-  },
-  {
-    id: "taskflow",
-    slug: "taskflow",
-    kind: "lab",
-    title: "TaskFlow",
-    path: "apps/saas-demo",
-    description:
-      "A multi-tenant SaaS product designed around teams, projects, tasks, billing, events, and automation.",
-    bullets: [
-      "Multi-tenant application modeling",
-      "Product-grade data relationships",
-      "Full-stack delivery with clear UX tradeoffs",
-    ],
-    caseStudy: {
-      problem:
-        "Multi-tenant SaaS surfaces often drift when teams build billing, teams, projects, and permissions as separate feature islands.",
-      role: "I use TaskFlow as a product-systems reference for modeling tenant boundaries, shared workflows, and stateful product operations.",
-      decisions: [
-        "Treat teams, projects, tasks, billing, and events as connected product primitives.",
-        "Keep permission-aware routing and reusable UI states visible in the architecture.",
-        "Design screens around repeated operator actions rather than one-off marketing flows.",
-      ],
-      outcome:
-        "The project demonstrates how I would help a SaaS team reduce delivery friction before product growth makes the core model expensive to change.",
-      proof: [
-        "Domain model covers teams, projects, tasks, billing, events, and automation.",
-        "Reusable app patterns support repeated operational workflows.",
-        "The surface frames platform decisions as product leverage, not only code organization.",
-      ],
-    },
-    tags: ["saas", "multi-tenant", "product"],
-    repository: {
-      label: "github.com",
-      href: "https://github.com/guyromellemagayano",
-      target: "_blank",
-      rel: "noopener noreferrer",
-    },
-    featured: true,
-  },
-  {
-    id: "cartforge",
-    slug: "cartforge",
-    kind: "lab",
-    title: "CartForge",
-    path: "apps/commerce-demo",
-    description:
-      "A commerce-focused surface for catalog, cart, checkout, fulfillment, and transaction-state orchestration.",
-    bullets: [
-      "Commerce flows and transactional states",
-      "Pricing, checkout, and order thinking",
-      "High-friction UI paths handled pragmatically",
-    ],
-    caseStudy: {
-      problem:
-        "Commerce flows become fragile when catalog, cart, checkout, fulfillment, and order states are handled as disconnected UI problems.",
-      role: "I frame CartForge as a transaction-heavy product surface where the user journey has to stay clear while the state model does the hard work.",
-      decisions: [
-        "Separate catalog exploration from checkout commitment and fulfillment status.",
-        "Make pricing, payment, and order state explicit instead of hiding them in component state.",
-        "Design the UI around recovery paths for high-friction moments.",
-      ],
-      outcome:
-        "The case study shows how commerce implementation benefits from boring, explicit state boundaries and careful user-facing feedback.",
-      proof: [
-        "Flow coverage includes catalog, cart, checkout, fulfillment, and transaction states.",
-        "The project highlights pricing and order behavior as architecture concerns.",
-        "The UI path is structured for clarity under high user intent.",
-      ],
-    },
-    tags: ["commerce", "checkout", "transactions"],
-    repository: {
-      label: "github.com",
-      href: "https://github.com/guyromellemagayano",
-      target: "_blank",
-      rel: "noopener noreferrer",
-    },
-    featured: true,
-  },
-  {
-    id: "pulseops",
-    slug: "pulseops",
-    kind: "lab",
-    title: "PulseOps",
-    path: "apps/ops-demo",
-    description:
-      "An operational console for queues, incidents, jobs, retries, and visibility into system health and manual interventions.",
-    bullets: [
-      "Operations UX for high-signal data",
-      "Observability-aware product design",
-      "Recovery paths and failure handling",
-    ],
-    caseStudy: {
-      problem:
-        "Internal operations tools often bury the signals teams need to recover from incidents, queue failures, and retry-heavy workflows.",
-      role: "I use PulseOps to show how operational consoles should prioritize scan density, recovery paths, and accountability over decorative dashboard patterns.",
-      decisions: [
-        "Prioritize queues, incidents, jobs, retries, and owner context in the information architecture.",
-        "Keep failure states visible and actionable instead of treating them as generic alerts.",
-        "Design the surface for repeated use by operators under time pressure.",
-      ],
-      outcome:
-        "The project demonstrates the kind of quiet, high-signal interface work I bring to operational and platform-heavy products.",
-      proof: [
-        "The domain model covers queues, incidents, retries, and manual interventions.",
-        "The project frames observability as a product workflow, not only a backend concern.",
-        "Recovery paths are treated as first-class user journeys.",
-      ],
-    },
-    tags: ["ops", "observability", "reliability"],
-    repository: {
-      label: "github.com",
-      href: "https://github.com/guyromellemagayano",
-      target: "_blank",
-      rel: "noopener noreferrer",
-    },
-  },
-  {
-    id: "contentforge",
-    slug: "contentforge",
-    kind: "lab",
-    title: "ContentForge",
-    path: "apps/cms-demo",
-    description:
-      "A content workflow app for structured editorial systems, preview, approvals, versioning, and headless content thinking.",
-    bullets: [
-      "Editorial and publishing workflows",
-      "Structured content relationships",
-      "Preview, approval, and governance layers",
-    ],
-    caseStudy: {
-      problem:
-        "Content-heavy products slow down when editorial workflow, route metadata, preview, and approvals are modeled after tooling defaults instead of product needs.",
-      role: "I use ContentForge to show how structured content can improve navigation, SEO, publishing confidence, and delivery consistency.",
-      decisions: [
-        "Treat content models as product architecture that shapes routes, metadata, and previews.",
-        "Make approval and versioning states visible enough for both editors and engineers.",
-        "Keep content delivery portable so the product is not locked to one remote service too early.",
-      ],
-      outcome:
-        "The project gives a concrete story for teams that need content systems without letting the tooling own the product model.",
-      proof: [
-        "The workflow covers preview, approvals, versioning, and structured editorial relationships.",
-        "The case study connects content modeling directly to SEO and delivery reliability.",
-        "The data shape remains easy to inspect and evolve.",
-      ],
-    },
-    tags: ["content", "editorial", "workflow"],
-    repository: {
-      label: "github.com",
-      href: "https://github.com/guyromellemagayano",
-      target: "_blank",
-      rel: "noopener noreferrer",
-    },
-  },
-];
+type ProjectsData = {
+  projects: Project[];
+};
+
+const PROJECTS_DATA_KEYS = ["projects"] as const;
+const PROJECT_KEYS = [
+  "id",
+  "slug",
+  "kind",
+  "title",
+  "path",
+  "description",
+  "bullets",
+  "caseStudy",
+  "tags",
+  "website",
+  "repository",
+  "featured",
+] as const;
+const PROJECT_CASE_STUDY_KEYS = [
+  "problem",
+  "role",
+  "decisions",
+  "outcome",
+  "proof",
+] as const;
+const PROJECT_LINK_KEYS = ["label", "href", "target", "rel"] as const;
+
+function expectSlug(value: unknown, path: string): string {
+  const slug = expectString(value, path);
+
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    throw new Error(
+      `Invalid local data at "${path}": expected kebab-case slug.`
+    );
+  }
+
+  return slug;
+}
+
+function parseProjectLink(value: unknown, path: string): ProjectLink {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, PROJECT_LINK_KEYS, path);
+
+  const href = expectHref(record.href, `${path}.href`);
+  const target =
+    typeof record.target === "undefined"
+      ? undefined
+      : expectEnum(record.target, LINK_TARGETS, `${path}.target`);
+  const rel = expectOptionalString(record.rel, `${path}.rel`);
+
+  if (target === "_blank") {
+    const relTokens = new Set((rel ?? "").split(/\s+/).filter(Boolean));
+
+    if (!relTokens.has("noopener") || !relTokens.has("noreferrer")) {
+      throw new Error(
+        `Invalid local data at "${path}.rel": links with \`target="_blank"\` must include both \`noopener\` and \`noreferrer\`.`
+      );
+    }
+  }
+
+  return {
+    label: expectString(record.label, `${path}.label`),
+    href,
+    target,
+    rel,
+  };
+}
+
+function parseProjectCaseStudy(value: unknown, path: string): ProjectCaseStudy {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, PROJECT_CASE_STUDY_KEYS, path);
+
+  return {
+    problem: expectString(record.problem, `${path}.problem`),
+    role: expectString(record.role, `${path}.role`),
+    decisions: expectStringArray(record.decisions, `${path}.decisions`),
+    outcome: expectString(record.outcome, `${path}.outcome`),
+    proof: expectStringArray(record.proof, `${path}.proof`),
+  };
+}
+
+function parseProject(value: unknown, path: string): Project {
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, PROJECT_KEYS, path);
+
+  return {
+    id: expectSlug(record.id, `${path}.id`),
+    slug: expectSlug(record.slug, `${path}.slug`),
+    kind: expectEnum(record.kind, PROJECT_KINDS, `${path}.kind`),
+    title: expectString(record.title, `${path}.title`),
+    path: expectString(record.path, `${path}.path`),
+    description: expectString(record.description, `${path}.description`),
+    bullets: expectStringArray(record.bullets, `${path}.bullets`),
+    caseStudy: parseProjectCaseStudy(record.caseStudy, `${path}.caseStudy`),
+    tags: expectStringArray(record.tags, `${path}.tags`),
+    website:
+      typeof record.website === "undefined"
+        ? undefined
+        : parseProjectLink(record.website, `${path}.website`),
+    repository:
+      typeof record.repository === "undefined"
+        ? undefined
+        : parseProjectLink(record.repository, `${path}.repository`),
+    featured: expectOptionalBoolean(record.featured, `${path}.featured`),
+  };
+}
+
+function createProjectsData(value: unknown): ProjectsData {
+  const path = "data/projects.json";
+  const record = expectRecord(value, path);
+
+  assertExactKeys(record, PROJECTS_DATA_KEYS, path);
+
+  const projects = expectArray(record.projects, `${path}.projects`).map(
+    (entry, index) => parseProject(entry, `${path}.projects[${index}]`)
+  );
+
+  assertUniqueValues(
+    projects.map((project) => project.id),
+    "project id",
+    `${path}.projects`
+  );
+  assertUniqueValues(
+    projects.map((project) => project.slug),
+    "project slug",
+    `${path}.projects`
+  );
+
+  return { projects };
+}
+
+const projectsData = createProjectsData(rawProjectsDataJson as unknown);
+
+export const projects: Project[] = projectsData.projects;
 
 export const workProjects = projects.filter(
   (project) => project.kind === "work"

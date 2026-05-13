@@ -7,6 +7,7 @@
 import { describe, expect, it } from "vitest";
 
 import { clients, workExperience } from "@web/data/clients";
+import { getProjectPath, labProjects, workProjects } from "@web/data/projects";
 import { useCategories } from "@web/data/uses";
 
 describe("JSON-backed local data modules", () => {
@@ -34,6 +35,19 @@ describe("JSON-backed local data modules", () => {
         expect.objectContaining({ name: "16-inch MacBook Pro" }),
         expect.objectContaining({ name: "Playwright" }),
       ])
+    );
+  });
+
+  it("parses projects and preserves derived project route helpers", () => {
+    expect(workProjects.map((project) => project.kind)).toEqual(
+      Array.from({ length: 5 }, () => "work")
+    );
+    expect(labProjects.map((project) => project.kind)).toEqual(
+      Array.from({ length: 5 }, () => "lab")
+    );
+    expect(getProjectPath(labProjects[0])).toBe("/labs/guy-os");
+    expect(getProjectPath(workProjects[0])).toBe(
+      "/work/localized-commerce-platform"
     );
   });
 });
