@@ -76,6 +76,26 @@ export function expectBoolean(value: unknown, path: string): boolean {
   return value;
 }
 
+/** Ensures a value is an ISO `YYYY-MM-DD` date string. */
+export function expectDateString(value: unknown, path: string): string {
+  const normalizedValue = expectString(value, path);
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(normalizedValue)) {
+    fail(path, 'expected ISO date string in "YYYY-MM-DD" format');
+  }
+
+  const normalizedDate = new Date(`${normalizedValue}T00:00:00.000Z`);
+
+  if (
+    Number.isNaN(normalizedDate.getTime()) ||
+    normalizedDate.toISOString().slice(0, 10) !== normalizedValue
+  ) {
+    fail(path, "expected a valid calendar date");
+  }
+
+  return normalizedValue;
+}
+
 /** Ensures a value matches one of the allowed string literals. */
 export function expectEnum<const T extends readonly string[]>(
   value: unknown,
@@ -130,6 +150,18 @@ export function expectOptionalBoolean(
   }
 
   return expectBoolean(value, path);
+}
+
+/** Ensures a value is an ISO date string when present. */
+export function expectOptionalDateString(
+  value: unknown,
+  path: string
+): string | undefined {
+  if (typeof value === "undefined") {
+    return undefined;
+  }
+
+  return expectDateString(value, path);
 }
 
 /** Ensures a value is a trimmed string when present. */

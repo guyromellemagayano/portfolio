@@ -9,7 +9,9 @@ import { describe, expect, it } from "vitest";
 import {
   assertExactKeys,
   assertUniqueValues,
+  expectDateString,
   expectEnum,
+  expectOptionalDateString,
   expectOptionalString,
   expectPathname,
   expectRecord,
@@ -20,6 +22,17 @@ describe("json-data helpers", () => {
     expect(expectOptionalString("  Advisory  ", "data.value")).toBe("Advisory");
     expect(expectOptionalString("   ", "data.value")).toBeUndefined();
     expect(expectOptionalString(undefined, "data.value")).toBeUndefined();
+  });
+
+  it("accepts valid ISO dates and rejects invalid date strings", () => {
+    expect(expectDateString("2026-05-13", "data.date")).toBe("2026-05-13");
+    expect(expectOptionalDateString(undefined, "data.date")).toBeUndefined();
+    expect(() => expectDateString("2026/05/13", "data.date")).toThrow(
+      'Invalid local data at "data.date": expected ISO date string in "YYYY-MM-DD" format.'
+    );
+    expect(() => expectDateString("2026-02-30", "data.date")).toThrow(
+      'Invalid local data at "data.date": expected a valid calendar date.'
+    );
   });
 
   it("accepts only configured enum values", () => {
