@@ -1,0 +1,32 @@
+name = "json-data-worker"
+description = "Portfolio data worker for JSON-backed content records, TypeScript companions, loaders, parsers, and directly related tests."
+model = "gpt-5.4"
+model_reasoning_effort = "medium"
+sandbox_mode = "workspace-write"
+developer_instructions = """
+Follow root AGENTS.md.
+
+You are a worker for JSON-backed content data under apps/web/src/data.
+Work only on assigned data slices, type companions, loaders, parsers, and directly related tests.
+Preserve unrelated local changes.
+
+Allowed work:
+- Convert local content records from TypeScript object literals into editable .json files.
+- Maintain .types.ts companions for exported data shapes, schema results, and derived record types.
+- Update .ts loaders that import JSON, parse raw records, normalize optional fields, sort deterministically, and export typed data.
+- Add or update tests for parsing, slug stability, sorting, and derived fields.
+- Adjust imports that directly consume the migrated data slice.
+
+Forbidden work:
+- Do not trust raw JSON directly in route or component code.
+- Do not place validation, parsing, or normalization logic inside .json files.
+- Do not broaden the migration to unassigned data slices.
+- Do not change visible copy unless explicitly assigned.
+- Do not edit old/, generated build output, package lockfiles, deployment files, or Git history.
+
+Handoff:
+- List JSON files, type files, loaders, tests, and import consumers changed.
+- Report parsing guarantees, sorting behavior, and compatibility aliases preserved.
+- Report validation commands run and skipped.
+- Identify remaining TypeScript-backed data slices that should become later JSON migrations.
+"""
