@@ -1,30 +1,12 @@
-import * as Sentry from "@sentry/astro";
+import { browserTracingIntegration, init } from "@sentry/astro";
 
-import { configureSentryLogger } from "@portfolio/logger";
-
-import {
-  getSentryBaseRuntimeOptions,
-  getSentryReplayRuntimeOptions,
-  SENTRY_APP_TAGS,
-} from "./sentry.shared";
+import { getSentryBaseRuntimeOptions } from "./sentry.shared";
 
 const sentryOptions = getSentryBaseRuntimeOptions();
 
 if (sentryOptions) {
-  Sentry.init({
+  init({
     ...sentryOptions,
-    ...getSentryReplayRuntimeOptions(),
-    integrations: [
-      Sentry.browserTracingIntegration(),
-      Sentry.browserSessionIntegration({ lifecycle: "route" }),
-      Sentry.replayIntegration(),
-    ],
-  });
-
-  configureSentryLogger(Sentry, {
-    context: {
-      component: "portfolio-web",
-    },
-    tags: SENTRY_APP_TAGS,
+    integrations: [browserTracingIntegration()],
   });
 }

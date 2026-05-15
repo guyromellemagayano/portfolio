@@ -29,6 +29,9 @@ export function resolveDocumentIntegrations(): ResolvedDocumentIntegrations {
   const googleTagManagerContainerId = getTrimmedEnvValue(
     "GOOGLE_TAG_MANAGER_CONTAINER_ID"
   );
+  const shouldUseDirectGoogleAnalytics =
+    googleAnalyticsMeasurementId.length > 0 &&
+    googleTagManagerContainerId.length === 0;
   const bingSiteVerification = getTrimmedEnvValue("BING_SITE_VERIFICATION");
   const shouldRenderVercelObservability =
     getTrimmedEnvValue("VERCEL_ENV").length > 0;
@@ -36,10 +39,10 @@ export function resolveDocumentIntegrations(): ResolvedDocumentIntegrations {
   return {
     bingSiteVerification,
     googleAnalyticsBootstrapScript: buildGoogleAnalyticsBootstrapScript(
-      googleAnalyticsMeasurementId
+      shouldUseDirectGoogleAnalytics ? googleAnalyticsMeasurementId : ""
     ),
     googleAnalyticsMeasurementId,
-    googleAnalyticsScriptUrl: googleAnalyticsMeasurementId
+    googleAnalyticsScriptUrl: shouldUseDirectGoogleAnalytics
       ? `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(
           googleAnalyticsMeasurementId
         )}`

@@ -8,8 +8,10 @@
   const currentScript = document.currentScript;
   const googleAnalyticsMeasurementId =
     currentScript?.dataset.googleAnalyticsMeasurementId || "";
+  const hasGoogleTagManager =
+    currentScript?.dataset.googleTagManagerEnabled === "true";
 
-  if (!googleAnalyticsMeasurementId) {
+  if (!googleAnalyticsMeasurementId && !hasGoogleTagManager) {
     return;
   }
 
@@ -60,16 +62,25 @@
   }
 
   function sendAnalyticsEvent(eventName, params = {}) {
-    if (typeof window.gtag !== "function") {
-      return;
-    }
-
-    window.gtag("event", eventName, {
-      send_to: googleAnalyticsMeasurementId,
+    const payload = {
+      send_to: googleAnalyticsMeasurementId || undefined,
       page_location: window.location.href,
       page_title: document.title,
       ...params,
-    });
+    };
+
+    if (typeof window.gtag !== "function") {
+      if (hasGoogleTagManager && Array.isArray(window.dataLayer)) {
+        window.dataLayer.push({
+          event: eventName,
+          ...payload,
+        });
+      }
+
+      return;
+    }
+
+    window.gtag("event", eventName, payload);
   }
 
   function trackLinkClick(event) {

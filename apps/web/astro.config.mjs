@@ -32,8 +32,6 @@ const DEFAULT_SENTRY_ORG = "stack-market-labs";
 const DEFAULT_SENTRY_PROJECT = "portfolio-web";
 const DEFAULT_SENTRY_RELEASE = "portfolio-web@1.0.0";
 const DEFAULT_SENTRY_TRACES_SAMPLE_RATE = 1.0;
-const DEFAULT_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE = 1.0;
-const DEFAULT_SENTRY_REPLAYS_SESSION_SAMPLE_RATE = 0.1;
 const SENTRY_SOURCEMAP_FILES_TO_DELETE_AFTER_UPLOAD = ["dist/**/*.map"];
 const LOCAL_ONLY_HOSTNAME_SUFFIXES = [".local"];
 const LOCAL_ONLY_HOSTNAMES = new Set([
@@ -230,23 +228,6 @@ function getSentryPublicRuntimeEnv() {
         )
       )
     ),
-    "import.meta.env.PUBLIC_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE":
-      JSON.stringify(
-        String(
-          readSampleRateEnvValue(
-            "SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE",
-            DEFAULT_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE
-          )
-        )
-      ),
-    "import.meta.env.PUBLIC_SENTRY_REPLAYS_SESSION_SAMPLE_RATE": JSON.stringify(
-      String(
-        readSampleRateEnvValue(
-          "SENTRY_REPLAYS_SESSION_SAMPLE_RATE",
-          DEFAULT_SENTRY_REPLAYS_SESSION_SAMPLE_RATE
-        )
-      )
-    ),
   };
 }
 
@@ -262,11 +243,7 @@ export default defineConfig({
       filter: (page) => {
         const pathname = new URL(page).pathname.replace(/\/+$/, "") || "/";
 
-        return (
-          !pathname.endsWith(".xml") &&
-          pathname !== "/privacy" &&
-          pathname !== "/work"
-        );
+        return !pathname.endsWith(".xml") && pathname !== "/privacy";
       },
       namespaces: {
         image: false,

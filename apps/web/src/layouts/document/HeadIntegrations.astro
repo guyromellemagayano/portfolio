@@ -24,8 +24,12 @@ const {
   shouldRenderVercelObservability,
 } = Astro.props;
 
-const hasGoogleAnalytics = googleAnalyticsMeasurementId.length > 0;
+const hasDirectGoogleAnalytics =
+  googleAnalyticsBootstrapScript.length > 0 &&
+  googleAnalyticsScriptUrl.length > 0;
 const hasGoogleTagManager = googleTagManagerBootstrapScript.length > 0;
+const shouldRenderAnalyticsEvents =
+  googleAnalyticsMeasurementId.length > 0 || hasGoogleTagManager;
 ---
 
 {
@@ -36,12 +40,19 @@ const hasGoogleTagManager = googleTagManagerBootstrapScript.length > 0;
 {shouldRenderVercelObservability ? <Analytics /> : null}
 {shouldRenderVercelObservability ? <SpeedInsights /> : null}
 {
-  hasGoogleAnalytics ? (
+  hasDirectGoogleAnalytics ? (
     <>
       <script async src={googleAnalyticsScriptUrl} />
       <script is:inline set:html={googleAnalyticsBootstrapScript} />
+    </>
+  ) : null
+}
+{
+  shouldRenderAnalyticsEvents ? (
+    <>
       <script
         data-google-analytics-measurement-id={googleAnalyticsMeasurementId}
+        data-google-tag-manager-enabled={hasGoogleTagManager ? "true" : null}
         defer
         src="/analytics-events.js"
       />
