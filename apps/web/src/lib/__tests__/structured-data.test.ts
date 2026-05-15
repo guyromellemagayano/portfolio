@@ -6,6 +6,7 @@
 
 import { describe, expect, it } from "vitest";
 
+import { labProjects, workProjects } from "@web/data/projects";
 import { services } from "@web/data/services";
 import { getPage } from "@web/data/site";
 import {
@@ -13,6 +14,7 @@ import {
   buildContactPageStructuredData,
   buildPersonStructuredData,
   buildProfessionalServiceStructuredData,
+  buildProjectStructuredData,
   buildWebPageStructuredData,
   buildWebsiteStructuredData,
 } from "@web/lib/structured-data";
@@ -124,6 +126,23 @@ describe("structured data builders", () => {
         "@type": "OfferCatalog",
         url: "https://www.guyromellemagayano.com/capabilities",
       },
+    });
+  });
+
+  it("labels work and lab project schema by route intent", () => {
+    const workStructuredData = buildProjectStructuredData(workProjects[0]);
+    const labStructuredData = buildProjectStructuredData(labProjects[0]);
+
+    expect(workStructuredData).toMatchObject({
+      "@type": "CreativeWork",
+      "@id":
+        "https://www.guyromellemagayano.com/work/localized-commerce-platform#case-study",
+      name: "Localized Commerce Platform Case Study",
+    });
+    expect(labStructuredData).toMatchObject({
+      "@type": "SoftwareSourceCode",
+      "@id": "https://www.guyromellemagayano.com/labs/guy-os#lab",
+      name: "Guy OS Lab",
     });
   });
 });

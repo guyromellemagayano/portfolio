@@ -20,9 +20,11 @@ module.exports = {
         "http://localhost/work/",
         "http://localhost/capabilities/",
         "http://localhost/about/",
+        "http://localhost/labs/",
         "http://localhost/notes/",
+        "http://localhost/uses/",
         "http://localhost/contact/",
-        "http://localhost/privacy/",
+        "http://localhost/transparency/",
       ],
       numberOfRuns: 3,
       settings: {

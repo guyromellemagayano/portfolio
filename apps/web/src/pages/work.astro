@@ -2,28 +2,81 @@
 /**
  * @file apps/web/src/pages/work.astro
  * @author Guy Romelle Magayano
- * @description Legacy work route that redirects to the selected work section on the about page.
+ * @description Work index page for production case studies and delivery proof.
  */
 
-import { toAbsoluteSiteUrl } from "@web/utils/site-url";
+import PageIntro from "@web/components/PageIntro.astro";
+import PathwayCards from "@web/components/PathwayCards.astro";
+import ProjectCard from "@web/components/ProjectCard.astro";
+import Section from "@web/components/Section.astro";
+import SplitSection from "@web/components/SplitSection.astro";
+import { getProjectPath, workProjects } from "@web/data/projects";
+import { clientOutcomes, pagePathways } from "@web/data/site";
+import BaseLayout from "@web/layouts/BaseLayout.astro";
+import {
+  buildPortfolioPageMetadata,
+  getPortfolioBrochurePage,
+} from "@web/lib/portfolio-brochure";
+import {
+  appendStructuredData,
+  buildCollectionPageStructuredData,
+} from "@web/lib/structured-data";
 
-const destination = "/about#selected-work";
-const canonicalUrl =
-  toAbsoluteSiteUrl("/about") ?? "https://www.guyromellemagayano.com/about";
+const { page } = await getPortfolioBrochurePage("work");
+const metadata = appendStructuredData(
+  buildPortfolioPageMetadata(page),
+  buildCollectionPageStructuredData(page, workProjects, getProjectPath)
+);
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content={`0;url=${destination}`} />
-    <meta name="robots" content="noindex,follow" />
-    <link rel="canonical" href={canonicalUrl} />
-    <title>Selected work moved | Guy Romelle Magayano</title>
-  </head>
-  <body>
-    <a href={destination}>
-      Redirecting from <code>/work</code> to <code>{destination}</code>
-    </a>
-  </body>
-</html>
+<BaseLayout metadata={metadata}>
+  <PageIntro
+    subheading={page.subheading}
+    title={page.title}
+    intro={page.intro}
+  />
+
+  <Section
+    aria-labelledby="work-case-studies-heading"
+    class="py-16"
+    headline="Case studies with production constraints attached."
+    headlineId="work-case-studies-heading"
+    role="region"
+    subheadline="Each project is framed around the problem, role, decisions, outcome, and proof points that made the work useful."
+    subheadlineClass="max-w-2xl text-pretty"
+  >
+    <div class="grid gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+      {workProjects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </Section>
+
+  <SplitSection
+    title="What the work tends to improve"
+    intro="Different codebases need different fixes, but the outcomes usually fall into a few durable categories."
+    sectionClass="mt-10"
+  >
+    <div class="grid gap-8 sm:grid-cols-3">
+      {
+        clientOutcomes.map((outcome) => (
+          <article>
+            <h3 class="text-base font-semibold text-zinc-800 dark:text-zinc-100">
+              {outcome.title}
+            </h3>
+            <p class="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-300">
+              {outcome.detail}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </SplitSection>
+
+  <PathwayCards
+    eyebrow="Next"
+    id="work-next-steps-heading"
+    title="Move from proof to fit."
+    intro="The next useful signal is how the work maps to your constraint, the service shape, or the questions behind the decisions."
+    pathways={pagePathways.work}
+    sectionClass="mt-20 pb-24"
+  />
+</BaseLayout>

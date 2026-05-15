@@ -5,8 +5,6 @@
  * @description Centered call-to-action section with headline and copy.
  */
 
-import { Section as UiSection } from "@portfolio/ui";
-
 import Container from "@web/components/Container.astro";
 import Subheading from "@web/components/Subheading.astro";
 import Text from "@web/components/Text.astro";
@@ -42,7 +40,7 @@ const labelledBy =
 const sectionClass = ["py-16", className].filter(Boolean).join(" ");
 ---
 
-<UiSection {...rest} aria-labelledby={labelledBy} className={sectionClass}>
+<section {...rest} aria-labelledby={labelledBy} class={sectionClass}>
   <Container class:list={["flex flex-col items-center gap-10", containerClass]}>
     <div class="flex flex-col gap-6">
       {
@@ -77,4 +75,4 @@ const sectionClass = ["py-16", className].filter(Boolean).join(" ");
 
     <slot name="cta" />
   </Container>
-</UiSection>
+</section>

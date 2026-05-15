@@ -5,8 +5,8 @@
  * @description Work case study page for an individual project.
  */
 
-import Container from "@web/components/Container.astro";
 import CTA from "@web/components/CTA.astro";
+import ProjectDetailHeader from "@web/components/ProjectDetailHeader.astro";
 import SplitSection from "@web/components/SplitSection.astro";
 import { getProjectPath, type Project, workProjects } from "@web/data/projects";
 import BaseLayout from "@web/layouts/BaseLayout.astro";
@@ -57,7 +57,7 @@ function buildProjectMetadata(projectRecord: Project): WebPageMetadata {
       buildProjectStructuredData(projectRecord),
       buildBreadcrumbListStructuredData([
         { name: "Home", path: "/" },
-        { name: "Selected work", path: "/about" },
+        { name: "Work", path: "/work" },
         {
           name: projectRecord.title,
           path: projectPath,
@@ -74,47 +74,11 @@ const metadata = buildProjectMetadata(project);
 
 <BaseLayout metadata={metadata}>
   <article>
-    <header class="pt-16 sm:pt-32">
-      <Container>
-        <a
-          href="/about#selected-work"
-          class="text-sm font-medium text-zinc-500 transition hover:text-teal-600 dark:text-zinc-400 dark:hover:text-teal-400"
-        >
-          Back to selected work
-        </a>
-        <div class="mt-8 max-w-2xl">
-          <p
-            class="text-xs font-semibold tracking-[0.28em] text-zinc-500 uppercase dark:text-zinc-400"
-          >
-            {project.path}
-          </p>
-          <h1
-            class="mt-3 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
-          >
-            {project.title}
-          </h1>
-          <p class="mt-6 text-base leading-8 text-zinc-600 dark:text-zinc-300">
-            {project.description}
-          </p>
-          <div
-            class="mt-8 flex flex-wrap gap-2"
-            role="list"
-            aria-label={`${project.title} tags`}
-          >
-            {
-              project.tags.map((tag) => (
-                <span
-                  class="rounded-full border border-zinc-200 px-3 py-1.5 text-xs text-zinc-500 dark:border-zinc-700/60 dark:text-zinc-400"
-                  role="listitem"
-                >
-                  {tag}
-                </span>
-              ))
-            }
-          </div>
-        </div>
-      </Container>
-    </header>
+    <ProjectDetailHeader
+      backHref="/work"
+      backLabel="Back to work"
+      project={project}
+    />
 
     <SplitSection
       title="Problem"

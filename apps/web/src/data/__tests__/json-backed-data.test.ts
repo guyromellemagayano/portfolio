@@ -9,6 +9,7 @@ import { describe, expect, it } from "vitest";
 import { articleCategories, articles } from "@web/data/articles";
 import { clients, workExperience } from "@web/data/clients";
 import { getProjectPath, labProjects, workProjects } from "@web/data/projects";
+import { getPage, navigationLinks, pagePathways } from "@web/data/site";
 import { standalonePages } from "@web/data/standalone-pages";
 import { useCategories } from "@web/data/uses";
 
@@ -80,5 +81,25 @@ describe("JSON-backed local data modules", () => {
         }),
       ]),
     });
+  });
+
+  it("promotes work into browseable site IA records", () => {
+    expect(
+      navigationLinks
+        .filter((link) => link.showInHeader)
+        .map((link) => link.href)
+    ).toEqual(["/capabilities", "/work", "/notes", "/about"]);
+
+    expect(getPage("work")).toMatchObject({
+      slug: "work",
+      seoCanonicalPath: "/work",
+      seoTitle: "Work - Guy Romelle Magayano",
+    });
+
+    expect(pagePathways.work).toEqual([
+      expect.objectContaining({ href: "/capabilities" }),
+      expect.objectContaining({ href: "/notes" }),
+      expect.objectContaining({ href: "/contact" }),
+    ]);
   });
 });

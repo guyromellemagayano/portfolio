@@ -15,21 +15,21 @@ type Props = {
 };
 
 const { service, showPrice = false } = Astro.props;
+const titleLinkClasses =
+  "rounded-sm text-inherit no-underline transition hover:text-teal-600 hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 dark:focus-visible:outline-teal-400";
 ---
 
 <UiCard
   as="article"
   id={service.id}
   className="group relative flex flex-col items-start rounded-none border-0 bg-transparent p-0 text-inherit shadow-none"
-  analytics={{
-    contentId: service.id,
-    contentName: service.title,
-    impression: "service",
-  }}
+  data-analytics-content-id={service.id}
+  data-analytics-content-name={service.title}
+  data-analytics-impression="service"
 >
   <div
     aria-hidden="true"
-    class="absolute -inset-x-4 -inset-y-6 z-0 scale-95 rounded-2xl bg-zinc-50 opacity-0 transition duration-200 group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 dark:bg-zinc-800/50"
+    class="absolute -inset-x-4 -inset-y-6 z-0 scale-95 rounded-lg bg-zinc-50 opacity-0 transition duration-200 group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 dark:bg-zinc-800/50"
   >
   </div>
   <p
@@ -43,13 +43,11 @@ const { service, showPrice = false } = Astro.props;
     <UiLink
       href={service.href}
       variant={null}
-      className="transition hover:text-teal-600"
-      analytics={{
-        contentId: service.id,
-        contentName: service.title,
-        contentType: "service",
-        placement: "service-card-title",
-      }}
+      className={titleLinkClasses}
+      data-analytics-content-id={service.id}
+      data-analytics-content-name={service.title}
+      data-analytics-content-type="service"
+      data-analytics-placement="service-card-title"
     >
       {service.title}
     </UiLink>

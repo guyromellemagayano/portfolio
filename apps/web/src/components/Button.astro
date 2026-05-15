@@ -17,7 +17,7 @@ const {
 
 const sizeClass = size === "lg" ? "px-4 py-2" : "px-3 py-1";
 const classes = [
-  "inline-flex shrink-0 items-center justify-center gap-1 rounded-full text-sm/7 font-medium transition",
+  "inline-flex shrink-0 items-center justify-center gap-1 rounded-full text-sm/7 font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:outline-teal-400",
   color === "dark/light" &&
     "bg-button text-white hover:bg-button-hover dark:bg-button dark:text-white dark:hover:bg-button-hover",
   color === "light" &&
@@ -29,6 +29,6 @@ const classes = [
   .join(" ");
 ---
 
-<UiButton {...rest} type={type} variant={null} size={null} className={classes}>
+<UiButton {...rest} type={type} size={null} variant={null} className={classes}>
   <slot />
 </UiButton>

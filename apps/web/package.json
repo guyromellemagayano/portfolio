@@ -24,7 +24,6 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@astrojs/mdx": "catalog:",
     "@astrojs/react": "catalog:",
     "@astrojs/sitemap": "catalog:",
     "@portfolio/logger": "workspace:*",
@@ -52,8 +51,8 @@
     "postcss": "catalog:",
     "prettier": "catalog:",
     "prettier-plugin-astro": "catalog:",
-    "remark-gfm": "catalog:",
     "rimraf": "catalog:",
+    "sharp": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

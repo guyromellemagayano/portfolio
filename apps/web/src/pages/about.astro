@@ -2,18 +2,16 @@
 /**
  * @file apps/web/src/pages/about.astro
  * @author Guy Romelle Magayano
- * @description About page covering profile, selected work, experience, and working principles.
+ * @description About page covering profile, experience, focus areas, and working principles.
  */
 
 import Eyebrow from "@web/components/Eyebrow.astro";
 import Heading from "@web/components/Heading.astro";
 import HeroTwoColumnWithPhoto from "@web/components/HeroTwoColumnWithPhoto.astro";
 import PathwayCards from "@web/components/PathwayCards.astro";
-import ProjectCard from "@web/components/ProjectCard.astro";
 import SplitSection from "@web/components/SplitSection.astro";
 import { certifications } from "@web/data/certifications";
 import { workExperience } from "@web/data/clients";
-import { getProjectPath, workProjects } from "@web/data/projects";
 import {
   focusAreas,
   operatingPrinciples,
@@ -27,16 +25,9 @@ import {
   buildPortfolioPageMetadata,
   getPortfolioBrochurePage,
 } from "@web/lib/portfolio-brochure";
-import {
-  appendStructuredData,
-  buildCollectionPageStructuredData,
-} from "@web/lib/structured-data";
 
 const { page } = await getPortfolioBrochurePage("about");
-const metadata = appendStructuredData(
-  buildPortfolioPageMetadata(page),
-  buildCollectionPageStructuredData(page, workProjects, getProjectPath)
-);
+const metadata = buildPortfolioPageMetadata(page);
 const formatRoleDate = (value?: string) =>
   value
     ? new Intl.DateTimeFormat("en-US", { year: "numeric" }).format(
@@ -91,7 +82,7 @@ const formatRoleDate = (value?: string) =>
                 link.href.startsWith("http") ? "noopener noreferrer" : undefined
               }
               target={link.href.startsWith("http") ? "_blank" : undefined}
-              class="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-600 dark:text-zinc-100 dark:hover:text-teal-400"
+              class="group flex rounded-sm text-sm font-medium text-zinc-800 transition hover:text-teal-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 dark:text-zinc-100 dark:hover:text-teal-400 dark:focus-visible:outline-teal-400"
             >
               <span>{link.label}</span>
             </a>
@@ -115,16 +106,6 @@ const formatRoleDate = (value?: string) =>
         ))
       }
     </div>
-  </SplitSection>
-
-  <SplitSection
-    id="selected-work"
-    title="Selected work"
-    sectionClass="mt-20 scroll-mt-32"
-    intro="Production case studies across commerce, publishing, SaaS, and operational systems that show how I work in real delivery environments."
-    contentClass="grid gap-x-12 gap-y-16 sm:grid-cols-2"
-  >
-    {workProjects.map((project) => <ProjectCard project={project} />)}
   </SplitSection>
 
   <SplitSection
@@ -170,7 +151,7 @@ const formatRoleDate = (value?: string) =>
           <article class="group relative flex flex-col items-start">
             <div
               aria-hidden="true"
-              class="absolute -inset-x-4 -inset-y-6 z-0 scale-95 rounded-2xl bg-zinc-50 opacity-0 transition duration-200 group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 dark:bg-zinc-800/50"
+              class="absolute -inset-x-4 -inset-y-6 z-0 scale-95 rounded-lg bg-zinc-50 opacity-0 transition duration-200 group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 dark:bg-zinc-800/50"
             />
             <p class="relative z-10 text-xs font-semibold tracking-[0.24em] text-zinc-500 uppercase dark:text-zinc-400">
               {certification.category}
@@ -206,8 +187,8 @@ const formatRoleDate = (value?: string) =>
   <PathwayCards
     eyebrow="Next"
     id="about-next-steps-heading"
-    title="Move from background to evidence."
-    intro="The next useful signal is either proof of past work, a service shape, or direct context for a conversation."
+    title="Move from background to proof."
+    intro="The next useful signal is either production evidence, a service shape, or direct context for a conversation."
     pathways={pagePathways.about}
     sectionClass="mt-20 pb-24"
   />

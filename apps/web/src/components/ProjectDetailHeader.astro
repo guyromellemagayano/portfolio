@@ -1,0 +1,51 @@
+---
+/**
+ * @file apps/web/src/components/ProjectDetailHeader.astro
+ * @author Guy Romelle Magayano
+ * @description Shared header for work and lab project detail pages.
+ */
+
+import Container from "@web/components/Container.astro";
+import Eyebrow from "@web/components/Eyebrow.astro";
+import Heading from "@web/components/Heading.astro";
+import Text from "@web/components/Text.astro";
+import { type Project } from "@web/data/projects";
+
+type Props = {
+  backHref: string;
+  backLabel: string;
+  project: Project;
+};
+
+const { backHref, backLabel, project } = Astro.props;
+---
+
+<header class="pt-16 sm:pt-32">
+  <Container>
+    <a
+      href={backHref}
+      class="rounded-sm text-sm font-medium text-zinc-500 transition hover:text-teal-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 dark:text-zinc-400 dark:hover:text-teal-400 dark:focus-visible:outline-teal-400"
+    >
+      {backLabel}
+    </a>
+    <div class="mt-8 max-w-3xl">
+      <Eyebrow as="p">{project.path}</Eyebrow>
+      <Heading class="mt-3 max-w-4xl">{project.title}</Heading>
+      <Text as="p" size="lg" class="mt-6 max-w-2xl">
+        {project.description}
+      </Text>
+      <ul
+        class="mt-8 flex flex-wrap gap-2"
+        aria-label={`${project.title} tags`}
+      >
+        {
+          project.tags.map((tag) => (
+            <li class="rounded-full border border-zinc-200 px-3 py-1.5 text-xs text-zinc-500 dark:border-zinc-700/60 dark:text-zinc-400">
+              {tag}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Container>
+</header>

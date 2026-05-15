@@ -29,7 +29,13 @@ const SOCIAL_PLATFORMS = [
   "website",
   "x",
 ] as const;
-const PAGE_PATHWAY_KEYS = ["about", "capabilities", "labs", "notes"] as const;
+const PAGE_PATHWAY_KEYS = [
+  "about",
+  "capabilities",
+  "labs",
+  "notes",
+  "work",
+] as const;
 
 type FooterGroup = (typeof FOOTER_GROUPS)[number];
 type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
@@ -330,6 +336,10 @@ function createSiteData(value: unknown): SiteData {
     notes: parsePathwayGroup(
       pagePathwaysRecord.notes,
       `${path}.pagePathways.notes`
+    ),
+    work: parsePathwayGroup(
+      pagePathwaysRecord.work,
+      `${path}.pagePathways.work`
     ),
   };
   const pages = expectArray(record.pages, `${path}.pages`).map((entry, index) =>

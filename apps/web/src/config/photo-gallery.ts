@@ -4,6 +4,8 @@
  * @description Static configuration for photo gallery content and settings.
  */
 
+import { type ImageMetadata } from "astro";
+
 import photoGalleryConfig from "@web/data/photo-gallery.json";
 import image1 from "@web/images/photos/image-1.jpg";
 import image2 from "@web/images/photos/image-2.jpg";
@@ -17,7 +19,6 @@ import {
   expectEnum,
   expectRecord,
 } from "@web/lib/json-data";
-import { type ImageSource } from "@web/lib/media";
 
 export type PhotoGalleryImageKey =
   | "image1"
@@ -40,7 +41,7 @@ const PHOTO_GALLERY_IMAGE_KEYS: ReadonlyArray<PhotoGalleryImageKey> = [
   "image5",
 ];
 
-const PHOTO_GALLERY_IMAGE_MAP: Record<PhotoGalleryImageKey, ImageSource> = {
+const PHOTO_GALLERY_IMAGE_MAP: Record<PhotoGalleryImageKey, ImageMetadata> = {
   image1,
   image2,
   image3,
@@ -86,7 +87,7 @@ const createPhotoGalleryConfigData = (): PhotoGalleryConfigData => {
 
 const PHOTO_GALLERY_CONFIG_DATA = createPhotoGalleryConfigData();
 
-export const PHOTO_GALLERY_PHOTOS: ReadonlyArray<ImageSource> =
+export const PHOTO_GALLERY_PHOTOS: ReadonlyArray<ImageMetadata> =
   PHOTO_GALLERY_CONFIG_DATA.photos.map(
     (photo) => PHOTO_GALLERY_IMAGE_MAP[photo.key]
   );

@@ -322,15 +322,17 @@ export function buildCollectionPageStructuredData<
   };
 }
 
-/** Builds JSON-LD for project case study pages. */
+/** Builds JSON-LD for project detail pages. */
 export function buildProjectStructuredData(project: Project): StructuredData {
   const projectUrl = getPageUrl(getProjectPath(project));
+  const projectLabel = project.kind === "lab" ? "Lab" : "Case Study";
+  const projectFragment = project.kind === "lab" ? "lab" : "case-study";
 
   return {
     "@context": "https://schema.org",
     "@type": project.kind === "lab" ? "SoftwareSourceCode" : "CreativeWork",
-    "@id": `${projectUrl}#case-study`,
-    name: `${project.title} Case Study`,
+    "@id": `${projectUrl}#${projectFragment}`,
+    name: `${project.title} ${projectLabel}`,
     headline: project.title,
     url: projectUrl,
     description: project.description,

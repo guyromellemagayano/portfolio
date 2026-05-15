@@ -15,6 +15,13 @@
       "footerGroup": "primary"
     },
     {
+      "label": "Work",
+      "href": "/work",
+      "showInHeader": true,
+      "showInFooter": true,
+      "footerGroup": "primary"
+    },
+    {
       "label": "Notes",
       "href": "/notes",
       "showInHeader": true,
@@ -143,7 +150,7 @@
       "id": "production-proof",
       "title": "Review production proof",
       "description": "Production examples across platform, commerce, publishing, SaaS, and operational systems.",
-      "href": "/about#selected-work",
+      "href": "/work",
       "cta": "See case studies"
     },
     {
@@ -164,11 +171,11 @@
   "pagePathways": {
     "about": [
       {
-        "id": "about-notes",
-        "title": "Read the thinking behind the work",
-        "description": "Architecture and delivery notes that show how the product and platform decisions are made.",
-        "href": "/notes",
-        "cta": "Read notes"
+        "id": "about-work",
+        "title": "Review production proof",
+        "description": "Case studies that show how the background and principles map to real product systems.",
+        "href": "/work",
+        "cta": "See case studies"
       },
       {
         "id": "about-services",
@@ -189,8 +196,8 @@
       {
         "id": "services-work",
         "title": "Validate the services against proof",
-        "description": "Selected work showing how the services map to real product systems.",
-        "href": "/about#selected-work",
+        "description": "Case studies showing how the services map to real product systems.",
+        "href": "/work",
         "cta": "See case studies"
       },
       {
@@ -213,7 +220,7 @@
         "id": "labs-work",
         "title": "Compare labs with production work",
         "description": "Move from product-system experiments into production examples with client and platform context.",
-        "href": "/about#selected-work",
+        "href": "/work",
         "cta": "See case studies"
       },
       {
@@ -235,14 +242,37 @@
       {
         "id": "notes-work",
         "title": "See where the ideas show up",
-        "description": "Review selected work for production examples of architecture, delivery, and platform decisions.",
-        "href": "/about#selected-work",
+        "description": "Review case studies for production examples of architecture, delivery, and platform decisions.",
+        "href": "/work",
         "cta": "See case studies"
       },
       {
         "id": "notes-contact",
         "title": "Start a focused conversation",
         "description": "Send the system constraint, team context, and outcome you need to make real.",
+        "href": "/contact",
+        "cta": "Contact me"
+      }
+    ],
+    "work": [
+      {
+        "id": "work-services",
+        "title": "Map the proof to your current need",
+        "description": "See the service paths for teams that need similar platform judgment, delivery structure, or implementation support.",
+        "href": "/capabilities",
+        "cta": "View services"
+      },
+      {
+        "id": "work-notes",
+        "title": "Read the thinking behind the case studies",
+        "description": "Architecture and delivery notes that explain the product-system decisions behind the work.",
+        "href": "/notes",
+        "cta": "Read notes"
+      },
+      {
+        "id": "work-contact",
+        "title": "Start with your system context",
+        "description": "Share the product surface, delivery risk, or platform constraint you need help sorting through.",
         "href": "/contact",
         "cta": "Contact me"
       }
@@ -262,9 +292,9 @@
       "slug": "about",
       "subheading": "About",
       "title": "A senior engineer focused on systems that stay clear under growth.",
-      "intro": "Background, selected work, priorities, and working principles behind the way I build and stabilize web platforms.",
+      "intro": "Background, priorities, and working principles behind the way I build and stabilize web platforms.",
       "seoTitle": "About - Guy Romelle Magayano",
-      "seoDescription": "Background, selected work, and engineering principles behind Guy Romelle Magayano's full-stack platform work.",
+      "seoDescription": "Background, priorities, and engineering principles behind Guy Romelle Magayano's full-stack platform work.",
       "seoCanonicalPath": "/about"
     },
     {
@@ -275,6 +305,15 @@
       "seoTitle": "Notes - Guy Romelle Magayano",
       "seoDescription": "Notes on frontend architecture, platform systems, release safety, content modeling, and pragmatic product engineering.",
       "seoCanonicalPath": "/notes"
+    },
+    {
+      "slug": "work",
+      "subheading": "Work",
+      "title": "Selected production case studies across platform, commerce, publishing, and operational systems.",
+      "intro": "Browse selected production work showing how architecture, delivery structure, and product judgment hold up in real teams and live systems.",
+      "seoTitle": "Work - Guy Romelle Magayano",
+      "seoDescription": "Selected production case studies by Guy Romelle Magayano across platform engineering, commerce, publishing, SaaS, and operational systems.",
+      "seoCanonicalPath": "/work"
     },
     {
       "slug": "capabilities",
