@@ -9,7 +9,7 @@ catalog:
   "@commitlint/config-conventional": 21.0.0
   "@eslint/js": 10.0.1
   "@lhci/cli": 0.15.1
-  "@playwright/test": 1.59.1
+  "@playwright/test": 1.60.0
   "@sentry/astro": 10.52.0
   "@tailwindcss/postcss": 4.3.0
   "@tailwindcss/typography": 0.5.19
@@ -25,9 +25,9 @@ catalog:
   "@typescript-eslint/utils": 8.59.2
   "@vercel/analytics": 2.0.1
   "@vercel/speed-insights": 2.0.0
-  "@vitest/coverage-v8": 4.1.5
+  "@vitest/coverage-v8": 4.1.6
   "@vitest/eslint-plugin": 1.6.17
-  "@vitest/ui": 4.1.5
+  "@vitest/ui": 4.1.6
   astro: 6.3.1
   astro-eslint-parser: 1.4.0
   autoprefixer: 10.5.0
@@ -73,7 +73,7 @@ catalog:
   typescript: 6.0.3
   typescript-eslint: 8.59.2
   validate-branch-name: 1.3.2
-  vitest: 4.1.5
+  vitest: 4.1.6
 catalogMode: strict
 cleanupUnusedCatalogs: true
 
